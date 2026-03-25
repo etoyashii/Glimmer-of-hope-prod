@@ -1,4 +1,4 @@
-# Glimmer of Hope
+# Glimmer of Hopes
 
 ## 🚀 Quick Start
 
