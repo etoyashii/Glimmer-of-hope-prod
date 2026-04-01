@@ -3,7 +3,7 @@
 ## 🚀 Quick Start
 
 1. **Clone** le repo
-2. **Ouvrir** avec **Unity 6000.0.30f1**
+2. **Ouvrir** avec **Unity 6000.3.10f1**
 3. **Ouvrir le projet** : `Glimmer-of-Hope/Glimmer-of-Hope/`
 4. **Attendre** la compilation (longue la première fois)
 5. **Ouvrir** la scène `_Project/Scenes/_Bootstrap`
