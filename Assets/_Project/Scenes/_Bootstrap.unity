@@ -129,6 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1776854372}
   - component: {fileID: 1776854371}
+  - component: {fileID: 1776854373}
   m_Layer: 0
   m_Name: GameBootstrapper
   m_TagString: Untagged
@@ -164,6 +165,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1776854373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1776854370}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b67012378c29b6c48a07305a524f5586, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Characters.CharacterSystemBootstrapper
+  _characterRegistry: {fileID: 11400000, guid: 500fc8c01ec302d41bccd28180b30741, type: 2}
+  _onCharacterPartChanged: {fileID: 11400000, guid: 5988e2310ab867444b444f37d9730a94, type: 2}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
