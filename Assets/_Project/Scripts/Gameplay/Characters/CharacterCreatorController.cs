@@ -46,10 +46,6 @@ namespace GlimmerOfHope.Gameplay.Characters
         #endregion
 
         #region Public Methods
-        /// <summary>
-        /// Sélectionne une part pour une catégorie donnée.
-        /// Notifie les abonnés via l'event channel.
-        /// </summary>
         public void SelectPart(string categoryID, string partID)
         {
             if (_registry.GetCategoryById(categoryID) == null)
@@ -61,11 +57,6 @@ namespace GlimmerOfHope.Gameplay.Characters
             _currentSelections[categoryID] = partID;
             _onPartChanged?.Raise(categoryID);
         }
-
-        /// <summary>
-        /// Retourne la part actuellement sélectionnée pour une catégorie.
-        /// Retourne null si aucune sélection.
-        /// </summary>
         public CharacterPartSO GetSelectedPart(string categoryID)
         {
             if (!_currentSelections.TryGetValue(categoryID, out var partID))
@@ -73,10 +64,6 @@ namespace GlimmerOfHope.Gameplay.Characters
 
             return _registry.GetPartById(categoryID, partID);
         }
-
-        /// <summary>
-        /// Remet toutes les catégories sur leur première part disponible.
-        /// </summary>
         public void ResetToDefaults()
         {
             _currentSelections.Clear();
@@ -89,10 +76,6 @@ namespace GlimmerOfHope.Gameplay.Characters
                 _currentSelections[category.CategoryID] = category.Parts[0].PartID;
             }
         }
-
-        /// <summary>
-        /// Charge un profil sauvegardé dans le controller.
-        /// </summary>
         public void LoadFromData(CharacterDataSO data)
         {
             if (data == null)
@@ -112,10 +95,6 @@ namespace GlimmerOfHope.Gameplay.Characters
                     _currentSelections[category.CategoryID] = partID;
             }
         }
-
-        /// <summary>
-        /// Écrit les sélections courantes dans un CharacterDataSO (pour sauvegarde F4).
-        /// </summary>
         public void SaveToData(CharacterDataSO target)
         {
             if (target == null)

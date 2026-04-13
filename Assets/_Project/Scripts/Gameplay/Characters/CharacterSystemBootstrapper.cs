@@ -4,6 +4,7 @@ using GlimmerOfHope.Core.Services;
 
 namespace GlimmerOfHope.Gameplay.Characters
 {
+    [DefaultExecutionOrder(-50)]
     public class CharacterSystemBootstrapper : MonoBehaviour
     {
         #region Serialized Fields

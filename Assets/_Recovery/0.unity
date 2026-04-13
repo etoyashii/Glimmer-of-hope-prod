@@ -222,7 +222,6 @@ GameObject:
   - component: {fileID: 160686280}
   - component: {fileID: 160686279}
   - component: {fileID: 160686278}
-  - component: {fileID: 160686281}
   m_Layer: 0
   m_Name: BtnConfirm
   m_TagString: Untagged
@@ -332,20 +331,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 160686276}
   m_CullTransparentMesh: 1
---- !u!114 &160686281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 160686276}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 210abd45d089ddb4aa0e4d017b121afe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterResetButton
-  _onCategorySelected: {fileID: 11400000, guid: ea6b727ee64884f43a2855aab08f47be, type: 2}
-  _button: {fileID: 0}
 --- !u!1 &223976348
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +636,6 @@ GameObject:
   - component: {fileID: 283539081}
   - component: {fileID: 283539083}
   - component: {fileID: 283539082}
-  - component: {fileID: 283539084}
   m_Layer: 0
   m_Name: PartsContent
   m_TagString: Untagged
@@ -716,22 +700,6 @@ MonoBehaviour:
   m_Spacing: {x: 10, y: 10}
   m_Constraint: 1
   m_ConstraintCount: 4
---- !u!114 &283539084
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 283539080}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa0c43646ccde69419c0362700a3dc25, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterPartsGridController
-  _partButtonPrefab: {fileID: 7732774519841280773, guid: 6da62843cdaaa6442b137a8a2529efbd, type: 3}
-  _onCategorySelected: {fileID: 11400000, guid: ea6b727ee64884f43a2855aab08f47be, type: 2}
-  _onPartChanged: {fileID: 11400000, guid: 5988e2310ab867444b444f37d9730a94, type: 2}
-  _currentCategoryId: 
 --- !u!1 &301924078
 GameObject:
   m_ObjectHideFlags: 0
@@ -1001,7 +969,6 @@ GameObject:
   - component: {fileID: 440171504}
   - component: {fileID: 440171506}
   - component: {fileID: 440171505}
-  - component: {fileID: 440171507}
   m_Layer: 0
   m_Name: CategoryContent
   m_TagString: Untagged
@@ -1068,20 +1035,6 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &440171507
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 440171503}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e7d9d11100bc81540a23dbe91cf9ac31, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterCategoryTabsController
-  _categoryTabPrefab: {fileID: 3721534949250939353, guid: 730dcd1e2d4f17f4ab91785e8a5db918, type: 3}
-  _onCategorySelected: {fileID: 11400000, guid: ea6b727ee64884f43a2855aab08f47be, type: 2}
 --- !u!1 &458939891
 GameObject:
   m_ObjectHideFlags: 0
@@ -1310,6 +1263,7 @@ GameObject:
   - component: {fileID: 567729191}
   - component: {fileID: 567729190}
   - component: {fileID: 567729189}
+  - component: {fileID: 567729192}
   m_Layer: 0
   m_Name: RightPanel
   m_TagString: Untagged
@@ -1404,6 +1358,25 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 567729187}
   m_CullTransparentMesh: 1
+--- !u!114 &567729192
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 567729187}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 977680f9e17ca5a419a85d915d5a6a65, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterCreatorUI
+  _onPartChanged: {fileID: 11400000, guid: 5988e2310ab867444b444f37d9730a94, type: 2}
+  _categoryTabContainer: {fileID: 440171504}
+  _categoryTabPrefab: {fileID: 3721534949250939353, guid: 730dcd1e2d4f17f4ab91785e8a5db918, type: 3}
+  _partsGridContainer: {fileID: 283539081}
+  _partButtonPrefab: {fileID: 7732774519841280773, guid: 6da62843cdaaa6442b137a8a2529efbd, type: 3}
+  _confirmButton: {fileID: 0}
+  _resetButton: {fileID: 0}
 --- !u!1 &597325679
 GameObject:
   m_ObjectHideFlags: 0
@@ -1416,7 +1389,6 @@ GameObject:
   - component: {fileID: 597325683}
   - component: {fileID: 597325682}
   - component: {fileID: 597325681}
-  - component: {fileID: 597325684}
   m_Layer: 0
   m_Name: BtnReset
   m_TagString: Untagged
@@ -1526,20 +1498,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 597325679}
   m_CullTransparentMesh: 1
---- !u!114 &597325684
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 597325679}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 210abd45d089ddb4aa0e4d017b121afe, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterResetButton
-  _onCategorySelected: {fileID: 11400000, guid: ea6b727ee64884f43a2855aab08f47be, type: 2}
-  _button: {fileID: 0}
 --- !u!1 &733668171
 GameObject:
   m_ObjectHideFlags: 0
@@ -3159,7 +3117,6 @@ GameObject:
   - component: {fileID: 1907696254}
   - component: {fileID: 1907696253}
   - component: {fileID: 1907696252}
-  - component: {fileID: 1907696255}
   m_Layer: 0
   m_Name: PartsLabel
   m_TagString: Untagged
@@ -3306,22 +3263,6 @@ MonoBehaviour:
   m_FlexibleWidth: -1
   m_FlexibleHeight: 0
   m_LayoutPriority: 1
---- !u!114 &1907696255
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1907696250}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a2ce44f0fab4ddb4fa6f72a47fcfe0af, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterCategoryLabel
-  _onCategorySelected: {fileID: 11400000, guid: ea6b727ee64884f43a2855aab08f47be, type: 2}
-  _uppercase: 1
-  _prefix: 
-  _text: {fileID: 0}
 --- !u!1 &1949493422
 GameObject:
   m_ObjectHideFlags: 0
