@@ -19,7 +19,6 @@ namespace GlimmerOfHope.UI.Widgets
 
         #region Private Fields
         private TMP_Text _text;
-        private string _pendingCategoryID;
         private GlimmerOfHope.Gameplay.Characters.CharacterCreatorController _controller;
         #endregion
 
@@ -35,57 +34,33 @@ namespace GlimmerOfHope.UI.Widgets
 
             if (_controller != null && _controller.Registry.Categories.Count > 0)
             {
-                var firstCategory = _controller.Registry.Categories[0];
-
-                if (firstCategory != null)
-                {
-                    ApplyLabel(firstCategory.CategoryID);
-                }
-            }
-
-            if (!string.IsNullOrEmpty(_pendingCategoryID))
-            {
-                ApplyLabel(_pendingCategoryID);
+                var first = _controller.Registry.Categories[0];
+                if (first != null)
+                    ApplyLabel(first.CategoryID);
             }
         }
 
         private void OnEnable()
         {
             if (_onCategorySelected != null)
-                _onCategorySelected.Subscribe(OnCategorySelected);
+                _onCategorySelected.Subscribe(ApplyLabel);
         }
 
         private void OnDisable()
         {
             if (_onCategorySelected != null)
-                _onCategorySelected.Unsubscribe(OnCategorySelected);
+                _onCategorySelected.Unsubscribe(ApplyLabel);
         }
         #endregion
 
         #region Private Methods
-        private void OnCategorySelected(string categoryId)
+        private void ApplyLabel(string categoryId)
         {
             if (_controller == null || _text == null) return;
 
             var category = _controller.Registry.GetCategoryById(categoryId);
             if (category == null) return;
 
-            var displayName = _prefix + category.DisplayName;
-            _text.text = _uppercase ? displayName.ToUpper() : displayName;
-        }
-
-        private void ApplyLabel(string categoryID)
-        {
-            if (_controller == null || _text == null)
-            {
-                return;
-            }
-            var category = _controller.Registry.GetCategoryById(categoryID);
-
-            if (category == null)
-            {
-                return;
-            }
             var displayName = _prefix + category.DisplayName;
             _text.text = _uppercase ? displayName.ToUpper() : displayName;
         }

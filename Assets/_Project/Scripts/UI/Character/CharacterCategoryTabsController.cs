@@ -19,7 +19,8 @@ namespace GlimmerOfHope.UI.Widgets
 
         #region Private Fields
         private GlimmerOfHope.Gameplay.Characters.CharacterCreatorController _controller;
-        private readonly List<GameObject> _spawnedTabs = new();
+        private readonly List<CategoryTabView> _spawnedViews = new();
+        private string _activeCategoryId;
         #endregion
 
         #region Unity Lifecycle
@@ -59,24 +60,32 @@ namespace GlimmerOfHope.UI.Widgets
 
                 var view = tab.GetComponent<CategoryTabView>();
                 if (view != null)
+                {
                     view.Setup(category, SelectCategory);
+                    _spawnedViews.Add(view);
+                }
                 else
-                    Debug.LogWarning($"[CharacterCategoryTabsController] CategoryTabView absent du prefab '{_categoryTabPrefab.name}'.", tab);
-
-                _spawnedTabs.Add(tab);
+                {
+                    Debug.LogWarning($"[CharacterCategoryTabsController] CategoryTabView absent du prefab.", tab);
+                }
             }
         }
 
         private void SelectCategory(string categoryId)
         {
+            _activeCategoryId = categoryId;
+
+            foreach (var view in _spawnedViews)
+                view.SetActive(view.CategoryId == categoryId);
+
             _onCategorySelected?.Raise(categoryId);
         }
 
         private void ClearTabs()
         {
-            foreach (var go in _spawnedTabs)
-                if (go != null) Destroy(go);
-            _spawnedTabs.Clear();
+            foreach (var view in _spawnedViews)
+                if (view != null) Destroy(view.gameObject);
+            _spawnedViews.Clear();
         }
         #endregion
     }

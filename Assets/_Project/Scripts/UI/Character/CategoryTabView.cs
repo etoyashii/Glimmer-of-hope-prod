@@ -12,6 +12,10 @@ namespace GlimmerOfHope.UI.Widgets
         [SerializeField] private TMP_Text _label;
         [SerializeField] private Image    _icon;
         [SerializeField] private Button   _button;
+
+        [Header("Active State")]
+        [Tooltip("Barre sous l'onglet actif (ActiveBar dans le prefab).")]
+        [SerializeField] private GameObject _activeIndicator;
         #endregion
 
         #region Private Fields
@@ -20,6 +24,8 @@ namespace GlimmerOfHope.UI.Widgets
         #endregion
 
         #region Public API
+        public string CategoryId => _categoryId;
+
         public void Setup(CharacterCategorySO category, System.Action<string> onClickCallback)
         {
             _categoryId      = category.CategoryID;
@@ -30,6 +36,12 @@ namespace GlimmerOfHope.UI.Widgets
 
             if (_button != null)
                 _button.onClick.AddListener(OnClick);
+        }
+
+        public void SetActive(bool active)
+        {
+            if (_activeIndicator != null)
+                _activeIndicator.SetActive(active);
         }
         #endregion
 

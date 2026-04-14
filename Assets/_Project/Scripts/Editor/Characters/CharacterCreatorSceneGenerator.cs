@@ -2,52 +2,37 @@ using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
 using TMPro;
+using GlimmerOfHope.Core.Events;
+using GlimmerOfHope.Gameplay.Characters;
+using GlimmerOfHope.UI.Widgets;
+using static GlimmerOfHope.Editor.Characters.CharacterUIConstants;
+using RectMask = UnityEngine.UI.RectMask2D;
 
 namespace GlimmerOfHope.Editor.Characters
 {
     public static class CharacterCreatorSceneGenerator
     {
-        #region Constants
-
-        private static readonly Color COLOR_TOPBAR         = new Color(0.29f,  0.565f, 0.851f);
-        private static readonly Color COLOR_PANEL          = Color.white;
-        private static readonly Color COLOR_CONFIRM        = new Color(0.357f, 0.749f, 0.447f);
-        private static readonly Color COLOR_BTN_OK         = new Color(0.29f,  0.565f, 0.851f);
-        private static readonly Color COLOR_BTN_CANCEL_BG  = new Color(0.94f,  0.95f,  0.98f);
-        private static readonly Color COLOR_TEXT_PRIMARY   = new Color(0.173f, 0.133f, 0.208f);
-        private static readonly Color COLOR_TEXT_MUTED     = new Color(0.478f, 0.522f, 0.627f);
-        private static readonly Color COLOR_DIVIDER        = new Color(0.91f,  0.925f, 0.961f);
-        private static readonly Color COLOR_CAMERA_BG      = new Color(0.659f, 0.769f, 0.933f);
-        private static readonly Color COLOR_RESET_BG       = Color.white;
-
-        private const float TOPBAR_HEIGHT    = 60f;
-        private const float BOTTOMBAR_HEIGHT = 56f;
-        private const float PANEL_SPLIT      = 0.575f;
-
-        #endregion
-
         #region Menu
 
-        [MenuItem("Tools/GlimmerOfHope/Generate Character Creator Scene")]
+        [MenuItem("Tools/GlimmerOfHope/3 — Generate Character Creator Scene")]
         public static void Generate()
         {
+            if (!ValidateAssets()) return;
+
             if (!EditorUtility.DisplayDialog(
                     "Générer la scène Character Creator",
-                    "Cette action va créer toute la hiérarchie UI dans la scène active.\n\nContinuer ?",
+                    "Crée toute la hiérarchie UI dans la scène active.\nContinuer ?",
                     "Générer", "Annuler"))
                 return;
 
-            var root = BuildSceneRoot();
+            var root = BuildRoot();
+            WireAllComponents(root);
             Selection.activeGameObject = root;
 
             EditorUtility.DisplayDialog(
-                "Génération terminée ✔",
-                "La hiérarchie a été générée.\n\n" +
-                "Reste à faire manuellement :\n" +
-                "• RightPanel → Add Component → CharacterCreatorUI\n" +
-                "  → assigner _onPartChanged, _categoryTabPrefab, _partButtonPrefab\n\n" +
-                "• CharacterPreview → Add Component → CharacterPreviewRenderer\n" +
-                "  → assigner _onPartChanged, _anchors3D (x4), _spriteRenderers (x2)",
+                "Scène générée",
+                "Hiérarchie créée ET composants branchés automatiquement.\n\n" +
+                "Tout est prêt — appuie sur Play pour tester.",
                 "OK");
         }
 
@@ -55,11 +40,10 @@ namespace GlimmerOfHope.Editor.Characters
 
         #region Root
 
-        private static GameObject BuildSceneRoot()
+        private static GameObject BuildRoot()
         {
             var existing = GameObject.Find("CharacterCreator");
-            if (existing != null)
-                Undo.DestroyObjectImmediate(existing);
+            if (existing != null) Undo.DestroyObjectImmediate(existing);
 
             var root = new GameObject("CharacterCreator");
             Undo.RegisterCreatedObjectUndo(root, "Generate Character Creator Scene");
@@ -67,63 +51,68 @@ namespace GlimmerOfHope.Editor.Characters
             BuildCamera(root);
             BuildCharacterPreview(root);
             BuildCanvas(root);
+            BuildEventSystem(root);
 
             return root;
         }
 
         #endregion
 
-        #region Camera
+        #region Camera & Preview
 
         private static void BuildCamera(GameObject parent)
         {
-            var go = CreateChild("PreviewCamera", parent);
+            var go = Child("PreviewCamera", parent);
             go.transform.position = new Vector3(0f, 1.2f, -3.5f);
 
             var cam = go.AddComponent<Camera>();
             cam.clearFlags      = CameraClearFlags.SolidColor;
-            cam.backgroundColor = COLOR_CAMERA_BG;
+            cam.backgroundColor = CAMERA_BG;
             cam.fieldOfView     = 40f;
             cam.nearClipPlane   = 0.1f;
             cam.farClipPlane    = 100f;
             cam.rect = new Rect(0f, 0.052f, PANEL_SPLIT, 0.892f);
 
-            // Lumière directionnelle
-            var lightGo = CreateChild("Directional Light", parent);
-            lightGo.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
-            var light = lightGo.AddComponent<Light>();
-            light.type      = LightType.Directional;
-            light.intensity = 1.2f;
-            light.color     = new Color(1f, 0.97f, 0.92f);
+            var light = Child("Directional Light", parent);
+            light.transform.rotation = Quaternion.Euler(50f, -30f, 0f);
+            var l = light.AddComponent<Light>();
+            l.type      = LightType.Directional;
+            l.intensity = 1.2f;
+            l.color     = new Color(1f, 0.97f, 0.92f);
+        }
+
+        private static void BuildCharacterPreview(GameObject parent)
+        {
+            var preview = Child("CharacterPreview", parent);
+
+            Child("Anchor_Tete",       preview).transform.localPosition = new Vector3(0f, 1.6f, 0f);
+            Child("Anchor_Cheveux",    preview).transform.localPosition = new Vector3(0f, 1.7f, 0f);
+            Child("Anchor_Vetements",  preview).transform.localPosition = new Vector3(0f, 1.0f, 0f);
+            Child("Anchor_Accessoires", preview).transform.localPosition = new Vector3(0f, 1.8f, 0f);
+
+            BuildSpriteAnchor("Sprite_Yeux",   preview, new Vector3(-0.12f, 1.52f, -0.05f));
+            BuildSpriteAnchor("Sprite_Bouche", preview, new Vector3(0f, 1.38f, -0.05f));
+        }
+
+        private static void BuildSpriteAnchor(string name, GameObject parent, Vector3 pos)
+        {
+            var go = Child(name, parent);
+            go.transform.localPosition = pos;
+            go.AddComponent<SpriteRenderer>().sortingOrder = 1;
         }
 
         #endregion
 
-        #region CharacterPreview
+        #region EventSystem
 
-        private static void BuildCharacterPreview(GameObject parent)
+        private static void BuildEventSystem(GameObject parent)
         {
-            var preview = CreateChild("CharacterPreview", parent);
-            preview.transform.position = Vector3.zero;
+            if (Object.FindAnyObjectByType<UnityEngine.EventSystems.EventSystem>() != null)
+                return;
 
-            CreateChild("Anchor_Tete",       preview).transform.localPosition = new Vector3(0f,  1.6f, 0f);
-            CreateChild("Anchor_Cheveux",     preview).transform.localPosition = new Vector3(0f,  1.7f, 0f);
-            CreateChild("Anchor_Vetements",   preview).transform.localPosition = new Vector3(0f,  1.0f, 0f);
-            CreateChild("Anchor_Accessoires", preview).transform.localPosition = new Vector3(0f,  1.8f, 0f);
-
-            BuildSpriteAnchor("Sprite_Yeux",   preview, new Vector3(-0.12f, 1.52f, -0.05f));
-            BuildSpriteAnchor("Sprite_Bouche", preview, new Vector3(0f,     1.38f, -0.05f));
-
-            Debug.Log("[SceneGenerator] CharacterPreview créé. " +
-                      "Attache CharacterPreviewRenderer manuellement sur ce GO.");
-        }
-
-        private static void BuildSpriteAnchor(string name, GameObject parent, Vector3 localPos)
-        {
-            var go = CreateChild(name, parent);
-            go.transform.localPosition = localPos;
-            var sr = go.AddComponent<SpriteRenderer>();
-            sr.sortingOrder = 1;
+            var go = Child("EventSystem", parent);
+            go.AddComponent<UnityEngine.EventSystems.EventSystem>();
+            go.AddComponent<UnityEngine.InputSystem.UI.InputSystemUIInputModule>();
         }
 
         #endregion
@@ -132,23 +121,23 @@ namespace GlimmerOfHope.Editor.Characters
 
         private static void BuildCanvas(GameObject parent)
         {
-            var canvasGo = CreateUIElement("Canvas", parent);
+            var go = UI("Canvas", parent);
 
-            var canvas = canvasGo.AddComponent<Canvas>();
+            var canvas = go.AddComponent<Canvas>();
             canvas.renderMode   = RenderMode.ScreenSpaceOverlay;
             canvas.pixelPerfect = true;
 
-            var scaler = canvasGo.AddComponent<CanvasScaler>();
+            var scaler = go.AddComponent<CanvasScaler>();
             scaler.uiScaleMode         = CanvasScaler.ScaleMode.ScaleWithScreenSize;
             scaler.referenceResolution = new Vector2(1920f, 1080f);
             scaler.matchWidthOrHeight  = 0.5f;
 
-            canvasGo.AddComponent<GraphicRaycaster>();
+            go.AddComponent<GraphicRaycaster>();
 
-            BuildBottomBar(canvasGo);
-            BuildPreviewZone(canvasGo);
-            BuildRightPanel(canvasGo);
-            BuildTopBar(canvasGo);
+            BuildTopBar(go);
+            BuildPreviewZone(go);
+            BuildRightPanel(go);
+            BuildBottomBar(go);
         }
 
         #endregion
@@ -157,144 +146,102 @@ namespace GlimmerOfHope.Editor.Characters
 
         private static void BuildTopBar(GameObject canvas)
         {
-            var go = CreateUIElement("TopBar", canvas);
-            var rt = go.GetComponent<RectTransform>();
-            rt.anchorMin        = new Vector2(0f, 1f);
-            rt.anchorMax        = new Vector2(1f, 1f);
-            rt.pivot            = new Vector2(0.5f, 1f);
-            rt.anchoredPosition = Vector2.zero;
-            rt.sizeDelta        = new Vector2(0f, TOPBAR_HEIGHT);
-            AddImage(go, COLOR_TOPBAR);
+            var go = UI("TopBar", canvas);
+            Stretch(go, new Vector2(0f, 1f), new Vector2(1f, 1f), new Vector2(0.5f, 1f));
+            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, TOPBAR_HEIGHT);
+            AddSlicedImage(go, "rounded-panel", TOPBAR);
 
-            // Title
-            var title = CreateUIElement("Title", go);
-            var trt   = title.GetComponent<RectTransform>();
-            trt.anchorMin        = new Vector2(0f, 0.5f);
-            trt.anchorMax        = new Vector2(0f, 0.5f);
-            trt.pivot            = new Vector2(0f, 0.5f);
-            trt.anchoredPosition = new Vector2(28f, 0f);
-            trt.sizeDelta        = new Vector2(600f, 44f);
-            var t1 = title.AddComponent<TextMeshProUGUI>();
-            t1.text      = "✦ Créer mon personnage";
-            t1.fontSize  = 22f;
-            t1.fontStyle = FontStyles.Bold;
-            t1.color     = Color.white;
-            t1.alignment = TextAlignmentOptions.Left;
+            var shadow = UI("Shadow", go);
+            var srt = shadow.GetComponent<RectTransform>();
+            srt.anchorMin = new Vector2(0f, 0f);
+            srt.anchorMax = new Vector2(1f, 0f);
+            srt.pivot     = new Vector2(0.5f, 1f);
+            srt.sizeDelta = new Vector2(0f, 8f);
+            var sImg = shadow.AddComponent<Image>();
+            sImg.color = SHADOW_COLOR;
+            sImg.raycastTarget = false;
 
-            // StepLabel
-            var step = CreateUIElement("StepLabel", go);
-            var srt  = step.GetComponent<RectTransform>();
-            srt.anchorMin        = new Vector2(1f, 0.5f);
-            srt.anchorMax        = new Vector2(1f, 0.5f);
-            srt.pivot            = new Vector2(1f, 0.5f);
-            srt.anchoredPosition = new Vector2(-28f, 0f);
-            srt.sizeDelta        = new Vector2(320f, 36f);
-            var t2 = step.AddComponent<TextMeshProUGUI>();
-            t2.text      = "Prototype — Glimmer of Hope";
-            t2.fontSize  = 13f;
-            t2.color     = new Color(1f, 1f, 1f, 0.75f);
-            t2.alignment = TextAlignmentOptions.Right;
+            AddText("Title", go,
+                new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
+                new Vector2(28f, 0f), new Vector2(600f, 44f),
+                "Créer mon personnage", FONT_TITLE, FontStyles.Bold,
+                TOPBAR_TEXT, TextAlignmentOptions.Left);
+
+            AddText("Subtitle", go,
+                new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f),
+                new Vector2(-28f, 0f), new Vector2(320f, 36f),
+                "Glimmer of Hope", FONT_SUBTITLE, FontStyles.Normal,
+                TOPBAR_SUB, TextAlignmentOptions.Right);
         }
 
         #endregion
 
-        #region BottomBar
-
-        private static void BuildBottomBar(GameObject canvas)
-        {
-            var go = CreateUIElement("BottomBar", canvas);
-            var rt = go.GetComponent<RectTransform>();
-            rt.anchorMin        = new Vector2(0f, 0f);
-            rt.anchorMax        = new Vector2(1f, 0f);
-            rt.pivot            = new Vector2(0.5f, 0f);
-            rt.anchoredPosition = Vector2.zero;
-            rt.sizeDelta        = new Vector2(0f, BOTTOMBAR_HEIGHT);
-            AddImage(go, COLOR_PANEL);
-
-            // StatusText
-            var status = CreateUIElement("StatusText", go);
-            var srt    = status.GetComponent<RectTransform>();
-            srt.anchorMin        = new Vector2(0f, 0.5f);
-            srt.anchorMax        = new Vector2(0f, 0.5f);
-            srt.pivot            = new Vector2(0f, 0.5f);
-            srt.anchoredPosition = new Vector2(24f, 0f);
-            srt.sizeDelta        = new Vector2(500f, 36f);
-            var ts = status.AddComponent<TextMeshProUGUI>();
-            ts.text      = "Personnalisez votre personnage";
-            ts.fontSize  = 13f;
-            ts.color     = COLOR_TEXT_MUTED;
-            ts.alignment = TextAlignmentOptions.Left;
-
-            BuildSimpleButton("BtnCancel", go,
-                new Vector2(-126f, 0f), new Vector2(90f, 38f),
-                "Annuler", COLOR_BTN_CANCEL_BG, COLOR_TEXT_MUTED,
-                new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f));
-
-            BuildSimpleButton("BtnOK", go,
-                new Vector2(-24f, 0f), new Vector2(90f, 38f),
-                "OK", COLOR_BTN_OK, Color.white,
-                new Vector2(1f, 0.5f), new Vector2(1f, 0.5f), new Vector2(1f, 0.5f));
-        }
-
-        #endregion
-
-        #region PreviewZone
+        #region Preview Zone
 
         private static void BuildPreviewZone(GameObject canvas)
         {
-            var go = CreateUIElement("PreviewZone", canvas);
+            var go = UI("PreviewZone", canvas);
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(0f, 0f);
             rt.anchorMax = new Vector2(PANEL_SPLIT, 1f);
-            rt.pivot     = new Vector2(0.5f, 0.5f);
-            rt.offsetMin = new Vector2(16f, BOTTOMBAR_HEIGHT + 8f);
-            rt.offsetMax = new Vector2(-8f, -(TOPBAR_HEIGHT + 8f));
+            rt.offsetMin = new Vector2(PANEL_GAP, BOTTOMBAR_HEIGHT + PANEL_GAP);
+            rt.offsetMax = new Vector2(-PANEL_GAP / 2f, -(TOPBAR_HEIGHT + PANEL_GAP));
+            AddSlicedImage(go, "rounded-panel", PREVIEW_OVERLAY);
 
-            var img = go.AddComponent<Image>();
-            img.color         = new Color(COLOR_CAMERA_BG.r, COLOR_CAMERA_BG.g, COLOR_CAMERA_BG.b, 0.25f);
-            img.raycastTarget = false;
-
-            // ActionRow (Reset + Confirm)
-            var row = CreateUIElement("ActionRow", go);
+            var row = UI("ActionRow", go);
             var rrt = row.GetComponent<RectTransform>();
-            rrt.anchorMin        = new Vector2(0f, 0f);
-            rrt.anchorMax        = new Vector2(1f, 0f);
-            rrt.pivot            = new Vector2(0.5f, 0f);
-            rrt.anchoredPosition = new Vector2(0f, 12f);
-            rrt.sizeDelta        = new Vector2(0f, 48f);
+            rrt.anchorMin = new Vector2(0.1f, 0f);
+            rrt.anchorMax = new Vector2(0.9f, 0f);
+            rrt.pivot     = new Vector2(0.5f, 0f);
+            rrt.anchoredPosition = new Vector2(0f, 16f);
+            rrt.sizeDelta = new Vector2(0f, 48f);
 
             var hlg = row.AddComponent<HorizontalLayoutGroup>();
-            hlg.spacing                = 10f;
+            hlg.spacing                = 12f;
             hlg.childForceExpandWidth  = true;
             hlg.childForceExpandHeight = true;
             hlg.childAlignment         = TextAnchor.MiddleCenter;
 
-            // Boutons dans le layout group
-            BuildSimpleButton("BtnReset", row,
-                Vector2.zero, Vector2.zero,
-                "↺  Réinitialiser", COLOR_RESET_BG, COLOR_TEXT_PRIMARY,
-                Vector2.zero, Vector2.zero, new Vector2(0.5f, 0.5f));
+            BuildActionButton("BtnReset",   row, "Réinitialiser", BTN_NEUTRAL_BG, TEXT_PRIMARY);
+            BuildActionButton("BtnConfirm", row, "Confirmer",     CONFIRM,        TEXT_ON_ACCENT);
+        }
 
-            BuildSimpleButton("BtnConfirm", row,
+        private static void BuildActionButton(string name, GameObject parent,
+            string label, Color bg, Color textCol)
+        {
+            var go = UI(name, parent);
+            AddSlicedImage(go, "rounded-button", bg);
+
+            var btn = go.AddComponent<Button>();
+            var c   = btn.colors;
+            c.highlightedColor = new Color(bg.r - 0.04f, bg.g - 0.04f, bg.b - 0.04f);
+            c.pressedColor     = new Color(bg.r - 0.10f, bg.g - 0.10f, bg.b - 0.10f);
+            c.fadeDuration     = 0.08f;
+            btn.colors         = c;
+            btn.targetGraphic  = go.GetComponent<Image>();
+
+            AddText("Text", go,
+                Vector2.zero, Vector2.one, new Vector2(0.5f, 0.5f),
                 Vector2.zero, Vector2.zero,
-                "✔  Confirmer", COLOR_CONFIRM, Color.white,
-                Vector2.zero, Vector2.zero, new Vector2(0.5f, 0.5f));
+                label, FONT_BUTTON, FontStyles.Bold,
+                textCol, TextAlignmentOptions.Center, true);
         }
 
         #endregion
 
-        #region RightPanel
+        #region Right Panel
 
         private static void BuildRightPanel(GameObject canvas)
         {
-            var go = CreateUIElement("RightPanel", canvas);
+            var go = UI("RightPanel", canvas);
             var rt = go.GetComponent<RectTransform>();
             rt.anchorMin = new Vector2(PANEL_SPLIT, 0f);
             rt.anchorMax = new Vector2(1f, 1f);
-            rt.pivot     = new Vector2(0.5f, 0.5f);
-            rt.offsetMin = new Vector2(8f,  BOTTOMBAR_HEIGHT + 8f);
-            rt.offsetMax = new Vector2(-16f, -(TOPBAR_HEIGHT + 8f));
-            AddImage(go, COLOR_PANEL);
+            rt.offsetMin = new Vector2(PANEL_GAP / 2f, BOTTOMBAR_HEIGHT + PANEL_GAP);
+            rt.offsetMax = new Vector2(-PANEL_GAP, -(TOPBAR_HEIGHT + PANEL_GAP));
+            AddSlicedImage(go, "rounded-panel", PANEL_BG);
+
+            AddShadowBehind(go);
 
             var vlg = go.AddComponent<VerticalLayoutGroup>();
             vlg.padding                = new RectOffset(0, 0, 0, 14);
@@ -309,23 +256,15 @@ namespace GlimmerOfHope.Editor.Characters
             BuildDivider(go);
             BuildPartsLabel(go);
             BuildPartsGrid(go);
-
-            Debug.Log("[SceneGenerator] RightPanel créé. " +
-                      "Attache CharacterCreatorUI manuellement sur RightPanel.");
         }
 
         private static void BuildCategoryBar(GameObject parent)
         {
-            var go = CreateUIElement("CategoryBar", parent);
-            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 88f);
-            AddLayoutElement(go, preferredHeight: 88f, flexibleHeight: 0f);
+            var go = UI("CategoryBar", parent);
+            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 104f);
+            AddLayoutElement(go, 104f, 0f);
 
-            var bgImg = go.AddComponent<Image>();
-            bgImg.color         = Color.clear;
-            bgImg.raycastTarget = false;
-
-            var mask = go.AddComponent<Mask>();
-            mask.showMaskGraphic = false;
+            go.AddComponent<RectMask>();
 
             var sr = go.AddComponent<ScrollRect>();
             sr.horizontal        = true;
@@ -333,18 +272,16 @@ namespace GlimmerOfHope.Editor.Characters
             sr.movementType      = ScrollRect.MovementType.Clamped;
             sr.scrollSensitivity = 30f;
 
-            // CategoryContent
-            var content = CreateUIElement("CategoryContent", go);
-            var crt     = content.GetComponent<RectTransform>();
-            crt.anchorMin        = new Vector2(0f, 0f);
-            crt.anchorMax        = new Vector2(0f, 1f);
-            crt.pivot            = new Vector2(0f, 0.5f);
-            crt.anchoredPosition = Vector2.zero;
-            crt.sizeDelta        = Vector2.zero;
+            var content = UI("CategoryContent", go);
+            var crt = content.GetComponent<RectTransform>();
+            crt.anchorMin = new Vector2(0f, 0f);
+            crt.anchorMax = new Vector2(0f, 1f);
+            crt.pivot     = new Vector2(0f, 0.5f);
+            crt.sizeDelta = Vector2.zero;
 
             var hlg = content.AddComponent<HorizontalLayoutGroup>();
-            hlg.padding                = new RectOffset(12, 12, 8, 0);
-            hlg.spacing                = 4f;
+            hlg.padding = new RectOffset(14, 14, 8, 0);
+            hlg.spacing = 6f;
             hlg.childAlignment         = TextAnchor.UpperLeft;
             hlg.childControlWidth      = false;
             hlg.childControlHeight     = false;
@@ -353,7 +290,6 @@ namespace GlimmerOfHope.Editor.Characters
 
             var csf = content.AddComponent<ContentSizeFitter>();
             csf.horizontalFit = ContentSizeFitter.FitMode.PreferredSize;
-            csf.verticalFit   = ContentSizeFitter.FitMode.Unconstrained;
 
             sr.content  = crt;
             sr.viewport = go.GetComponent<RectTransform>();
@@ -361,66 +297,59 @@ namespace GlimmerOfHope.Editor.Characters
 
         private static void BuildDivider(GameObject parent)
         {
-            var go = CreateUIElement("Divider", parent);
-            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 2f);
-            AddLayoutElement(go, preferredHeight: 2f, flexibleHeight: 0f);
-            AddImage(go, COLOR_DIVIDER);
+            var go = UI("Divider", parent);
+            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 1f);
+            AddLayoutElement(go, 1f, 0f);
+            go.AddComponent<Image>().color = DIVIDER;
         }
 
         private static void BuildPartsLabel(GameObject parent)
         {
-            var go = CreateUIElement("PartsLabel", parent);
-            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 38f);
-            AddLayoutElement(go, preferredHeight: 38f, flexibleHeight: 0f);
+            var go = UI("PartsLabel", parent);
+            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, 40f);
+            AddLayoutElement(go, 40f, 0f);
 
             var tmp = go.AddComponent<TextMeshProUGUI>();
-            tmp.text             = "TÊTE";
-            tmp.fontSize         = 11f;
+            tmp.text             = "CATÉGORIE";
+            tmp.fontSize         = FONT_SECTION;
             tmp.fontStyle        = FontStyles.Bold;
-            tmp.color            = COLOR_TEXT_MUTED;
+            tmp.color            = TEXT_MUTED;
             tmp.alignment        = TextAlignmentOptions.Left;
-            tmp.margin           = new Vector4(18f, 0f, 0f, 0f);
-            tmp.characterSpacing = 3f;
+            tmp.margin           = new Vector4(GRID_PADDING + 2f, 0f, 0f, 0f);
+            tmp.characterSpacing = 2.5f;
         }
 
         private static void BuildPartsGrid(GameObject parent)
         {
-            var scroll = CreateUIElement("PartsGridScroll", parent);
-            scroll.GetComponent<RectTransform>().sizeDelta = Vector2.zero;
-            AddLayoutElement(scroll, preferredHeight: -1f, flexibleHeight: 1f);
+            var scroll = UI("PartsGridScroll", parent);
+            AddLayoutElement(scroll, -1f, 1f);
 
-            var scrollImg = scroll.AddComponent<Image>();
-            scrollImg.color         = Color.clear;
-            scrollImg.raycastTarget = false;
-
-            var scrollMask = scroll.AddComponent<Mask>();
-            scrollMask.showMaskGraphic = false;
+            scroll.AddComponent<RectMask>();
 
             var sr = scroll.AddComponent<ScrollRect>();
-            sr.horizontal        = false;
-            sr.vertical          = true;
+            sr.horizontal = false;
+            sr.vertical   = true;
             sr.movementType      = ScrollRect.MovementType.Clamped;
             sr.scrollSensitivity = 30f;
-            sr.viewport          = scroll.GetComponent<RectTransform>();
+            sr.viewport = scroll.GetComponent<RectTransform>();
 
-            // PartsContent
-            var content = CreateUIElement("PartsContent", scroll);
-            var crt     = content.GetComponent<RectTransform>();
-            crt.anchorMin        = new Vector2(0f, 1f);
-            crt.anchorMax        = new Vector2(1f, 1f);
-            crt.pivot            = new Vector2(0.5f, 1f);
-            crt.anchoredPosition = Vector2.zero;
-            crt.sizeDelta        = Vector2.zero;
+            var content = UI("PartsContent", scroll);
+            var crt = content.GetComponent<RectTransform>();
+            crt.anchorMin = new Vector2(0f, 1f);
+            crt.anchorMax = new Vector2(1f, 1f);
+            crt.pivot     = new Vector2(0.5f, 1f);
+            crt.sizeDelta = Vector2.zero;
 
             var grid = content.AddComponent<GridLayoutGroup>();
-            grid.padding         = new RectOffset(14, 14, 6, 14);
-            grid.cellSize        = new Vector2(78f, 78f);
-            grid.spacing         = new Vector2(10f, 10f);
+            int p = (int)GRID_PADDING;
+            grid.padding         = new RectOffset(p, p, 8, p);
+            grid.cellSize        = new Vector2(GRID_CELL_SIZE, GRID_CELL_SIZE);
+            grid.spacing         = new Vector2(GRID_SPACING, GRID_SPACING);
             grid.startCorner     = GridLayoutGroup.Corner.UpperLeft;
             grid.startAxis       = GridLayoutGroup.Axis.Horizontal;
             grid.childAlignment  = TextAnchor.UpperLeft;
             grid.constraint      = GridLayoutGroup.Constraint.FixedColumnCount;
-            grid.constraintCount = 4;
+            grid.constraintCount = GRID_COLUMNS;
 
             var csf = content.AddComponent<ContentSizeFitter>();
             csf.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -431,16 +360,195 @@ namespace GlimmerOfHope.Editor.Characters
 
         #endregion
 
+        #region Bottom Bar
+
+        private static void BuildBottomBar(GameObject canvas)
+        {
+            var go = UI("BottomBar", canvas);
+            Stretch(go, Vector2.zero, new Vector2(1f, 0f), new Vector2(0.5f, 0f));
+            go.GetComponent<RectTransform>().sizeDelta = new Vector2(0f, BOTTOMBAR_HEIGHT);
+            AddSlicedImage(go, "rounded-panel", PANEL_BG);
+
+            AddText("StatusText", go,
+                new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
+                new Vector2(24f, 0f), new Vector2(500f, 36f),
+                "Personnalisez votre personnage", FONT_STATUS, FontStyles.Normal,
+                TEXT_MUTED, TextAlignmentOptions.Left);
+        }
+
+        #endregion
+
+        #region Auto-Wire Components
+
+        private const string DATA_PATH   = "Assets/_Project/Data";
+        private const string PREFAB_PATH = "Assets/_Project/Prefabs/UI/Characters";
+
+        private static void WireAllComponents(GameObject root)
+        {
+            var registry   = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>($"{DATA_PATH}/Characters/_Registry.asset");
+            var evtCat     = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCategorySelected.asset");
+            var evtPart    = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterPartChanged.asset");
+            var evtConfirm = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterConfirmed.asset");
+            var tabPrefab  = AssetDatabase.LoadAssetAtPath<GameObject>($"{PREFAB_PATH}/CategoryTabPrefab.prefab");
+            var partPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PREFAB_PATH}/PartButtonPrefab.prefab");
+
+            if (registry == null || evtCat == null || evtPart == null)
+            {
+                Debug.LogError("[SceneGenerator] Assets manquants — Registry ou EventChannels introuvables.");
+                return;
+            }
+
+            WireBootstrapper(root, registry, evtPart);
+            WirePreviewRenderer(root, evtPart);
+            WireCategoryTabs(root, tabPrefab, evtCat);
+            WirePartsGrid(root, partPrefab, evtCat, evtPart);
+            WireCategoryLabel(root, evtCat);
+            WireResetButton(root, evtCat);
+            WireConfirmButton(root, evtConfirm);
+
+            Debug.Log("[SceneGenerator] Tous les composants branchés automatiquement.");
+        }
+
+        private static void WireBootstrapper(GameObject root, CharacterRegistrySO registry, StringEventChannel evtPart)
+        {
+            var boot = root.AddComponent<CharacterSystemBootstrapper>();
+            var so = new SerializedObject(boot);
+            so.FindProperty("_characterRegistry").objectReferenceValue       = registry;
+            so.FindProperty("_onCharacterPartChanged").objectReferenceValue  = evtPart;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WirePreviewRenderer(GameObject root, StringEventChannel evtPart)
+        {
+            var preview = root.transform.Find("CharacterPreview");
+            if (preview == null) return;
+
+            var renderer = preview.gameObject.AddComponent<CharacterPreviewRenderer>();
+            var so = new SerializedObject(renderer);
+            so.FindProperty("_onPartChanged").objectReferenceValue = evtPart;
+
+            // Anchors 3D
+            var anchors = so.FindProperty("_anchors3D");
+            string[] cats3D   = { "tete", "cheveux", "vetements", "accessoires" };
+            string[] names3D  = { "Anchor_Tete", "Anchor_Cheveux", "Anchor_Vetements", "Anchor_Accessoires" };
+            anchors.arraySize = cats3D.Length;
+            for (int i = 0; i < cats3D.Length; i++)
+            {
+                var el = anchors.GetArrayElementAtIndex(i);
+                el.FindPropertyRelative("categoryId").stringValue            = cats3D[i];
+                el.FindPropertyRelative("anchor").objectReferenceValue       = preview.Find(names3D[i]);
+            }
+
+            // Sprite Renderers 2D
+            var sprites = so.FindProperty("_spriteRenderers");
+            string[] cats2D   = { "yeux", "bouche" };
+            string[] names2D  = { "Sprite_Yeux", "Sprite_Bouche" };
+            sprites.arraySize = cats2D.Length;
+            for (int i = 0; i < cats2D.Length; i++)
+            {
+                var el = sprites.GetArrayElementAtIndex(i);
+                el.FindPropertyRelative("categoryId").stringValue                  = cats2D[i];
+                el.FindPropertyRelative("spriteRenderer").objectReferenceValue     = preview.Find(names2D[i])?.GetComponent<SpriteRenderer>();
+            }
+
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireCategoryTabs(GameObject root, GameObject prefab, StringEventChannel evtCat)
+        {
+            var target = FindDeep(root.transform, "CategoryContent");
+            if (target == null) return;
+
+            var ctrl = target.gameObject.AddComponent<CharacterCategoryTabsController>();
+            var so = new SerializedObject(ctrl);
+            so.FindProperty("_categoryTabPrefab").objectReferenceValue   = prefab;
+            so.FindProperty("_onCategorySelected").objectReferenceValue  = evtCat;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WirePartsGrid(GameObject root, GameObject prefab, StringEventChannel evtCat, StringEventChannel evtPart)
+        {
+            var target = FindDeep(root.transform, "PartsContent");
+            if (target == null) return;
+
+            var ctrl = target.gameObject.AddComponent<CharacterPartsGridController>();
+            var so = new SerializedObject(ctrl);
+            so.FindProperty("_partButtonPrefab").objectReferenceValue    = prefab;
+            so.FindProperty("_onCategorySelected").objectReferenceValue  = evtCat;
+            so.FindProperty("_onPartChanged").objectReferenceValue       = evtPart;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireCategoryLabel(GameObject root, StringEventChannel evtCat)
+        {
+            var target = FindDeep(root.transform, "PartsLabel");
+            if (target == null) return;
+
+            var label = target.gameObject.AddComponent<CharacterCategoryLabel>();
+            var so = new SerializedObject(label);
+            so.FindProperty("_onCategorySelected").objectReferenceValue = evtCat;
+            so.FindProperty("_uppercase").boolValue = true;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireResetButton(GameObject root, StringEventChannel evtCat)
+        {
+            var target = FindDeep(root.transform, "BtnReset");
+            if (target == null) return;
+
+            var btn = target.gameObject.AddComponent<CharacterResetButton>();
+            var so = new SerializedObject(btn);
+            so.FindProperty("_onCategorySelected").objectReferenceValue = evtCat;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireConfirmButton(GameObject root, StringEventChannel evtConfirm)
+        {
+            var target = FindDeep(root.transform, "BtnConfirm");
+            if (target == null) return;
+
+            var btn = target.gameObject.AddComponent<CharacterConfirmButton>();
+            var so = new SerializedObject(btn);
+            so.FindProperty("_onCharacterConfirmed").objectReferenceValue = evtConfirm;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static Transform FindDeep(Transform parent, string name)
+        {
+            foreach (Transform child in parent)
+            {
+                if (child.name == name) return child;
+                var found = FindDeep(child, name);
+                if (found != null) return found;
+            }
+            return null;
+        }
+
+        #endregion
+
         #region Helpers
 
-        private static GameObject CreateChild(string name, GameObject parent)
+        private static bool ValidateAssets()
+        {
+            var sprite = AssetDatabase.LoadAssetAtPath<Sprite>($"{SPRITES_PATH}/rounded-panel.png");
+            if (sprite != null) return true;
+
+            EditorUtility.DisplayDialog("Assets manquants",
+                "Sprites UI introuvables.\n\n" +
+                "Lance d'abord :\nTools → GlimmerOfHope → 1 — Generate UI Style Assets\n" +
+                "Puis : Tools → GlimmerOfHope → 2 — Generate Character UI Prefabs",
+                "OK");
+            return false;
+        }
+
+        private static GameObject Child(string name, GameObject parent)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent.transform, false);
             return go;
         }
 
-        private static GameObject CreateUIElement(string name, GameObject parent)
+        private static GameObject UI(string name, GameObject parent)
         {
             var go = new GameObject(name);
             go.transform.SetParent(parent.transform, false);
@@ -448,63 +556,76 @@ namespace GlimmerOfHope.Editor.Characters
             return go;
         }
 
-        private static Image AddImage(GameObject go, Color color)
+        private static void Stretch(GameObject go, Vector2 ancMin, Vector2 ancMax, Vector2 pivot)
+        {
+            var rt = go.GetComponent<RectTransform>();
+            rt.anchorMin        = ancMin;
+            rt.anchorMax        = ancMax;
+            rt.pivot            = pivot;
+            rt.anchoredPosition = Vector2.zero;
+        }
+
+        private static Image AddSlicedImage(GameObject go, string spriteName, Color color)
         {
             var img = go.AddComponent<Image>();
-            img.color = color;
+            img.sprite = AssetDatabase.LoadAssetAtPath<Sprite>($"{SPRITES_PATH}/{spriteName}.png");
+            img.type   = Image.Type.Sliced;
+            img.color  = color;
             return img;
         }
 
-        private static void AddLayoutElement(GameObject go, float preferredHeight, float flexibleHeight)
+        private static void AddShadowBehind(GameObject panel)
         {
-            var le = go.AddComponent<LayoutElement>();
-            if (preferredHeight >= 0f) le.preferredHeight = preferredHeight;
-            le.flexibleHeight = flexibleHeight;
+            var shadow = UI("PanelShadow", panel);
+            shadow.transform.SetAsFirstSibling();
+            var srt = shadow.GetComponent<RectTransform>();
+            srt.anchorMin = Vector2.zero;
+            srt.anchorMax = Vector2.one;
+            srt.offsetMin = new Vector2(-4f, -6f);
+            srt.offsetMax = new Vector2(4f, 2f);
+            var img = shadow.AddComponent<Image>();
+            img.sprite = AssetDatabase.LoadAssetAtPath<Sprite>($"{SPRITES_PATH}/shadow-soft.png");
+            img.type   = Image.Type.Sliced;
+            img.color  = new Color(0f, 0f, 0f, 0.08f);
+            img.raycastTarget = false;
         }
 
-        private static void BuildSimpleButton(
-            string name, GameObject parent,
-            Vector2 anchoredPos, Vector2 sizeDelta,
-            string label, Color bgColor, Color textColor,
-            Vector2 anchorMin, Vector2 anchorMax, Vector2 pivot)
+        private static void AddText(string name, GameObject parent,
+            Vector2 ancMin, Vector2 ancMax, Vector2 pivot,
+            Vector2 pos, Vector2 size,
+            string text, float fontSize, FontStyles style,
+            Color color, TextAlignmentOptions align, bool fill = false)
         {
-            var go = CreateUIElement(name, parent);
+            var go = UI(name, parent);
             var rt = go.GetComponent<RectTransform>();
-            rt.anchorMin        = anchorMin;
-            rt.anchorMax        = anchorMax;
+            rt.anchorMin        = ancMin;
+            rt.anchorMax        = fill ? ancMax : ancMin;
             rt.pivot            = pivot;
-            rt.anchoredPosition = anchoredPos;
-            rt.sizeDelta        = sizeDelta;
+            rt.anchoredPosition = pos;
+            rt.sizeDelta        = size;
 
-            var img = go.AddComponent<Image>();
-            img.color = bgColor;
+            if (fill)
+            {
+                rt.anchorMin = Vector2.zero;
+                rt.anchorMax = Vector2.one;
+                rt.offsetMin = Vector2.zero;
+                rt.offsetMax = Vector2.zero;
+            }
 
-            var btn    = go.AddComponent<Button>();
-            var colors = btn.colors;
-            colors.highlightedColor = new Color(
-                Mathf.Clamp01(bgColor.r - 0.06f),
-                Mathf.Clamp01(bgColor.g - 0.06f),
-                Mathf.Clamp01(bgColor.b - 0.06f));
-            colors.pressedColor = new Color(
-                Mathf.Clamp01(bgColor.r - 0.14f),
-                Mathf.Clamp01(bgColor.g - 0.14f),
-                Mathf.Clamp01(bgColor.b - 0.14f));
-            btn.colors        = colors;
-            btn.targetGraphic = img;
+            var tmp = go.AddComponent<TextMeshProUGUI>();
+            tmp.text      = text;
+            tmp.fontSize  = fontSize;
+            tmp.fontStyle = style;
+            tmp.color     = color;
+            tmp.alignment = align;
+            tmp.raycastTarget = false;
+        }
 
-            var textGo = CreateUIElement("Text", go);
-            var trt    = textGo.GetComponent<RectTransform>();
-            trt.anchorMin  = Vector2.zero;
-            trt.anchorMax  = Vector2.one;
-            trt.offsetMin  = Vector2.zero;
-            trt.offsetMax  = Vector2.zero;
-
-            var tmp = textGo.AddComponent<TextMeshProUGUI>();
-            tmp.text      = label;
-            tmp.fontSize  = 14f;
-            tmp.fontStyle = FontStyles.Bold;
-            tmp.color     = textColor;
-            tmp.alignment = TextAlignmentOptions.Center;
+        private static void AddLayoutElement(GameObject go, float prefH, float flexH)
+        {
+            var le = go.AddComponent<LayoutElement>();
+            if (prefH >= 0f) le.preferredHeight = prefH;
+            le.flexibleHeight = flexH;
         }
 
         #endregion
