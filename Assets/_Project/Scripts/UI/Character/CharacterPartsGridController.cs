@@ -95,7 +95,7 @@ namespace GlimmerOfHope.UI.Widgets
                 }
             }
 
-            StartCoroutine(RebuildLayout());
+            StartCoroutine(RebuildLayout()); //#TODO : Change Coroutine to UniTask bidule truc
         }
 
         private void OnPartClicked(string categoryId, string partId)
