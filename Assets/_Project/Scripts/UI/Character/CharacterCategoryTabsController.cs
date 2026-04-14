@@ -5,21 +5,9 @@ using GlimmerOfHope.Core.Services;
 
 namespace GlimmerOfHope.UI.Widgets
 {
-    /// <summary>
-    /// Gère l'affichage et la sélection des onglets de catégories.
-    ///
-    /// Setup designer :
-    ///   1. Attacher ce script sur le container des onglets (ex: CategoryContent).
-    ///   2. Assigner _categoryTabPrefab (doit avoir CategoryTabView attaché).
-    ///   3. Assigner _onCategorySelected (StringEventChannel).
-    ///
-    /// Ce script est indépendant de CharacterPartsGridController —
-    /// ils communiquent uniquement via l'event channel.
-    /// </summary>
     public class CharacterCategoryTabsController : MonoBehaviour
     {
         #region Serialized Fields
-
         [Header("Prefab")]
         [Tooltip("Prefab d'onglet. Doit avoir CategoryTabView attaché à sa racine.")]
         [SerializeField] private GameObject _categoryTabPrefab;
@@ -27,18 +15,14 @@ namespace GlimmerOfHope.UI.Widgets
         [Header("Events")]
         [Tooltip("Fired quand l'utilisateur clique sur un onglet (payload = categoryId).")]
         [SerializeField] private StringEventChannel _onCategorySelected;
-
         #endregion
 
         #region Private Fields
-
         private GlimmerOfHope.Gameplay.Characters.CharacterCreatorController _controller;
         private readonly List<GameObject> _spawnedTabs = new();
-
         #endregion
 
         #region Unity Lifecycle
-
         private void Start()
         {
             _controller = ServiceLocator.Get<GlimmerOfHope.Gameplay.Characters.CharacterCreatorController>();
@@ -57,15 +41,12 @@ namespace GlimmerOfHope.UI.Widgets
 
             BuildTabs();
 
-            // Sélectionner la première catégorie par défaut
             if (_controller.Registry.Categories.Count > 0)
                 SelectCategory(_controller.Registry.Categories[0].CategoryID);
         }
-
         #endregion
 
         #region Private Methods
-
         private void BuildTabs()
         {
             ClearTabs();
@@ -97,7 +78,6 @@ namespace GlimmerOfHope.UI.Widgets
                 if (go != null) Destroy(go);
             _spawnedTabs.Clear();
         }
-
         #endregion
     }
 }

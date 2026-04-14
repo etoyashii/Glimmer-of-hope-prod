@@ -5,14 +5,6 @@ using TMPro;
 
 namespace GlimmerOfHope.Editor.Characters
 {
-    /// <summary>
-    /// Génère toute la hiérarchie UI de la scène CharacterCreator.
-    /// Menu : Tools > GlimmerOfHope > Generate Character Creator Scene
-    ///
-    /// Après génération, assigner manuellement dans l'Inspector :
-    ///   - CharacterCreatorUI       : _onPartChanged, _categoryTabPrefab, _partButtonPrefab
-    ///   - CharacterPreviewRenderer : _onPartChanged, _anchors3D, _spriteRenderers
-    /// </summary>
     public static class CharacterCreatorSceneGenerator
     {
         #region Constants
@@ -94,9 +86,7 @@ namespace GlimmerOfHope.Editor.Characters
             cam.fieldOfView     = 40f;
             cam.nearClipPlane   = 0.1f;
             cam.farClipPlane    = 100f;
-            // Viewport : zone gauche, entre TopBar et BottomBar
             cam.rect = new Rect(0f, 0.052f, PANEL_SPLIT, 0.892f);
-            // Unity ajoute UniversalAdditionalCameraData automatiquement en URP
 
             // Lumière directionnelle
             var lightGo = CreateChild("Directional Light", parent);
@@ -116,13 +106,11 @@ namespace GlimmerOfHope.Editor.Characters
             var preview = CreateChild("CharacterPreview", parent);
             preview.transform.position = Vector3.zero;
 
-            // Anchors 3D — positions de base, à ajuster selon ton rig
             CreateChild("Anchor_Tete",       preview).transform.localPosition = new Vector3(0f,  1.6f, 0f);
             CreateChild("Anchor_Cheveux",     preview).transform.localPosition = new Vector3(0f,  1.7f, 0f);
             CreateChild("Anchor_Vetements",   preview).transform.localPosition = new Vector3(0f,  1.0f, 0f);
             CreateChild("Anchor_Accessoires", preview).transform.localPosition = new Vector3(0f,  1.8f, 0f);
 
-            // SpriteRenderers 2D
             BuildSpriteAnchor("Sprite_Yeux",   preview, new Vector3(-0.12f, 1.52f, -0.05f));
             BuildSpriteAnchor("Sprite_Bouche", preview, new Vector3(0f,     1.38f, -0.05f));
 
@@ -157,7 +145,6 @@ namespace GlimmerOfHope.Editor.Characters
 
             canvasGo.AddComponent<GraphicRaycaster>();
 
-            // Ordre z (dernier enfant = au-dessus) : Bottom → Preview → Right → Top
             BuildBottomBar(canvasGo);
             BuildPreviewZone(canvasGo);
             BuildRightPanel(canvasGo);
@@ -282,7 +269,7 @@ namespace GlimmerOfHope.Editor.Characters
             hlg.childForceExpandHeight = true;
             hlg.childAlignment         = TextAnchor.MiddleCenter;
 
-            // Boutons dans le layout group : pas de position fixe, le HLG les place
+            // Boutons dans le layout group
             BuildSimpleButton("BtnReset", row,
                 Vector2.zero, Vector2.zero,
                 "↺  Réinitialiser", COLOR_RESET_BG, COLOR_TEXT_PRIMARY,

@@ -7,20 +7,9 @@ using GlimmerOfHope.Core.Services;
 
 namespace GlimmerOfHope.UI.Widgets
 {
-    /// <summary>
-    /// Gère l'affichage de la grille de parts.
-    /// Se met à jour quand une catégorie est sélectionnée via _onCategorySelected.
-    ///
-    /// Setup designer :
-    ///   1. Attacher ce script sur le container de la grille (ex: PartsContent).
-    ///   2. Assigner _partButtonPrefab (doit avoir PartButtonView attaché).
-    ///   3. Assigner _onCategorySelected (même channel que CharacterCategoryTabsController).
-    ///   4. Assigner _onPartChanged (channel notifiant le preview renderer).
-    /// </summary>
     public class CharacterPartsGridController : MonoBehaviour
     {
         #region Serialized Fields
-
         [Header("Prefab")]
         [Tooltip("Prefab de bouton de part. Doit avoir PartButtonView attaché à sa racine.")]
         [SerializeField] private GameObject _partButtonPrefab;
@@ -31,19 +20,15 @@ namespace GlimmerOfHope.UI.Widgets
 
         [Tooltip("Fired quand l'utilisateur sélectionne une part (payload = categoryId).")]
         [SerializeField] private StringEventChannel _onPartChanged;
-
         #endregion
 
         #region Private Fields
-
         private GlimmerOfHope.Gameplay.Characters.CharacterCreatorController _controller;
         private readonly List<PartButtonView> _spawnedViews = new();
         private string _currentCategoryId;
-
         #endregion
 
         #region Unity Lifecycle
-
         private void OnEnable()
         {
             if (_onCategorySelected != null)
@@ -66,22 +51,18 @@ namespace GlimmerOfHope.UI.Widgets
             if (_partButtonPrefab == null)
                 Debug.LogError("[CharacterPartsGridController] _partButtonPrefab non assigné.", this);
         }
-
         #endregion
 
         #region Event Handlers
-
         private void OnCategorySelected(string categoryId)
         {
             if (_controller == null || _partButtonPrefab == null) return;
             _currentCategoryId = categoryId;
             PopulateGrid(categoryId);
         }
-
         #endregion
 
         #region Grid Population
-
         private void PopulateGrid(string categoryId)
         {
             ClearGrid();
@@ -114,8 +95,6 @@ namespace GlimmerOfHope.UI.Widgets
                 }
             }
 
-            // Attendre la frame suivante pour que ContentSizeFitter
-            // et GridLayoutGroup calculent les dimensions correctement.
             StartCoroutine(RebuildLayout());
         }
 
@@ -124,7 +103,6 @@ namespace GlimmerOfHope.UI.Widgets
             _controller.SelectPart(categoryId, partId);
             _onPartChanged?.Raise(categoryId);
 
-            // Mettre à jour le visuel de sélection sur tous les boutons
             foreach (var view in _spawnedViews)
                 view.SetSelected(view.PartId == partId);
         }
@@ -142,27 +120,21 @@ namespace GlimmerOfHope.UI.Widgets
 
         private IEnumerator RebuildLayout()
         {
-            // Frame 1 : laisser Unity instancier et placer les éléments
             yield return null;
 
-            // Rebuild ce container (PartsContent avec GridLayoutGroup)
             var rt = GetComponent<RectTransform>();
             if (rt != null) LayoutRebuilder.ForceRebuildLayoutImmediate(rt);
 
-            // Frame 2 : laisser le ContentSizeFitter calculer la hauteur finale
             yield return null;
 
-            // Rebuild le parent (PartsGridScroll / ScrollRect)
             if (transform.parent != null)
             {
                 var parentRt = transform.parent.GetComponent<RectTransform>();
                 if (parentRt != null) LayoutRebuilder.ForceRebuildLayoutImmediate(parentRt);
             }
 
-            // Forcer Unity à recalculer tous les canvas
             Canvas.ForceUpdateCanvases();
         }
-
         #endregion
     }
 }

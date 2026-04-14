@@ -5,14 +5,6 @@ using TMPro;
 
 namespace GlimmerOfHope.Editor.Characters
 {
-    /// <summary>
-    /// Génère CategoryTabPrefab et PartButtonPrefab.
-    /// Menu : Tools > GlimmerOfHope > Generate Character UI Prefabs
-    ///
-    /// Les prefabs sont sauvegardés dans Assets/_Project/Prefabs/UI/Characters/
-    /// Un Canvas temporaire est créé puis détruit — c'est requis par Unity
-    /// pour instancier des composants UI sans erreur de layout.
-    /// </summary>
     public static class CharacterUIPrefabGenerator
     {
         #region Constants
@@ -36,7 +28,6 @@ namespace GlimmerOfHope.Editor.Characters
         {
             EnsureOutputFolder();
 
-            // Canvas temporaire requis pour éviter "BeginLayoutGroup must be called first"
             var tempCanvas = CreateTemporaryCanvas();
 
             try
@@ -59,7 +50,6 @@ namespace GlimmerOfHope.Editor.Characters
             }
             finally
             {
-                // Toujours détruire le Canvas temporaire, même en cas d'erreur
                 Object.DestroyImmediate(tempCanvas);
             }
         }
@@ -88,7 +78,6 @@ namespace GlimmerOfHope.Editor.Characters
             var root = CreateUIChild("CategoryTabPrefab", canvasParent);
             SetSize(root, new Vector2(72f, 80f));
 
-            // Image transparente requise par Button comme Target Graphic
             var rootImg = root.AddComponent<Image>();
             rootImg.color         = Color.clear;
             rootImg.raycastTarget = true;
@@ -104,7 +93,7 @@ namespace GlimmerOfHope.Editor.Characters
             btn.colors              = colors;
             btn.targetGraphic       = rootImg;
 
-            // IconBg — centré en haut
+            // IconBg
             var iconBg = CreateUIChild("IconBg", root);
             var iconBgRt = iconBg.GetComponent<RectTransform>();
             iconBgRt.anchorMin        = new Vector2(0.5f, 1f);
@@ -116,7 +105,7 @@ namespace GlimmerOfHope.Editor.Characters
             iconBgImg.color         = COLOR_ICON_BG;
             iconBgImg.raycastTarget = false;
 
-            // Icon — stretch dans IconBg avec padding 8
+            // Icon
             var icon   = CreateUIChild("Icon", iconBg);
             var iconRt = icon.GetComponent<RectTransform>();
             iconRt.anchorMin = Vector2.zero;
@@ -129,7 +118,7 @@ namespace GlimmerOfHope.Editor.Characters
             iconImg.color          = COLOR_TEXT_PRIMARY;
             iconImg.raycastTarget  = false;
 
-            // Label — en bas, stretch horizontal
+            // Label
             var label   = CreateUIChild("Label", root);
             var labelRt = label.GetComponent<RectTransform>();
             labelRt.anchorMin        = new Vector2(0f, 0f);
@@ -174,20 +163,20 @@ namespace GlimmerOfHope.Editor.Characters
             btn.colors              = colors;
             btn.targetGraphic       = rootImg;
 
-            // Thumbnail — haut, stretch horizontal, hauteur fixe
+            // Thumbnail
             var thumb   = CreateUIChild("Thumbnail", root);
             var thumbRt = thumb.GetComponent<RectTransform>();
             thumbRt.anchorMin = new Vector2(0f, 1f);
             thumbRt.anchorMax = new Vector2(1f, 1f);
             thumbRt.pivot     = new Vector2(0.5f, 1f);
-            thumbRt.offsetMin = new Vector2(8f, -62f);  // left=8, bottom (depuis top anchor)
-            thumbRt.offsetMax = new Vector2(-8f, -6f);  // right=8, top offset
+            thumbRt.offsetMin = new Vector2(8f, -62f);
+            thumbRt.offsetMax = new Vector2(-8f, -6f);
             var thumbImg = thumb.AddComponent<Image>();
             thumbImg.preserveAspect = true;
             thumbImg.color          = COLOR_THUMB_PLACEHOLDER;
             thumbImg.raycastTarget  = false;
 
-            // Label — bas, stretch horizontal
+            // Label
             var label   = CreateUIChild("Label", root);
             var labelRt = label.GetComponent<RectTransform>();
             labelRt.anchorMin = new Vector2(0f, 0f);

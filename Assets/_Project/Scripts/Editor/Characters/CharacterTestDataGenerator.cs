@@ -7,10 +7,6 @@ using GlimmerOfHope.Gameplay.Characters;
 
 namespace GlimmerOfHope.Editor.Characters
 {
-    /// <summary>
-    /// Génère des données de test complètes pour valider le système de personnalisation.
-    /// Menu : Tools > GlimmerOfHope > Generate Test Character Data
-    /// </summary>
     public static class CharacterTestDataGenerator
     {
         #region Paths
@@ -102,7 +98,7 @@ namespace GlimmerOfHope.Editor.Characters
             }
 
             EnsureFolders();
-            AssetDatabase.Refresh(); // crucial : valider les dossiers avant toute écriture
+            AssetDatabase.Refresh();
 
             int totalParts = 0;
 
@@ -175,8 +171,6 @@ namespace GlimmerOfHope.Editor.Characters
 
             var so = ScriptableObject.CreateInstance<CharacterPartSO>();
 
-            // Utilise la reflection pour setter les champs privés.
-            // Plus fiable que SerializedObject sur un SO non encore committé sur disque.
             SetPrivateField(so, "_partId",      def.Id);
             SetPrivateField(so, "_displayName", def.Label);
             SetPrivateField(so, "_partType",    def.PartType);
@@ -252,7 +246,6 @@ namespace GlimmerOfHope.Editor.Characters
             tex.SetPixels(pixels);
             tex.Apply();
 
-            // Chemin absolu pour écrire le PNG
             var absPath = Path.GetFullPath(Path.Combine(Application.dataPath, "..", path));
             File.WriteAllBytes(absPath, tex.EncodeToPNG());
             Object.DestroyImmediate(tex);

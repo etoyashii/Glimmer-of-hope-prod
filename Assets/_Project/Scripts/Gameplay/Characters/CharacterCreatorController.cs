@@ -22,8 +22,6 @@ namespace GlimmerOfHope.Gameplay.Characters
         #endregion
 
         #region Constructor
-        /// <param name="registry">Le registry unique du projet.</param>
-        /// <param name="onPartChanged">Event channel notifiant les changements (categoryId).</param>
         public CharacterCreatorController(CharacterRegistrySO registry, StringEventChannel onPartChanged)
         {
             _registry = registry;
