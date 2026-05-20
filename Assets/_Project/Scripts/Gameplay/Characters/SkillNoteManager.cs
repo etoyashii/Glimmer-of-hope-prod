@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -24,6 +25,8 @@ namespace GlimmerOfHope.Gameplay
 
         [SerializeField] private GameObject _cubePrefab;
         [SerializeField] private Transform _spawnPoint;
+        [Range(0.5f, 10.0f)]
+        [SerializeField] private float _delayBetweenNotes = 1.0f;
 
         #endregion
 
@@ -32,6 +35,7 @@ namespace GlimmerOfHope.Gameplay
         private List<int> _inputNoteList;
         private int _noteNumber = 3;
 
+        private Coroutine _currentChrono;
         #endregion
 
         #region UnityLifecycle
@@ -52,8 +56,12 @@ namespace GlimmerOfHope.Gameplay
 
         #region PublicMethods
 
+
         public void ActivateNote(int noteIndex)
         {
+            if (_currentChrono != null)
+                StopCoroutine(_currentChrono);
+
             switch (_currentStep)
             {
                 case Steps.First:
@@ -93,6 +101,8 @@ namespace GlimmerOfHope.Gameplay
         private void SaveNote(int currentStep, int noteIndex)
         {
             _inputNoteList[currentStep] = noteIndex;
+
+            _currentChrono = StartCoroutine(NoteTimer(_delayBetweenNotes));
         }
 
         private void IncrementStep()
@@ -104,7 +114,25 @@ namespace GlimmerOfHope.Gameplay
         private void ResetStep()
         {
             _currentStep = Steps.First;
+
+            for (int i = 0; i < _inputNoteList.Count; i++)
+            {
+                _inputNoteList[i] = -1;
+            }
+
+            StopCoroutine(_currentChrono);
             Debug.Log("Step resetted");
+        }
+
+        #endregion
+
+        #region Coroutines
+
+        private IEnumerator NoteTimer(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+
+            ResetStep();
         }
 
         #endregion
