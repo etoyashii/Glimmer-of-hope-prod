@@ -11,6 +11,7 @@ namespace GlimmerOfHope.Core.Save
         public List<string> unlockedWorlds = new();
         public List<string> completedLevels = new();
         public List<string> collectedItems = new();
+        public List<string> dialogueFlags = new();
         public Dictionary<string, int> statistics = new();
 
         public bool IsWorldUnlocked(string worldId)
