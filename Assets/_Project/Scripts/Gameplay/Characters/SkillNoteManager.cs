@@ -15,27 +15,14 @@ namespace GlimmerOfHope.Gameplay
 
     public class SkillNoteManager : MonoBehaviour
     {
-        #region Enums
-
-        public enum Steps
-        {
-            First,
-            Second,
-            Third,
-            Fourth
-        }
-
-        //I pref to attach _currentStep around his enum instead of putting on the PrivateFields region, can be moved as you wish
-        private Steps _currentStep = Steps.First;
-
-        #endregion
-
         #region SerializeFields
 
+        [Header("Combo stats")]
         [Range(0.5f, 10.0f)]
         [SerializeField] private float _delayBetweenNotes = 1.0f;
         [SerializeField] private List<Combo> _comboList;
-        [SerializeField] private int _maxNoteNumber = 3;
+        [Range(4, 7)]
+        [SerializeField] private int _maxNoteNumber = 4;
 
         #endregion
 
@@ -64,32 +51,12 @@ namespace GlimmerOfHope.Gameplay
 
         #region PublicMethods
 
-
         public void ActivateNote(int noteIndex)
         {
             if (_currentChrono != null)
                 StopCoroutine(_currentChrono);
 
-            _currentInputNumber++;
-            switch (_currentStep)
-            {
-                case Steps.First:
-                    SaveNote((int)_currentStep, noteIndex);
-                    IncrementStep();
-                    break;
-                case Steps.Second:
-                    SaveNote((int)_currentStep, noteIndex);
-                    IncrementStep();
-                    break;
-                case Steps.Third:
-                    SaveNote((int)_currentStep, noteIndex);
-                    IncrementStep();
-                    break;
-                case Steps.Fourth:
-                    SaveNote((int)_currentStep, noteIndex);
-                    IncrementStep();
-                    break;
-            }
+            SaveNote(noteIndex);
         }
 
         #endregion
@@ -116,35 +83,32 @@ namespace GlimmerOfHope.Gameplay
                     break;
                 }
             }
-            
-            Debug.Log("Combo checked");
         }
 
-        private void SaveNote(int currentStep, int noteIndex)
+        private void SaveNote(int noteIndex)
         {
-            _inputNoteList[currentStep] = noteIndex;
+            if (_currentInputNumber >= _maxNoteNumber)
+            {
+                ResetNotes();
+                return;
+            }
 
+            _inputNoteList[_currentInputNumber] = noteIndex;
+
+            _currentInputNumber++;
             _currentChrono = StartCoroutine(NoteTimer(_delayBetweenNotes));
         }
 
-        private void IncrementStep()
+        private void ResetNotes()
         {
-            _currentStep++;
-            Debug.Log("Current step : " + _currentStep);
-        }
-
-        private void ResetStep()
-        {
-            _currentStep = Steps.First;
-
             for (int i = 0; i < _inputNoteList.Count; i++)
             {
                 _inputNoteList[i] = -1;
             }
 
-            StopCoroutine(_currentChrono);
             _currentInputNumber = 0;
-            Debug.Log("Step resetted");
+
+            StopCoroutine(_currentChrono);
         }
 
         #endregion
@@ -156,7 +120,7 @@ namespace GlimmerOfHope.Gameplay
             yield return new WaitForSeconds(delay);
 
             CheckNoteCombo();
-            ResetStep();
+            ResetNotes();
         }
 
         #endregion
