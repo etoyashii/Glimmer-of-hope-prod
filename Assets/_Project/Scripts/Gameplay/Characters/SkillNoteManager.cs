@@ -5,6 +5,14 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
 {
+    [Serializable]
+    public class Combo
+    {
+        public List<int> _combo;
+        public GameObject _cubePrefab;
+        public Transform _spawnPoint;
+    }
+
     public class SkillNoteManager : MonoBehaviour
     {
         #region Enums
@@ -23,17 +31,18 @@ namespace GlimmerOfHope.Gameplay
 
         #region SerializeFields
 
-        [SerializeField] private GameObject _cubePrefab;
-        [SerializeField] private Transform _spawnPoint;
         [Range(0.5f, 10.0f)]
         [SerializeField] private float _delayBetweenNotes = 1.0f;
+        [SerializeField] private List<Combo> _comboList;
+        [SerializeField] private int _maxNoteNumber = 3;
 
         #endregion
 
         #region PrivateFields
 
         private List<int> _inputNoteList;
-        private int _noteNumber = 3;
+        private int _currentInputNumber = 0;
+        private int _validCheck = 0;
 
         private Coroutine _currentChrono;
         #endregion
@@ -44,12 +53,10 @@ namespace GlimmerOfHope.Gameplay
         {
             _inputNoteList = new();
 
-            for (int i = 0; i < _noteNumber; i++)
+            for (int i = 0; i < _maxNoteNumber; i++)
             {
                 _inputNoteList.Add(-1); //default value
             }
-            
-            Debug.Log(_inputNoteList.Count);
         }
 
         #endregion
@@ -62,6 +69,7 @@ namespace GlimmerOfHope.Gameplay
             if (_currentChrono != null)
                 StopCoroutine(_currentChrono);
 
+            _currentInputNumber++;
             switch (_currentStep)
             {
                 case Steps.First:
@@ -86,15 +94,25 @@ namespace GlimmerOfHope.Gameplay
 
         private void CheckNoteCombo()
         {
-            for (int i = 0; i < _inputNoteList.Count; i++)
+            for (int i = 0; i < _comboList.Count; i++)
             {
-                Debug.Log(_inputNoteList[i].ToString());
-            }
+                _validCheck = 0;
 
-            if (_inputNoteList[0] == 0 && _inputNoteList[1] == 0 && _inputNoteList[2] == 0)
-            {
-                Instantiate(_cubePrefab, _spawnPoint.position, _spawnPoint.rotation);
+                for (int j = 0; j < _comboList[i]._combo.Count; j++)
+                {
+                    if (_comboList[i]._combo[j] == _inputNoteList[j])
+                    {
+                        _validCheck++;
+                    }
+                }
+
+                if (_validCheck == _currentInputNumber)
+                {
+                    Instantiate(_comboList[i]._cubePrefab, _comboList[i]._spawnPoint.position, _comboList[i]._spawnPoint.rotation);
+                    break;
+                }
             }
+            
             Debug.Log("Combo checked");
         }
 
@@ -121,6 +139,7 @@ namespace GlimmerOfHope.Gameplay
             }
 
             StopCoroutine(_currentChrono);
+            _currentInputNumber = 0;
             Debug.Log("Step resetted");
         }
 
