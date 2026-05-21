@@ -21,7 +21,8 @@ namespace GlimmerOfHope.Gameplay
         {
             First,
             Second,
-            Third
+            Third,
+            Fourth
         }
 
         //I pref to attach _currentStep around his enum instead of putting on the PrivateFields region, can be moved as you wish
@@ -82,8 +83,11 @@ namespace GlimmerOfHope.Gameplay
                     break;
                 case Steps.Third:
                     SaveNote((int)_currentStep, noteIndex);
-                    CheckNoteCombo();
-                    ResetStep();
+                    IncrementStep();
+                    break;
+                case Steps.Fourth:
+                    SaveNote((int)_currentStep, noteIndex);
+                    IncrementStep();
                     break;
             }
         }
@@ -106,7 +110,7 @@ namespace GlimmerOfHope.Gameplay
                     }
                 }
 
-                if (_validCheck == _currentInputNumber)
+                if (_validCheck == _currentInputNumber && _currentInputNumber == _comboList[i]._combo.Count)
                 {
                     Instantiate(_comboList[i]._cubePrefab, _comboList[i]._spawnPoint.position, _comboList[i]._spawnPoint.rotation);
                     break;
@@ -151,6 +155,7 @@ namespace GlimmerOfHope.Gameplay
         {
             yield return new WaitForSeconds(delay);
 
+            CheckNoteCombo();
             ResetStep();
         }
 
