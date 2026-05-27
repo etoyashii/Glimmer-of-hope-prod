@@ -14,13 +14,8 @@ namespace GlimmerOfHope.UI
         [SerializeField] private GameObject _glyphPrefab;
         [SerializeField] private GameObject _codexLayoutGroup;
         [SerializeField] private int _invSize;
-
-        #endregion
-
-        #region Public Properties
-
         //[Header("Contenu Inventaire")]
-        //public List<SO_Glyphe> glyphInv;
+        //[SerializeField] private List<SO_Glyphe> glyphInv;
 
         #endregion
 

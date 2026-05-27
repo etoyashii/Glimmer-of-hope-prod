@@ -3,14 +3,14 @@ using UnityEngine;
 namespace GlimmerOfHope.UI
 {
     /// <summary>
-    /// Un script service, rend les demandes de modification du codex model plus clean.
+    /// Un script service, rend les demandes de modification du CodexModel plus clean.
     /// </summary>
     public class GlyphInvManager : MonoBehaviour
     {
         /*
         #region Private Fields
         
-        private CodexModel _glyphStorage => CodexModel.instance;
+        [SerializeField] private CodexModel _glyphStorage;
 
         #endregion
 

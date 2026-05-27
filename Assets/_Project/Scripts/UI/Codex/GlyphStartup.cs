@@ -6,17 +6,22 @@ using UnityEngine.UI;
 namespace GlimmerOfHope.UI
 {
     /// <summary>
-    /// Le script qui gere les informations de chaque "slot" dans le codex et les fonctions pertinente a un glyphe dans le codex.
+    /// Le script qui gere les informations de chaque "slot" du codex et les fonctions d'un glyphe dans le codex.
     /// </summary>
     public class GlyphStartup : MonoBehaviour
     {
         #region Serialized Fields
 
-        [Header("Données Glyphe")]
+        //[Header("Données Glyphe")]
         //[SerializeField] private SO_Glyphe _myGlyph;
-        [SerializeField] private Image _mySprite;
-        [SerializeField] private TextMeshProUGUI _myTitle;
-        [SerializeField] private TextMeshProUGUI _myContext;
+
+        #endregion
+
+        #region Private Fields
+
+        private Image _mySprite;
+        private TextMeshProUGUI _myTitle;
+        private TextMeshProUGUI _myContext;
 
         #endregion
 
