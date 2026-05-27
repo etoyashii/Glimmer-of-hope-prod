@@ -1,3 +1,4 @@
+using GlimmerOfHope.Gameplay;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +15,18 @@ namespace GlimmerOfHope.UI
         [SerializeField] private GameObject _glyphPrefab;
         [SerializeField] private GameObject _codexLayoutGroup;
         [SerializeField] private int _invSize;
-        //[Header("Contenu Inventaire")]
-        //[SerializeField] private List<SO_Glyphe> glyphInv;
 
         #endregion
 
         #region Private Fields
 
-        //private SO_Glyphe.Family _currentFamily;
+        public List<SO_Glyphe> glyphInv;
+
+        #endregion
+
+        #region Private Fields
+
+        private SO_Glyphe.Family _currentFamily;
 
         #endregion
 
@@ -29,24 +34,26 @@ namespace GlimmerOfHope.UI
 
         public void ChangeCodexFamily(int GlyphToSwitch)
         {
-            //_currentFamily = (SO_Glyphe.Family)GlyphToSwitch;
+            _currentFamily = (SO_Glyphe.Family)GlyphToSwitch;
         }
 
-        /*
+        
         public void BuildCodex()
         {
             foreach (var glyph in glyphInv)
             {
                 if (glyph.FamilyType != _currentFamily)
+                {
                     continue;
+                }
 
-                GlyphEntrySetup generatedGlyph = Instantiate(_glyphPrefab, _codexLayoutGroup.transform, false).GetComponent<GlyphEntrySetup>();
+                GlyphStartup generatedGlyph = Instantiate(_glyphPrefab, _codexLayoutGroup.transform, false).GetComponent<GlyphStartup>();
 
                 generatedGlyph.ObtainGlyphSO(glyph);
 
             }
         }
-        */
+        
 
         public void DestroyCodex()
         {
@@ -56,7 +63,7 @@ namespace GlimmerOfHope.UI
             }
         }
 
-        /*
+        
         public void AddCodexGlyph(SO_Glyphe glyphToAdd)
         {
             if (glyphInv.Count < _invSize)
@@ -72,7 +79,6 @@ namespace GlimmerOfHope.UI
             else
                 Debug.Log("No glyph in the inventory!");
         }
-        */
 
         #endregion
     }

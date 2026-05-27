@@ -1,3 +1,4 @@
+using GlimmerOfHope.Gameplay;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -12,16 +13,11 @@ namespace GlimmerOfHope.UI
     {
         #region Serialized Fields
 
-        //[Header("Données Glyphe")]
-        //[SerializeField] private SO_Glyphe _myGlyph;
-
-        #endregion
-
-        #region Private Fields
-
-        private Image _mySprite;
-        private TextMeshProUGUI _myTitle;
-        private TextMeshProUGUI _myContext;
+        [Header("Données Glyphe")]
+        [SerializeField] private SO_Glyphe _myGlyph;
+        [SerializeField] private Image _mySprite;
+        [SerializeField] private TextMeshProUGUI _myTitle;
+        [SerializeField] private TextMeshProUGUI _myContext;
 
         #endregion
 
@@ -29,19 +25,18 @@ namespace GlimmerOfHope.UI
 
         public void UpdateGlyphSprite()
         {
-            //_mySprite.sprite = _myGlyph.Sprite;
+            _mySprite.sprite = _myGlyph.Sprite;
         }
 
         public void UpdateGlyphTitle()
         {
-            //_myTitle.text = _myGlyph.GlypheName;
+            _myTitle.text = _myGlyph.GlypheName;
         }
         public void UpdateGlyphContext()
         {
-            //_myContext.text = _myGlyph.DiscoverContext;
+            _myContext.text = _myGlyph.DiscoverContext;
         }
 
-        /*
         public void ObtainGlyphSO(SO_Glyphe GlyphSO)
         {
             _myGlyph = GlyphSO;
@@ -49,7 +44,7 @@ namespace GlimmerOfHope.UI
             UpdateGlyphTitle();
             UpdateGlyphContext();
         }
-
+        /*
         public void OnPointerClick(PointerEventData eventData)
         {
             if (ExchangeGlyphManager.Instance.SelectedGlyph == null)

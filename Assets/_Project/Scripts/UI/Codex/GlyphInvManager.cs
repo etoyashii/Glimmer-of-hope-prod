@@ -1,3 +1,4 @@
+using GlimmerOfHope.Gameplay;
 using UnityEngine;
 
 namespace GlimmerOfHope.UI
@@ -7,7 +8,7 @@ namespace GlimmerOfHope.UI
     /// </summary>
     public class GlyphInvManager : MonoBehaviour
     {
-        /*
+        
         #region Private Fields
         
         [SerializeField] private CodexModel _glyphStorage;
@@ -27,6 +28,6 @@ namespace GlimmerOfHope.UI
         }
         
         #endregion
-        */
+        
     }
 }
