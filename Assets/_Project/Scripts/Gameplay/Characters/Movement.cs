@@ -41,7 +41,6 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         #region Private Fields
 
         private Vector2 _direction;
-        private Vector2 _swipeDelta;
         private float _verticalVelocity;
         private bool _movementEnabled = true;
 
