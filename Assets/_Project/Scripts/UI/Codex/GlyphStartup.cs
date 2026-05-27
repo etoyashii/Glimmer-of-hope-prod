@@ -5,12 +5,22 @@ using UnityEngine.UI;
 
 namespace GlimmerOfHope.UI
 {
+    /// <summary>
+    /// Le script qui gere les informations de chaque "slot" dans le codex et les fonctions pertinente a un glyphe dans le codex.
+    /// </summary>
     public class GlyphStartup : MonoBehaviour
     {
+        #region Serialized Fields
+
+        [Header("Données Glyphe")]
         //[SerializeField] private SO_Glyphe _myGlyph;
         [SerializeField] private Image _mySprite;
         [SerializeField] private TextMeshProUGUI _myTitle;
         [SerializeField] private TextMeshProUGUI _myContext;
+
+        #endregion
+
+        #region Public Methods
 
         public void UpdateGlyphSprite()
         {
@@ -47,5 +57,6 @@ namespace GlimmerOfHope.UI
             Debug.Log(ExchangeGlyphManager.Instance.SelectedGlyph.GlypheName);
         }
         */
+        #endregion
     }
 }

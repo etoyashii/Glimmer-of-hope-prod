@@ -3,15 +3,34 @@ using UnityEngine;
 
 namespace GlimmerOfHope.UI
 {
+    /// <summary>
+    /// Le script qui gere les données du codex et ces éléments visuels.
+    /// </summary>
     public class CodexModel : MonoBehaviour
     {
-        //public List<SO_Glyphe> glyphInv;
-        //private SO_Glyphe.Family _currentFamily;
+        #region Serialized Fields
+
+        [Header("Paramétrage")]
         [SerializeField] private GameObject _glyphPrefab;
         [SerializeField] private GameObject _codexLayoutGroup;
         [SerializeField] private int _invSize;
 
+        #endregion
 
+        #region Public Properties
+
+        //[Header("Contenu Inventaire")]
+        //public List<SO_Glyphe> glyphInv;
+
+        #endregion
+
+        #region Private Fields
+
+        //private SO_Glyphe.Family _currentFamily;
+
+        #endregion
+
+        #region Public Methods
 
         public void ChangeCodexFamily(int GlyphToSwitch)
         {
@@ -59,5 +78,7 @@ namespace GlimmerOfHope.UI
                 Debug.Log("No glyph in the inventory!");
         }
         */
+
+        #endregion
     }
 }
