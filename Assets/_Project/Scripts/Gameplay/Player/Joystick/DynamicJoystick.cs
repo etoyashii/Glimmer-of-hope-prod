@@ -36,8 +36,6 @@ namespace GlimmerOfHope.Gameplay
         #region Unity Lifecycle
         void Awake()
         {
-            // Crée un gamepad virtuel : les bindings <Gamepad>/leftStick
-            // le détecteront automatiquement (aucun vrai gamepad sur mobile)
             _virtualGamepad = InputSystem.AddDevice<Gamepad>("VirtualGamepad");
         }
 
@@ -49,7 +47,7 @@ namespace GlimmerOfHope.Gameplay
 
         void OnEnable() => EnhancedTouchSupport.Enable();
         void OnDisable() => EnhancedTouchSupport.Disable();
-        // -------------------------------------------------------
+
         void Update()
         {
             foreach (var touch in Touch.activeTouches)
