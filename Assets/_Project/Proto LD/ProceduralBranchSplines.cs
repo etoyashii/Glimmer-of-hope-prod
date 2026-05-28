@@ -3,240 +3,236 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
 
-/// <summary>
-/// Génération procédurale de splines en forme de branches arborescentes.
-/// Nécessite le package com.unity.splines (Unity Splines).
-/// Clic droit sur le composant > "Generate Branches" pour générer.
-/// </summary>
 [ExecuteInEditMode]
 [RequireComponent(typeof(SplineContainer))]
 public class ProceduralBranchSplines : MonoBehaviour
 {
-    // ─────────────────────────────────────────────
-    // BRANCHE PRINCIPALE
-    // ─────────────────────────────────────────────
-    [Header("Branche principale")]
-    [Tooltip("Nombre de points (knots) par branche.")]
-    public int pointsPerBranch = 12;
+    #region Inspector propreties
+    [Header("Main branch")]
+    private int _pointsPerBranch = 12;
+    private float _distanceBetweenPoints = 2f;
+    private Vector3 _initialDirection = Vector3.forward;
 
-    [Tooltip("Distance entre chaque point consécutif.")]
-    public float distanceBetweenPoints = 0.4f;
+    [Header("Sub branches")]
+    private int _subBranchCount = 3;
+    [Range(0f, 1f)] private float _branchSplitStart = 0.5f;
+    private int _reduceCountMin = 0;
+    private int _reduceCountMax = 1;
+    [Range(5f, 90f)] private float _branchAngleSpread = 35f;
+    [Range(0f, 30f)] private float _branchAngleVariance = 10f;
+    [Range(0, 3)] private int _recursionDepth = 2;
 
-    [Tooltip("Direction initiale du tronc.")]
-    public Vector3 initialDirection = Vector3.up;
+    [Header("Noise and twist")]
+    [Range(0f, 90f)] private float _maxSlopeDeg = 20f;
+    [Range(0f, 2f)] private float _noiseForce = 0.4f;
+    [Range(0.1f, 5f)] private float _noiseFrequency = 1.2f;
+    [Range(0f, 90f)] private float _twistDegreesPerStep = 15f;
+    [Range(0f, 1f)] private float _gravityInfluence = 0.08f;
 
-    // ─────────────────────────────────────────────
-    // SOUS-BRANCHES
-    // ─────────────────────────────────────────────
-    [Header("Sous-branches")]
-    [Tooltip("Nombre de sous-branches qui partent à chaque point de séparation.")]
-    public int subBranchCount = 3;
+    [Header("Softness by generations")]
+    [Range(0.3f, 1f)] private float _lengthMultiplierPerDepth = 0.65f;
+    [Range(0.3f, 1f)] private float _pointCountMultiplierPerDepth = 0.5f;
 
-    [Tooltip("Position normalisée [0-1] le long de la branche où commence la séparation.")]
-    [Range(0f, 1f)]
-    public float branchSplitPosition = 0.5f;
+    [Header("Advanced param")]
+    private int _seed = 42;
+    private bool _autoRegenerate = false;
+    [Range(0f, 1f)] public float _splineTension = 0.4f;
+    #endregion
 
-    [Tooltip("Angle d'ouverture des sous-branches par rapport à la direction parent (degrés).")]
-    [Range(5f, 90f)]
-    public float branchAngleSpread = 35f;
-
-    [Tooltip("Variation aléatoire de l'angle de séparation (± degrés).")]
-    [Range(0f, 30f)]
-    public float branchAngleVariance = 10f;
-
-    [Tooltip("Profondeur de récursion (0 = tronc seulement, 1 = 1 niveau de branches, etc.).")]
-    [Range(0, 4)]
-    public int recursionDepth = 2;
-
-    // ─────────────────────────────────────────────
-    // TORSION & BRUIT
-    // ─────────────────────────────────────────────
-    [Header("Torsion & Bruit")]
-    [Tooltip("Déviation angulaire maximale par étape (slope max, degrés).")]
-    [Range(0f, 90f)]
-    public float maxSlopeDeg = 20f;
-
-    [Tooltip("Intensité globale du bruit de Perlin appliqué à la direction.")]
-    [Range(0f, 2f)]
-    public float noiseForce = 0.4f;
-
-    [Tooltip("Fréquence spatiale du bruit (valeur haute = changements plus rapides).")]
-    [Range(0.1f, 5f)]
-    public float noiseFrequency = 1.2f;
-
-    [Tooltip("Vitesse de torsion axiale (rotation de la branche sur elle-même à chaque pas).")]
-    [Range(0f, 90f)]
-    public float twistDegreesPerStep = 15f;
-
-    [Tooltip("Force de la gravité appliquée à chaque branche (0 = droit, 1 = très courbé vers le bas).")]
-    [Range(0f, 1f)]
-    public float gravityInfluence = 0.08f;
-
-    // ─────────────────────────────────────────────
-    // ATTÉNUATION PAR GÉNÉRATION
-    // ─────────────────────────────────────────────
-    [Header("Atténuation par génération")]
-    [Tooltip("Multiplicateur de longueur entre chaque niveau de récursion (< 1 = branches plus courtes).")]
-    [Range(0.3f, 1f)]
-    public float lengthMultiplierPerDepth = 0.65f;
-
-    [Tooltip("Multiplicateur du nombre de points par niveau de récursion.")]
-    [Range(0.3f, 1f)]
-    public float pointCountMultiplierPerDepth = 0.75f;
-
-    // ─────────────────────────────────────────────
-    // PARAMÈTRES AVANCÉS
-    // ─────────────────────────────────────────────
-    [Header("Paramètres avancés")]
-    [Tooltip("Graine aléatoire pour la reproductibilité.")]
-    public int seed = 42;
-
-    [Tooltip("Régénère automatiquement quand un paramètre change (peut être lent avec beaucoup de branches).")]
-    public bool autoRegenerate = false;
-
-    [Tooltip("Tension des tangentes de la spline (0 = linéaire, 1 = très courbe).")]
-    [Range(0f, 1f)]
-    public float splineTension = 0.4f;
-
-    // ─────────────────────────────────────────────
-    // ÉTAT INTERNE
-    // ─────────────────────────────────────────────
+    #region Propreties
     private SplineContainer _container;
     private System.Random _rng;
+    private int _nextId;
 
-    // ─────────────────────────────────────────────
-    // UNITY
-    // ─────────────────────────────────────────────
-    private void OnValidate()
+    private struct PendingSpline
     {
-        if (autoRegenerate)
-            // Délai d'une frame pour éviter les appels pendant la sérialisation
-            UnityEditor.EditorApplication.delayCall += Generate;
+        public int Id;
+        public Spline Spline;
+        public int Depth;
+        public int ParentId;
+        public int ParentKnotIndex;
     }
 
+    private List<PendingSpline> _pending;
+    #endregion
+
+    #region Generate method
+    void OnValidate()
+    {
+        if (_autoRegenerate)
+            UnityEditor.EditorApplication.delayCall += Generate;
+    }
+    /// <summary>
+    /// Generate the branches recursively, add the splines then link the splines
+    /// </summary>
     [ContextMenu("Generate Branches")]
     public void Generate()
     {
         _container = GetComponent<SplineContainer>();
-        if (_container == null)
-            _container = gameObject.AddComponent<SplineContainer>();
+        _rng = new System.Random(_seed);
+        _pending = new List<PendingSpline>();
+        _nextId = 0;
 
-        _rng = new System.Random(seed);
-
-        // Supprimer toutes les splines existantes
-        int count = _container.Splines.Count;
-        for (int i = count - 1; i >= 0; i--)
+        for (int i = _container.Splines.Count - 1; i >= 0; i--)
             _container.RemoveSplineAt(i);
 
-        // Lancer la génération récursive depuis la racine
-        GenerateBranch(
-            origin: Vector3.zero,
-            direction: initialDirection.normalized,
-            depth: 0,
-            numPoints: pointsPerBranch,
-            stepDist: distanceBetweenPoints
-        );
-    }
+        GenerateBranch(Vector3.zero, _initialDirection.normalized,
+                       0, _pointsPerBranch, _distanceBetweenPoints,
+                       parentId: -1, parentKnotIndex: 0);
 
-    // ─────────────────────────────────────────────
-    // GÉNÉRATION RÉCURSIVE D'UNE BRANCHE
-    // ─────────────────────────────────────────────
-    private void GenerateBranch(Vector3 origin, Vector3 direction, int depth, int numPoints, float stepDist)
+        _pending.Sort((a, b) => a.Depth.CompareTo(b.Depth));
+
+        var idToContainerIndex = new Dictionary<int, int>();
+
+        for (int i = 0; i < _pending.Count; i++)
+        {
+            _container.AddSpline(_pending[i].Spline);
+            idToContainerIndex[_pending[i].Id] = i;
+        }
+
+        _container.KnotLinkCollection.Clear();
+
+        //link child begin knot to their parent knot assigment
+        for (int i = 0; i < _pending.Count; i++)
+        {
+            var ps = _pending[i];
+            if (ps.ParentId == -1) continue; 
+
+            int parentContainerIndex = idToContainerIndex[ps.ParentId];
+            int childContainerIndex = idToContainerIndex[ps.Id];
+
+            var knotOnParent = new SplineKnotIndex(parentContainerIndex, ps.ParentKnotIndex);
+            var knotOnChild = new SplineKnotIndex(childContainerIndex, 0);
+
+            _container.KnotLinkCollection.Link(knotOnParent, knotOnChild);
+        }
+
+        _pending = null;
+    }
+    #endregion
+
+    #region Methods
+    /// <summary>
+    /// Generate a branchs and call spawn sub branches. Direction of the branches is calc whit perlin noise in fonction of the user param
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="direction"></param>
+    /// <param name="depth"></param>
+    /// <param name="numPoints"></param>
+    /// <param name="stepDist"></param>
+    /// <param name="parentId"></param>
+    /// <param name="parentKnotIndex"></param>
+    void GenerateBranch(Vector3 origin, Vector3 direction,
+                        int depth, int numPoints, float stepDist,
+                        int parentId, int parentKnotIndex)
     {
-        if (depth > recursionDepth) return;
+        if (depth > _recursionDepth) return;
+
+        int myId = _nextId++;
 
         var knots = new List<BezierKnot>();
 
         Vector3 pos = origin;
         Vector3 dir = direction.normalized;
 
-        // Décalage aléatoire dans le bruit de Perlin pour éviter les branches identiques
         float noiseOffsetX = (float)(_rng.NextDouble() * 1000f);
         float noiseOffsetZ = (float)(_rng.NextDouble() * 1000f);
-
-        // Torsion initiale aléatoire
         float twistAccum = (float)(_rng.NextDouble() * 360f);
 
-        int splitIndex = Mathf.RoundToInt(branchSplitPosition * (numPoints - 1));
-        splitIndex = Mathf.Clamp(splitIndex, 1, numPoints - 2);
+        int splitStartMin = Mathf.Clamp(Mathf.RoundToInt(_branchSplitStart * (numPoints - 1)), 1, numPoints - 2);
+        int splitStartIndex = _rng.Next(splitStartMin, numPoints - 1);
+        int currentBranchCount = _subBranchCount;
+
+        var knotPositions = new Vector3[numPoints];
+        var knotDirections = new Vector3[numPoints];
 
         for (int i = 0; i < numPoints; i++)
         {
             float t = (float)i / Mathf.Max(numPoints - 1, 1);
 
-            // ── Bruit de Perlin pour dévier la direction ──
-            float nx = (Mathf.PerlinNoise(t * noiseFrequency + noiseOffsetX, 0.3f) - 0.5f) * 2f;
-            float nz = (Mathf.PerlinNoise(0.7f, t * noiseFrequency + noiseOffsetZ) - 0.5f) * 2f;
-            Vector3 noiseVec = new Vector3(nx, 0f, nz) * noiseForce;
+            float nx = (Mathf.PerlinNoise(t * _noiseFrequency + noiseOffsetX, 0.3f) - 0.5f) * 2f;
+            float nz = (Mathf.PerlinNoise(0.7f, t * _noiseFrequency + noiseOffsetZ) - 0.5f) * 2f;
+            Vector3 noiseVec = new Vector3(nx, 0f, nz) * _noiseForce + Vector3.down * _gravityInfluence;
 
-            // ── Gravité ──
-            noiseVec += Vector3.down * gravityInfluence;
+            noiseVec = Quaternion.AngleAxis(twistAccum, dir) * noiseVec;
 
-            // ── Torsion axiale : on fait tourner le vecteur bruit autour de la direction ──
-            twistAccum += twistDegreesPerStep * (float)(_rng.NextDouble() * 2 - 1);
-            Quaternion twist = Quaternion.AngleAxis(twistAccum, dir);
-            noiseVec = twist * noiseVec;
-
-            // ── Application et clamp du slope ──
             Vector3 newDir = (dir + noiseVec).normalized;
             float angle = Vector3.Angle(dir, newDir);
-            if (angle > maxSlopeDeg)
-                newDir = Vector3.RotateTowards(dir, newDir, maxSlopeDeg * Mathf.Deg2Rad, 0f).normalized;
-
+            if (angle > _maxSlopeDeg)
+                newDir = Vector3.RotateTowards(dir, newDir, _maxSlopeDeg * Mathf.Deg2Rad, 0f).normalized;
             dir = newDir;
 
-            // ── Ajout du knot ──
-            float3 knotPos = (float3)(Vector3)pos;
-            float tangentLen = stepDist * splineTension;
+            knotPositions[i] = pos;
+            knotDirections[i] = dir;
+
+            float tangentLen = stepDist * 1;//splineTension;
             float3 tangentFwd = (float3)(dir * tangentLen);
-
-            knots.Add(new BezierKnot(knotPos, -tangentFwd, tangentFwd, quaternion.identity));
-
-            // ── Point de séparation : générer les sous-branches ──
-            if (i == splitIndex && depth < recursionDepth)
-                SpawnSubBranches(pos, dir, depth + 1, stepDist);
+            knots.Add(new BezierKnot((float3)(Vector3)pos, -tangentFwd, tangentFwd, quaternion.identity));
 
             pos += dir * stepDist;
         }
 
-        // Ajouter la spline au container
-        var spline = new Spline(knots, false);
-        _container.AddSpline(spline);
+        _pending.Add(new PendingSpline
+        {
+            Id = myId,
+            Spline = new Spline(knots, false),
+            Depth = depth,
+            ParentId = parentId,
+            ParentKnotIndex = parentKnotIndex
+        });
+
+        if (depth < _recursionDepth)
+        {
+            for (int i = splitStartIndex; i < numPoints && currentBranchCount > 0; i++)
+            {
+                SpawnSubBranches(
+                    knotPositions[i], knotDirections[i],
+                    depth + 1, stepDist, currentBranchCount,
+                    parentId: myId, parentKnotIndex: i
+                );
+
+                int reduce = _rng.Next(_reduceCountMin, _reduceCountMax + 1);
+                currentBranchCount -= reduce;
+            }
+        }
     }
 
-    // ─────────────────────────────────────────────
-    // CRÉATION DES SOUS-BRANCHES
-    // ─────────────────────────────────────────────
-    private void SpawnSubBranches(Vector3 origin, Vector3 parentDir, int depth, float parentStepDist)
+    /// <summary>
+    /// Called by generatebranch, it setup the direction for the new branch in fonction of their parent direction
+    /// </summary>
+    /// <param name="origin"></param>
+    /// <param name="parentDir"></param>
+    /// <param name="depth"></param>
+    /// <param name="parentStepDist"></param>
+    /// <param name="count"></param>
+    /// <param name="parentId"></param>
+    /// <param name="parentKnotIndex"></param>
+    void SpawnSubBranches(Vector3 origin, Vector3 parentDir,
+                          int depth, float parentStepDist, int count,
+                          int parentId, int parentKnotIndex)
     {
-        // Vecteur perpendiculaire de référence pour la distribution angulaire
         Vector3 perp = Vector3.Cross(parentDir, Vector3.up).normalized;
         if (perp.sqrMagnitude < 0.001f)
             perp = Vector3.Cross(parentDir, Vector3.right).normalized;
 
-        float angleStep = 360f / subBranchCount;
+        float angleStep = 360f / Mathf.Max(count, 1);
 
-        for (int b = 0; b < subBranchCount; b++)
+        for (int b = 0; b < count; b++)
         {
-            // Distribution uniforme + jitter aléatoire
             float jitter = (float)((_rng.NextDouble() - 0.5) * angleStep * 0.4f);
             float rotAngle = angleStep * b + jitter;
+            Vector3 spreadDir = Quaternion.AngleAxis(rotAngle, parentDir) * perp;
 
-            // Rotation autour de l'axe parent pour obtenir le vecteur de déviation
-            Quaternion rot = Quaternion.AngleAxis(rotAngle, parentDir);
-            Vector3 spreadDir = rot * perp;
-
-            // Mélange direction parent + direction spread selon l'angle de séparation
-            float spread = branchAngleSpread + (float)((_rng.NextDouble() - 0.5) * branchAngleVariance * 2f);
-            spread = Mathf.Clamp(spread, 5f, 175f);
+            float spread = Mathf.Clamp(
+                _branchAngleSpread + (float)((_rng.NextDouble() - 0.5) * _branchAngleVariance * 2f), 5f, 175f);
             Vector3 branchDir = Vector3.Slerp(parentDir, spreadDir, Mathf.Sin(spread * Mathf.Deg2Rad)).normalized;
 
-            // Paramètres atténués
-            int childPoints = Mathf.Max(3, Mathf.RoundToInt(pointsPerBranch
-                * Mathf.Pow(pointCountMultiplierPerDepth, depth)));
-            float childStep = parentStepDist * Mathf.Pow(lengthMultiplierPerDepth, depth);
+            int childPoints = Mathf.Max(3, Mathf.RoundToInt(_pointsPerBranch * Mathf.Pow(_pointCountMultiplierPerDepth, depth)));
+            float childStep = parentStepDist * Mathf.Pow(_lengthMultiplierPerDepth, depth);
 
-            GenerateBranch(origin, branchDir, depth, childPoints, childStep);
+            GenerateBranch(origin, branchDir, depth, childPoints, childStep,
+                           parentId, parentKnotIndex);
         }
     }
+    #endregion
 }
