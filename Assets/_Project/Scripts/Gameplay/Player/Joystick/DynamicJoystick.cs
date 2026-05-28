@@ -77,8 +77,8 @@ namespace GlimmerOfHope.Gameplay
         #region Private Methods
         private void TryBeginJoystick(Touch touch)
         {
-            if (_trackedFingerId != -1) return;
             if (!IsInZone(touch.screenPosition)) return;
+            if (_trackedFingerId != -1) return;
 
             _trackedFingerId = touch.touchId;
             _anchorScreenPos = touch.screenPosition;
