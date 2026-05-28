@@ -17,16 +17,16 @@ namespace GlimmerOfHope.Gameplay
     {
         #region SerializeFields
         [Header("Sensibility")]
-        [SerializeField] private float horizontalGain = 0.3f;
-        [SerializeField] private float verticalGain = 0.3f;
+        [SerializeField] private float _horizontalGain = 0.3f;
+        [SerializeField] private float _verticalGain = 0.3f;
 
         [Header("Input Zone")]
         [Range(0f, 1f)]
         [Tooltip("Horizontal ratio allowing inputs to control the camera")]
-        [SerializeField] private float horizontalScreenSplitRatio = 0.5f;
+        [SerializeField] private float _horizontalScreenSplitRatio = 0.5f;
         [Range(0f, 1f)]
         [Tooltip("Vertical ratio allowing inputs to control the camera")]
-        [SerializeField] private float verticalScreenSplitRatio = 0.2f;
+        [SerializeField] private float _verticalScreenSplitRatio = 0.2f;
 
         [SerializeField] private InputActionReference _lookAction;
         #endregion
@@ -34,8 +34,8 @@ namespace GlimmerOfHope.Gameplay
         #region PrivateFields
         private CinemachineOrbitalFollow _orbitalFollow;
         private Vector2 _lookDelta;
-        private float splitX => Screen.width * horizontalScreenSplitRatio;
-        private float splitY => Screen.height * verticalScreenSplitRatio;
+        private float splitX => Screen.width * _horizontalScreenSplitRatio;
+        private float splitY => Screen.height * _verticalScreenSplitRatio;
         #endregion
         #region Unity Lifecycle
         void Awake()
@@ -61,8 +61,8 @@ namespace GlimmerOfHope.Gameplay
 
         void Update()
         {
-            _orbitalFollow.HorizontalAxis.Value += _lookDelta.x * horizontalGain;
-            float newVertical = _orbitalFollow.VerticalAxis.Value - (_lookDelta.y * verticalGain);
+            _orbitalFollow.HorizontalAxis.Value += _lookDelta.x * _horizontalGain;
+            float newVertical = _orbitalFollow.VerticalAxis.Value - (_lookDelta.y * _verticalGain);
             _orbitalFollow.VerticalAxis.Value = Mathf.Clamp(newVertical, _orbitalFollow.VerticalAxis.Range.x, _orbitalFollow.VerticalAxis.Range.y);
         }
         #endregion
