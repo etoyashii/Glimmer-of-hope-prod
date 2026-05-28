@@ -6,10 +6,10 @@ public class TestComponent : MonoBehaviour
     // Slider
     [Header("--Slider--")]
 
-    [Slider(0f, 100f)]
+    [Slider(0f, 100f, SliderColor.Red)]
     public float health = 75f;
 
-    [Slider(-1f, 1f)]
+    [Slider(-1f, 1f, SliderColor.Yellow)]
     public float balance = 0f;
 
     [Slider(0, 10)]
