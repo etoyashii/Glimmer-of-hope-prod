@@ -35,7 +35,7 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         [SerializeField] private string _requiredFlag;
         [Tooltip("Deactivate this GameObject after conditional dialogue ends.")]
         [SerializeField] private bool _hideAfterConditional;
-
+        
         #endregion
 
         #region Private Fields
@@ -45,7 +45,7 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         private bool _playerInRange;
         private bool _isDialogueActive;
         private bool _usedConditional;
-
+        
         #endregion
 
         #region Unity Lifecycle
