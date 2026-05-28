@@ -8,7 +8,8 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// A dynamically placed joystick with restricted area.
+    /// A dynamically placed joystick only on the left side of the screen.
+    /// Using EnhancedTouchSupport to avoid conflicts with other Touch Inputs.
     /// </summary>
     public class DynamicJoystick : MonoBehaviour
     {

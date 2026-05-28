@@ -8,8 +8,8 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// Contrôle la caméra orbitale via un swipe sur la zone droite de l'écran.
-    /// Utilise EnhancedTouch directement pour éviter les conflits avec le joystick.
+    /// CameraController using a swipe on the right side of the screen.
+    /// Use EnhancedTouchSupport to avoid conflict with other Touch Inputs.
     /// </summary>
     [RequireComponent(typeof(CinemachineOrbitalFollow))]
     public class RightSideCameraController : MonoBehaviour
