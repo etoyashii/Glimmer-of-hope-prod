@@ -81,7 +81,7 @@ namespace GlimmerOfHope.Gameplay
             if (_trackedFingerId != -1) return;
 
             _trackedFingerId = touch.touchId;
-            Debug.Log(_trackedFingerId);
+            Debug.Log("Joystick = " + _trackedFingerId);
             _anchorScreenPos = touch.screenPosition;
 
             _joystickBackground.anchoredPosition = new Vector2 (ScreenToCanvasPoint(touch.screenPosition).x - (_joystickBackground.rect.width/2), ScreenToCanvasPoint(touch.screenPosition).y - (_joystickBackground.rect.height/2));

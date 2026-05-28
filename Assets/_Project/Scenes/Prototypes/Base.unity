@@ -533,13 +533,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec0455e478c0f404abf894ba3428452c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.DynamicJoystick
-  joystickBackground: {fileID: 1807560443}
-  joystickHandle: {fileID: 1191645811}
-  canvasGroup: {fileID: 503335733}
-  canvas: {fileID: 1938572516}
-  zoneWidth: 0.5
-  zoneHeight: 0.5
-  joystickRadius: 100
+  _joystickBackground: {fileID: 1807560443}
+  _joystickHandle: {fileID: 1191645811}
+  _canvasGroup: {fileID: 503335733}
+  _canvas: {fileID: 1938572516}
+  _zoneWidth: 0.5
+  _zoneHeight: 0.5
+  _joystickRadius: 100
 --- !u!1 &563139644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1705,11 +1705,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f08b03f7e9c9e5a42acb3b423cd3f908, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.RightSideCameraInput
-  horizontalGain: 0.1
-  verticalGain: 0.1
-  horizontalScreenSplitRatio: 0.5
-  verticalScreenSplitRatio: 0.2
-  _lookAction: {fileID: -134427950816253770, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
+  _horizontalGain: 0.3
+  _verticalGain: 0.3
+  _horizontalSplitRatio: 0.5
+  _verticalSplitRatio: 0.2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
