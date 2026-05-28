@@ -8,7 +8,8 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// A dynamically placed joystick with restricted area.
+    /// A dynamically placed joystick only on the left side of the screen.
+    /// Using EnhancedTouchSupport to avoid conflicts with other Touch Inputs.
     /// </summary>
     public class DynamicJoystick : MonoBehaviour
     {
@@ -77,10 +78,11 @@ namespace GlimmerOfHope.Gameplay
         #region Private Methods
         private void TryBeginJoystick(Touch touch)
         {
-            if (_trackedFingerId != -1) return;
             if (!IsInZone(touch.screenPosition)) return;
+            if (_trackedFingerId != -1) return;
 
             _trackedFingerId = touch.touchId;
+            Debug.Log("Joystick = " + _trackedFingerId);
             _anchorScreenPos = touch.screenPosition;
 
             _joystickBackground.anchoredPosition = new Vector2 (ScreenToCanvasPoint(touch.screenPosition).x - (_joystickBackground.rect.width/2), ScreenToCanvasPoint(touch.screenPosition).y - (_joystickBackground.rect.height/2));
