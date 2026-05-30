@@ -7,15 +7,15 @@ namespace GlimmerOfHope.Editor
     [CustomPropertyDrawer(typeof(SliderAttribute))]
     public class SliderDrawer : PropertyDrawer
     {
-        private const float SliderHeight = 16f;
-        private const float Spacing = 3f;
-        private const float TrackHeight = 6f;
-        private const float ThumbSize = 12f;
-        private const float LabelWidth = 30f;
+        private const float _SLIDER_HEIGHT = 16f;
+        private const float _SPACING = 3f;
+        private const float _TRACK_HEIGHT = 6f;
+        private const float _THUMB_SIZE = 12f;
+        private const float _LABEL_WIDTH = 30f;
 
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
-            return EditorGUIUtility.singleLineHeight + Spacing + SliderHeight;
+            return EditorGUIUtility.singleLineHeight + _SPACING + _SLIDER_HEIGHT;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -45,8 +45,8 @@ namespace GlimmerOfHope.Editor
             else
                 property.intValue = Mathf.RoundToInt(Mathf.Clamp(property.intValue, attr.min, attr.max));
 
-            Rect sliderRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + Spacing,
-                                        position.width, SliderHeight);
+            Rect sliderRect = new Rect(position.x, position.y + EditorGUIUtility.singleLineHeight + _SPACING,
+                                        position.width, _SLIDER_HEIGHT);
             DrawCustomSlider(sliderRect, property, attr);
 
             EditorGUI.EndProperty();
@@ -64,10 +64,10 @@ namespace GlimmerOfHope.Editor
             float x = rect.x + indent;
             float width = rect.width - indent;
 
-            Rect minRect = new Rect(x, rect.y, LabelWidth, SliderHeight);
-            Rect maxRect = new Rect(x + width - LabelWidth, rect.y, LabelWidth, SliderHeight);
-            Rect trackZone = new Rect(x + LabelWidth + 2f, rect.y,
-                                       width - LabelWidth * 2f - 4f, SliderHeight);
+            Rect minRect = new Rect(x, rect.y, _LABEL_WIDTH, _SLIDER_HEIGHT);
+            Rect maxRect = new Rect(x + width - _LABEL_WIDTH, rect.y, _LABEL_WIDTH, _SLIDER_HEIGHT);
+            Rect trackZone = new Rect(x + _LABEL_WIDTH + 2f, rect.y,
+                                       width - _LABEL_WIDTH * 2f - 4f, _SLIDER_HEIGHT);
 
             GUIStyle smallLabel = new GUIStyle(EditorStyles.miniLabel);
 
@@ -77,25 +77,25 @@ namespace GlimmerOfHope.Editor
             smallLabel.alignment = TextAnchor.MiddleRight;
             GUI.Label(maxRect, FormatBound(attr.max, property), smallLabel);
 
-            float trackY = trackZone.y + (SliderHeight - TrackHeight) * 0.5f;
-            Rect track = new Rect(trackZone.x, trackY, trackZone.width, TrackHeight);
+            float trackY = trackZone.y + (_SLIDER_HEIGHT - _TRACK_HEIGHT) * 0.5f;
+            Rect track = new Rect(trackZone.x, trackY, trackZone.width, _TRACK_HEIGHT);
             EditorGUI.DrawRect(track, new Color(0.12f, 0.12f, 0.12f));
 
             float fillWidth = (track.width - 2f) * t;
             EditorGUI.DrawRect(new Rect(track.x + 1f, track.y + 1f, fillWidth, track.height - 2f),
                                 attr.color);
 
-            float thumbX = track.x + (track.width - ThumbSize) * t;
-            float thumbY = trackY + (TrackHeight - ThumbSize) * 0.5f;
-            EditorGUI.DrawRect(new Rect(thumbX, thumbY, ThumbSize, ThumbSize),
+            float thumbX = track.x + (track.width - _THUMB_SIZE) * t;
+            float thumbY = trackY + (_TRACK_HEIGHT - _THUMB_SIZE) * 0.5f;
+            EditorGUI.DrawRect(new Rect(thumbX, thumbY, _THUMB_SIZE, _THUMB_SIZE),
                                 attr.color);
 
             Color lighter = Color.Lerp(attr.color, Color.white, 0.35f);
-            EditorGUI.DrawRect(new Rect(thumbX + 2f, thumbY + 2f, ThumbSize - 4f, ThumbSize - 4f),
+            EditorGUI.DrawRect(new Rect(thumbX + 2f, thumbY + 2f, _THUMB_SIZE - 4f, _THUMB_SIZE - 4f),
                                 lighter);
 
             int id = GUIUtility.GetControlID(
-                FocusType.Passive, new Rect(thumbX, thumbY, ThumbSize, ThumbSize));
+                FocusType.Passive, new Rect(thumbX, thumbY, _THUMB_SIZE, _THUMB_SIZE));
 
             Event ev = Event.current;
             EventType evt = ev.GetTypeForControl(id);

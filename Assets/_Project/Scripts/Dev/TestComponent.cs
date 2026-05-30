@@ -7,7 +7,7 @@ public class TestComponent : MonoBehaviour
     [Header("--Slider--")]
 
     [Slider(0f, 100f, SliderColor.Red)]
-    public float health = 75f;
+    public int health = 75;
 
     [Slider(-1f, 1f, SliderColor.Yellow)]
     public float balance = 0f;
@@ -23,6 +23,9 @@ public class TestComponent : MonoBehaviour
 
     [TexturePreview]
     public Texture2D testTexture;
+
+    [TexturePreview]
+    public Material testMaterial;
 
     // Audio Player
     [Header("--Audio Player--")]
