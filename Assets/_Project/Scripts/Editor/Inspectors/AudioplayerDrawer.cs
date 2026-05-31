@@ -6,18 +6,21 @@ namespace GlimmerOfHope.Editor
     [CustomPropertyDrawer(typeof(AudioPlayerAttribute))]
     public class AudioplayerDrawer : PropertyDrawer
     {
-        private const float Spacing = 4f;
-        private const float WaveformDefault = 80f;
-        private const float WaveformMin = 40f;
-        private const float WaveformMax = 200f;
-        private const float HandleHeight = 8f;
-        private const float RowHeight = 22f;
-        private const float BtnWidth = 48f;
-        private const float MarkerWidth = 2f;
+        private const float _SPACING = 4f;
+        private const float _WAVEFORM_DEFAULT = 80f;
+        private const float _WAVEFORM_MIN = 40f;
+        private const float _WAVEFORM_MAX = 200f;
+        private const float _HANDLE_HEIGHT = 8f;
+        private const float _ROW_HEIGHT = 22f;
+        private const float _BTN_WIDTH = 48f;
+        private const float _MARKER_WIDTH = 2f;
 
-        private float ExtraHeight => HandleHeight + RowHeight + RowHeight + RowHeight + RowHeight + 6f;
+        // Handle + Controls + AudioSourceInfo + Trim + padding
+        private float ExtraHeight => _HANDLE_HEIGHT + _ROW_HEIGHT + _ROW_HEIGHT + _ROW_HEIGHT + 6f;
 
         private static bool _updateRegistered = false;
+        private static AudioSource _tempSource = null;
+        private static AudioSource _activeSource = null;
 
         private static System.Collections.Generic.Dictionary<string, int> _prevClipID
             = new System.Collections.Generic.Dictionary<string, int>();
@@ -33,23 +36,43 @@ namespace GlimmerOfHope.Editor
             }
         }
 
-        private static void PlayClip(AudioClip clip, int startSample)
+        private static void PlayClip(AudioClip clip, int startSample, AudioSource playModeSrc)
         {
-            var m = AudioUtil?.GetMethod("PlayPreviewClip",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public,
-                null, new System.Type[] { typeof(AudioClip), typeof(int), typeof(bool) }, null);
-            m?.Invoke(null, new object[] { clip, startSample, false });
+            if (Application.isPlaying)
+            {
+                _activeSource = playModeSrc;
+                _activeSource.clip = clip;
+                _activeSource.timeSamples = startSample;
+                _activeSource.Play();
+            }
+            else
+            {
+                var m = AudioUtil?.GetMethod("PlayPreviewClip",
+                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public,
+                    null, new System.Type[] { typeof(AudioClip), typeof(int), typeof(bool) }, null);
+                m?.Invoke(null, new object[] { clip, startSample, false });
+            }
         }
 
         private static void StopClip()
         {
-            var m = AudioUtil?.GetMethod("StopAllPreviewClips",
-                System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
-            m?.Invoke(null, null);
+            if (Application.isPlaying)
+            {
+                if (_activeSource != null) _activeSource.Stop();
+            }
+            else
+            {
+                var m = AudioUtil?.GetMethod("StopAllPreviewClips",
+                    System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
+                m?.Invoke(null, null);
+            }
         }
 
         private static bool IsPlayingClip()
         {
+            if (Application.isPlaying)
+                return _activeSource != null && _activeSource.isPlaying;
+
             var m = AudioUtil?.GetMethod("IsPreviewClipPlaying",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
             return m != null && (bool)m.Invoke(null, null);
@@ -57,6 +80,9 @@ namespace GlimmerOfHope.Editor
 
         private static float GetClipPosition()
         {
+            if (Application.isPlaying)
+                return _activeSource != null ? _activeSource.time : 0f;
+
             var m = AudioUtil?.GetMethod("GetPreviewClipPosition",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public);
             return m != null ? (float)m.Invoke(null, null) : 0f;
@@ -64,11 +90,33 @@ namespace GlimmerOfHope.Editor
 
         private static void SeekClip(AudioClip clip, float normalizedTime)
         {
+            if (Application.isPlaying)
+            {
+                if (_activeSource != null)
+                    _activeSource.time = normalizedTime * clip.length;
+                return;
+            }
+
             int sample = Mathf.RoundToInt(normalizedTime * clip.samples);
             var m = AudioUtil?.GetMethod("SetPreviewClipSamplePosition",
                 System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.Public,
                 null, new System.Type[] { typeof(AudioClip), typeof(int) }, null);
             m?.Invoke(null, new object[] { clip, sample });
+        }
+
+        private static AudioSource GetOrCreatePlayModeSource(SerializedProperty property)
+        {
+            AudioSource src = GetAudioSource(property);
+            if (src != null) return src;
+
+            if (_tempSource == null || _tempSource.gameObject == null)
+            {
+                var go = new GameObject("__AudioPlayerPreview")
+                { hideFlags = HideFlags.HideAndDontSave };
+                _tempSource = go.AddComponent<AudioSource>();
+                _tempSource.playOnAwake = false;
+            }
+            return _tempSource;
         }
 
         private static void EnsureUpdate()
@@ -84,13 +132,19 @@ namespace GlimmerOfHope.Editor
                 UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
         }
 
+        private static AudioSource GetAudioSource(SerializedProperty property)
+        {
+            var mono = property.serializedObject.targetObject as MonoBehaviour;
+            return mono != null ? mono.GetComponent<AudioSource>() : null;
+        }
+
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (property.objectReferenceValue == null)
                 return EditorGUIUtility.singleLineHeight;
 
-            float waveH = EditorPrefs.GetFloat(WaveKey(property), WaveformDefault);
-            return EditorGUIUtility.singleLineHeight + Spacing + waveH + ExtraHeight;
+            float waveH = EditorPrefs.GetFloat(WaveKey(property), _WAVEFORM_DEFAULT);
+            return EditorGUIUtility.singleLineHeight + _SPACING + waveH + ExtraHeight;
         }
 
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
@@ -119,30 +173,26 @@ namespace GlimmerOfHope.Editor
                     WaveformRenderer.Invalidate(prev);
                 _prevClipID[path] = clipID;
 
-                float waveH = EditorPrefs.GetFloat(WaveKey(property), WaveformDefault);
-                float y = position.y + EditorGUIUtility.singleLineHeight + Spacing;
+                float waveH = EditorPrefs.GetFloat(WaveKey(property), _WAVEFORM_DEFAULT);
+                float y = position.y + EditorGUIUtility.singleLineHeight + _SPACING;
 
                 Rect waveRect = new Rect(position.x, y, position.width, waveH);
                 DrawWaveform(waveRect, property, clip);
                 y += waveH;
 
-                Rect handleRect = new Rect(position.x, y, position.width, HandleHeight);
+                Rect handleRect = new Rect(position.x, y, position.width, _HANDLE_HEIGHT);
                 DrawResizeHandle(handleRect, property);
-                y += HandleHeight;
+                y += _HANDLE_HEIGHT;
 
-                Rect ctrlRect = new Rect(position.x, y, position.width, RowHeight);
+                Rect ctrlRect = new Rect(position.x, y, position.width, _ROW_HEIGHT);
                 DrawControls(ctrlRect, property, clip);
-                y += RowHeight;
+                y += _ROW_HEIGHT;
 
-                Rect volRect = new Rect(position.x, y, position.width, RowHeight);
-                DrawVolumeSlider(volRect, property);
-                y += RowHeight;
+                Rect srcRect = new Rect(position.x, y, position.width, _ROW_HEIGHT);
+                DrawAudioSourceInfo(srcRect, property);
+                y += _ROW_HEIGHT;
 
-                Rect pitchRect = new Rect(position.x, y, position.width, RowHeight);
-                DrawPitchSlider(pitchRect, property);
-                y += RowHeight;
-
-                Rect trimRect = new Rect(position.x, y, position.width, RowHeight);
+                Rect trimRect = new Rect(position.x, y, position.width, _ROW_HEIGHT);
                 DrawTrimInfo(trimRect, property, clip);
             }
 
@@ -150,6 +200,7 @@ namespace GlimmerOfHope.Editor
         }
 
         //Waveform
+
         private void DrawWaveform(Rect rect, SerializedProperty property, AudioClip clip)
         {
             int w = Mathf.Max(1, (int)rect.width);
@@ -159,44 +210,37 @@ namespace GlimmerOfHope.Editor
             EditorGUI.DrawRect(rect, new Color(0.12f, 0.12f, 0.12f));
 
             if (WaveformRenderer.IsStreaming(clip))
-            {
                 DrawWarning(rect, "Waveform indisponible : clip en mode Streaming.\n" +
                                    "Changez Load Type en Decompress On Load.");
-            }
             else if (WaveformRenderer.IsPreloadDisabled(clip))
-            {
                 DrawWarning(rect, "Waveform indisponible : cochez \"Preload Audio Data\" " +
                                    "dans l'Inspector du clip, puis Apply.");
-            }
             else if (wave != null)
-            {
                 GUI.DrawTexture(rect, wave);
-            }
             else
-            {
                 DrawWarning(rect, "Waveform indisponible (GetData a échoué).");
-            }
 
             //Overlay trim
             float tStart = GetTrimStart(property);
             float tEnd = GetTrimEnd(property);
+            Color overlay = new Color(0f, 0f, 0f, 0.55f);
+
             float leftW = tStart * rect.width;
             float rightX = rect.x + tEnd * rect.width;
             float rightW = (1f - tEnd) * rect.width;
-            Color overlay = new Color(0f, 0f, 0f, 0.55f);
-
             if (leftW > 0) EditorGUI.DrawRect(new Rect(rect.x, rect.y, leftW, rect.height), overlay);
             if (rightW > 0) EditorGUI.DrawRect(new Rect(rightX, rect.y, rightW, rect.height), overlay);
 
             //Marqueurs trim jaunes
+            Color markerColor = new Color(1f, 0.85f, 0.2f);
             float startX = rect.x + tStart * rect.width;
             float endX = rect.x + tEnd * rect.width;
-            Color markerColor = new Color(1f, 0.85f, 0.2f);
-            EditorGUI.DrawRect(new Rect(startX - MarkerWidth * 0.5f, rect.y, MarkerWidth, rect.height), markerColor);
-            EditorGUI.DrawRect(new Rect(endX - MarkerWidth * 0.5f, rect.y, MarkerWidth, rect.height), markerColor);
+            EditorGUI.DrawRect(new Rect(startX - _MARKER_WIDTH * 0.5f, rect.y, _MARKER_WIDTH, rect.height), markerColor);
+            EditorGUI.DrawRect(new Rect(endX - _MARKER_WIDTH * 0.5f, rect.y, _MARKER_WIDTH, rect.height), markerColor);
 
-            //Ligne volume
-            float vol = EditorPrefs.GetFloat(VolKey(property), 1f);
+            //Ligne volume lue depuis l'AudioSource
+            AudioSource src = GetAudioSource(property);
+            float vol = src != null ? src.volume : 1f;
             float volY = rect.yMax - vol * rect.height;
             EditorGUI.DrawRect(new Rect(rect.x, volY, rect.width, 1f), new Color(1f, 1f, 1f, 0.4f));
 
@@ -204,8 +248,7 @@ namespace GlimmerOfHope.Editor
             if (IsPlayingClip() && clip.length > 0)
             {
                 float progress = Mathf.Clamp01(GetClipPosition() / clip.length);
-                float progX = rect.x + progress * rect.width;
-                EditorGUI.DrawRect(new Rect(progX - 1f, rect.y, 2f, rect.height),
+                EditorGUI.DrawRect(new Rect(rect.x + progress * rect.width - 1f, rect.y, 2f, rect.height),
                                     new Color(1f, 1f, 1f, 0.9f));
             }
 
@@ -241,13 +284,9 @@ namespace GlimmerOfHope.Editor
             }
             else if (ev.GetTypeForControl(id) == EventType.MouseDrag && GUIUtility.hotControl == id)
             {
-                if (_dragMode == DragMode.TrimStart)
-                    SetTrimStart(property, Mathf.Clamp(t, 0f, GetTrimEnd(property) - 0.01f));
-                else if (_dragMode == DragMode.TrimEnd)
-                    SetTrimEnd(property, Mathf.Clamp(t, GetTrimStart(property) + 0.01f, 1f));
-                else if (_dragMode == DragMode.Seek && IsPlayingClip())
-                    SeekClip(clip, t);
-
+                if (_dragMode == DragMode.TrimStart) SetTrimStart(property, Mathf.Clamp(t, 0f, GetTrimEnd(property) - 0.01f));
+                else if (_dragMode == DragMode.TrimEnd) SetTrimEnd(property, Mathf.Clamp(t, GetTrimStart(property) + 0.01f, 1f));
+                else if (_dragMode == DragMode.Seek && IsPlayingClip()) SeekClip(clip, t);
                 GUI.changed = true;
                 ev.Use();
             }
@@ -264,74 +303,77 @@ namespace GlimmerOfHope.Editor
         {
             float x = rect.x;
 
-            Rect playRect = new Rect(x, rect.y + 2f, BtnWidth, RowHeight - 4f);
+            Rect playRect = new Rect(x, rect.y + 2f, _BTN_WIDTH, _ROW_HEIGHT - 4f);
             if (DrawButton(playRect, "Play", IsPlayingClip()))
             {
                 int startSample = Mathf.RoundToInt(GetTrimStart(property) * clip.samples);
-                EditorApplication.delayCall += () => PlayClip(clip, startSample);
+                AudioSource srcToUse = Application.isPlaying ? GetOrCreatePlayModeSource(property) : null;
+                EditorApplication.delayCall += () =>
+                {
+                    StopClip();
+                    PlayClip(clip, startSample, srcToUse);
+                };
             }
+            x += _BTN_WIDTH + 4f;
 
-            x += BtnWidth + 4f;
-
-            Rect stopRect = new Rect(x, rect.y + 2f, BtnWidth, RowHeight - 4f);
+            // Stop
+            Rect stopRect = new Rect(x, rect.y + 2f, _BTN_WIDTH, _ROW_HEIGHT - 4f);
             if (DrawButton(stopRect, "Stop", false))
                 StopClip();
+            x += _BTN_WIDTH + 8f;
 
-            x += BtnWidth + 8f;
-
+            // Temps
             string timeStr = FormatTime(IsPlayingClip() ? GetClipPosition() : 0f)
                            + " / " + FormatTime(clip.length);
-            GUI.Label(new Rect(x, rect.y, rect.width - x + rect.x, RowHeight), timeStr,
+            GUI.Label(new Rect(x, rect.y, rect.width - x + rect.x, _ROW_HEIGHT), timeStr,
                 new GUIStyle(EditorStyles.miniLabel)
                 { normal = { textColor = new Color(0.7f, 0.7f, 0.7f) } });
         }
 
-        private void DrawVolumeSlider(Rect rect, SerializedProperty property)
+        private void DrawAudioSourceInfo(Rect rect, SerializedProperty property)
         {
-            float vol = EditorPrefs.GetFloat(VolKey(property), 1f);
-            float newVol = DrawLabelSlider(rect, "Volume", vol, 0f, 1f);
-            if (!Mathf.Approximately(newVol, vol))
-                EditorPrefs.SetFloat(VolKey(property), newVol);
-        }
+            AudioSource src = GetAudioSource(property);
 
-        private void DrawPitchSlider(Rect rect, SerializedProperty property)
-        {
-            float pitch = EditorPrefs.GetFloat(PitchKey(property), 1f);
-            float newPitch = DrawLabelSlider(rect, "Pitch", pitch, 0.1f, 3f);
-            if (!Mathf.Approximately(newPitch, pitch))
-                EditorPrefs.SetFloat(PitchKey(property), newPitch);
-        }
+            if (src == null)
+            {
+                // Pas d'AudioSource : bouton pour en ajouter un
+                float btnW = 130f;
+                Rect msgRect = new Rect(rect.x, rect.y, rect.width - btnW - 4f, rect.height);
+                Rect btnRect = new Rect(rect.xMax - btnW, rect.y + 2f, btnW, rect.height - 4f);
 
-        private float DrawLabelSlider(Rect rect, string labelText, float value, float min, float max)
-        {
-            float labelW = 46f;
-            float valW = 34f;
+                GUI.Label(msgRect, "Aucun AudioSource sur ce GameObject.",
+                    new GUIStyle(EditorStyles.miniLabel)
+                    { normal = { textColor = new Color(1f, 0.6f, 0.2f) } });
 
-            GUI.Label(new Rect(rect.x, rect.y, labelW, rect.height),
-                labelText, new GUIStyle(EditorStyles.miniLabel));
+                if (DrawButton(btnRect, "+ Add AudioSource", false))
+                {
+                    var mono = property.serializedObject.targetObject as MonoBehaviour;
+                    if (mono != null)
+                        Undo.AddComponent<AudioSource>(mono.gameObject);
+                }
+            }
+            else
+            {
+                //AudioSource trouvé : affiche volume et pitch en lecture seule
+                float colW = rect.width;
+                Rect left = new Rect(rect.x, rect.y, colW, rect.height);
 
-            Rect sliderRect = new Rect(rect.x + labelW,
-                rect.y + (rect.height - 14f) * 0.5f,
-                rect.width - labelW - valW - 4f, 14f);
-            float newVal = GUI.HorizontalSlider(sliderRect, value, min, max);
+                GUIStyle style = new GUIStyle(EditorStyles.miniLabel)
+                { normal = { textColor = new Color(0.65f, 0.65f, 0.65f) } };
 
-            GUI.Label(new Rect(rect.xMax - valW, rect.y, valW, rect.height),
-                value.ToString("F2"),
-                new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleRight });
-
-            return newVal;
+                GUI.Label(left, "(Volume, Pitch, etc.. Play Mode uniquement)", style);
+            }
         }
 
         private void DrawTrimInfo(Rect rect, SerializedProperty property, AudioClip clip)
         {
             float tStart = GetTrimStart(property) * clip.length;
             float tEnd = GetTrimEnd(property) * clip.length;
-            string txt = "Trim In: " + FormatTime(tStart)
-                         + "  Out: " + FormatTime(tEnd)
-                         + "  (" + FormatTime(tEnd - tStart) + ")";
-
-            GUI.Label(rect, txt, new GUIStyle(EditorStyles.miniLabel)
-            { normal = { textColor = new Color(1f, 0.85f, 0.2f) } });
+            GUI.Label(rect,
+                "Trim In: " + FormatTime(tStart) + " -> Out: " + FormatTime(tEnd)
+                + "  (" + FormatTime(tEnd - tStart) + ")",
+                new GUIStyle(EditorStyles.miniLabel)
+                { normal = { textColor = new Color(1f, 0.85f, 0.2f) } });
         }
 
         private void DrawWarning(Rect rect, string msg)
@@ -363,23 +405,18 @@ namespace GlimmerOfHope.Editor
             EventType evt = ev.GetTypeForControl(id);
 
             if (evt == EventType.MouseDown && rect.Contains(ev.mousePosition))
-            {
-                GUIUtility.hotControl = id;
-                ev.Use();
-            }
+            { GUIUtility.hotControl = id; ev.Use(); }
             else if (evt == EventType.MouseDrag && GUIUtility.hotControl == id)
             {
-                float waveH = EditorPrefs.GetFloat(key, WaveformDefault);
-                float newH = Mathf.Clamp(waveH + ev.delta.y, WaveformMin, WaveformMax);
+                float newH = Mathf.Clamp(
+                    EditorPrefs.GetFloat(key, _WAVEFORM_DEFAULT) + ev.delta.y,
+                    _WAVEFORM_MIN, _WAVEFORM_MAX);
                 EditorPrefs.SetFloat(key, newH);
                 GUI.changed = true;
                 ev.Use();
             }
             else if (evt == EventType.MouseUp && GUIUtility.hotControl == id)
-            {
-                GUIUtility.hotControl = 0;
-                ev.Use();
-            }
+            { GUIUtility.hotControl = 0; ev.Use(); }
 
             EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeVertical);
         }
@@ -387,47 +424,33 @@ namespace GlimmerOfHope.Editor
         private bool DrawButton(Rect rect, string label, bool active)
         {
             Color bg = active ? new Color(0.28f, 0.65f, 1f) : new Color(0.22f, 0.22f, 0.22f);
-            Color border = active ? new Color(0.28f, 0.65f, 1f) : new Color(0.12f, 0.12f, 0.12f);
-            Color text = active ? Color.black : new Color(0.88f, 0.88f, 0.88f);
+            Color bord = active ? new Color(0.28f, 0.65f, 1f) : new Color(0.12f, 0.12f, 0.12f);
+            Color txt = active ? Color.black : new Color(0.88f, 0.88f, 0.88f);
 
-            EditorGUI.DrawRect(rect, border);
+            EditorGUI.DrawRect(rect, bord);
             EditorGUI.DrawRect(new Rect(rect.x + 1, rect.y + 1, rect.width - 2, rect.height - 2), bg);
             GUI.Label(rect, label, new GUIStyle(EditorStyles.miniLabel)
             {
                 alignment = TextAnchor.MiddleCenter,
                 fontStyle = FontStyle.Bold,
-                normal = { textColor = text }
+                normal = { textColor = txt }
             });
 
             if (Event.current.type == EventType.MouseDown && rect.Contains(Event.current.mousePosition))
-            {
-                Event.current.Use();
-                return true;
-            }
+            { Event.current.Use(); return true; }
             return false;
         }
 
-        private float GetTrimStart(SerializedProperty p) =>
-            EditorPrefs.GetFloat(TrimKey(p, "S"), 0f);
+        private float GetTrimStart(SerializedProperty p) => EditorPrefs.GetFloat(TrimKey(p, "S"), 0f);
+        private float GetTrimEnd(SerializedProperty p) => EditorPrefs.GetFloat(TrimKey(p, "E"), 1f);
+        private void SetTrimStart(SerializedProperty p, float v) => EditorPrefs.SetFloat(TrimKey(p, "S"), v);
+        private void SetTrimEnd(SerializedProperty p, float v) => EditorPrefs.SetFloat(TrimKey(p, "E"), v);
 
-        private float GetTrimEnd(SerializedProperty p) =>
-            EditorPrefs.GetFloat(TrimKey(p, "E"), 1f);
+        private string FormatTime(float s) => (int)(s / 60f) + ":" + (s % 60f).ToString("00.00");
 
-        private void SetTrimStart(SerializedProperty p, float v) =>
-            EditorPrefs.SetFloat(TrimKey(p, "S"), v);
-
-        private void SetTrimEnd(SerializedProperty p, float v) =>
-            EditorPrefs.SetFloat(TrimKey(p, "E"), v);
-
-        private string FormatTime(float s)
-        {
-            int m = (int)(s / 60f);
-            return m + ":" + (s % 60f).ToString("00.00");
-        }
-
-        private string WaveKey(SerializedProperty p) => "Wave_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
-        private string VolKey(SerializedProperty p) => "Vol_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
-        private string PitchKey(SerializedProperty p) => "Pitch_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
-        private string TrimKey(SerializedProperty p, string side) => "Trim" + side + "_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
+        private string WaveKey(SerializedProperty p) =>
+            "Wave_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
+        private string TrimKey(SerializedProperty p, string side) =>
+            "Trim" + side + "_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
     }
 }
