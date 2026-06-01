@@ -26,6 +26,10 @@ public class BranchMeshBuilder : MonoBehaviour
     [Tooltip("Graine aléatoire (doit correspondre à celle du générateur pour cohérence)")]
     public int RandomSeed = 42;
 
+    [Tooltip("Multiplicateur de taille de la sphère de jonction (1 = radius du parent à cet endroit)")]
+    [Range(0.5f, 2f)]
+    public float JunctionSphereScale = 1.1f;
+
     [Range(0f, 1f)]
     public float GrowProgress = 1f;
 
@@ -70,56 +74,59 @@ public class BranchMeshBuilder : MonoBehaviour
             }
         }
 
-        // ── 2. Passe 1 : effBase — radius à la base de chaque branche ──
-        // Propagé depuis la racine, tronc = BaseRadius global
-        float[] effBase = new float[count];
-        float[] branchRnd = new float[count]; // multiplicateur random par branche
+        // ── 2 & 3. Radius basé sur la distance depuis la racine ─────────
+        //
+        // distFromRoot[i]    = distance accumulée de la racine jusqu'au début de cette branche
+        // farthestThrough[i] = distance jusqu'à la feuille la plus lointaine qui passe PAR cette branche
+        //
+        // Le gradient BaseRadius→TipRadius est normalisé par farthestThrough[i]
+        // → chaque branche mappe son gradient sur son propre sous-arbre,
+        //   en restant cohérent avec la taille de ses descendants.
 
-        effBase[0] = BaseRadius;
-        branchRnd[0] = 1f;
+        float[] distFromRoot = new float[count];
+        distFromRoot[0] = 0f;
 
-        // On itère en ordre croissant d'index (le tri par depth dans le générateur
-        // garantit que le parent a toujours un index < enfant)
         for (int i = 1; i < count; i++)
         {
             int p = parentOf[i];
             int knotIdx = parentKnotIndex[i];
             float knotCount = container.Splines[p].Count - 1;
             float tOnParent = knotCount > 0 ? (float)knotIdx / knotCount : 0f;
-
-            // Radius du parent à ce t (avec sa TaperCurve)
-            float parentRadiusAtT = Mathf.Lerp(effBase[p], TipRadius, TaperCurve.Evaluate(tOnParent));
-
-            // Variation aléatoire : chaque branche est légèrement différente
-            float variance = 1f + ((float)(rng.NextDouble() * 2 - 1)) * RadiusVariance;
-            branchRnd[i] = variance;
-            effBase[i] = parentRadiusAtT * variance;
+            float parentLen = container.Splines[p].GetLength();
+            distFromRoot[i] = distFromRoot[p] + parentLen * tOnParent;
         }
 
-        // ── 3. Passe 2 : effTip — radius à la pointe de chaque branche ──
-        // Règle : tip = base du fils le plus lointain (knot le plus grand)
-        //         tip = TipRadius si feuille (aucun enfant)
-        float[] effTip = new float[count];
-        int[] farthestKnot = new int[count];
-        int[] farthestChild = new int[count];
+        // Initialise farthestThrough à la longueur propre de chaque spline
+        float[] farthestThrough = new float[count];
+        for (int i = 0; i < count; i++)
+            farthestThrough[i] = distFromRoot[i] + container.Splines[i].GetLength();
 
-        for (int i = 0; i < count; i++) { effTip[i] = TipRadius; farthestKnot[i] = -1; farthestChild[i] = -1; }
-
-        for (int i = 1; i < count; i++)
+        // Propagation bottom-up : chaque parent hérite du max de ses enfants
+        // (tableau trié par depth → enfants après parents → on itère en sens inverse)
+        for (int i = count - 1; i >= 1; i--)
         {
             int p = parentOf[i];
-            int knot = parentKnotIndex[i];
-
-            if (knot > farthestKnot[p])
-            {
-                farthestKnot[p] = knot;
-                farthestChild[p] = i;
-            }
+            if (p >= 0 && farthestThrough[i] > farthestThrough[p])
+                farthestThrough[p] = farthestThrough[i];
         }
 
+        float[] effBase = new float[count];
+        float[] effTip = new float[count];
+
         for (int i = 0; i < count; i++)
-            if (farthestChild[i] != -1)
-                effTip[i] = effBase[farthestChild[i]];
+        {
+            float splineLen = container.Splines[i].GetLength();
+            float norm = farthestThrough[i]; // normalisation par rapport au sous-arbre
+            if (norm <= 0f) norm = 1f;
+
+            float tBase = distFromRoot[i] / norm;
+            float tTip = (distFromRoot[i] + splineLen) / norm;
+
+            float variance = 1f - Mathf.Abs((float)(rng.NextDouble() * 2 - 1)) * RadiusVariance;
+
+            effBase[i] = Mathf.Lerp(BaseRadius, TipRadius, tBase) * variance;
+            effTip[i] = Mathf.Lerp(BaseRadius, TipRadius, tTip) * variance;
+        }
 
         // ── 4. Bake ───────────────────────────────────────────────────
         var allVerts = new List<Vector3>();
@@ -127,8 +134,39 @@ public class BranchMeshBuilder : MonoBehaviour
         var allTris = new List<int>();
 
         for (int i = 0; i < count; i++)
+        {
+            // Pour les branches enfants : on recule le premier anneau dans le parent
+            // pour couvrir le trou à la jonction (sink = enfoncement dans le parent)
+            float sinkDistance = 0f;
+            if (parentOf[i] != -1)
+                sinkDistance = effBase[i]; // on recule d'un radius
+
             BakeSpline(container.Splines[i], effBase[i], effTip[i],
-                       allVerts.Count, allVerts, allUVs, allTris);
+                       sinkDistance, allVerts.Count, allVerts, allUVs, allTris);
+        }
+
+        // ── 5. Sphères de jonction ───────────────────────────────────────
+        // Pour chaque knot parent qui a au moins un enfant, on ajoute une sphère
+        // qui remplit le vide entre le cylindre parent et les cylindres enfants.
+        var junctionsDone = new System.Collections.Generic.HashSet<(int, int)>();
+
+        for (int i = 1; i < count; i++)
+        {
+            int p = parentOf[i];
+            int knot = parentKnotIndex[i];
+            if (p < 0) continue;
+
+            var key = (p, knot);
+            if (junctionsDone.Contains(key)) continue;
+            junctionsDone.Add(key);
+
+            float knotCount = container.Splines[p].Count - 1;
+            float t = knotCount > 0 ? (float)knot / knotCount : 0f;
+            container.Splines[p].Evaluate(t, out Unity.Mathematics.float3 jPos, out _, out _);
+
+            float jRadius = Mathf.Lerp(effBase[p], effTip[p], t) * JunctionSphereScale;
+            BakeJunctionSphere((Vector3)jPos, jRadius, allVerts.Count, allVerts, allUVs, allTris);
+        }
 
         if (BakedMesh == null)
             BakedMesh = new Mesh { name = "Branches_" + gameObject.name };
@@ -148,16 +186,29 @@ public class BranchMeshBuilder : MonoBehaviour
     //  Bake un spline
     // ─────────────────────────────────────────────────────────────────
 
-    void BakeSpline(Spline spline, float baseR, float tipR, int vertexOffset,
+    void BakeSpline(Spline spline, float baseR, float tipR,
+                    float sinkDistance, int vertexOffset,
                     List<Vector3> verts, List<Vector2> uvs, List<int> tris)
     {
         int segsVisible = Mathf.Max(1, Mathf.RoundToInt(Segments * GrowProgress));
         float growScale = GrowCurve.Evaluate(GrowProgress);
 
-        for (int s = 0; s <= segsVisible; s++)
+        // Longueur totale de la spline pour convertir sinkDistance en t
+        float splineLength = spline.GetLength();
+        float sinkT = splineLength > 0f ? sinkDistance / splineLength : 0f;
+
+        // +1 anneau supplémentaire au début si on a un sink (branche enfant)
+        int extraRing = sinkT > 0f ? 1 : 0;
+        int totalRings = segsVisible + extraRing;
+
+        for (int s = 0; s <= totalRings; s++)
         {
-            float tFull = (float)s / Segments;
-            float tLocal = (float)s / segsVisible;
+            // s=0 avec extraRing : anneau "enfoncé" à -sinkT (dans le parent)
+            // s=extraRing..totalRings : anneaux normaux de 0 à 1
+            float tFull = extraRing > 0
+                ? Mathf.Clamp01((float)(s - extraRing) / Segments + (s == 0 ? -sinkT : 0f))
+                : (float)s / Segments;
+            float tLocal = (float)s / totalRings;
             float taper = TaperCurve.Evaluate(tFull);
             float radius = Mathf.Lerp(tipR, baseR, taper) * growScale;
 
@@ -182,13 +233,48 @@ public class BranchMeshBuilder : MonoBehaviour
             }
         }
 
-        for (int s = 0; s < segsVisible; s++)
+        for (int s = 0; s < totalRings; s++)
             for (int v = 0; v < Sides; v++)
             {
                 int a = vertexOffset + s * (Sides + 1) + v;
                 int b = a + (Sides + 1);
                 tris.Add(a); tris.Add(b); tris.Add(a + 1);
                 tris.Add(b); tris.Add(b + 1); tris.Add(a + 1);
+            }
+    }
+    // ─────────────────────────────────────────────────────────────────
+    //  Sphère de jonction — remplit le vide à chaque fork
+    // ─────────────────────────────────────────────────────────────────
+
+    void BakeJunctionSphere(Vector3 center, float radius, int vertexOffset,
+                             List<Vector3> verts, List<Vector2> uvs, List<int> tris)
+    {
+        int rings = Sides;
+        int slices = Sides;
+
+        for (int r = 0; r <= rings; r++)
+        {
+            float phi = Mathf.PI * r / rings;
+            for (int s = 0; s <= slices; s++)
+            {
+                float theta = 2f * Mathf.PI * s / slices;
+                Vector3 p = center + new Vector3(
+                    Mathf.Sin(phi) * Mathf.Cos(theta),
+                    Mathf.Cos(phi),
+                    Mathf.Sin(phi) * Mathf.Sin(theta)
+                ) * radius;
+                verts.Add(p);
+                uvs.Add(new Vector2((float)s / slices, (float)r / rings));
+            }
+        }
+
+        for (int r = 0; r < rings; r++)
+            for (int s = 0; s < slices; s++)
+            {
+                int a = vertexOffset + r * (slices + 1) + s;
+                int b = a + (slices + 1);
+                tris.Add(a); tris.Add(a + 1); tris.Add(b);
+                tris.Add(b); tris.Add(a + 1); tris.Add(b + 1);
             }
     }
 }

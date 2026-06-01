@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
+using System.Linq;
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(SplineContainer))]
@@ -9,34 +10,71 @@ public class ProceduralBranchSplines : MonoBehaviour
 {
     #region Inspector propreties
     [Header("Main branch")]
+    [SerializeField]
     private int _pointsPerBranch = 12;
+    [SerializeField]
     private float _distanceBetweenPoints = 2f;
+    [SerializeField]
     private Vector3 _initialDirection = Vector3.forward;
 
     [Header("Sub branches")]
+    [SerializeField]
     private int _subBranchCount = 3;
-    [Range(0f, 1f)] private float _branchSplitStart = 0.5f;
+    [SerializeField]
+    [Range(0f, 1f)] 
+    private float _branchSplitStart = 0.5f;
     private int _reduceCountMin = 0;
+    [SerializeField]
     private int _reduceCountMax = 1;
-    [Range(5f, 90f)] private float _branchAngleSpread = 35f;
-    [Range(0f, 30f)] private float _branchAngleVariance = 10f;
-    [Range(0, 3)] private int _recursionDepth = 2;
+    [SerializeField]
+    [Range(5f, 90f)] 
+    private float _branchAngleSpread = 35f;
+    [SerializeField]
+    [Range(0f, 30f)] 
+    private float _branchAngleVariance = 10f;
+    [SerializeField]
+    [Range(0, 3)] 
+    private int _recursionDepth = 2;
+    [SerializeField]
+    [Range(0, 1)]
+    private float _maxVerticalAngle = 0.2f;
 
     [Header("Noise and twist")]
-    [Range(0f, 90f)] private float _maxSlopeDeg = 20f;
-    [Range(0f, 2f)] private float _noiseForce = 0.4f;
-    [Range(0.1f, 5f)] private float _noiseFrequency = 1.2f;
-    [Range(0f, 90f)] private float _twistDegreesPerStep = 15f;
-    [Range(0f, 1f)] private float _gravityInfluence = 0.08f;
+    [SerializeField]
+    [Range(0f, 90f)] 
+    private float _maxSlopeDeg = 20f;
+    [SerializeField]
+    [Range(0f, 2f)] 
+    private float _noiseForce = 0.4f;
+    [SerializeField]
+    [Range(0.1f, 5f)] 
+    private float _noiseFrequency = 1.2f;
+    [SerializeField]
+    [Range(0f, 90f)] 
+    private float _twistDegreesPerStep = 15f;
+    [SerializeField]
+    [Range(0f, 1f)] 
+    private float _gravityInfluence = 0.08f;
 
     [Header("Softness by generations")]
-    [Range(0.3f, 1f)] private float _lengthMultiplierPerDepth = 0.65f;
-    [Range(0.3f, 1f)] private float _pointCountMultiplierPerDepth = 0.5f;
+    [SerializeField]
+    [Range(0.3f, 1f)] 
+    private float _lengthMultiplierPerDepth = 0.65f;
+    [SerializeField]
+    [Range(0.3f, 1f)] 
+    private float _pointCountMultiplierPerDepth = 0.5f;
 
     [Header("Advanced param")]
+    [SerializeField]
     private int _seed = 42;
+    [SerializeField]
     private bool _autoRegenerate = false;
-    [Range(0f, 1f)] public float _splineTension = 0.4f;
+    [SerializeField]
+    [Range(0f, 1f)] 
+    private float _splineTension = 0.4f;
+    [SerializeField]
+    private bool _smooth = false;
+
     #endregion
 
     #region Propreties
@@ -157,25 +195,32 @@ public class ProceduralBranchSplines : MonoBehaviour
             noiseVec = Quaternion.AngleAxis(twistAccum, dir) * noiseVec;
 
             Vector3 newDir = (dir + noiseVec).normalized;
-            float angle = Vector3.Angle(dir, newDir);
-            if (angle > _maxSlopeDeg)
-                newDir = Vector3.RotateTowards(dir, newDir, _maxSlopeDeg * Mathf.Deg2Rad, 0f).normalized;
+
+            float maxSlopeY = Mathf.Sin(_maxSlopeDeg * Mathf.Deg2Rad);
+            newDir.y = Mathf.Clamp(newDir.y, -maxSlopeY, maxSlopeY);
+            newDir = newDir.normalized;
+
             dir = newDir;
 
             knotPositions[i] = pos;
             knotDirections[i] = dir;
 
-            float tangentLen = stepDist * 1;//splineTension;
+            float tangentLen = stepDist * _splineTension;
             float3 tangentFwd = (float3)(dir * tangentLen);
             knots.Add(new BezierKnot((float3)(Vector3)pos, -tangentFwd, tangentFwd, quaternion.identity));
 
             pos += dir * stepDist;
         }
 
+
+        var spline = new Spline(knots, false);
+        if (_smooth)
+            spline.SetTangentMode(TangentMode.AutoSmooth);
+
         _pending.Add(new PendingSpline
         {
             Id = myId,
-            Spline = new Spline(knots, false),
+            Spline = spline,
             Depth = depth,
             ParentId = parentId,
             ParentKnotIndex = parentKnotIndex
