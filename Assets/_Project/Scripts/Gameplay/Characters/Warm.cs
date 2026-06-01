@@ -35,7 +35,8 @@ namespace GlimmerOfHope.Gameplay
         private void OnWarm(GameObject target)
         {
             Debug.Log(target.name);
-            target.GetComponent<Collider>().enabled = false;
+            target.GetComponent<Collider>().isTrigger = true;
+            Debug.Log("Warm");
         }
 
         #endregion
