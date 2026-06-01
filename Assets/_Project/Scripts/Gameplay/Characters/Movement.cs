@@ -41,8 +41,13 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         #region Private Fields
 
         private Vector2 _direction;
-        private float _verticalVelocity;
         private bool _movementEnabled = true;
+
+        #endregion
+
+        #region Public Fields
+
+        public float verticalVelocity;
 
         #endregion
 
@@ -61,10 +66,10 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         {
             if (!_movementEnabled) return;
 
-            if (_controller.isGrounded && _verticalVelocity < 0f)
-                _verticalVelocity = -2f;
+            if (_controller.isGrounded && verticalVelocity < 0f)
+                verticalVelocity = -2f;
 
-            _verticalVelocity += _gravity * Time.deltaTime;
+            verticalVelocity += _gravity * Time.deltaTime;
 
             Vector3 cameraForward = _playerCamera.transform.forward;
             Vector3 cameraRight = _playerCamera.transform.right;
@@ -82,7 +87,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.deltaTime);
             }
 
-            moveDirection.y = _verticalVelocity;
+            moveDirection.y = verticalVelocity;
             _controller.Move(moveDirection * _speed * Time.deltaTime);
         }
 
