@@ -3,6 +3,9 @@ using UnityEngine.Events;
 
 namespace GlimmerOfHope.Gameplay
 {
+    /// <summary>
+    /// The WeatherEffect, that decide the action depending on the ObjectType and WeatherEffectType. It has to be attached on each 
+    /// </summary>
     public class WeatherEffect : MonoBehaviour
     {
         public enum WeatherEffectType

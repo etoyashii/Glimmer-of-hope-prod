@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// This is the warm spell, that set isTrigger collider to false for all objects on sphere range if they have Specific Layer setted  
+    /// This is the Shine spell, that try getting WeatherEffect script component for all objects on sphere range if they have Specific Layer setted and then call the effect
     /// </summary>
     public class Shine : MonoBehaviour
     {
@@ -43,6 +43,7 @@ namespace GlimmerOfHope.Gameplay
 
             for (int i = 0; i < raycastHits.Length; i++)
             {
+                //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
                 if (raycastHits[i].transform.gameObject.TryGetComponent<WeatherEffect>(out WeatherEffect weather))
                 {
                     weather.ApplyEffect(WeatherEffect.WeatherEffectType.Sunny);
