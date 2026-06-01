@@ -2,17 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GlimmerOfHope.Gameplay
 {
     [Serializable]
+    /// <summary>
+    /// The combo list that can be setted up by Designers. It allow to specify the combo input based on the button ID (left to right : 0 to 2) and then launch the desired method(s)
+    /// </summary>
     public class Combo
     {
         public List<int> _combo;
-        public GameObject _cubePrefab;
-        public Transform _spawnPoint;
+        public UnityEvent _useSkill;
     }
 
+    /// <summary>
+    /// The manager that check the player input. There's a maximum delay between input before the combo is resetted
+    /// </summary>
     public class SkillNoteManager : MonoBehaviour
     {
         #region SerializeFields
@@ -51,6 +57,7 @@ namespace GlimmerOfHope.Gameplay
 
         #region PublicMethods
 
+        //Called on the OnClick Drum Buttons
         public void ActivateNote(int noteIndex)
         {
             if (_currentChrono != null)
@@ -71,6 +78,7 @@ namespace GlimmerOfHope.Gameplay
 
                 for (int j = 0; j < _comboList[i]._combo.Count; j++)
                 {
+                    //Compare the expected input to the player input
                     if (_comboList[i]._combo[j] == _inputNoteList[j])
                     {
                         _validCheck++;
@@ -79,7 +87,7 @@ namespace GlimmerOfHope.Gameplay
 
                 if (_validCheck == _currentInputNumber && _currentInputNumber == _comboList[i]._combo.Count)
                 {
-                    Instantiate(_comboList[i]._cubePrefab, _comboList[i]._spawnPoint.position, _comboList[i]._spawnPoint.rotation);
+                    _comboList[i]._useSkill?.Invoke();
                     break;
                 }
             }
@@ -87,6 +95,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void SaveNote(int noteIndex)
         {
+            //Security
             if (_currentInputNumber >= _maxNoteNumber)
             {
                 ResetNotes();
@@ -99,6 +108,7 @@ namespace GlimmerOfHope.Gameplay
             _currentChrono = StartCoroutine(NoteTimer(_delayBetweenNotes));
         }
 
+        //Take all note and setup them to the default value
         private void ResetNotes()
         {
             for (int i = 0; i < _inputNoteList.Count; i++)
@@ -115,6 +125,7 @@ namespace GlimmerOfHope.Gameplay
 
         #region Coroutines
 
+        //The timer of the resetter
         private IEnumerator NoteTimer(float delay)
         {
             yield return new WaitForSeconds(delay);
