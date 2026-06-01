@@ -28,6 +28,7 @@ public class ManageStencil : MonoBehaviour
 
     private void Update()
     {
+        //Set the update variable for the shader
         _mat.SetVector("_PlayerPos", player.position);
         _mat.SetFloat("_IsActive", globalShader.viewEmotionIsActive ? 1f : 0f);
         _mat.SetFloat("_Radius", globalShader.radiusSmallCircle * globalShader.currentPropRadius);

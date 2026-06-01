@@ -22,6 +22,7 @@ public class GlobalValueShader : MonoBehaviour
 
     void Start()
     {
+        //Set the unchanging variable of the shader
         Shader.SetGlobalFloat("_RadiusBigCircle", radiusBigCircle);
         Shader.SetGlobalFloat("_RadiusSmallCircle", radiusSmallCircle);
         Shader.SetGlobalColor("_BigCircleColor", bigCircleColor);
@@ -32,16 +33,17 @@ public class GlobalValueShader : MonoBehaviour
 
     private void Update()
     {
+        //set the update variable of the shader
         Shader.SetGlobalVector("_CenterCircle", playerTransform.position);
 
-        if (Keyboard.current.tabKey.wasPressedThisFrame)
+        if (Keyboard.current.tabKey.wasPressedThisFrame) //need to be change for mobile, with a button or something else
         {
             SwitchViewEmotionMode();
         }
 
         if (viewEmotionIsActive)
         {
-            if (currentPropRadius != 1f)
+            if (currentPropRadius != 1f) //if the circle isnt full size
             {
                 currentPropRadius += Time.deltaTime;
 
@@ -53,7 +55,7 @@ public class GlobalValueShader : MonoBehaviour
         }
         else
         {
-            if (currentPropRadius != 0f)
+            if (currentPropRadius != 0f) //if the circle is still visible
             {
                 currentPropRadius -= Time.deltaTime;
 
