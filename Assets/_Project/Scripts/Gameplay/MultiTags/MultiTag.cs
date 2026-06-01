@@ -3,8 +3,10 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
 {
-
-public class MultiTag : MonoBehaviour
+    /// <summary>
+    /// A Multitag Component , when added to a GameObject it provide the possibility to add multiple Tags .
+    /// </summary>
+    public class MultiTag : MonoBehaviour
     {
         #region Serialized Fields
 
