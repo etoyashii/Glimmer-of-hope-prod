@@ -701,13 +701,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 446873704}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 7.6464, y: -1, z: 16.3809}
-  m_LocalScale: {x: 88.08445, y: 1, z: 84.97778}
-  m_ConstrainProportionsScale: 0
+  m_LocalRotation: {x: -0.03799741, y: -0, z: -0, w: 0.99927783}
+  m_LocalPosition: {x: 7.6464, y: -6.3, z: 16.7}
+  m_LocalScale: {x: 130.6, y: 1.4826682, z: 125.99385}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1134251276}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -4.355, y: 0, z: 0}
 --- !u!65 &446873706
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1421,6 +1421,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.WindReturn
   windDuration: 0.6
+  baseDistance: 4
   positionDelay: 0.1
   windCurve:
     serializedVersion: 2

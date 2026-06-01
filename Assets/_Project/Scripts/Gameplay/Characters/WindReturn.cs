@@ -21,6 +21,7 @@ namespace GlimmerOfHope.Gameplay
         #region Public properties
 
         public float windDuration = 0.6f;
+        public float baseDistance = 5f;
         public float positionDelay = 0.4f;
         public AnimationCurve windCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
         public float savePosDelay = 0.4f;
@@ -100,11 +101,14 @@ namespace GlimmerOfHope.Gameplay
 
             float t = 0f;
 
-            while (t < windDuration)
+            float distance = Vector3.Distance(startPos, endPos);
+
+            float duration = windDuration * (distance / baseDistance);
+
+            while (t < duration)
             {
                 t += Time.deltaTime;
-                float ratio = windCurve.Evaluate(t / windDuration);
-                //transform.position = Vector3.Lerp(startPos, lastSafePos, ratio);
+                float ratio = windCurve.Evaluate(t / duration);
                 transform.position = QuadraticBezier(startPos, controlPoint, endPos, ratio);
                 yield return null;
             }
