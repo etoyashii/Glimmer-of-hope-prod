@@ -5,6 +5,9 @@ using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay
 {
+    /// <summary>
+    /// This is the warm spell, that set isTrigger collider to false for all objects on sphere range if they have Specific Layer setted  
+    /// </summary>
     public class Warm : MonoBehaviour
     {
         #region SerializeFields
@@ -25,7 +28,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void Awake()
         {
-            _layerMask = LayerMask.GetMask("TestFreeze");
+            _layerMask = LayerMask.GetMask("SolidLiquify");
         }
 
         #endregion
@@ -34,9 +37,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnWarm(GameObject target)
         {
-            Debug.Log(target.name);
             target.GetComponent<Collider>().isTrigger = true;
-            Debug.Log("Warm");
         }
 
         #endregion
@@ -53,7 +54,6 @@ namespace GlimmerOfHope.Gameplay
             {
                 OnWarm(raycastHits[i].transform.gameObject);
             }
-
         }
 
         #endregion
