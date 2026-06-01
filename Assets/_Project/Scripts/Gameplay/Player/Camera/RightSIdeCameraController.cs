@@ -3,91 +3,117 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.EnhancedTouch;
 using Touch = UnityEngine.InputSystem.EnhancedTouch.Touch;
+using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// For the Thrid Person Camera mouvements
+    /// CameraController using a swipe on the right side of the screen.
+    /// Use EnhancedTouchSupport to avoid conflict with other Touch Inputs.
     /// </summary>
-
-    #region Dependancies
     [RequireComponent(typeof(CinemachineOrbitalFollow))]
-    #endregion
     public class RightSideCameraController : MonoBehaviour
     {
-        #region SerializeFields
+        #region Serialized Fields
         [Header("Sensibility")]
-        [SerializeField] private float horizontalGain = 0.3f;
-        [SerializeField] private float verticalGain = 0.3f;
+        [SerializeField] private float _horizontalGain = 0.3f;
+        [SerializeField] private float _verticalGain = 0.3f;
 
-        [Header("Input Zone")]
+        [Header("Active zone")]
         [Range(0f, 1f)]
-        [Tooltip("Horizontal ratio allowing inputs to control the camera")]
-        [SerializeField] private float horizontalScreenSplitRatio = 0.5f;
-        [Range(0f, 1f)]
-        [Tooltip("Vertical ratio allowing inputs to control the camera")]
-        [SerializeField] private float verticalScreenSplitRatio = 0.2f;
+        [Tooltip("Horizontal limit => every touches left are ignored")]
+        [SerializeField] private float _horizontalSplitRatio = 0.5f;
 
-        [SerializeField] private InputActionReference _lookAction;
+        [Range(0f, 1f)]
+        [Tooltip("Vertical limit => every touches under are ignored")]
+        [SerializeField] private float _verticalSplitRatio = 0.2f;
         #endregion
 
-        #region PrivateFields
+        #region Private Fields
         private CinemachineOrbitalFollow _orbitalFollow;
+        private int _trackedFingerId = -1;
         private Vector2 _lookDelta;
-        private float splitX => Screen.width * horizontalScreenSplitRatio;
-        private float splitY => Screen.height * verticalScreenSplitRatio;
         #endregion
+
         #region Unity Lifecycle
         void Awake()
         {
             _orbitalFollow = GetComponent<CinemachineOrbitalFollow>();
         }
 
-        void OnEnable()
-        {
-            _lookAction.action.Enable();
-            _lookAction.action.started += OnLookStarted;
-            _lookAction.action.performed += OnLookPerformed;
-            _lookAction.action.canceled += OnLookCanceled;
-        }
-
-        void OnDisable()
-        {
-            _lookAction.action.Disable();
-            _lookAction.action.started -= OnLookStarted;
-            _lookAction.action.performed -= OnLookPerformed;
-            _lookAction.action.canceled -= OnLookCanceled;
-        }
+        
+        void OnEnable() => EnhancedTouchSupport.Enable();
+        void OnDisable() => EnhancedTouchSupport.Disable();
 
         void Update()
         {
-            _orbitalFollow.HorizontalAxis.Value += _lookDelta.x * horizontalGain;
-            float newVertical = _orbitalFollow.VerticalAxis.Value - (_lookDelta.y * verticalGain);
-            _orbitalFollow.VerticalAxis.Value = Mathf.Clamp(newVertical, _orbitalFollow.VerticalAxis.Range.x, _orbitalFollow.VerticalAxis.Range.y);
+            _lookDelta = Vector2.zero;
+
+            foreach (var touch in Touch.activeTouches)
+            {
+                switch (touch.phase)
+                {
+                    case TouchPhase.Began:
+                        TryBeginLook(touch);
+                        break;
+
+                    case TouchPhase.Moved:
+                        if (touch.touchId == _trackedFingerId)
+                        {
+                            _lookDelta = touch.delta;
+                        }
+                        break;
+
+                    case TouchPhase.Stationary:
+                        break;
+
+                    case TouchPhase.Ended:
+                    case TouchPhase.Canceled:
+                        if (touch.touchId == _trackedFingerId)
+                            ReleaseLook();
+                        break;
+                }
+            }
+
+            ApplyCameraRotation();
         }
         #endregion
 
         #region Private Methods
-
-        private void OnLookStarted(InputAction.CallbackContext context)
+        private void TryBeginLook(Touch touch)
         {
+            if (_trackedFingerId != -1) return;
+            if (!IsInRightZone(touch.screenPosition)) return;
 
+            _trackedFingerId = touch.touchId;
+            Debug.Log($"[Camera] Tracking finger {_trackedFingerId}");
         }
-        private void OnLookPerformed(InputAction.CallbackContext context)
-        {
 
-            foreach (var touch in Touch.activeTouches)
-            {
-                // Filter touches with their initial position (left touches can't migrate right and vice versa)
-                if (touch.startScreenPosition.x > splitX & touch.startScreenPosition.y > splitY)
-                {
-                    _lookDelta = context.ReadValue<Vector2>();
-                }
-            }
-        }
-        private void OnLookCanceled(InputAction.CallbackContext context)
+        private void ReleaseLook()
         {
+            Debug.Log($"[Camera] Released finger {_trackedFingerId}");
+            _trackedFingerId = -1;
             _lookDelta = Vector2.zero;
+        }
+
+        private void ApplyCameraRotation()
+        {
+            if (_lookDelta == Vector2.zero) return;
+
+            _orbitalFollow.HorizontalAxis.Value += _lookDelta.x * _horizontalGain;
+
+            float newVertical = _orbitalFollow.VerticalAxis.Value - (_lookDelta.y * _verticalGain);
+            _orbitalFollow.VerticalAxis.Value = Mathf.Clamp(
+                newVertical,
+                _orbitalFollow.VerticalAxis.Range.x,
+                _orbitalFollow.VerticalAxis.Range.y
+            );
+        }
+
+        private bool IsInRightZone(Vector2 screenPos)
+        {
+            return screenPos.x > Screen.width * _horizontalSplitRatio
+                && screenPos.y > Screen.height * _verticalSplitRatio;
         }
         #endregion
     }
