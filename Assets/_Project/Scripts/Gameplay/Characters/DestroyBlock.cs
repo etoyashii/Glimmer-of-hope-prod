@@ -1,18 +1,19 @@
-using System;
-using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// This is the warm spell, that set isTrigger collider to false for all objects on sphere range if they have Specific Layer setted  
+    /// This is the DestroyBlock spell, that destroy all objects on sphere range if they have Specific Layer setted
     /// </summary>
-    public class Warm : MonoBehaviour
+    public class DestroyBlock : MonoBehaviour
     {
+
         #region SerializeFields
 
         [SerializeField] private float _delay;
+        [Range(0.5f,5.0f)]
+        [SerializeField] private float _destroyDelay = 1.0f;
 
         #endregion
 
@@ -27,16 +28,17 @@ namespace GlimmerOfHope.Gameplay
 
         private void Awake()
         {
-            _layerMask = LayerMask.GetMask("SolidLiquify");
+            _layerMask = LayerMask.GetMask("DestroyableBlock");
         }
 
         #endregion
 
         #region PrivateMethods
 
-        private void OnWarm(GameObject target)
+        //temporary solution
+        private void OnDestroyBlock(GameObject target)
         {
-            target.GetComponent<Collider>().isTrigger = true;
+            StartCoroutine(WaitToDestroy(_destroyDelay, target));
         }
 
         #endregion
@@ -51,8 +53,18 @@ namespace GlimmerOfHope.Gameplay
 
             for (int i = 0; i < raycastHits.Length; i++)
             {
-                OnWarm(raycastHits[i].transform.gameObject);
+                OnDestroyBlock(raycastHits[i].transform.gameObject);
             }
+        }
+
+        #endregion
+
+        #region Coroutines
+
+        IEnumerator WaitToDestroy(float delay, GameObject go)
+        {
+            yield return new WaitForSeconds(delay);
+            Destroy(go);
         }
 
         #endregion
