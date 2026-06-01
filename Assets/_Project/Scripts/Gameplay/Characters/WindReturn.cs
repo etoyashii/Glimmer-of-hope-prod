@@ -8,6 +8,7 @@ namespace GlimmerOfHope.Gameplay
 {
     #region Dependencies
 
+    //needed for the isgrounded
     [RequireComponent(typeof(CharacterController))]
 
     #endregion
@@ -20,19 +21,32 @@ namespace GlimmerOfHope.Gameplay
     {
         #region Public properties
 
+        //the total time of the return. Depends on the distance
         public float windDuration = 0.6f;
         public float baseDistance = 5f;
+
+        //delay so we dont return at the edge of the plateform
         public float positionDelay = 0.4f;
+
+        //curve use to move the object from one point to the other
         public AnimationCurve windCurve = AnimationCurve.EaseInOut(0, 0, 1, 1);
+
+        //start to save new pos after you return from a fall
         public float savePosDelay = 0.4f;
 
         #endregion
 
         #region Private Properties
 
+        //queue used to save position depending on the time. We only use the recents one
         private Queue<(Vector3 pos, float time)> _positionBuffer = new Queue<(Vector3, float)>(); 
+
+        //last pos save while being on the ground
         private Vector3 _lastSafePos;
+
+        //if we are currently in the return animation
         private bool _isReturning;
+
         private CharacterController _cc;
         private Movement _movement;
         private float _savePosCooldown = 0f;
@@ -56,12 +70,12 @@ namespace GlimmerOfHope.Gameplay
             {
                 float now = Time.time;
 
-                _positionBuffer.Enqueue((transform.position, now));
+                _positionBuffer.Enqueue((transform.position, now)); //add to the queue with the time
 
                 while (_positionBuffer.Count > 1 &&
                        now - _positionBuffer.Peek().time >= positionDelay)
                 {
-                    _lastSafePos = _positionBuffer.Dequeue().pos;
+                    _lastSafePos = _positionBuffer.Dequeue().pos; //update last safe pos with the end value of the queue
                 }
             }
         }
@@ -86,12 +100,14 @@ namespace GlimmerOfHope.Gameplay
         {
             _isReturning = true;
 
+            //to avoid any movement during the animation
             _cc.enabled = false;
             _movement.enabled = false;
 
             Vector3 startPos = transform.position;
             Vector3 endPos = _lastSafePos;
 
+            //needed for the bezier curve
             float arcHeight = Mathf.Max(3f, Mathf.Abs(endPos.y - startPos.y) * 1.2f);
             Vector3 controlPoint = new Vector3(
                 (startPos.x + endPos.x) / 2f,
@@ -100,9 +116,7 @@ namespace GlimmerOfHope.Gameplay
                 );
 
             float t = 0f;
-
             float distance = Vector3.Distance(startPos, endPos);
-
             float duration = windDuration * (distance / baseDistance);
 
             while (t < duration)
