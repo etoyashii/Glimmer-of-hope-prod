@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -9,6 +10,7 @@ namespace GlimmerOfHope.Gameplay
     public class Combo
     {
         public List<int> _combo;
+        public UnityEvent _useSkill;
         public GameObject _cubePrefab;
         public Transform _spawnPoint;
     }
@@ -79,7 +81,8 @@ namespace GlimmerOfHope.Gameplay
 
                 if (_validCheck == _currentInputNumber && _currentInputNumber == _comboList[i]._combo.Count)
                 {
-                    Instantiate(_comboList[i]._cubePrefab, _comboList[i]._spawnPoint.position, _comboList[i]._spawnPoint.rotation);
+                    _comboList[i]._useSkill?.Invoke();
+                    //Instantiate(_comboList[i]._cubePrefab, _comboList[i]._spawnPoint.position, _comboList[i]._spawnPoint.rotation);
                     break;
                 }
             }
