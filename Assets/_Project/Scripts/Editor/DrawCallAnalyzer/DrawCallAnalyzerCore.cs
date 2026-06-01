@@ -6,7 +6,7 @@ namespace GlimmerOfHope.Editor
 {
     public partial class DrawCallAnalyzer : EditorWindow
     {
-        [MenuItem("Tools/Draw Call Analyzer %#d")]
+        [MenuItem("Tools/GlimmerOfHope/Draw Call Analyzer %#d")]
 
         #region Public Methods
         public static void OpenWindow()
