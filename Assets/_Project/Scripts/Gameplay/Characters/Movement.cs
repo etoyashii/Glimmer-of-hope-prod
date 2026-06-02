@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 using Unity.Cinemachine;
+using System;
 
 namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 {
@@ -38,6 +39,13 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         #endregion
 
+        #region Event Actions
+
+        public event Action OnPlayerStartMoving;
+        public event Action OnPlayerStopMoving;
+
+        #endregion
+
         #region Private Fields
 
         private Vector2 _direction;
@@ -53,8 +61,6 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _moveAction.action.Enable();
             _moveAction.action.performed += OnMovementStarted;
             _moveAction.action.canceled += OnMovementCanceled;
-
-
         }
 
         private void Update()
@@ -91,8 +97,6 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _moveAction.action.Disable();
             _moveAction.action.performed -= OnMovementStarted;
             _moveAction.action.canceled -= OnMovementCanceled;
-
-
         }
 
         #endregion
@@ -113,11 +117,13 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         private void OnMovementStarted(InputAction.CallbackContext context)
         {
             _direction = context.ReadValue<Vector2>();
+            OnPlayerStartMoving?.Invoke();
         }
 
         private void OnMovementCanceled(InputAction.CallbackContext context)
         {
             _direction = Vector2.zero;
+            OnPlayerStopMoving?.Invoke();
         }
 
         #endregion
