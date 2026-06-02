@@ -31,7 +31,7 @@ public class BrushManagerEditor : Editor
         BrushManager drawer = (BrushManager)target;
         List<AssetTemplate> assets = drawer.Assets;
         bool deleteMod = drawer.DeleteMode;
-        bool lastActionWasAdd = true;
+        bool lastActionWasAdd = drawer._lastActionWasAdd;
         int totalWeight = 0;
 
         // Calculate total weight for all asset templates
@@ -59,6 +59,7 @@ public class BrushManagerEditor : Editor
         {
             if (e.keyCode == KeyCode.Z)
             {
+                Debug.Log(lastActionWasAdd);
                 if (lastActionWasAdd)
                 {
                     // Undo: move last placed asset to inactive storage
@@ -69,7 +70,7 @@ public class BrushManagerEditor : Editor
                         toDelete.SetActive(false);
                     }
                     // Limit inactive storage size
-                    if (drawer.StokageAssetsUseless.transform.childCount > 10)
+                    if (drawer.StokageAssetsUseless.transform.childCount > drawer.RevertNumber)
                     {
                         DestroyImmediate(drawer.StokageAssetsUseless.transform.GetChild(0).gameObject);
                     }
@@ -137,18 +138,20 @@ public class BrushManagerEditor : Editor
             deleteMod = drawer.DeleteMode;
             if (!deleteMod)
             {
-                lastActionWasAdd = true;
+                drawer._lastActionWasAdd = true;
+                lastActionWasAdd = drawer._lastActionWasAdd;
                 GameObject newGO = new GameObject("TempParent");
                 newGO.transform.parent = drawer.StokageAssets.transform;
                 e.Use();
             }
             else
             {
-                lastActionWasAdd = false;
+                drawer._lastActionWasAdd = false;
+                lastActionWasAdd = drawer._lastActionWasAdd;
                 GameObject newGO = new GameObject("TempParent");
                 newGO.transform.parent = drawer.StokageAssetsUseless.transform;
                 newGO.SetActive(false);
-                if (drawer.StokageAssetsUseless.transform.childCount > 10)
+                if (drawer.StokageAssetsUseless.transform.childCount > drawer.RevertNumber)
                 {
                     DestroyImmediate(drawer.StokageAssetsUseless.transform.GetChild(0).gameObject);
                 }
@@ -159,6 +162,16 @@ public class BrushManagerEditor : Editor
         // Clean up empty temporary parents on mouse up
         if (e.type == EventType.MouseUp)
         {
+            if (!deleteMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
+            {
+                drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
+                lastActionWasAdd = drawer._lastActionWasAdd;
+            }
+            if (deleteMod && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
+            {
+                drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
+                lastActionWasAdd = drawer._lastActionWasAdd;
+            }
             foreach (Transform child in drawer.StokageAssets.transform)
             {
                 if (child.childCount == 0)
@@ -180,7 +193,7 @@ public class BrushManagerEditor : Editor
         {
             lastActionWasAdd = true;
 
-            int assetsToSpawn = 10 * (int)(drawer._circleRadius / 5);
+            int assetsToSpawn = 10 * (int)( Mathf.Max(5, drawer._circleRadius) / 5);
             invertDensity = 1f / drawer.Density;
 
             for (int i = 0; i < assetsToSpawn; i++)
