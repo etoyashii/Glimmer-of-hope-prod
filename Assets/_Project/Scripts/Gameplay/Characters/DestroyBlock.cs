@@ -4,16 +4,13 @@ using UnityEngine;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// This is the DestroyBlock spell, that destroy all objects on sphere range if they have Specific Layer setted
+    /// This is the DestroyBlock spell, that try getting DestroyEffect script component for all objects on sphere range if they have Specific Layer setted and then call the effect
     /// </summary>
     public class DestroyBlock : MonoBehaviour
     {
-
         #region SerializeFields
 
         [SerializeField] private float _delay;
-        [Range(0.5f,5.0f)]
-        [SerializeField] private float _destroyDelay = 1.0f;
 
         #endregion
 
@@ -33,16 +30,6 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
-        #region PrivateMethods
-
-        //temporary solution
-        private void OnDestroyBlock(GameObject target)
-        {
-            StartCoroutine(WaitToDestroy(_destroyDelay, target));
-        }
-
-        #endregion
-
         #region PublicMethods
 
         public void UseSkill()
@@ -53,7 +40,11 @@ namespace GlimmerOfHope.Gameplay
 
             for (int i = 0; i < raycastHits.Length; i++)
             {
-                OnDestroyBlock(raycastHits[i].transform.gameObject);
+                //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
+                if (raycastHits[i].transform.gameObject.TryGetComponent<DestroyEffect>(out DestroyEffect destroyEffect))
+                {
+                    destroyEffect.DestroyThis();
+                }
             }
         }
 
