@@ -24,6 +24,7 @@ namespace GlimmerOfHope.Core
         [SerializeField] private bool _deleteMode = false;            // Toggle delete mode
         [Range(1f, 10f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
+        [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
         #endregion
 
         #region Private Fields
@@ -33,6 +34,7 @@ namespace GlimmerOfHope.Core
 
         #region Public Properties
         public float _circleRadius = 5f; // Radius of the brush circle
+        [HideInInspector] public bool _lastActionWasAdd = true; // If action was add Asset = true else false
         public List<AssetTemplate> Assets => _assets;
         public GameObject StokageAssets => _stokageAssets;
         public GameObject StokageAssetsUseless => _stokageAssetsUseless;
@@ -42,6 +44,7 @@ namespace GlimmerOfHope.Core
         public int GroundLayerMask => _groundLayerMask;
         public Vector3 Pos => _pos;
         public float RaycastDistance => RAYCAST_DISTANCE;
+        public int RevertNumber => _revertNumber;
         public void SetPos(Vector3 pos) { _pos = pos; }
         #endregion
 
