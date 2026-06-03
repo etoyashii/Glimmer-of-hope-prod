@@ -232,6 +232,7 @@ public class BrushManagerEditor : Editor
                     );
                     // Random rotation and scale
                     newnewGO.transform.Rotate(Vector3.up, Random.Range(0f, 360f));
+                    newnewGO.transform.Rotate(Vector3.right, 90f);
                     float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
                     newnewGO.transform.localScale = Vector3.one * newScale;
                 }
