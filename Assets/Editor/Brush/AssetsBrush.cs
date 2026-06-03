@@ -51,7 +51,6 @@ public class BrushManagerEditor : Editor
         {
             drawer.SetPos(hit.point);
             drawer.transform.position = hit.point;
-            Debug.Log(drawer.transform.position);
             SceneView.RepaintAll();
         }
 
