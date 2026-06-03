@@ -13,7 +13,6 @@ namespace GlimmerOfHope.Gameplay
         #region SerializeFields
 
         [SerializeField] private float _delay;
-        [SerializeField] private SkillNoteManager _skillNoteManager;
 
         #endregion
 
