@@ -23,13 +23,16 @@ namespace GlimmerOfHope.Gameplay
         private bool _isPlanningActive = false;
         #endregion
 
+        #region Unity Lifecycle
         private void Update()
         {
+            //Make sure that the planner is always desabled while the palyer is on the ground
             if (_controller.isGrounded)
             {
                 if (_isPlanningActive) _isPlanningActive = false;
             }
             
+            //Lerps the vertical velocity of the player to the maximum falling speed when planer is active
             if (_isPlanningActive)
             {
                 if (_playerMovement.verticalVelocity <= _planningVerticalVelocity)
@@ -38,7 +41,10 @@ namespace GlimmerOfHope.Gameplay
                 }
             }
         }
+        #endregion
+
         #region Public Methods
+        // Method called on the button that triggers and cancel the planner 
         public void PerformPlaner()
         {
             if (_controller.isGrounded) return;

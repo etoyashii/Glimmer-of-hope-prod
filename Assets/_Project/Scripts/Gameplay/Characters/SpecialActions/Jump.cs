@@ -28,6 +28,7 @@ namespace GlimmerOfHope.Gameplay
         #endregion
 
         #region Public Methods
+        //Give the player a vertical impulse of the jumpForce value 
         public void PerformJump(float jumpForce)
         {
 
