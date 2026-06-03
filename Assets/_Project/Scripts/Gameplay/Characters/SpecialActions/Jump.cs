@@ -14,11 +14,17 @@ namespace GlimmerOfHope.Gameplay
     public class Jump : MonoBehaviour
     {
         #region SerializedField
+        [Header("Refs")]
+        [Tooltip("Controller of the Player")]
         [SerializeField] private CharacterController _controller;
         [SerializeField] private Movement _playerMovement;
-        [SerializeField] private float _jumpImpulseLimit;
+
+        [Tooltip("VFX of Jump and Impulse")]
         [SerializeField] private  ParticleSystem _jumpVFX;
         [SerializeField] private  ParticleSystem _impulseVFX;
+
+        [Tooltip("Maximum jump strength Value of a Jump / Minimum jump strength value of an Impulse")]
+        [SerializeField] private float _jumpImpulseLimit;
         #endregion
 
         #region Public Methods
