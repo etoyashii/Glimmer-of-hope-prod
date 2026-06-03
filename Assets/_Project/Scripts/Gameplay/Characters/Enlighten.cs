@@ -35,6 +35,9 @@ namespace GlimmerOfHope.Gameplay
 
         #region Coroutines
 
+        //Increase or decrease light intensity depending on context (isIncreased boolean)
+        //It's a smooth transition (SmoothStep) startIntensity to targetIntensity (0 or 12) delayed by time
+        //and then secure float values the light intensity by setting up to the target
         IEnumerator SwitchLight(float delay, bool isIncreased)
         {
             float startIntensity = _light.intensity;

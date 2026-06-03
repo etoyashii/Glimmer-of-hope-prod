@@ -32,6 +32,10 @@ namespace GlimmerOfHope.Gameplay
 
         #region PublicMethods
 
+        //Use a sphere raycast to detect specific objects based on specified layer
+        //then check if the detected objects contains the DestroyEffect component
+        //because we need to use the DestroyThis method contained on this script.
+        //So only the objects that have DestroyEffect can be used (and destroy)
         public void UseSkill()
         {
             Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
