@@ -54,7 +54,10 @@ namespace GlimmerOfHope.Core
             _groundLayerMask = _groundLayer.value;
         }
 
-        void Update() { }
+        void Update()
+        { 
+            
+        }
         #endregion
 
         #region Private Methods
