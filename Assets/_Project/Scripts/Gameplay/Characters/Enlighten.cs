@@ -59,7 +59,7 @@ namespace GlimmerOfHope.Gameplay
         {
             Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
 
-            RaycastHit[] raycastHits = Physics.SphereCastAll(ray, 1.0f, _lightRange, _layerMask);
+            RaycastHit[] raycastHits = Physics.SphereCastAll(ray, _lightRange, 1.0f, _layerMask);
 
             for (int i = 0; i < raycastHits.Length; i++)
             {

@@ -1213,12 +1213,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 526387337}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.26, y: 0, z: -3.44}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -395.71, y: 88.57, z: -149.87}
   m_LocalScale: {x: 2.0076, y: 2.0076, z: 2.0076}
   m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1233252398}
+  m_Children:
+  - {fileID: 1241715716}
+  - {fileID: 826519509}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &526387342
 MonoBehaviour:
@@ -1234,8 +1236,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Elevate
   _startPoint: {fileID: 1241715716}
   _endPoint: {fileID: 826519509}
-  _velocity: {x: 2, y: 2, z: 2}
-  _movementDuration: 3
   _entityType: 1
 --- !u!1 &540935391
 GameObject:
@@ -1643,7 +1643,7 @@ MonoBehaviour:
   _minIntensity: 0
   _maxIntensity: 12
   _transitionDelay: 1
-  _lightRange: 3.9
+  _lightRange: 2
 --- !u!1 &624254997
 GameObject:
   m_ObjectHideFlags: 0
@@ -2312,12 +2312,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 826519508}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.99, z: -5.35}
-  m_LocalScale: {x: 2.0076, y: 2.0076, z: 2.0076}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1233252398}
+  m_Father: {fileID: 526387341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &834336423
 GameObject:
@@ -2949,40 +2949,6 @@ Transform:
   - {fileID: 1596869059}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1233252397
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1233252398}
-  m_Layer: 0
-  m_Name: Flower
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1233252398
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1233252397}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -394.59, y: 88.57, z: -149.87}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 1241715716}
-  - {fileID: 826519509}
-  - {fileID: 526387341}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1241715715
 GameObject:
   m_ObjectHideFlags: 0
@@ -3007,12 +2973,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241715715}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.0076, y: 2.0076, z: 2.0076}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1233252398}
+  m_Father: {fileID: 526387341}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1267114962
 GameObject:
@@ -4160,8 +4126,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Elevate
   _startPoint: {fileID: 1762158326}
   _endPoint: {fileID: 1761504600}
-  _velocity: {x: 2, y: 2, z: 2}
-  _movementDuration: 0
   _entityType: 1
 --- !u!23 &1714539416
 MeshRenderer:
@@ -66324,5 +66288,5 @@ SceneRoots:
   - {fileID: 37711331}
   - {fileID: 905183878}
   - {fileID: 1506338058}
-  - {fileID: 1233252398}
+  - {fileID: 526387341}
   - {fileID: 1714539418}
