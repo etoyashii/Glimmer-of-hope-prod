@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -16,6 +17,24 @@ namespace GlimmerOfHope.Gameplay
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _maxIntensity = 12.0f;
         [SerializeField] private float _transitionDelay = 1.0f;
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _lightRange = 2.0f;
+
+        #endregion
+
+        #region PrivateFields
+
+        private LayerMask _layerMask;
+
+        #endregion
+
+
+        #region UnityLifecycle
+
+        private void Awake()
+        {
+            _layerMask = LayerMask.GetMask("LightSensitive");
+        }
 
         #endregion
 
@@ -33,6 +52,27 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
+        #region PrivateMethods
+
+        //Use sphere raycast to detect 
+        private void DetectEntities()
+        {
+            Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
+
+            RaycastHit[] raycastHits = Physics.SphereCastAll(ray, 1.0f, _lightRange, _layerMask);
+
+            for (int i = 0; i < raycastHits.Length; i++)
+            {
+                //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
+                if (raycastHits[i].transform.gameObject.TryGetComponent<LightReaction>(out LightReaction lightReaction))
+                {
+                    lightReaction.ReactionToLight();
+                }
+            }
+        }
+
+        #endregion
+
         #region Coroutines
 
         //Increase or decrease light intensity depending on context (isIncreased boolean)
@@ -43,6 +83,8 @@ namespace GlimmerOfHope.Gameplay
             float startIntensity = _light.intensity;
             float elapsedTime = 0f;
             float targetIntensity;
+
+            DetectEntities();
 
             if (isIncreased)
                 targetIntensity = _maxIntensity;
@@ -57,7 +99,23 @@ namespace GlimmerOfHope.Gameplay
             }
 
             _light.intensity = targetIntensity;
+        }
 
+        #endregion
+
+        #region Editor
+
+        private void OnDrawGizmos()
+        {
+            // Set the color with custom alpha.
+            Gizmos.color = new Color(1f, 0f, 0f, 1.0f); // Red with custom alpha
+
+            // Draw the sphere.
+            Gizmos.DrawSphere(transform.position, _lightRange);
+
+            // Draw wire sphere outline.
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position, _lightRange);
         }
 
         #endregion
