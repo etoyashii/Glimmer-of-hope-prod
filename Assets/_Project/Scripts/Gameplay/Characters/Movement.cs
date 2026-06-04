@@ -72,6 +72,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             if (_controller.isGrounded && verticalVelocity < 0f)
                 verticalVelocity = -2f;
 
+            //Gravity + AirCurrent upwards if in one
             float verticalCurrent = _inAirCurrent ? _airCurrentForce.y : 0f;
             verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
 
@@ -82,20 +83,20 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             cameraForward.Normalize();
             cameraRight.Normalize();
 
+            //Position + AirCurrent horizontal if in one
             Vector3 moveDirection = (cameraRight * _direction.x + cameraForward * _direction.y).normalized;
-
             if (_inAirCurrent)
                 moveDirection += new Vector3(_airCurrentForce.x, 0f, _airCurrentForce.z) * Time.deltaTime;
 
+            //Rotation
             if (moveDirection.magnitude > 0.1f)
             {
                 Quaternion toRotate = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.deltaTime);
             }
 
-
+            //Apply Everything to move the Player
             moveDirection.y = verticalVelocity;
-
             _controller.Move(moveDirection * _speed * Time.deltaTime);
         }
 
@@ -119,6 +120,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             if (!enabled) _direction = Vector2.zero;
         }
 
+        //Method called in WindCurrent.cs
         public void SetAirCurrent(bool active, Vector3 airCurrentForce = default)
         {
             _inAirCurrent = active;

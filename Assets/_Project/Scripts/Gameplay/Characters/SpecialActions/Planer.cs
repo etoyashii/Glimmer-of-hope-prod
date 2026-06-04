@@ -26,7 +26,7 @@ namespace GlimmerOfHope.Gameplay
         #region Unity Lifecycle
         private void Update()
         {
-            //Make sure that the planner is always desabled while the palyer is on the ground
+            //Make sure that the planner is always desabled while the player is on the ground
             if (_controller.isGrounded)
             {
                 if (_isPlanningActive) _isPlanningActive = false;
