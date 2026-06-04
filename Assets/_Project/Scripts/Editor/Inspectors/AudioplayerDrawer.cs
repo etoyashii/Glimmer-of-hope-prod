@@ -3,9 +3,15 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Editor
 {
+    /// <summary>
+    /// PropertyDrawer pour AudioPlayerAttribute.
+    /// Affiche une Waveform interactive avec contrôles Play/Stop.
+    /// Lecture des paramètres de l'AudioSource du GameObject.
+    /// </summary>
     [CustomPropertyDrawer(typeof(AudioPlayerAttribute))]
     public class AudioplayerDrawer : PropertyDrawer
     {
+        #region Constantes Layout
         private const float _SPACING = 4f;
         private const float _WAVEFORM_DEFAULT = 80f;
         private const float _WAVEFORM_MIN = 40f;
@@ -15,16 +21,20 @@ namespace GlimmerOfHope.Editor
         private const float _BTN_WIDTH = 48f;
         private const float _MARKER_WIDTH = 2f;
 
-        // Handle + Controls + AudioSourceInfo + Trim + padding
+        //                               Handle     +   Controls  +   ASInfo    +    Trim     + padding
         private float ExtraHeight => _HANDLE_HEIGHT + _ROW_HEIGHT + _ROW_HEIGHT + _ROW_HEIGHT + 6f;
+        #endregion
 
+        #region État statique
         private static bool _updateRegistered = false;
         private static AudioSource _tempSource = null;
         private static AudioSource _activeSource = null;
 
         private static System.Collections.Generic.Dictionary<string, int> _prevClipID
             = new System.Collections.Generic.Dictionary<string, int>();
+        #endregion
 
+        #region AudioUtil
         private static System.Type _audioUtil;
         private static System.Type AudioUtil
         {
@@ -103,6 +113,29 @@ namespace GlimmerOfHope.Editor
                 null, new System.Type[] { typeof(AudioClip), typeof(int) }, null);
             m?.Invoke(null, new object[] { clip, sample });
         }
+        #endregion
+
+        #region Editor Update
+        private static void EnsureUpdate()
+        {
+            if (_updateRegistered) return;
+            EditorApplication.update += OnEditorUpdate;
+            _updateRegistered = true;
+        }
+
+        private static void OnEditorUpdate()
+        {
+            if (IsPlayingClip())
+                UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
+        }
+        #endregion
+
+        #region AudioSource Helper
+        private static AudioSource GetAudioSource(SerializedProperty property)
+        {
+            var mono = property.serializedObject.targetObject as MonoBehaviour;
+            return mono != null ? mono.GetComponent<AudioSource>() : null;
+        }
 
         private static AudioSource GetOrCreatePlayModeSource(SerializedProperty property)
         {
@@ -118,26 +151,9 @@ namespace GlimmerOfHope.Editor
             }
             return _tempSource;
         }
+        #endregion
 
-        private static void EnsureUpdate()
-        {
-            if (_updateRegistered) return;
-            EditorApplication.update += OnEditorUpdate;
-            _updateRegistered = true;
-        }
-
-        private static void OnEditorUpdate()
-        {
-            if (IsPlayingClip())
-                UnityEditorInternal.InternalEditorUtility.RepaintAllViews();
-        }
-
-        private static AudioSource GetAudioSource(SerializedProperty property)
-        {
-            var mono = property.serializedObject.targetObject as MonoBehaviour;
-            return mono != null ? mono.GetComponent<AudioSource>() : null;
-        }
-
+        #region PropertyDrawer
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (property.objectReferenceValue == null)
@@ -198,9 +214,9 @@ namespace GlimmerOfHope.Editor
 
             EditorGUI.EndProperty();
         }
+        #endregion
 
-        //Waveform
-
+        #region Draw Waveform
         private void DrawWaveform(Rect rect, SerializedProperty property, AudioClip clip)
         {
             int w = Mathf.Max(1, (int)rect.width);
@@ -254,7 +270,9 @@ namespace GlimmerOfHope.Editor
 
             HandleWaveformInput(rect, property, clip);
         }
+        #endregion
 
+        #region Input Waveform
         private enum DragMode { None, TrimStart, TrimEnd, Seek }
         private static DragMode _dragMode = DragMode.None;
 
@@ -297,8 +315,9 @@ namespace GlimmerOfHope.Editor
                 ev.Use();
             }
         }
+        #endregion
 
-        //Controls
+        #region Draw Controls
         private void DrawControls(Rect rect, SerializedProperty property, AudioClip clip)
         {
             float x = rect.x;
@@ -329,7 +348,9 @@ namespace GlimmerOfHope.Editor
                 new GUIStyle(EditorStyles.miniLabel)
                 { normal = { textColor = new Color(0.7f, 0.7f, 0.7f) } });
         }
+        #endregion
 
+        #region Draw AudioSource Info
         private void DrawAudioSourceInfo(Rect rect, SerializedProperty property)
         {
             AudioSource src = GetAudioSource(property);
@@ -364,7 +385,9 @@ namespace GlimmerOfHope.Editor
                 GUI.Label(left, "(Volume, Pitch, etc.. Play Mode uniquement)", style);
             }
         }
+        #endregion
 
+        #region Draw Trim / Warning / Handle
         private void DrawTrimInfo(Rect rect, SerializedProperty property, AudioClip clip)
         {
             float tStart = GetTrimStart(property) * clip.length;
@@ -420,7 +443,9 @@ namespace GlimmerOfHope.Editor
 
             EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeVertical);
         }
+        #endregion
 
+        #region Boutons
         private bool DrawButton(Rect rect, string label, bool active)
         {
             Color bg = active ? new Color(0.28f, 0.65f, 1f) : new Color(0.22f, 0.22f, 0.22f);
@@ -440,17 +465,22 @@ namespace GlimmerOfHope.Editor
             { Event.current.Use(); return true; }
             return false;
         }
+        #endregion
 
+        #region Trim State
         private float GetTrimStart(SerializedProperty p) => EditorPrefs.GetFloat(TrimKey(p, "S"), 0f);
         private float GetTrimEnd(SerializedProperty p) => EditorPrefs.GetFloat(TrimKey(p, "E"), 1f);
         private void SetTrimStart(SerializedProperty p, float v) => EditorPrefs.SetFloat(TrimKey(p, "S"), v);
         private void SetTrimEnd(SerializedProperty p, float v) => EditorPrefs.SetFloat(TrimKey(p, "E"), v);
+        #endregion
 
+        #region Helpers
         private string FormatTime(float s) => (int)(s / 60f) + ":" + (s % 60f).ToString("00.00");
 
         private string WaveKey(SerializedProperty p) =>
             "Wave_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
         private string TrimKey(SerializedProperty p, string side) =>
             "Trim" + side + "_" + p.serializedObject.targetObject.GetInstanceID() + "_" + p.propertyPath;
+        #endregion    
     }
 }

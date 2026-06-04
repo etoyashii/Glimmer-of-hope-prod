@@ -4,15 +4,22 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Editor
 {
+    /// <summary>
+    /// PropertyDrawer pour SliderAttribute.
+    /// Affiche un slider sous le champ natif d'Unity.
+    /// </summary>
     [CustomPropertyDrawer(typeof(SliderAttribute))]
     public class SliderDrawer : PropertyDrawer
     {
+        #region Constantes
         private const float _SLIDER_HEIGHT = 16f;
         private const float _SPACING = 3f;
         private const float _TRACK_HEIGHT = 6f;
         private const float _THUMB_SIZE = 12f;
         private const float _LABEL_WIDTH = 30f;
+        #endregion
 
+        #region PropertyDrawer
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             return EditorGUIUtility.singleLineHeight + _SPACING + _SLIDER_HEIGHT;
@@ -51,7 +58,9 @@ namespace GlimmerOfHope.Editor
 
             EditorGUI.EndProperty();
         }
+        #endregion
 
+        #region Draw
         private void DrawCustomSlider(Rect rect, SerializedProperty property, SliderAttribute attr)
         {
             float currentValue = property.propertyType == SerializedPropertyType.Float
@@ -124,6 +133,9 @@ namespace GlimmerOfHope.Editor
             if (overTrack || GUIUtility.hotControl == id)
                 EditorGUIUtility.AddCursorRect(track, MouseCursor.SlideArrow);
         }
+        #endregion
+
+        #region Helpers
         private void ApplyMouseX(float mouseX, Rect track,
                                   SerializedProperty property, SliderAttribute attr)
         {
@@ -146,5 +158,6 @@ namespace GlimmerOfHope.Editor
 
             return v.ToString("F1");
         }
+        #endregion
     }
 }

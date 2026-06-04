@@ -3,14 +3,21 @@ using UnityEditor;
 
 namespace GlimmerOfHope.Editor
 {
+    /// <summary>
+    /// PropertyDrawer pour TexturePreviewAttribute.
+    /// Affiche une preview sous le champ Sprite, Texture2D et Material.
+    /// </summary>
     [CustomPropertyDrawer(typeof(TexturePreviewAttribute))]
     public class TexturePreviewDrawer : PropertyDrawer  
     {
+        #region Constantes
         private const float _MIN_PREVIEW_HEIGHT = 64f;    
         private const float _MAX_PREVIEW_HEIGHT = 512f;    
         private const float _HANDLE_HEIGHT = 8f;    
         private const float _SPACING = 4f;
+        #endregion
 
+        #region PropertyDrawer
         public override float GetPropertyHeight(SerializedProperty property, GUIContent label)
         {
             if (!HasPreview(property))
@@ -48,8 +55,9 @@ namespace GlimmerOfHope.Editor
 
             EditorGUI.EndProperty();
         }
+        #endregion
 
-        //DRAW
+        #region Draw
         private void DrawPreview(Rect rect, SerializedProperty property)
         {
             EditorGUI.DrawRect(rect, new Color(0.12f, 0.12f, 0.12f));
@@ -125,8 +133,9 @@ namespace GlimmerOfHope.Editor
 
             EditorGUIUtility.AddCursorRect(rect, MouseCursor.ResizeVertical);
         }
+        #endregion
 
-        //--HELPERS--
+        #region Helpers
         private bool HasPreview(SerializedProperty property)
         {
             Object obj = property.objectReferenceValue;
@@ -180,5 +189,6 @@ namespace GlimmerOfHope.Editor
                 + property.serializedObject.targetObject.GetInstanceID()
                 + "_" + property.propertyPath;
         }
+        #endregion
     }
 }

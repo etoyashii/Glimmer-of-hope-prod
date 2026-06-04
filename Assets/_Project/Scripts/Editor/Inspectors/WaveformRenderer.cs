@@ -5,10 +5,11 @@ using System.Collections.Generic;
 namespace GlimmerOfHope.Editor
 {
     /// <summary>
-    /// Générateur de waveform à partir d'AudioClips
+    /// Génère des textures de waveform à partir d'AudioClip
     /// </summary>
     public class WaveformRenderer
     {
+        #region Cache
         //Cache : clé = InstanceID * 100000 + width * 100 + height
         private static readonly Dictionary<long, Texture2D> _cache = new Dictionary<long, Texture2D>();
 
@@ -26,6 +27,24 @@ namespace GlimmerOfHope.Editor
             return tex;
         }
 
+        public static void Invalidate(int clipInstanceID)
+        {
+            var toRemove = new List<long>();
+            foreach (long k  in _cache.Keys)
+            {
+                if (k / 100000L == clipInstanceID)
+                {
+                    toRemove.Add(k);
+                }
+            }
+            foreach (long k in toRemove)
+            {
+                _cache.Remove(k);
+            }
+        }
+        #endregion
+
+        #region API Publique
         public static bool IsStreaming(AudioClip clip)
         {
             if (clip == null) return false;
@@ -44,23 +63,9 @@ namespace GlimmerOfHope.Editor
             if (clip == null) return false;
             return !clip.preloadAudioData;
         }
+        #endregion
 
-        public static void Invalidate(int clipInstanceID)
-        {
-            var toRemove = new List<long>();
-            foreach (long k  in _cache.Keys)
-            {
-                if (k / 100000L == clipInstanceID)
-                {
-                    toRemove.Add(k);
-                }
-            }
-            foreach (long k in toRemove)
-            {
-                _cache.Remove(k);
-            }
-        }
-
+        #region Génération
         private static Texture2D Generate(AudioClip clip, int width, int height)
         {
             if (clip.loadState != AudioDataLoadState.Loaded)
@@ -128,7 +133,9 @@ namespace GlimmerOfHope.Editor
             tex.Apply();
             return tex;
         }
+        #endregion
 
+        #region Lecteur WAV
         private static float[] ReadWavSamples(string filePath)
         {
             try
@@ -197,5 +204,6 @@ namespace GlimmerOfHope.Editor
             }
             catch { return null; }
         }
+        #endregion
     }
 }
