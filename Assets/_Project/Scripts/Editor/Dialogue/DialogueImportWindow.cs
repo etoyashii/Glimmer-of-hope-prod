@@ -60,7 +60,9 @@ namespace GlimmerOfHope.Editor.Dialogue
 
             EditorGUILayout.HelpBox(
                 "Import dialogue lines from a CSV file (Google Sheets export).\n" +
-                "This will create/update DialogueLineSO assets and generate localization JSON files.",
+                "This will create/update DialogueLineSO assets and generate localization JSON files.\n" +
+                "Assets are matched by id, so you can sort them into subfolders freely — re-imports keep them in place. " +
+                "Optional last column 'folder' sets the subfolder for brand-new assets (e.g. Zone1 or Zone1/NPCs).",
                 MessageType.Info);
 
             EditorGUILayout.Space(10);
