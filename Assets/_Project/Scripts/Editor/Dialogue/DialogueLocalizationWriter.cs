@@ -14,6 +14,7 @@ namespace GlimmerOfHope.Editor.Dialogue
     /// </summary>
     public class DialogueLocalizationWriter
     {
+        /// <summary>Writes one JSON table per conversation per language (fr/en/es) into StreamingAssets/Localization.</summary>
         public void Write(List<ParsedLine> parsedLines, DialogueCSVImporter.ImportResult result)
         {
             foreach (var group in parsedLines.GroupBy(l => l.ConversationId))

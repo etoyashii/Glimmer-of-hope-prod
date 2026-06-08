@@ -13,6 +13,7 @@ namespace GlimmerOfHope.Editor.Dialogue
     {
         #region Nested Types
 
+        /// <summary>One dialogue line as read from a CSV row, before it becomes a DialogueLineSO.</summary>
         public class ParsedLine
         {
             public string LineId;
@@ -27,6 +28,7 @@ namespace GlimmerOfHope.Editor.Dialogue
             public int SourceRow;
         }
 
+        /// <summary>One branching choice attached to a line: localized texts, target line id and an optional flag.</summary>
         public class ParsedChoice
         {
             public Dictionary<string, string> Texts = new();
@@ -38,6 +40,10 @@ namespace GlimmerOfHope.Editor.Dialogue
 
         #region Public Methods
 
+        /// <summary>
+        /// Parses every data row (skipping the header at index 0) into ParsedLine records.
+        /// Rows that are blank or fail validation are skipped and reported on the result.
+        /// </summary>
         public List<ParsedLine> Parse(string[] lines, DialogueCSVImporter.ImportResult result)
         {
             var parsed = new List<ParsedLine>();
@@ -67,6 +73,7 @@ namespace GlimmerOfHope.Editor.Dialogue
 
         #region Row Parsing
 
+        /// <summary>Maps one already-split row to a ParsedLine. Returns null (with an error logged) if line_id or conversation_id is missing.</summary>
         private ParsedLine BuildLine(string[] columns, int row, DialogueCSVImporter.ImportResult result)
         {
             var line = new ParsedLine
@@ -113,6 +120,7 @@ namespace GlimmerOfHope.Editor.Dialogue
             return line;
         }
 
+        /// <summary>Reads the 4-column block for choice number <paramref name="index"/>. Returns null if that choice slot is empty.</summary>
         private ParsedChoice ParseChoice(string[] columns, int index)
         {
             int offset = DialogueCSVFormat.GetChoiceColumnOffset(index);

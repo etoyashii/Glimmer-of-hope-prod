@@ -22,6 +22,11 @@ namespace GlimmerOfHope.Editor.Dialogue
     {
         #region Lines
 
+        /// <summary>
+        /// Creates or updates a DialogueLineSO per parsed row and returns them keyed by line id.
+        /// Existing assets are matched by id wherever they live; new ones land in the CSV "folder" subfolder.
+        /// Reference fields (next line, choice targets) are wired separately by ResolveReferences.
+        /// </summary>
         public Dictionary<string, DialogueLineSO> WriteLines(List<ParsedLine> parsedLines, DialogueCSVImporter.ImportResult result)
         {
             var lineAssets = new Dictionary<string, DialogueLineSO>();
@@ -70,6 +75,10 @@ namespace GlimmerOfHope.Editor.Dialogue
 
         #region Reference Resolution
 
+        /// <summary>
+        /// Second pass over the lines: now that every line asset exists, links each line to its
+        /// next line and its choice targets by id. Unknown targets are reported as warnings.
+        /// </summary>
         public void ResolveReferences(Dictionary<string, DialogueLineSO> lineAssets, List<ParsedLine> parsedLines, DialogueCSVImporter.ImportResult result)
         {
             foreach (var parsed in parsedLines)
@@ -105,6 +114,11 @@ namespace GlimmerOfHope.Editor.Dialogue
 
         #region Conversations
 
+        /// <summary>
+        /// Creates or updates one ConversationSO per conversation id, with its start line and ordered line list.
+        /// Matched by id wherever it lives; new ones use the CSV "folder" subfolder. The display name is only
+        /// seeded on creation so a manual rename survives re-imports.
+        /// </summary>
         public void WriteConversations(Dictionary<string, DialogueLineSO> lineAssets, List<ParsedLine> parsedLines, DialogueCSVImporter.ImportResult result)
         {
             var existing = BuildIndex<ConversationSO>("_conversationId", result);
@@ -173,6 +187,7 @@ namespace GlimmerOfHope.Editor.Dialogue
             return map;
         }
 
+        /// <summary>Returns the existing asset for <paramref name="id"/>, or creates one at newPath(). onResolved(isNew) reports which happened.</summary>
         private T ResolveOrCreate<T>(Dictionary<string, T> index, string id, Func<string> newPath, DialogueCSVImporter.ImportResult result, Action<bool> onResolved) where T : ScriptableObject
         {
             if (index.TryGetValue(id, out var existing))
@@ -191,6 +206,7 @@ namespace GlimmerOfHope.Editor.Dialogue
             return asset;
         }
 
+        /// <summary>Indexes the CharacterSO assets by their character id (case-insensitive) so lines can resolve their speaker.</summary>
         private Dictionary<string, CharacterSO> LoadCharacters()
         {
             var result = new Dictionary<string, CharacterSO>(StringComparer.OrdinalIgnoreCase);

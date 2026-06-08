@@ -15,6 +15,7 @@ namespace GlimmerOfHope.Editor.Dialogue
     {
         #region Nested Types
 
+        /// <summary>Tally of what the import did, plus any errors/warnings, surfaced in the import window.</summary>
         public class ImportResult
         {
             public bool Success;
@@ -33,6 +34,11 @@ namespace GlimmerOfHope.Editor.Dialogue
 
         #region Public Methods
 
+        /// <summary>
+        /// Imports a dialogue CSV: parses rows, creates/updates the Line and Conversation assets,
+        /// wires their references, writes the localization tables, then saves. Returns a result the
+        /// caller can display. Never throws — failures are collected into result.Errors.
+        /// </summary>
         public ImportResult Import(string csvPath)
         {
             var result = new ImportResult();

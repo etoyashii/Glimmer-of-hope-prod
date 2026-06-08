@@ -1,5 +1,9 @@
 namespace GlimmerOfHope.Editor.Dialogue
 {
+    /// <summary>
+    /// Single source of truth for the dialogue CSV layout: column indices, limits, languages,
+    /// and the asset/localization folder paths. Change the CSV shape or folders here only.
+    /// </summary>
     public static class DialogueCSVFormat
     {
         #region Column Indices
