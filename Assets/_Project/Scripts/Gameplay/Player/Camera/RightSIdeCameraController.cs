@@ -86,12 +86,10 @@ namespace GlimmerOfHope.Gameplay
             if (!IsInRightZone(touch.screenPosition)) return;
 
             _trackedFingerId = touch.touchId;
-            Debug.Log($"[Camera] Tracking finger {_trackedFingerId}");
         }
 
         private void ReleaseLook()
         {
-            Debug.Log($"[Camera] Released finger {_trackedFingerId}");
             _trackedFingerId = -1;
             _lookDelta = Vector2.zero;
         }

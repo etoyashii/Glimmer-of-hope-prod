@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -16,6 +17,21 @@ namespace GlimmerOfHope.Gameplay
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _maxIntensity = 12.0f;
         [SerializeField] private float _transitionDelay = 1.0f;
+
+        #endregion
+
+        #region PrivateFields
+
+        private LayerMask _layerMask;
+
+        #endregion
+
+        #region UnityLifecycle
+
+        private void Start()
+        {
+            _layerMask = LayerMask.GetMask("GrowingVegetal");
+        }
 
         #endregion
 
@@ -56,8 +72,25 @@ namespace GlimmerOfHope.Gameplay
                 yield return null;
             }
 
-            _light.intensity = targetIntensity;
+            if (isIncreased) 
+                ImpactEntities();
 
+            _light.intensity = targetIntensity;
+        }
+
+        private void ImpactEntities()
+        {
+            Collider[] colliders = Physics.OverlapSphere(_light.transform.position, 100.0f, _layerMask);
+
+            Debug.Log(_light.transform.position);
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
+                if (colliders[i].transform.gameObject.TryGetComponent<GrowthByLight>(out GrowthByLight growth))
+                {
+                    growth.Growth();
+                }
+            }
         }
 
         #endregion
