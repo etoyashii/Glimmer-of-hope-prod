@@ -747,7 +747,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1aff3d77bf245c4da185cb79bd06bcc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.SkillNoteManager
-  _delayBetweenNotes: 0.8
+  _delayBetweenNotes: 0.5
   _comboList:
   - _combo: 00000000000000000000000000000000
     _useSkill:
@@ -1977,6 +1977,63 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 774668185}
   m_CullTransparentMesh: 1
+--- !u!1001 &802218286
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6574641350014192818, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_Name
+      value: Sphere
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -396.45374
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 88.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -149.96904
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9015442279515853187, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5db4b952953b9db47b47ed7c1c334851, type: 3}
 --- !u!1 &834336423
 GameObject:
   m_ObjectHideFlags: 0
@@ -66395,3 +66452,4 @@ SceneRoots:
   - {fileID: 1506338058}
   - {fileID: 242511468}
   - {fileID: 906183422}
+  - {fileID: 802218286}
