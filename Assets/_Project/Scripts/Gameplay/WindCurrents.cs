@@ -8,10 +8,16 @@ namespace GlimmerOfHope.Gameplay
     /// </summary>
     public class Windcurrent: MonoBehaviour
     {
+        #region Serialized Fields
         [SerializeField] private Vector3 _airCurrentDirection;
         [SerializeField] private float _force;
+        #endregion
 
+        #region Private Properties
         private Vector3 ForceVector => _airCurrentDirection.normalized * _force;
+        #endregion
+
+        #region Private Methods
         private void OnTriggerEnter(Collider other)
         {
 
@@ -25,5 +31,6 @@ namespace GlimmerOfHope.Gameplay
             if (other.TryGetComponent(out Movement movement))
                 movement.SetAirCurrent(false);
         }
+        #endregion
     }
 }
