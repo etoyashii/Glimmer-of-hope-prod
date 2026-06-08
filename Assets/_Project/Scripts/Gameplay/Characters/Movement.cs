@@ -1,8 +1,9 @@
+using System;
+using Unity.Cinemachine;
+using Unity.Plastic.Newtonsoft.Json.Bson;
 using UnityEngine;
 using UnityEngine.InputSystem;
-
-using Unity.Cinemachine;
-using System;
+using UnityEngine.InputSystem.Utilities;
 
 namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 {
@@ -35,7 +36,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         #region Public Properties
 
-        public Vector3 MoveDirection => new(_direction.x, 0f, _direction.y);
+        public Vector3 MoveDirection => new(_direction.x, _direction.z, _direction.y);
 
         #endregion
 
@@ -48,9 +49,11 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         #region Private Fields
 
-        private Vector2 _direction;
+        private Vector3 _direction;
         private bool _movementEnabled = true;
 
+        private Vector3 _airCurrentForce = Vector3.zero;
+        private bool _inAirCurrent = false;
         #endregion
 
         #region Public Fields
@@ -75,7 +78,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             if (_controller.isGrounded && verticalVelocity < 0f)
                 verticalVelocity = -2f;
 
-            verticalVelocity += _gravity * Time.deltaTime;
+            //Gravity + AirCurrent upwards if in one
+            float verticalCurrent = _inAirCurrent ? _airCurrentForce.y : 0f;
+            verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
 
             Vector3 cameraForward = _playerCamera.transform.forward;
             Vector3 cameraRight = _playerCamera.transform.right;
@@ -84,15 +89,19 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             cameraForward.Normalize();
             cameraRight.Normalize();
 
+            //Position + AirCurrent horizontal if in one
             Vector3 moveDirection = (cameraRight * _direction.x + cameraForward * _direction.y).normalized;
+            if (_inAirCurrent)
+                moveDirection += new Vector3(_airCurrentForce.x, 0f, _airCurrentForce.z) * Time.deltaTime;
 
-
+            //Rotation
             if (moveDirection.magnitude > 0.1f)
             {
                 Quaternion toRotate = Quaternion.LookRotation(moveDirection);
                 transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.deltaTime);
             }
 
+            //Apply Everything to move the Player
             moveDirection.y = verticalVelocity;
             _controller.Move(moveDirection * _speed * Time.deltaTime);
         }
@@ -115,6 +124,16 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             if (!enabled) _direction = Vector2.zero;
         }
 
+        //Method called in WindCurrent.cs
+        public void SetAirCurrent(bool active, Vector3 airCurrentForce = default)
+        {
+            _inAirCurrent = active;
+            _airCurrentForce = active ? airCurrentForce : Vector3.zero;
+
+            // If the current pushes upward, cancel downward velocity for immediate response
+            if (active && airCurrentForce.y > 0f && verticalVelocity < 0f)
+                verticalVelocity = 0f;
+        }
         #endregion
 
         #region Private Methods
