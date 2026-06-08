@@ -34,10 +34,6 @@ namespace GlimmerOfHope.Editor.Dialogue
         public const int COL_CHOICE4_TARGET = 23;
         public const int COL_CHOICE4_FLAG = 24;
 
-        // Optional trailing column: relative subfolder for NEW assets (e.g. "Zone1" or "Zone1/NPCs").
-        // Trailing + optional means existing CSV exports without it still parse (GetColumn returns "").
-        public const int COL_FOLDER = 25;
-
         #endregion
 
         #region Limits
@@ -57,13 +53,9 @@ namespace GlimmerOfHope.Editor.Dialogue
 
         #region Asset Paths
 
-        // Root that all dialogue assets live under. Find-by-id searches scan this whole tree,
-        // so assets may sit in any subfolder of it and still be matched on re-import.
-        public const string DIALOGUE_ROOT = "Assets/_Project/Data/Dialogue";
-
-        public const string LINES_FOLDER = DIALOGUE_ROOT + "/Lines";
-        public const string CONVERSATIONS_FOLDER = DIALOGUE_ROOT + "/Conversations";
-        public const string CHARACTERS_FOLDER = DIALOGUE_ROOT + "/Characters";
+        public const string LINES_FOLDER = "Assets/_Project/Data/Dialogue/Lines";
+        public const string CONVERSATIONS_FOLDER = "Assets/_Project/Data/Dialogue/Conversations";
+        public const string CHARACTERS_FOLDER = "Assets/_Project/Data/Dialogue/Characters";
         public const string LOCALIZATION_FOLDER = "Assets/StreamingAssets/Localization";
 
         #endregion
@@ -78,26 +70,6 @@ namespace GlimmerOfHope.Editor.Dialogue
         public static string GetLocalizationPath(string language, string conversationId)
         {
             return $"{LOCALIZATION_FOLDER}/{language}/dialogue_{conversationId}.json";
-        }
-
-        // Target folder for a NEW line asset. Empty folder -> base Lines folder; otherwise a subfolder of it.
-        public static string GetLinesFolder(string folder)
-        {
-            return CombineFolder(LINES_FOLDER, folder);
-        }
-
-        // Target folder for a NEW conversation asset. Same rule as lines.
-        public static string GetConversationsFolder(string folder)
-        {
-            return CombineFolder(CONVERSATIONS_FOLDER, folder);
-        }
-
-        private static string CombineFolder(string baseFolder, string folder)
-        {
-            if (string.IsNullOrEmpty(folder))
-                return baseFolder;
-
-            return $"{baseFolder}/{folder.Trim('/')}";
         }
 
         #endregion
