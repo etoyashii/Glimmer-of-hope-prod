@@ -34,21 +34,30 @@ namespace GlimmerOfHope.Gameplay
 
         #region SerializeFields
 
+        [Header("References")]
         [SerializeField] private Transform _playerTransform;
         [SerializeField] private Transform _lueurStartPoint;
+        [SerializeField] private Movement _playerMovement;
+
+        [Header("General Movement")]
         [Range(1.0f, 100.0f)]
         [SerializeField] private float _maxSpeed = 50.0f;
-        [Range(0.0f, 5.0f)]
-        [SerializeField] private float _smoothTime = 0.3f;
-        [Range(1.0f, 5.0f)]
-        [SerializeField] private float _radius = 2.0f;
+
+        [Header("Follow Movement")]
         [Range(10.0f, 100.0f)]
         [SerializeField] private float _followRadius = 50.0f;
-        [SerializeField] private Movement _playerMovement;
+        [Range(0.0f, 5.0f)]
+        [SerializeField] private float _smoothTime = 0.3f;
+
+        [Header("Satellite Movement")]
+        [Range(2.0f, 25.0f)]
+        [SerializeField] private float _radius = 2.0f;
         [Range(1,4)]
         [SerializeField] private int _maxLaps = 1;
         [Range(2.0f, 100.0f)]
         [SerializeField] private float _lapSpeed = 50.0f;
+
+        [Header("Behavior")]
         [SerializeField] private IdleBehaviorState _idleBehaviorState;
 
         #endregion
@@ -58,8 +67,6 @@ namespace GlimmerOfHope.Gameplay
         private Vector3 _velocity = Vector3.zero;
         private Vector3 _satellitePoint;
 
-        private int _maxMovementIteration = 4;
-        private int _currentMovementIteration = 0;
         private const float _fullCircleAngle = 2.0f * Mathf.PI;
 
 
@@ -124,6 +131,12 @@ namespace GlimmerOfHope.Gameplay
         {
             if (newState == _currentState) return;
             
+            if (_satelliteCoroutine != null)
+            {
+                StopCoroutine(_satelliteCoroutine);
+                _satelliteCoroutine = null;
+            }
+
             _currentState = newState;
         }
 
