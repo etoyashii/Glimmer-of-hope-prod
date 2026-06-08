@@ -3,6 +3,9 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Splines;
 
+/// <summary>
+/// Jai pas toucher ca seul dieux sait comment generer des mesh 
+/// </summary>
 [RequireComponent(typeof(MeshFilter), typeof(MeshRenderer), typeof(SplineContainer))]
 public class BranchMeshBuilder : MonoBehaviour
 {

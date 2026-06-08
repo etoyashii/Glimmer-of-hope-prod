@@ -5,59 +5,88 @@ using Unity.Mathematics;
 using UnityEngine;
 
 /// <summary>
-/// FlockManager optimisé — Jobs + Burst + Spatial Hashing
-/// Prérequises : packages "Unity.Burst" et "Unity.Collections" installés
-/// (Window > Package Manager > Unity Registry)
+/// Owns all bird data (positions, velocities as NativeArrays).
+/// Each LateUpdate: completes previous job → applies velocities to Transforms
+/// → rebuilds spatial hash map → schedules new FlockJob.
+/// FlockJob (IJobParallelFor + Burst) computes Boids forces + direction + bounds
+/// entirely off the main thread.
+/// Reads desired direction from SplineFlockController before scheduling.
+/// Exposes TeleportBird() with job safety for loop resets.
+/// Requires: Unity.Burst, Unity.Collections, Unity.Jobs, Unity.Mathematics
 /// </summary>
 public class FlockManager : MonoBehaviour
 {
+    #region Inspector propreties
     [Header("Prefab & Spawn")]
-    public GameObject birdPrefab;
-    public int birdCount = 80;
-    public Vector3 spawnArea = new Vector3(20f, 5f, 20f);
+    [SerializeField]
+    private GameObject birdPrefab;
+    [SerializeField]
+    private int birdCount = 80;
+    [SerializeField]
+    private Vector3 spawnArea = new Vector3(20f, 5f, 20f);
 
-    [Header("Direction du flux")]
-    public Vector3 flockDirection = Vector3.forward;
+    [Header("Flux direction")]
+    [SerializeField]
+    private Vector3 flockDirection = Vector3.forward;
     [Range(0f, 5f)] public float directionWeight = 1.5f;
 
-    [Header("Vitesse")]
-    public float minSpeed = 5f;
-    public float maxSpeed = 12f;
+    [Header("Speed")]
+    [SerializeField]
+    private float minSpeed = 5f;
+    [SerializeField]
+    private float maxSpeed = 12f;
 
     [Header("Boids")]
-    public float neighborRadius = 5f;
-    public float separationDistance = 1.8f;
-    [Range(0f, 5f)] public float cohesionWeight = 1f;
-    [Range(0f, 5f)] public float alignmentWeight = 1.5f;
-    [Range(0f, 5f)] public float separationWeight = 2f;
+    [SerializeField]
+    private float neighborRadius = 5f;
+    [SerializeField]
+    private float separationDistance = 1.8f;
+    [Range(0f, 5f)]
+    [SerializeField]
+    private float cohesionWeight = 1f;
+    [Range(0f, 5f)]
+    [SerializeField]
+    private float alignmentWeight = 1.5f;
+    [Range(0f, 5f)]
+    [SerializeField]
+    private float separationWeight = 2f;
 
     [Header("Limites")]
-    public bool useBounds = true;
-    public float boundsRadius = 40f;
-    [Range(0f, 10f)] public float boundsWeight = 3f;
+    [SerializeField]
+    private bool useBounds = true;
+    [SerializeField]
+    private float boundsRadius = 40f;
+    [Range(0f, 10f)]
+    [SerializeField]
+    private float boundsWeight = 3f;
 
     [Header("Turbulence")]
-    [Range(0f, 2f)] public float turbulence = 0.3f;
+    [Range(0f, 2f)]
+    [SerializeField]
+    private float turbulence = 0.3f;
 
     [Header("Direction Override")]
-    [Tooltip("Assigne SplineFlockController ici — sa direction prend le dessus sur flockDirection")]
-    public SplineFlockController directionOverride;
-    [Range(0.5f, 10f)] public float turnSpeed = 2f;
+    [Tooltip("Asign SplineFlockController, it would override the direction")]
+    [SerializeField]
+    private SplineFlockController directionOverride;
+    [Range(0.5f, 10f)]
+    [SerializeField]
+    private float turnSpeed = 2f;
+    #endregion
 
-    // ── Données natives (partagées avec le Job) ───────────────────────────
+    #region Propreties
     private NativeArray<float3> positions;
     private NativeArray<float3> velocities;
     private NativeArray<float3> newVelocities;
 
-    // Spatial hash
     private NativeParallelMultiHashMap<int, int> spatialMap;
 
     private Transform[] birdTransforms;
     private JobHandle jobHandle;
     private bool jobScheduled;
+    #endregion
 
-    // ─────────────────────────────────────────────────────────────────────
-
+    #region Methods
     private void Start()
     {
         flockDirection = flockDirection.normalized;
@@ -92,13 +121,11 @@ public class FlockManager : MonoBehaviour
 
     private void LateUpdate()
     {
-        // 1. Compléter le job de la frame précédente
         if (jobScheduled)
         {
             jobHandle.Complete();
             jobScheduled = false;
 
-            // Appliquer les nouvelles vélocités + déplacer les transforms
             for (int i = 0; i < birdCount; i++)
             {
                 velocities[i] = newVelocities[i];
@@ -115,7 +142,6 @@ public class FlockManager : MonoBehaviour
             }
         }
 
-        // Direction override depuis SplineFlockController (lu APRES son Update)
         if (directionOverride != null && directionOverride.hasDesiredDirection)
         {
             flockDirection = Vector3.Slerp(
@@ -125,7 +151,6 @@ public class FlockManager : MonoBehaviour
             ).normalized;
         }
 
-        // 2. Rebuild de la spatial hash map
         spatialMap.Clear();
         float cellSize = neighborRadius;
         for (int i = 0; i < birdCount; i++)
@@ -134,7 +159,6 @@ public class FlockManager : MonoBehaviour
             spatialMap.Add(hash, i);
         }
 
-        // 3. Scheduler le nouveau job (sera calculé en parallèle)
         var job = new FlockJob
         {
             positions = positions,
@@ -160,20 +184,16 @@ public class FlockManager : MonoBehaviour
             time = Time.time,
         };
 
-        // IJobParallelFor : chaque oiseau traité sur un thread séparé
         jobHandle = job.Schedule(birdCount, 8);
         jobScheduled = true;
     }
 
-    // ── API publique ─────────────────────────────────────────────────────
     public int BirdCount => birdCount;
 
-    /// Téléporte un oiseau à une nouvelle position (appelé par SplineFlockController au reset)
     public void TeleportBird(int index, Vector3 worldPos)
     {
         if (index < 0 || index >= birdCount) return;
 
-        // Le job tourne peut-être encore — on doit le compléter avant d'écrire
         if (jobScheduled)
         {
             jobHandle.Complete();
@@ -187,7 +207,6 @@ public class FlockManager : MonoBehaviour
 
     private Vector3 _boundsCenter;
 
-    /// Centre du bounds : suit le tracker de la spline si disponible, sinon position du FlockManager
     private float3 GetBoundsCenter()
     {
         if (directionOverride != null && directionOverride.hasDesiredDirection)
@@ -204,7 +223,6 @@ public class FlockManager : MonoBehaviour
         spatialMap.Dispose();
     }
 
-    // Hash 3D → int (spatial hashing classique)
     private static int SpatialHash(float3 pos, float cellSize)
     {
         int x = (int)math.floor(pos.x / cellSize);
@@ -212,7 +230,9 @@ public class FlockManager : MonoBehaviour
         int z = (int)math.floor(pos.z / cellSize);
         return x * 73856093 ^ y * 19349663 ^ z * 83492791;
     }
+    #endregion
 
+    #region Gizmos
     private void OnDrawGizmosSelected()
     {
         Gizmos.color = new Color(0.2f, 0.8f, 1f, 0.3f);
@@ -228,11 +248,9 @@ public class FlockManager : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawRay(transform.position, flockDirection.normalized * 5f);
     }
+    #endregion
 
-    // ═════════════════════════════════════════════════════════════════════
-    // JOB — tourne entièrement hors du main thread, compilé en assembleur
-    // natif par Burst. Zéro garbage, zéro allocation.
-    // ═════════════════════════════════════════════════════════════════════
+    #region FlockJob
     [BurstCompile]
     private struct FlockJob : IJobParallelFor
     {
@@ -264,7 +282,6 @@ public class FlockManager : MonoBehaviour
             float3 separation = float3.zero;
             int neighbors = 0;
 
-            // Chercher uniquement dans les cellules voisines (3x3x3)
             int cx = (int)math.floor(pos.x / cellSize);
             int cy = (int)math.floor(pos.y / cellSize);
             int cz = (int)math.floor(pos.z / cellSize);
@@ -300,7 +317,6 @@ public class FlockManager : MonoBehaviour
                 alignment = math.normalize(alignment);
             }
 
-            // Retour dans les limites
             float3 bounds = float3.zero;
             if (useBounds == 1)
             {
@@ -314,14 +330,12 @@ public class FlockManager : MonoBehaviour
                 }
             }
 
-            // Turbulence via noise pseudo-aléatoire (pas de Random dans Burst)
             float3 noise = new float3(
                 math.sin(time * 1.3f + pos.x * 0.7f),
                 math.sin(time * 0.9f + pos.y * 1.1f),
                 math.sin(time * 1.7f + pos.z * 0.5f)
             ) * turbulence;
 
-            // Somme des forces
             float3 force = cohesion * cohesionWeight
                          + alignment * alignmentWeight
                          + separation * separationWeight
@@ -331,7 +345,6 @@ public class FlockManager : MonoBehaviour
 
             float3 newVel = vel + force * deltaTime;
 
-            // Clamp speed
             float speed = math.length(newVel);
             if (speed > maxSpeed) newVel = newVel / speed * maxSpeed;
             if (speed < minSpeed) newVel = newVel / speed * minSpeed;
@@ -339,4 +352,5 @@ public class FlockManager : MonoBehaviour
             newVelocities[i] = newVel;
         }
     }
+    #endregion
 }

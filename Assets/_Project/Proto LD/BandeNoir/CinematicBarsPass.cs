@@ -3,11 +3,19 @@ using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 using UnityEngine.Rendering.RenderGraphModule;
 
+/// <summary>
+/// Create a material from CinematicBarShader
+/// Render the bars using the volume
+/// If optimisation is needed cut the blit
+/// </summary>
 public class CinematicBarsPass : ScriptableRenderPass
 {
+    #region Propreties
     private Material material;
     private static readonly int BarSizeID = Shader.PropertyToID("_BarSize");
+    #endregion
 
+    #region Methods
     public CinematicBarsPass(Material mat)
     {
         material = mat;
@@ -63,4 +71,5 @@ public class CinematicBarsPass : ScriptableRenderPass
             });
         }
     }
+    #endregion
 }

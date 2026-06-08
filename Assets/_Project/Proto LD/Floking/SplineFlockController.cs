@@ -2,42 +2,55 @@
 using UnityEngine;
 
 /// <summary>
-/// Fait suivre au flock une spline Catmull-Rom.
-/// 
-/// Mode Loop :
-///   - Le tracker avance jusqu'à la fin de la spline
-///   - Après un délai (resetDelay), chaque oiseau est téléporté au début
-///     avec un offset aléatoire pour que le reset soit invisible
-///   - Le tracker repart depuis le début → boucle infinie
+/// Drives the flock direction along a Catmull-Rom spline (min 4 control points).
+/// Advances a tracker at constant speed using arc-length parameterization.
+/// Exposes desiredDirection (lookahead point) read by FlockManager in LateUpdate.
+/// Loop mode: on reaching the end, waits resetDelay then teleports all birds
+/// back to the start with random scatter, then resets tracker to t=0.
+/// Exposes trackerPosition so FlockManager bounds follow the spline, not the origin.
+/// Execution order: Update() here runs before FlockManager LateUpdate().
 /// </summary>
 public class SplineFlockController : MonoBehaviour
 {
-    [Header("Références")]
-    public FlockManager flockManager;
+    #region Inspector propreties
+    [Header("Ref")]
+    [SerializeField]
+    private FlockManager flockManager;
 
     [Header("Spline")]
-    [Tooltip("Points de contrôle Catmull-Rom (minimum 4)")]
-    public Transform[] controlPoints;
+    [Tooltip("Controle points Catmull-Rom (min 4)")]
+    [SerializeField]
+    private Transform[] controlPoints;
 
-    [Header("Suivi")]
-    public float trackerSpeed = 6f;
-    [Tooltip("Distance de lookahead — le flock vise un point en avance")]
-    public float lookahead = 8f;
-    [Range(0.5f, 10f)] public float turnSpeed = 2f;
+    [Header("Follow")]
+    [SerializeField]
+    private float trackerSpeed = 6f;
+    [Tooltip("Distance of lookahead")]
+    [SerializeField]
+    private float lookahead = 8f;
+    [Range(0.5f, 10f)]
+    [SerializeField]
+    private float turnSpeed = 2f;
 
-    [Header("Boucle")]
-    [Tooltip("Active le mode boucle (TP des oiseaux à la fin)")]
-    public bool loopMode = true;
-    [Tooltip("Délai après la fin de la spline avant de TP les oiseaux")]
-    public float resetDelay = 1.5f;
-    [Tooltip("Rayon d'étalement aléatoire au spawn du TP")]
-    public Vector3 spawnScatter = new Vector3(6f, 2f, 4f);
+    [Header("Loop")]
+    [Tooltip("Enable looping (birds are tp to the begin)")]
+    [SerializeField]
+    private bool loopMode = true;
+    [Tooltip("Delay before tp")]
+    [SerializeField]
+    private float resetDelay = 1.5f;
+    [Tooltip("Spwan radius respwan")]
+    [SerializeField]
+    private Vector3 spawnScatter = new Vector3(6f, 2f, 4f);
 
     [Header("Debug")]
-    public bool showSpline = true;
-    public int splineResolution = 50;
+    [SerializeField]
+    private bool showSpline = true;
+    [SerializeField]
+    private int splineResolution = 50;
+    #endregion
 
-    // ── État ──────────────────────────────────────────────────────────────
+    #region Propreties
     private float t = 0f;
     private float totalLength;
     private float[] segmentLengths;
@@ -45,15 +58,20 @@ public class SplineFlockController : MonoBehaviour
     private bool reachedEnd = false;
     private bool isResetting = false;
 
-    // Exposé au FlockManager
-    [HideInInspector] public Vector3 desiredDirection;
-    [HideInInspector] public bool hasDesiredDirection;
-    [HideInInspector] public Vector3 trackerPosition;
+    [HideInInspector]
+    public Vector3 desiredDirection;
+    [HideInInspector]
+    public bool hasDesiredDirection;
+    [HideInInspector]
+    public Vector3 trackerPosition;
 
-    // Nombre de segments actifs (jamais en boucle spline — on TP à la place)
     private int NumSegments => controlPoints.Length - 3;
+    private bool ValidatePoints() => controlPoints != null && controlPoints.Length >= 4;
 
-    // ─────────────────────────────────────────────────────────────────────
+
+    #endregion
+
+    #region Methods
 
     private void Start()
     {
@@ -64,15 +82,17 @@ public class SplineFlockController : MonoBehaviour
 
     private void Update()
     {
-        if (!ValidatePoints() || isResetting) { hasDesiredDirection = false; return; }
+        if (!ValidatePoints() || isResetting) 
+        { 
+            hasDesiredDirection = false; 
+            return; 
+        }
 
-        // ── Avancer le tracker ──────────────────────────────────────────
         if (!reachedEnd)
         {
             t = AdvanceByDistance(t, trackerSpeed * Time.deltaTime);
             trackerPosition = EvaluateSpline(t);
 
-            // Fin de spline détectée
             if (loopMode && t >= NumSegments - 0.01f)
             {
                 reachedEnd = true;
@@ -80,30 +100,29 @@ public class SplineFlockController : MonoBehaviour
             }
         }
 
-        // ── Direction vers le lookahead ────────────────────────────────
         float tTarget = Mathf.Min(AdvanceByDistance(t, lookahead), NumSegments - 0.001f);
         Vector3 target = EvaluateSpline(tTarget);
         Vector3 desired = (target - trackerPosition).normalized;
 
-        if (desired == Vector3.zero) { hasDesiredDirection = false; return; }
+        if (desired == Vector3.zero) 
+        { 
+            hasDesiredDirection = false; 
+            return; 
+        }
 
         desiredDirection = desired;
         hasDesiredDirection = true;
     }
 
-    // ── Reset / TP ────────────────────────────────────────────────────────
 
     private IEnumerator ResetRoutine()
     {
         isResetting = true;
 
-        // Délai pendant lequel les oiseaux continuent sur leur lancée
         yield return new WaitForSeconds(resetDelay);
 
-        // Position de départ de la spline
         Vector3 splineStart = EvaluateSpline(0f);
 
-        // TP de chaque oiseau avec scatter aléatoire
         for (int i = 0; i < flockManager.BirdCount; i++)
         {
             Vector3 scatter = new Vector3(
@@ -114,17 +133,13 @@ public class SplineFlockController : MonoBehaviour
             flockManager.TeleportBird(i, splineStart + scatter);
         }
 
-        // Reset du tracker
         t = 0f;
         reachedEnd = false;
         trackerPosition = EvaluateSpline(0f);
 
-        // Court délai pour laisser le bounds se repositionner avant de relancer
         yield return new WaitForSeconds(0.1f);
         isResetting = false;
     }
-
-    // ── Spline Catmull-Rom ────────────────────────────────────────────────
 
     private Vector3 EvaluateSpline(float t)
     {
@@ -159,7 +174,6 @@ public class SplineFlockController : MonoBehaviour
         );
     }
 
-    // ── Arc-length ────────────────────────────────────────────────────────
 
     private void PrecomputeLength()
     {
@@ -209,13 +223,9 @@ public class SplineFlockController : MonoBehaviour
 
         return newT;
     }
+    #endregion
 
-    // ── Utils ─────────────────────────────────────────────────────────────
-
-    private bool ValidatePoints() => controlPoints != null && controlPoints.Length >= 4;
-
-    // ── Gizmos ────────────────────────────────────────────────────────────
-
+    #region Gizmo
     private void OnDrawGizmosSelected()
     {
         if (!showSpline || !ValidatePoints()) return;
@@ -230,7 +240,6 @@ public class SplineFlockController : MonoBehaviour
             prev = curr;
         }
 
-        // Start / End marqués
         Gizmos.color = Color.green;
         Gizmos.DrawSphere(EvaluateSpline(0f), 0.6f);
         Gizmos.color = Color.red;
@@ -254,8 +263,8 @@ public class SplineFlockController : MonoBehaviour
         Gizmos.DrawSphere(ahead, 0.5f);
         Gizmos.DrawLine(trackerPosition, ahead);
 
-        // Zone de spawn TP
         Gizmos.color = new Color(1f, 0.4f, 0f, 0.3f);
         Gizmos.DrawWireCube(EvaluateSpline(0f), spawnScatter * 2f);
     }
+    #endregion
 }

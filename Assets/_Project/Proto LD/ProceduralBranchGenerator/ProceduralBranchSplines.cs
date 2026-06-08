@@ -4,6 +4,10 @@ using UnityEngine.Splines;
 using Unity.Mathematics;
 using System.Linq;
 
+/// <summary>
+/// Generate the branches recursively, 
+/// add the splines then link the splines child begin knot to their parent knot assigment
+/// </summary>
 [ExecuteInEditMode]
 [RequireComponent(typeof(SplineContainer))]
 public class ProceduralBranchSplines : MonoBehaviour
@@ -100,9 +104,6 @@ public class ProceduralBranchSplines : MonoBehaviour
         if (_autoRegenerate)
             UnityEditor.EditorApplication.delayCall += Generate;
     }
-    /// <summary>
-    /// Generate the branches recursively, add the splines then link the splines
-    /// </summary>
     [ContextMenu("Generate Branches")]
     public void Generate()
     {
@@ -130,7 +131,6 @@ public class ProceduralBranchSplines : MonoBehaviour
 
         _container.KnotLinkCollection.Clear();
 
-        //link child begin knot to their parent knot assigment
         for (int i = 0; i < _pending.Count; i++)
         {
             var ps = _pending[i];

@@ -2,11 +2,21 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
+
+/// <summary>
+/// ScriptableRendererFeature to add the custom pass
+/// Needed to add in pc-renderer and mobile-renderer
+/// </summary>
+
 public class CinematicBarsFeature : ScriptableRendererFeature
 {
+    #region Propreties
     [SerializeField] private Shader shader;
     private Material material;
     private CinematicBarsPass pass;
+    #endregion
+
+    #region Methods
 
     public override void Create()
     {
@@ -27,4 +37,5 @@ public class CinematicBarsFeature : ScriptableRendererFeature
     {
         CoreUtils.Destroy(material);
     }
+    #endregion
 }
