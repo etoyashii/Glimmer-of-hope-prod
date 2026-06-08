@@ -33,9 +33,11 @@ namespace GlimmerOfHope.Editor.Tools
         // or a plain scene object. Editing a prefab asset cannot be undone with Ctrl+Z.
         private static bool ApplyOne(LODCandidate c, bool preferPrefab)
         {
+            // Case 1 — renderer lives directly in an asset (e.g. selected model file): edit that asset.
             if (EditorUtility.IsPersistent(c.Renderer))
                 return ApplyByPath(c, AssetDatabase.GetAssetPath(c.Renderer), c.Renderer.transform.root);
 
+            // Case 2 — scene object that is a prefab instance: edit the prefab source so every instance benefits.
             if (preferPrefab && PrefabUtility.IsPartOfPrefabInstance(c.Renderer))
             {
                 var root = PrefabUtility.GetNearestPrefabInstanceRoot(c.Renderer.gameObject);
@@ -44,11 +46,15 @@ namespace GlimmerOfHope.Editor.Tools
                     return ApplyByPath(c, path, root.transform);
             }
 
+            // Case 3 — plain scene object (or prefab editing turned off): build in place, with undo support.
             return LODGroupBuilder.Build(c, true);
         }
 
+        // Open the prefab/model in an isolated editing scene, find the matching renderer inside it by its
+        // path relative to the root, build the LODGroup there, then save and always unload the contents.
         private static bool ApplyByPath(LODCandidate c, string path, Transform anchorRoot)
         {
+            // The scene renderer and the in-asset renderer are different objects; the relative path is what links them.
             string relativePath = RelativePath(anchorRoot, c.Renderer.transform);
             var contents = PrefabUtility.LoadPrefabContents(path);
             try
@@ -56,6 +62,7 @@ namespace GlimmerOfHope.Editor.Tools
                 var target = FindRenderer(contents, relativePath);
                 if (target == null) return false;
 
+                // Rebind the candidate to the in-asset renderer; useUndo = false because asset edits are not undoable.
                 var clone = CloneCandidate(c, target);
                 if (!LODGroupBuilder.Build(clone, false)) return false;
 
@@ -64,6 +71,7 @@ namespace GlimmerOfHope.Editor.Tools
             }
             finally
             {
+                // Must run even on early return, otherwise the loaded prefab scene leaks.
                 PrefabUtility.UnloadPrefabContents(contents);
             }
         }
@@ -91,6 +99,8 @@ namespace GlimmerOfHope.Editor.Tools
             return renderer != null ? renderer : t.GetComponentInChildren<Renderer>();
         }
 
+        // Walk parents from target up to root collecting names, then reverse into a "Child/Sub/Leaf" path
+        // that Transform.Find can resolve inside the loaded prefab contents.
         private static string RelativePath(Transform root, Transform target)
         {
             if (target == root || root == null) return string.Empty;

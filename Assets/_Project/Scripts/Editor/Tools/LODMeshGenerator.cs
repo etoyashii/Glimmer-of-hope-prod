@@ -37,10 +37,11 @@ namespace GlimmerOfHope.Editor.Tools
         private static Mesh Simplify(Mesh source, float quality)
         {
             var simplifier = new MeshSimplifier();
+            // Keep silhouette and shape: border edges hold UV/seam integrity, curvature avoids flat-shading artefacts.
             simplifier.PreserveBorderEdges = true;
             simplifier.PreserveSurfaceCurvature = true;
             simplifier.Initialize(source);
-            simplifier.SimplifyMesh(Mathf.Clamp01(quality));
+            simplifier.SimplifyMesh(Mathf.Clamp01(quality)); // quality is the fraction of triangles to keep (0..1)
 
             var mesh = simplifier.ToMesh();
             mesh.name = source.name + "_q" + Mathf.RoundToInt(quality * 100f);
@@ -48,10 +49,12 @@ namespace GlimmerOfHope.Editor.Tools
             return mesh;
         }
 
+        // Cache path lives next to the source mesh, under LOD_Generated, keyed by level + quality
+        // so two strategies asking for the same quality reuse one asset instead of regenerating.
         private static string ResolveLodPath(Mesh source, int level, float quality)
         {
             string sourcePath = AssetDatabase.GetAssetPath(source);
-            if (string.IsNullOrEmpty(sourcePath)) return null;
+            if (string.IsNullOrEmpty(sourcePath)) return null; // runtime/primitive mesh with no asset on disk
 
             string dir = Path.GetDirectoryName(sourcePath).Replace("\\", "/");
             string quality100 = Mathf.RoundToInt(quality * 100f).ToString();
@@ -59,6 +62,7 @@ namespace GlimmerOfHope.Editor.Tools
             return dir + "/" + LODSettings.GENERATED_FOLDER + "/" + fileName;
         }
 
+        // AssetDatabase.CreateFolder only makes one level at a time, so recurse to create the parents first.
         private static void EnsureFolder(string folder)
         {
             folder = folder.Replace("\\", "/");

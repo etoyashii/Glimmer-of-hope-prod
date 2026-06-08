@@ -29,6 +29,7 @@ namespace GlimmerOfHope.Editor.Tools
             window.Show();
         }
 
+        // OnGUI runs every repaint. Flow: toolbar (scan) -> empty hint, or summary + table + apply bar.
         private void OnGUI()
         {
             DrawToolbar();
@@ -73,6 +74,7 @@ namespace GlimmerOfHope.Editor.Tools
 
         private void ScanScene()
         {
+            // Unsorted is the cheapest option; row order in the table does not matter.
             var renderers = new List<Renderer>(FindObjectsByType<Renderer>(FindObjectsSortMode.None));
             Populate(renderers);
         }
@@ -120,6 +122,7 @@ namespace GlimmerOfHope.Editor.Tools
             EditorGUILayout.EndScrollView();
         }
 
+        // One editable row per candidate: the EnumPopup lets the user override the recommended strategy before Apply.
         private void DrawRow(LODCandidate c)
         {
             using (new EditorGUILayout.HorizontalScope())
@@ -159,7 +162,7 @@ namespace GlimmerOfHope.Editor.Tools
 
             int applied = LODApplier.Apply(_candidates, _preferPrefabAsset);
             EditorUtility.DisplayDialog("LOD Manager", applied + " objets traités.", "OK");
-            ScanScene();
+            ScanScene(); // re-scan so the table reflects the new LODGroups (rows flip to "already processed")
         }
 
         private bool Confirm()

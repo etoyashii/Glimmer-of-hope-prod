@@ -18,12 +18,14 @@ namespace GlimmerOfHope.Editor.Tools
             if (!candidate.SourceMesh.isReadable) return false;
 
             var root = candidate.Renderer.gameObject;
-            CleanExisting(root, useUndo);
+            CleanExisting(root, useUndo); // idempotent: wipe a previous run so re-applying rebuilds cleanly
 
+            // LOD0 is the source mesh untouched; LOD1/LOD2 are progressively decimated copies.
             var lod1Mesh = LODMeshGenerator.GetOrCreateLodMesh(candidate.SourceMesh, 1, LODSettings.LOD1_QUALITY);
             var lod2Mesh = LODMeshGenerator.GetOrCreateLodMesh(candidate.SourceMesh, 2, LODSettings.LOD2_QUALITY);
             if (lod1Mesh == null || lod2Mesh == null) return false;
 
+            // Every level reuses the source materials so the look is identical across distances.
             var materials = candidate.Renderer.sharedMaterials;
             var r0 = BuildChild(root, LODSettings.LOD0_SUFFIX, candidate.SourceMesh, materials, candidate.Renderer, useUndo);
             var r1 = BuildChild(root, LODSettings.LOD1_SUFFIX, lod1Mesh, materials, candidate.Renderer, useUndo);
@@ -40,6 +42,8 @@ namespace GlimmerOfHope.Editor.Tools
             if (group == null)
                 group = useUndo ? Undo.AddComponent<LODGroup>(root) : root.AddComponent<LODGroup>();
 
+            // Each height is the screen-relative size below which Unity switches to the NEXT level.
+            // The last value is the cull threshold (0 for AlwaysVisible = never culled).
             float[] heights = ResolveHeights(strategy);
             var lods = new[]
             {
@@ -48,6 +52,7 @@ namespace GlimmerOfHope.Editor.Tools
                 new LOD(heights[2], new[] { r2 })
             };
 
+            // CrossFade blends level swaps so the transition does not pop on screen.
             group.fadeMode = LODFadeMode.CrossFade;
             group.animateCrossFading = true;
             group.SetLODs(lods);
@@ -65,8 +70,8 @@ namespace GlimmerOfHope.Editor.Tools
         {
             var child = new GameObject(root.name + suffix);
             if (useUndo) Undo.RegisterCreatedObjectUndo(child, "Build LOD");
-            child.transform.SetParent(root.transform, false);
-            child.layer = source.gameObject.layer;
+            child.transform.SetParent(root.transform, false); // false = keep local transform, child sits at the root's origin
+            child.layer = source.gameObject.layer; // inherit layer so culling masks and physics stay consistent
 
             var filter = child.AddComponent<MeshFilter>();
             filter.sharedMesh = mesh;
