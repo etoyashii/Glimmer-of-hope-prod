@@ -6,6 +6,9 @@ namespace GlimmerOfHope.Editor
     public partial class DrawCallAnalyzer
     {
         #region Private Methods
+        /// <summary>
+        /// Handles the SceneView GUI rendering for the analyzer.
+        /// </summary>
         private void OnSceneGUI(SceneView sceneView)
         {
             if (rendererInfos == null || rendererInfos.Count == 0) return;
@@ -17,6 +20,9 @@ namespace GlimmerOfHope.Editor
             DrawHighlights(sceneView);
         }
 
+        /// <summary>
+        /// Draws wireframe cubes and labels around renderers in the SceneView, color-coded by draw call severity.
+        /// </summary>
         private void DrawHighlights(SceneView sceneView)
         {
             var cam = sceneView.camera;
@@ -26,8 +32,9 @@ namespace GlimmerOfHope.Editor
                 if (info.renderer == null || info.go == null) continue;
                 if (!info.go.activeInHierarchy) continue;
 
-                Color color = info.isCritical    ? HIGHLIGHT_CRITICAL :
-                              info.isProblematic ? HIGHLIGHT_WARNING   :
+                // Color is determined by the severity of the draw call count
+                Color color = info.isCritical ? HIGHLIGHT_CRITICAL :
+                              info.isProblematic ? HIGHLIGHT_WARNING :
                                                    HIGHLIGHT_OK;
 
                 Bounds b = info.renderer.bounds;
@@ -41,6 +48,9 @@ namespace GlimmerOfHope.Editor
             }
         }
 
+        /// <summary>
+        /// Draws a wireframe cube around a renderer's bounds.
+        /// </summary>
         private void DrawWireCube(Vector3 center, Vector3 size, Color color, float thickness)
         {
             Color prev = Handles.color;
@@ -72,6 +82,9 @@ namespace GlimmerOfHope.Editor
             Handles.color = prev;
         }
 
+        /// <summary>
+        /// Draws a label in screen space for problematic renderers, showing their draw call count.
+        /// </summary>
         private void DrawSceneLabel(Vector3 worldPos, Camera cam, RendererInfo info)
         {
             Vector3 screenPos = cam.WorldToScreenPoint(worldPos);
@@ -80,6 +93,7 @@ namespace GlimmerOfHope.Editor
             float dist = Vector3.Distance(cam.transform.position, worldPos);
             if (dist > 80f) return;
 
+            // Fade out label if object is far from camera
             float alpha = Mathf.Clamp01(1f - (dist - 30f) / 50f);
 
             Handles.BeginGUI();
@@ -87,8 +101,8 @@ namespace GlimmerOfHope.Editor
             float x = screenPos.x - 45f;
             float y = cam.pixelHeight - screenPos.y - 14f;
 
-            Color bg  = info.isCritical ? new Color(0.7f,  0.05f, 0.05f, 0.85f * alpha) :
-                                          new Color(0.65f, 0.4f,  0f,    0.80f * alpha);
+            Color bg = info.isCritical ? new Color(0.7f, 0.05f, 0.05f, 0.85f * alpha) :
+                                          new Color(0.65f, 0.4f, 0f, 0.80f * alpha);
 
             var bgRect = new Rect(x, y, 90f, 20f);
             EditorGUI.DrawRect(bgRect, bg);
@@ -106,6 +120,9 @@ namespace GlimmerOfHope.Editor
             Handles.EndGUI();
         }
 
+        /// <summary>
+        /// Draws the legend in the SceneView, explaining the color coding.
+        /// </summary>
         private void DrawSceneLegend(SceneView sceneView)
         {
             float pw = sceneView.position.width;
@@ -130,8 +147,8 @@ namespace GlimmerOfHope.Editor
             GUI.Label(new Rect(legendRect.x, legendRect.y + 4, legendRect.width, 16), "Draw Call Analyzer", titleStyle);
 
             DrawLegendItem(legendRect.x + 8, legendRect.y + 22, HIGHLIGHT_CRITICAL, "Critique (> seuil×2)", itemStyle);
-            DrawLegendItem(legendRect.x + 8, legendRect.y + 38, HIGHLIGHT_WARNING,  $"Attention (> {drawCallThreshold} DC)", itemStyle);
-            DrawLegendItem(legendRect.x + 8, legendRect.y + 54, HIGHLIGHT_OK,       "OK", itemStyle);
+            DrawLegendItem(legendRect.x + 8, legendRect.y + 38, HIGHLIGHT_WARNING, $"Attention (> {drawCallThreshold} DC)", itemStyle);
+            DrawLegendItem(legendRect.x + 8, legendRect.y + 54, HIGHLIGHT_OK, "OK", itemStyle);
 
             var totalStyle = new GUIStyle(EditorStyles.miniLabel) { fontStyle = FontStyle.Bold };
             totalStyle.normal.textColor = new Color(0.85f, 0.85f, 0.85f);
@@ -141,6 +158,9 @@ namespace GlimmerOfHope.Editor
                 totalStyle);
         }
 
+        /// <summary>
+        /// Draws a single item in the legend, with a color sample and label.
+        /// </summary>
         private void DrawLegendItem(float x, float y, Color color, string label, GUIStyle style)
         {
             EditorGUI.DrawRect(new Rect(x, y + 3, 12, 10), color);

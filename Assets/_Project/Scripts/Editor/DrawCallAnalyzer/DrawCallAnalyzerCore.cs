@@ -4,11 +4,17 @@ using System.Linq;
 
 namespace GlimmerOfHope.Editor
 {
+    /// <summary>
+    /// Editor window for analyzing and visualizing draw calls in the scene, helping to identify performance bottlenecks.
+    /// </summary>
     public partial class DrawCallAnalyzer : EditorWindow
     {
         [MenuItem("Tools/GlimmerOfHope/Draw Call Analyzer %#d")]
 
         #region Public Methods
+        /// <summary>
+        /// Opens the Draw Call Analyzer window.
+        /// </summary>
         public static void OpenWindow()
         {
             var window = GetWindow<DrawCallAnalyzer>(WINDOW_TITLE);
@@ -45,6 +51,7 @@ namespace GlimmerOfHope.Editor
 
         private void Update()
         {
+            // Auto-refresh data at regular intervals if enabled
             if (autoRefresh && EditorApplication.timeSinceStartup - lastRefreshTime > AUTO_REFRESH_INTERVAL)
             {
                 RefreshData();
@@ -54,6 +61,9 @@ namespace GlimmerOfHope.Editor
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Scans the scene for all renderers, calculates their draw calls, and updates the lists of renderer info and problematic objects.
+        /// </summary>
         private void RefreshData()
         {
             lastRefreshTime = EditorApplication.timeSinceStartup;
@@ -67,19 +77,19 @@ namespace GlimmerOfHope.Editor
             {
                 if (!r.gameObject.activeInHierarchy || !r.enabled) continue;
 
-                int dc   = CalculateDrawCalls(r);
+                int dc = CalculateDrawCalls(r);
                 int mats = r.sharedMaterials.Length;
                 totalDrawCalls += dc;
 
                 var info = new RendererInfo
                 {
-                    renderer      = r,
-                    go            = r.gameObject,
-                    name          = r.gameObject.name,
-                    drawCalls     = dc,
+                    renderer = r,
+                    go = r.gameObject,
+                    name = r.gameObject.name,
+                    drawCalls = dc,
                     materialCount = mats,
                     isProblematic = dc > drawCallThreshold,
-                    isCritical    = dc > drawCallThreshold * 2
+                    isCritical = dc > drawCallThreshold * 2
                 };
 
                 rendererInfos.Add(info);
@@ -87,12 +97,15 @@ namespace GlimmerOfHope.Editor
                     problematicObjects.Add(info);
             }
 
-            rendererInfos     = rendererInfos.OrderByDescending(x => x.drawCalls).ToList();
+            rendererInfos = rendererInfos.OrderByDescending(x => x.drawCalls).ToList();
             problematicObjects = problematicObjects.OrderByDescending(x => x.drawCalls).ToList();
 
             SceneView.RepaintAll();
         }
 
+        /// <summary>
+        /// Calculates the number of draw calls for a given renderer, based on its mesh and materials.
+        /// </summary>
         private int CalculateDrawCalls(Renderer r)
         {
             int matCount = r.sharedMaterials.Count(m => m != null);

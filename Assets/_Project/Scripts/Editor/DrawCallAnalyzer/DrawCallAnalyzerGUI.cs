@@ -7,6 +7,9 @@ namespace GlimmerOfHope.Editor
     public partial class DrawCallAnalyzer
     {
         #region Unity Lifecycle
+        /// <summary>
+        /// Handles the rendering of the editor window UI.
+        /// </summary>
         private void OnGUI()
         {
             InitStyles();
@@ -19,13 +22,16 @@ namespace GlimmerOfHope.Editor
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Initializes all GUI styles used in the window. Only runs once.
+        /// </summary>
         private void InitStyles()
         {
             if (stylesInitialized) return;
 
             headerStyle = new GUIStyle(EditorStyles.boldLabel)
             {
-                fontSize  = 13,
+                fontSize = 13,
                 alignment = TextAnchor.MiddleLeft
             };
             headerStyle.normal.textColor = new Color(0.85f, 0.85f, 0.85f);
@@ -33,7 +39,7 @@ namespace GlimmerOfHope.Editor
             statBoxStyle = new GUIStyle("helpbox")
             {
                 padding = new RectOffset(10, 10, 8, 8),
-                margin  = new RectOffset(4, 4, 4, 4)
+                margin = new RectOffset(4, 4, 4, 4)
             };
 
             warningRowStyle = new GUIStyle("CN EntryBackEven");
@@ -65,6 +71,9 @@ namespace GlimmerOfHope.Editor
             stylesInitialized = true;
         }
 
+        /// <summary>
+        /// Creates a single-color texture for use in GUI backgrounds.
+        /// </summary>
         private static Texture2D MakeTex(int width, int height, Color col)
         {
             var tex = new Texture2D(width, height);
@@ -73,6 +82,9 @@ namespace GlimmerOfHope.Editor
             return tex;
         }
 
+        /// <summary>
+        /// Draws the header section with the window title and refresh button.
+        /// </summary>
         private void DrawHeader()
         {
             EditorGUILayout.Space(6);
@@ -93,13 +105,17 @@ namespace GlimmerOfHope.Editor
             EditorGUILayout.Space(4);
         }
 
+        /// <summary>
+        /// Draws the statistics cards (total draw calls, scanned objects, problematic objects).
+        /// </summary>
         private void DrawStats()
         {
             using (new EditorGUILayout.HorizontalScope())
             {
+                // Color changes based on threshold: red if high, orange if medium, green if low
                 DrawStatCard("TOTAL DRAW CALLS", totalDrawCalls.ToString(),
                     totalDrawCalls > 100 ? new Color(1f, 0.4f, 0.4f) :
-                    totalDrawCalls > 50  ? new Color(1f, 0.75f, 0.2f) :
+                    totalDrawCalls > 50 ? new Color(1f, 0.75f, 0.2f) :
                                            new Color(0.4f, 1f, 0.55f));
 
                 DrawStatCard("OBJETS SCANNÉS", rendererInfos.Count.ToString(), new Color(0.55f, 0.75f, 1f));
@@ -116,7 +132,7 @@ namespace GlimmerOfHope.Editor
                 GUILayout.Label(label, EditorStyles.centeredGreyMiniLabel);
                 var style = new GUIStyle(EditorStyles.boldLabel)
                 {
-                    fontSize  = 20,
+                    fontSize = 20,
                     alignment = TextAnchor.MiddleCenter
                 };
                 style.normal.textColor = valueColor;
@@ -124,6 +140,9 @@ namespace GlimmerOfHope.Editor
             }
         }
 
+        /// <summary>
+        /// Draws the control panel with threshold slider, toggle options, and action buttons.
+        /// </summary>
         private void DrawControls()
         {
             using (new EditorGUILayout.VerticalScope("helpbox"))
@@ -158,17 +177,20 @@ namespace GlimmerOfHope.Editor
             }
         }
 
+        /// <summary>
+        /// Draws the list of renderers, with filtering based on user preferences.
+        /// </summary>
         private void DrawRendererList()
         {
             var list = showOnlyProblematic ? problematicObjects : rendererInfos;
 
             using (new EditorGUILayout.HorizontalScope(EditorStyles.toolbar))
             {
-                GUILayout.Label("Objet",       EditorStyles.toolbarButton, GUILayout.Width(180));
-                GUILayout.Label("Draw Calls",  EditorStyles.toolbarButton, GUILayout.Width(80));
-                GUILayout.Label("Matériaux",   EditorStyles.toolbarButton, GUILayout.Width(80));
-                GUILayout.Label("Statut",      EditorStyles.toolbarButton, GUILayout.Width(80));
-                GUILayout.Label("Actions",     EditorStyles.toolbarButton);
+                GUILayout.Label("Objet", EditorStyles.toolbarButton, GUILayout.Width(180));
+                GUILayout.Label("Draw Calls", EditorStyles.toolbarButton, GUILayout.Width(80));
+                GUILayout.Label("Matériaux", EditorStyles.toolbarButton, GUILayout.Width(80));
+                GUILayout.Label("Statut", EditorStyles.toolbarButton, GUILayout.Width(80));
+                GUILayout.Label("Actions", EditorStyles.toolbarButton);
             }
 
             using (var scroll = new EditorGUILayout.ScrollViewScope(scrollPos))
@@ -191,13 +213,17 @@ namespace GlimmerOfHope.Editor
             }
         }
 
+        /// <summary>
+        /// Draws a single row in the renderer list, with color coding based on draw call count.
+        /// </summary>
         private void DrawRow(RendererInfo info, int index)
         {
             bool isSelected = Selection.Contains(info.go);
 
-            Color bg = info.isCritical    ? new Color(0.55f, 0.1f,  0.1f,  0.4f)  :
+            // Background color depends on the severity of the draw call count
+            Color bg = info.isCritical ? new Color(0.55f, 0.1f, 0.1f, 0.4f) :
                        info.isProblematic ? new Color(0.55f, 0.35f, 0.05f, 0.35f) :
-                       index % 2 == 0    ? new Color(0.2f,  0.2f,  0.2f,  0.1f)  : Color.clear;
+                       index % 2 == 0 ? new Color(0.2f, 0.2f, 0.2f, 0.1f) : Color.clear;
 
             var rowRect = EditorGUILayout.BeginHorizontal(GUILayout.Height(20));
             EditorGUI.DrawRect(rowRect, bg);
@@ -214,14 +240,14 @@ namespace GlimmerOfHope.Editor
             }
 
             var dcStyle = new GUIStyle(EditorStyles.miniLabel) { alignment = TextAnchor.MiddleCenter };
-            dcStyle.normal.textColor = info.isCritical    ? new Color(1f,   0.4f, 0.4f) :
-                                       info.isProblematic ? new Color(1f,   0.75f, 0.2f) :
-                                                            new Color(0.6f, 0.9f,  0.6f);
-            GUILayout.Label(info.drawCalls.ToString(),    dcStyle,                         GUILayout.Width(80), GUILayout.Height(20));
+            dcStyle.normal.textColor = info.isCritical ? new Color(1f, 0.4f, 0.4f) :
+                                       info.isProblematic ? new Color(1f, 0.75f, 0.2f) :
+                                                            new Color(0.6f, 0.9f, 0.6f);
+            GUILayout.Label(info.drawCalls.ToString(), dcStyle, GUILayout.Width(80), GUILayout.Height(20));
             GUILayout.Label(info.materialCount.ToString(), EditorStyles.centeredGreyMiniLabel, GUILayout.Width(80), GUILayout.Height(20));
 
-            string     statusLabel = info.isCritical    ? "CRITIQUE"  : info.isProblematic ? "ATTENTION" : "OK";
-            GUIStyle   badgeStyle  = info.isCritical    ? badgeRedStyle : info.isProblematic ? badgeOrangeStyle : badgeGreenStyle;
+            string statusLabel = info.isCritical ? "CRITIQUE" : info.isProblematic ? "ATTENTION" : "OK";
+            GUIStyle badgeStyle = info.isCritical ? badgeRedStyle : info.isProblematic ? badgeOrangeStyle : badgeGreenStyle;
             GUILayout.Label(statusLabel, badgeStyle, GUILayout.Width(80), GUILayout.Height(20));
 
             if (GUILayout.Button("Focus", EditorStyles.miniButton, GUILayout.Width(46), GUILayout.Height(16)))
