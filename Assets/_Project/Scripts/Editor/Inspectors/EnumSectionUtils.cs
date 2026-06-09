@@ -18,6 +18,7 @@ namespace GlimmerOfHope.Editor
         #endregion
 
         #region API Publique
+        //Draw dans l'éditeur en fonctions des Enum sections activées
         public static void DrawWithSections(SerializedObject so)
         {
             so.Update();
@@ -25,6 +26,7 @@ namespace GlimmerOfHope.Editor
             so.ApplyModifiedProperties();
         }
 
+        //check s'il y a des Enum sections dans le MonoBehaviour
         public static bool HasAnySections(SerializedObject so)
         {
             Type type = so.targetObject.GetType();
@@ -47,6 +49,7 @@ namespace GlimmerOfHope.Editor
         #endregion
 
         #region Draw
+        //Draw les variables si elles sont dans les Enum sections selectionnées
         private static void DrawProperties(SerializedObject so)
         {
             object target = so.targetObject;
@@ -102,6 +105,7 @@ namespace GlimmerOfHope.Editor
         #endregion
 
         #region Helpers
+        //Récupère les Enum sections sélectionnées
         private static bool EvaluateSection(Type targetType, object target, EnumSectionBeginAttribute attr)
         {
             FieldInfo enumField = GetFieldInfo(targetType, attr.fieldName);
@@ -111,6 +115,7 @@ namespace GlimmerOfHope.Editor
             return ValuesMatch(currentValue, attr.value);
         }
 
+        //Check de correspondance pour les enums selectionnées
         private static bool ValuesMatch(object current, object expected)
         {
             if (current == null || expected == null) return false;
@@ -124,6 +129,7 @@ namespace GlimmerOfHope.Editor
             }
         }
 
+        //récupère les infos d'un champ présent dans une balise d'enum section
         private static FieldInfo GetFieldInfo(Type type, string  fieldName)
         {
             const BindingFlags flags = BindingFlags.Instance 
@@ -140,6 +146,7 @@ namespace GlimmerOfHope.Editor
             return null;
         }
 
+        //récupère tous les champs présent dans une balise d'enum section
         private static IEnumerable<FieldInfo> GetAllFields(Type type)
         {
             if (_fieldsCache.TryGetValue(type, out FieldInfo[] cached))
