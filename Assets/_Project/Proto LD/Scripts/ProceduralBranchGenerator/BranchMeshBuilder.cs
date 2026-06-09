@@ -140,12 +140,21 @@ public class BranchMeshBuilder : MonoBehaviour
         {
             // Pour les branches enfants : on recule le premier anneau dans le parent
             // pour couvrir le trou à la jonction (sink = enfoncement dans le parent)
-            float sinkDistance = 0f;
+            Vector3? sinkOrigin = null;
             if (parentOf[i] != -1)
-                sinkDistance = effBase[i]; // on recule d'un radius
+            {
+                int p = parentOf[i];
+                int knotIdx = parentKnotIndex[i];
+                float knotCount = container.Splines[p].Count - 1;
+                float tOnParent = knotCount > 0 ? (float)knotIdx / knotCount : 0f;
+
+                container.Splines[p].Evaluate(tOnParent, out float3 jPos, out float3 jTangent, out _);
+                float3 sinkPos = jPos - math.normalize(jTangent) * effBase[i];
+                sinkOrigin = (Vector3)sinkPos;
+            }
 
             BakeSpline(container.Splines[i], effBase[i], effTip[i],
-                       sinkDistance, allVerts.Count, allVerts, allUVs, allTris);
+                       sinkOrigin, allVerts.Count, allVerts, allUVs, allTris);
         }
 
         // ── 5. Sphères de jonction ───────────────────────────────────────
@@ -168,7 +177,7 @@ public class BranchMeshBuilder : MonoBehaviour
             container.Splines[p].Evaluate(t, out Unity.Mathematics.float3 jPos, out _, out _);
 
             float jRadius = Mathf.Lerp(effBase[p], effTip[p], t) * JunctionSphereScale;
-            BakeJunctionSphere((Vector3)jPos, jRadius, allVerts.Count, allVerts, allUVs, allTris);
+            BakeJunctionSphere((Vector3)jPos, jRadius, GrowCurve.Evaluate(GrowProgress), allVerts.Count, allVerts, allUVs, allTris);
         }
 
         if (BakedMesh == null)
@@ -190,18 +199,18 @@ public class BranchMeshBuilder : MonoBehaviour
     // ─────────────────────────────────────────────────────────────────
 
     void BakeSpline(Spline spline, float baseR, float tipR,
-                    float sinkDistance, int vertexOffset,
+                    Vector3? sinkOrigin, int vertexOffset,
                     List<Vector3> verts, List<Vector2> uvs, List<int> tris)
     {
         int segsVisible = Mathf.Max(1, Mathf.RoundToInt(Segments * GrowProgress));
         float growScale = GrowCurve.Evaluate(GrowProgress);
 
-        // Longueur totale de la spline pour convertir sinkDistance en t
-        float splineLength = spline.GetLength();
-        float sinkT = splineLength > 0f ? sinkDistance / splineLength : 0f;
+        //// Longueur totale de la spline pour convertir sinkDistance en t
+        //float splineLength = spline.GetLength();
+        //float sinkT = splineLength > 0f ? sinkDistance / splineLength : 0f;
 
         // +1 anneau supplémentaire au début si on a un sink (branche enfant)
-        int extraRing = sinkT > 0f ? 1 : 0;
+        int extraRing = sinkOrigin.HasValue ? 1 : 0;
         int totalRings = segsVisible + extraRing;
 
         for (int s = 0; s <= totalRings; s++)
@@ -209,13 +218,22 @@ public class BranchMeshBuilder : MonoBehaviour
             // s=0 avec extraRing : anneau "enfoncé" à -sinkT (dans le parent)
             // s=extraRing..totalRings : anneaux normaux de 0 à 1
             float tFull = extraRing > 0
-                ? Mathf.Clamp01((float)(s - extraRing) / Segments + (s == 0 ? -sinkT : 0f))
-                : (float)s / Segments;
+                ? Mathf.Clamp01((float)(s - extraRing) / segsVisible)
+                : (float)s / segsVisible;
             float tLocal = (float)s / totalRings;
             float taper = TaperCurve.Evaluate(tFull);
             float radius = Mathf.Lerp(tipR, baseR, taper) * growScale;
 
-            spline.Evaluate(tFull, out float3 pos, out float3 tangent, out float3 up);
+            float3 pos, tangent, up;
+            if (s == 0 && sinkOrigin.HasValue)
+            {
+                pos = (float3)sinkOrigin.Value;
+                spline.Evaluate(0f, out _, out tangent, out up);
+            }
+            else
+            {
+                spline.Evaluate(tFull, out pos, out tangent, out up);
+            }
 
             if (math.lengthsq(tangent) < 1e-6f) tangent = math.forward();
             tangent = math.normalize(tangent);
@@ -249,9 +267,11 @@ public class BranchMeshBuilder : MonoBehaviour
     //  Sphère de jonction — remplit le vide à chaque fork
     // ─────────────────────────────────────────────────────────────────
 
-    void BakeJunctionSphere(Vector3 center, float radius, int vertexOffset,
+    void BakeJunctionSphere(Vector3 center, float radius, float growScale, int vertexOffset,
                              List<Vector3> verts, List<Vector2> uvs, List<int> tris)
     {
+        radius *= growScale;
+
         int rings = Sides;
         int slices = Sides;
 

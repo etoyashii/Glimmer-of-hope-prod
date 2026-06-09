@@ -27,6 +27,7 @@ public class ProceduralBranchSplines : MonoBehaviour
     [SerializeField]
     [Range(0f, 1f)] 
     private float _branchSplitStart = 0.5f;
+    [SerializeField]
     private int _reduceCountMin = 0;
     [SerializeField]
     private int _reduceCountMax = 1;
@@ -101,8 +102,9 @@ public class ProceduralBranchSplines : MonoBehaviour
     #region Generate method
     void OnValidate()
     {
-        if (_autoRegenerate)
-            UnityEditor.EditorApplication.delayCall += Generate;
+        if (!_autoRegenerate) return;
+        UnityEditor.EditorApplication.delayCall -= Generate;
+        UnityEditor.EditorApplication.delayCall += Generate;
     }
     [ContextMenu("Generate Branches")]
     public void Generate()
