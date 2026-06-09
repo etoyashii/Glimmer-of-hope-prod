@@ -25,6 +25,7 @@ namespace GlimmerOfHope.Gameplay
         #region PrivateFields
 
         private LayerMask _layerMask;
+        private bool _isLightActivated;
 
         #endregion
 
@@ -42,12 +43,20 @@ namespace GlimmerOfHope.Gameplay
 
         public void IncreaseLight()
         {
+            if (_isLightActivated) return;
+
             StartCoroutine(SwitchLight(_transitionDelay, true));
+            DetectEntities(true);
+            _isLightActivated = true;
         }
 
         public void ReduceLight()
         {
+            if (_isLightActivated == false) return;
+
             StartCoroutine(SwitchLight(_transitionDelay, false));
+            DetectEntities(false);
+            _isLightActivated = false;
         }
 
         #endregion
@@ -55,18 +64,25 @@ namespace GlimmerOfHope.Gameplay
         #region PrivateMethods
 
         //Use sphere raycast to detect 
-        private void DetectEntities()
+        private void DetectEntities(bool isIncreasing)
         {
             Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
 
-            RaycastHit[] raycastHits = Physics.SphereCastAll(ray, _lightRange, 1.0f, _layerMask);
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _lightRange, _layerMask);
 
-            for (int i = 0; i < raycastHits.Length; i++)
+            for (int i = 0; i < colliders.Length; i++)
             {
                 //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
-                if (raycastHits[i].transform.gameObject.TryGetComponent<LightReaction>(out LightReaction lightReaction))
+                if (colliders[i].transform.gameObject.TryGetComponent<LightReaction>(out LightReaction lightReaction))
                 {
-                    lightReaction.ReactionToLight();
+                    if (isIncreasing)
+                    {
+                        lightReaction.PerformLight();
+                    }
+                    else
+                    {
+                        lightReaction.PerformUnlight();
+                    }
                 }
             }
         }
@@ -83,8 +99,6 @@ namespace GlimmerOfHope.Gameplay
             float startIntensity = _light.intensity;
             float elapsedTime = 0f;
             float targetIntensity;
-
-            DetectEntities();
 
             if (isIncreased)
                 targetIntensity = _maxIntensity;
