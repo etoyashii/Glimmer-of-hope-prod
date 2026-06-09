@@ -4,14 +4,14 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
 {
-    public class GrowthByLight : MonoBehaviour
+    public class GrowthByLight : LightReaction
     {
         [SerializeField] private Transform _littleSprout;
         [SerializeField] private float _timeToGrow;
         [SerializeField] private Vector3 _targetScale = Vector3.one * 2.0f;
         //[SerializeField] private Animator _animator;
 
-        public void Growth()
+        public override void PerformLight()
         {
             StartCoroutine(ProgressivGrowth());
             //AnimateGrowth();
