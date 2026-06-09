@@ -6,6 +6,9 @@ using static GlimmerOfHope.Editor.PlayModeSaver.PlayModeSaver;
 
 namespace GlimmerOfHope.Editor.PlayModeSaver
 {
+    /// <summary>
+    /// Serializes a selection of GameObjects and their components into a format that can be restored later.
+    /// </summary>
     class Serializer
     {
         #region Private Fields
@@ -23,9 +26,15 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
         {
             this.rawGameObjects = rawGameObjects;
         }
+
+        /// <summary>
+        /// Serializes the provided GameObjects and their hierarchy into a SerializedSelection.
+        /// </summary>
         public SerializedSelection Serialize()
         {
+            // Identify root GameObjects (those not parented by another selected GameObject)
             rootGameObjectsToCopy = GetRootGameObjects(rawGameObjects);
+
             allGameObjectsToCopy = new List<GameObject>();
             rootGameObjectsToCopy.ForEach(x =>
             {
@@ -33,6 +42,8 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
                 GetTree(x, ref tree);
                 allGameObjectsToCopy.AddRange(tree);
             });
+
+            // Collect all components in the hierarchy for reference resolution
             allComponentsInGameObjectsToCopyHierarchy = GetAllObjects(rootGameObjectsToCopy);
 
             serializedSelection = new SerializedSelection();
@@ -55,6 +66,7 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             {
                 foreach (GameObject gameObject in gameObjects)
                 {
+                    // A GameObject is a root if it is not a child of any other selected GameObject
                     if (gameObjects.Any(x => x != gameObject && !gameObject.transform.IsChildOf(x.transform)))
                     {
                         rootGameObjects.Add(gameObject);
@@ -95,9 +107,7 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             sgo.serializedData = EditorJsonUtility.ToJson(gameObject, false);
             sgo.savedInstanceIDs = GetInstanceReferenceIDs(gameObject);
 
-
             sgo.scenePath = gameObject.scene.path;
-
             sgo.hasParent = gameObject.transform.parent != null;
             sgo.parentID = sgo.hasParent ? gameObject.transform.parent.GetInstanceID() : 0;
             sgo.siblingIndex = gameObject.transform.GetSiblingIndex();
@@ -146,11 +156,13 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
                     }
                     else if (allComponentsInGameObjectsToCopyHierarchy.Contains(prop.objectReferenceValue))
                     {
+                        // If the reference is within the hierarchy, store its index for internal resolution
                         int index = allComponentsInGameObjectsToCopyHierarchy.IndexOf(prop.objectReferenceValue);
                         ids.Add(new InstanceReference(index, true));
                     }
                     else
                     {
+                        // If the reference is external, store its global instance ID
                         ids.Add(new InstanceReference(prop.objectReferenceInstanceIDValue, false));
                     }
                 }

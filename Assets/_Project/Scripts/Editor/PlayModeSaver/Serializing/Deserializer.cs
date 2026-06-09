@@ -11,7 +11,9 @@ using static GlimmerOfHope.Editor.PlayModeSaver.PlayModeSaver;
 
 namespace GlimmerOfHope.Editor.PlayModeSaver
 {
-
+    /// <summary>
+    /// Deserializes a SerializedSelection back into Unity GameObjects and components, restoring the original hierarchy and references.
+    /// </summary>
     class Deserializer
     {
         #region Private Fields
@@ -32,8 +34,10 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             this.destroyOriginals = destroyOriginals;
         }
 
-       
-
+        /// <summary>
+        /// Deserializes the saved selection and returns the root GameObjects.
+        /// Handles undo/redo, scene management, and reference restoration.
+        /// </summary>
         public GameObject[] Deserialize()
         {
             Reset();
@@ -42,7 +46,7 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             Undo.IncrementCurrentGroup();
             Undo.SetCurrentGroupName("Restore Play Mode Changes");
 
-            // Do this first, since otherwise it can interfere with restoring the sibling indices.
+            // Destroy originals first to avoid conflicts when restoring sibling indices
             if (destroyOriginals)
                 DestroyOriginals();
 
@@ -55,13 +59,17 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
 
                 ReadNodeFromSerializedNodes(index, out go);
             }
+            // Restore references between deserialized objects (e.g. components referencing each other)
             RestoreInternalObjectReferences();
 
-            var deserializedRootGameObjects = deserializedGameObjects.Where(x => serializedSelection.indexOfRootGOs.Contains(x.serializedGameObject.indexOfFirstChild - 1)).Select(x => x.gameObject).ToArray();
+            var deserializedRootGameObjects = deserializedGameObjects
+                .Where(x => serializedSelection.indexOfRootGOs.Contains(x.serializedGameObject.indexOfFirstChild - 1))
+                .Select(x => x.gameObject)
+                .ToArray();
 
             // Enforces child index when redoing
             foreach (var g in deserializedRootGameObjects)
-                Undo.SetTransformParent(g.transform, g.transform.parent, "Creat");
+                Undo.SetTransformParent(g.transform, g.transform.parent, "Create");
 
             Undo.CollapseUndoOperations(undoIndex);
             return deserializedRootGameObjects;
@@ -76,6 +84,7 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             deserializedComponents = new List<DeserializedComponent>();
             loadedAssemblies = new Dictionary<string, Assembly>();
         }
+
         void DestroyOriginals()
         {
             foreach (var id in serializedSelection.idOfRootGOs)
@@ -94,6 +103,7 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             Scene scene = EditorSceneManager.GetSceneByPath(serializedGameObject.scenePath);
             if (!scene.isDirty) EditorSceneManager.MarkSceneDirty(scene);
             Undo.MoveGameObjectToScene(newGameObject, scene, "Move GameObject to scene");
+
             // The tree needs to be read in depth-first, since that's how we wrote it out.
             for (int i = 0; i != serializedGameObject.childCount; i++)
             {
@@ -131,14 +141,15 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
         {
             Component component = null;
 
+            // Load the assembly containing the component type if not already loaded
             if (!loadedAssemblies.ContainsKey(serializedComponent.assemblyName))
                 loadedAssemblies.Add(serializedComponent.assemblyName, Assembly.Load(serializedComponent.assemblyName));
+
             Type type = loadedAssemblies[serializedComponent.assemblyName].GetType(serializedComponent.typeName);
             Debug.Assert(type != null, "Type '" + serializedComponent.typeName + "' not found in assembly '" + serializedComponent.assemblyName + "'");
 
             if (type == typeof(Transform)) component = go.transform;
             else component = Undo.AddComponent(go, type);
-
 
             EditorJsonUtility.FromJsonOverwrite(serializedComponent.serializedData, component);
             RestoreObjectReference(serializedComponent.savedInstanceIDs, component);
@@ -167,7 +178,10 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
             so.ApplyModifiedProperties();
         }
 
-        // Some things can't be restored until all the gameobjects and components have been created. Do them now.
+        /// <summary>
+        /// Restores references between deserialized objects (e.g. a component referencing another component in the same hierarchy).
+        /// Must be called after all objects are created.
+        /// </summary>
         void RestoreInternalObjectReferences()
         {
             foreach (var deserializedGameObject in deserializedGameObjects)
@@ -182,7 +196,6 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
                 }
                 deserializedGameObject.gameObject.transform.SetSiblingIndex(deserializedGameObject.serializedGameObject.siblingIndex);
             }
-
 
             foreach (var deserializedComponent in deserializedComponents)
             {
@@ -203,6 +216,6 @@ namespace GlimmerOfHope.Editor.PlayModeSaver
                 so.ApplyModifiedProperties();
             }
         }
+        #endregion
     }
-    #endregion
 }
