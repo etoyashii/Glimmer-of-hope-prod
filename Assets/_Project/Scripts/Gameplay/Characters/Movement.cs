@@ -30,7 +30,8 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [Header("References")]
         [SerializeField] private InputActionReference _moveAction;
         [SerializeField] private CharacterController _controller;
-        [SerializeField] private CinemachineCamera _playerCamera;
+        [SerializeField] private Camera _playerCamera;
+        [SerializeField] private Climbing _climbing;
 
         #endregion
 
@@ -80,8 +81,14 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
             //Gravity + AirCurrent upwards if in one
             float verticalCurrent = _inAirCurrent ? _airCurrentForce.y : 0f;
-            verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
 
+            if (_climbing != null)
+                if (!_climbing.climbing)
+                {
+                    if (!_controller.isGrounded)
+                        verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
+                }
+                
             Vector3 cameraForward = _playerCamera.transform.forward;
             Vector3 cameraRight = _playerCamera.transform.right;
             cameraForward.y = 0;
@@ -91,18 +98,42 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
             //Position + AirCurrent horizontal if in one
             Vector3 moveDirection = (cameraRight * _direction.x + cameraForward * _direction.y).normalized;
+
             if (_inAirCurrent)
                 moveDirection += new Vector3(_airCurrentForce.x, 0f, _airCurrentForce.z) * Time.deltaTime;
 
             //Rotation
-            if (moveDirection.magnitude > 0.1f)
-            {
-                Quaternion toRotate = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.deltaTime);
-            }
+            if (_climbing)
+                if (!_climbing.climbing)
+                    if (moveDirection.magnitude > 0.1f)
+                    {
+                        Quaternion toRotate = Quaternion.LookRotation(moveDirection);
+                        transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.deltaTime);
+                    }
 
             //Apply Everything to move the Player
+            if (_climbing)
+                if (_climbing.climbing)
+                {
+                    Vector3 wallNormal = _climbing.frontWallHit.normal;
+
+                    Vector3 horizontalMove = new Vector3(moveDirection.x, 0, moveDirection.z);
+
+                    Vector3 moveAlongWall = Vector3.ProjectOnPlane(horizontalMove, wallNormal);
+
+                    float verticalInput = _direction.y;
+
+                    verticalVelocity = verticalInput / 2f;
+
+                    moveDirection.x = moveAlongWall.x;
+                    moveDirection.z = moveAlongWall.z;
+                }
             moveDirection.y = verticalVelocity;
+
+            if (_climbing)
+                if (_climbing.climbing)
+                    moveDirection /= 5f;
+
             _controller.Move(moveDirection * _speed * Time.deltaTime);
         }
 

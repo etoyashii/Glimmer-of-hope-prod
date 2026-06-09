@@ -17,20 +17,24 @@ namespace GlimmerOfHope.Gameplay
         [Range(0.0f, 20.0f)]
         [SerializeField] private float _maxIntensity = 12.0f;
         [SerializeField] private float _transitionDelay = 1.0f;
+        [Range(0.0f, 20.0f)]
+        [SerializeField] private float _lightRange = 2.0f;
 
         #endregion
 
         #region PrivateFields
 
         private LayerMask _layerMask;
+        private bool _isLightActivated;
 
         #endregion
 
+
         #region UnityLifecycle
 
-        private void Start()
+        private void Awake()
         {
-            _layerMask = LayerMask.GetMask("GrowingVegetal");
+            _layerMask = LayerMask.GetMask("LightSensitive");
         }
 
         #endregion
@@ -39,12 +43,48 @@ namespace GlimmerOfHope.Gameplay
 
         public void IncreaseLight()
         {
+            if (_isLightActivated) return;
+
             StartCoroutine(SwitchLight(_transitionDelay, true));
+            DetectEntities(true);
+            _isLightActivated = true;
         }
 
         public void ReduceLight()
         {
+            if (_isLightActivated == false) return;
+
             StartCoroutine(SwitchLight(_transitionDelay, false));
+            DetectEntities(false);
+            _isLightActivated = false;
+        }
+
+        #endregion
+
+        #region PrivateMethods
+
+        //Use sphere raycast to detect 
+        private void DetectEntities(bool isIncreasing)
+        {
+            Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
+
+            Collider[] colliders = Physics.OverlapSphere(transform.position, _lightRange, _layerMask);
+
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
+                if (colliders[i].transform.gameObject.TryGetComponent<LightReaction>(out LightReaction lightReaction))
+                {
+                    if (isIncreasing)
+                    {
+                        lightReaction.PerformLight();
+                    }
+                    else
+                    {
+                        lightReaction.PerformUnlight();
+                    }
+                }
+            }
         }
 
         #endregion
@@ -72,25 +112,24 @@ namespace GlimmerOfHope.Gameplay
                 yield return null;
             }
 
-            if (isIncreased) 
-                ImpactEntities();
-
             _light.intensity = targetIntensity;
         }
 
-        private void ImpactEntities()
-        {
-            Collider[] colliders = Physics.OverlapSphere(_light.transform.position, 100.0f, _layerMask);
+        #endregion
 
-            Debug.Log(_light.transform.position);
-            for (int i = 0; i < colliders.Length; i++)
-            {
-                //TODO: If there's not much LD element that require this check, I'll rework that into check list instead of TryGetComponent that is pretty bad optimizly speaking
-                if (colliders[i].transform.gameObject.TryGetComponent<GrowthByLight>(out GrowthByLight growth))
-                {
-                    growth.Growth();
-                }
-            }
+        #region Editor
+
+        private void OnDrawGizmos()
+        {
+            // Set the color with custom alpha.
+            Gizmos.color = new Color(1f, 0f, 0f, 1.0f); // Red with custom alpha
+
+            // Draw the sphere.
+            Gizmos.DrawSphere(transform.position, _lightRange);
+
+            // Draw wire sphere outline.
+            Gizmos.color = Color.white;
+            Gizmos.DrawWireSphere(transform.position, _lightRange);
         }
 
         #endregion
