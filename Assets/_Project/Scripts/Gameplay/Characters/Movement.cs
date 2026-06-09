@@ -117,14 +117,13 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 {
                     Vector3 wallNormal = _climbing.frontWallHit.normal;
 
-                    Vector3 horizontalMove = new Vector3(moveDirection.x, 0, moveDirection.z);
-
-                    Vector3 moveAlongWall = Vector3.ProjectOnPlane(horizontalMove, wallNormal);
-
                     float verticalInput = _direction.y;
 
-                    verticalVelocity = verticalInput / 2f;
+                    Vector3 temp = new Vector3(moveDirection.x, verticalInput, moveDirection.z);
 
+                    Vector3 moveAlongWall = Vector3.ProjectOnPlane(temp, wallNormal);
+
+                    verticalVelocity = temp.y;
                     moveDirection.x = moveAlongWall.x;
                     moveDirection.z = moveAlongWall.z;
                 }
