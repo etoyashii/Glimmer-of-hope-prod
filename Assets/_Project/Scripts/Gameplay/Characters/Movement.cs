@@ -1,6 +1,5 @@
 using System;
 using Unity.Cinemachine;
-using Unity.Plastic.Newtonsoft.Json.Bson;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Utilities;
@@ -82,13 +81,17 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             //Gravity + AirCurrent upwards if in one
             float verticalCurrent = _inAirCurrent ? _airCurrentForce.y : 0f;
 
-            if (_climbing != null)
-                if (!_climbing.climbing)
-                {
-                    if (!_controller.isGrounded)
-                        verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
-                }
-                
+            //if (_climbing != null)
+            //    if (!_climbing.climbing)
+            //    {
+            //        if (!_controller.isGrounded)
+            //            verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
+            //    }
+
+            //Replace to the top comment when climbing ref is effective
+            if (!_controller.isGrounded)
+                verticalVelocity += (_gravity + verticalCurrent) * Time.deltaTime;
+
             Vector3 cameraForward = _playerCamera.transform.forward;
             Vector3 cameraRight = _playerCamera.transform.right;
             cameraForward.y = 0;

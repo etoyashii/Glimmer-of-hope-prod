@@ -6,11 +6,6 @@ namespace GlimmerOfHope.Gameplay
     /// <summary>
     /// To make the player Jump
     /// </summary>
-    #region Dependancies
-
-    [RequireComponent(typeof(CharacterController))]
-
-    #endregion
     public class Jump : MonoBehaviour
     {
         #region SerializedField
