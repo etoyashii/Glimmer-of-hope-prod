@@ -1,0 +1,36 @@
+using UnityEngine;
+using GlimmerOfHope.Editor;
+
+public class #SCRIPTNAME# : MonoBehaviour
+{
+	public enum #SCRIPTNAME#Type
+	{
+		TypeA,
+		TypeB
+	}
+
+	public #SCRIPTNAME#Type type;
+
+	[EnumSectionBegin(nameof(type), #SCRIPTNAME#Type.TypeA)]
+	public int fieldTypeA;
+
+	[EnumSectionBegin(nameof(type), #SCRIPTNAME#Type.TypeB)]
+	public int fieldTypeB;
+
+	[EnumSectionEnd] //Utile seulement si variables shared a rajouter en dessous. Sinon supprimez.
+
+	private int _sharedField;
+	public int sharedField;
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+}
