@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-using Unity.Cinemachine;
-
 namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 {
     /// <summary>
@@ -12,6 +10,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
     #region Dependancies
 
     [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(SkillManager))]
 
     #endregion
     public class Movement : MonoBehaviour
@@ -23,12 +22,15 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [SerializeField] private float _speed = 20.0f;
         [Range(-30.0f, 30.0f)]
         [SerializeField] private float _gravity = -9.81f;
-
+        [Header("Rotation")]
+        [Range(0.01f, 1.0f)]
+        [SerializeField] private float _rotationSensitivity = 0.2f;
 
         [Header("References")]
         [SerializeField] private InputActionReference _moveAction;
+        [SerializeField] private InputActionReference _swipeAction;
         [SerializeField] private CharacterController _controller;
-        [SerializeField] private CinemachineCamera _playerCamera;
+
 
         #endregion
 
@@ -41,6 +43,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         #region Private Fields
 
         private Vector2 _direction;
+        private Vector2 _swipeDelta;
         private float _verticalVelocity;
         private bool _movementEnabled = true;
 
@@ -54,7 +57,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _moveAction.action.performed += OnMovementStarted;
             _moveAction.action.canceled += OnMovementCanceled;
 
-
+            _swipeAction.action.Enable();
+            _swipeAction.action.performed += OnSwipePerformed;
+            _swipeAction.action.canceled += OnSwipeCanceled;
         }
 
         private void Update()
@@ -66,24 +71,15 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
             _verticalVelocity += _gravity * Time.deltaTime;
 
-            Vector3 cameraForward = _playerCamera.transform.forward;
-            Vector3 cameraRight = _playerCamera.transform.right;
-            cameraForward.y = 0;
-            cameraRight.y = 0;
-            cameraForward.Normalize();
-            cameraRight.Normalize();
+            Vector3 move = transform.right * _direction.x + transform.forward * _direction.y;
+            move.y = _verticalVelocity;
 
-            Vector3 moveDirection = (cameraRight * _direction.x + cameraForward * _direction.y).normalized;
+            _controller.Move(_speed * Time.deltaTime * move);
 
+            if (_swipeDelta.sqrMagnitude < 0.01f) return;
 
-            if (moveDirection.magnitude > 0.1f)
-            {
-                Quaternion toRotate = Quaternion.LookRotation(moveDirection);
-                transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.deltaTime);
-            }
-
-            moveDirection.y = _verticalVelocity;
-            _controller.Move(moveDirection * _speed * Time.deltaTime);
+            float yRotation = _swipeDelta.x * _rotationSensitivity;
+            transform.Rotate(Vector3.up, yRotation, Space.World);
         }
 
         private void OnDisable()
@@ -92,7 +88,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _moveAction.action.performed -= OnMovementStarted;
             _moveAction.action.canceled -= OnMovementCanceled;
 
-
+            _swipeAction.action.Disable();
+            _swipeAction.action.performed -= OnSwipePerformed;
+            _swipeAction.action.canceled -= OnSwipeCanceled;
         }
 
         #endregion
@@ -120,6 +118,11 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _direction = Vector2.zero;
         }
 
+        private void OnSwipePerformed(InputAction.CallbackContext context)
+            => _swipeDelta = context.ReadValue<Vector2>();
+
+        private void OnSwipeCanceled(InputAction.CallbackContext context)
+            => _swipeDelta = Vector2.zero;
         #endregion
     }
 }
