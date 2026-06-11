@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEditor.UIElements;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -25,7 +26,7 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private float _raycastMaxDistance = 20f;
 
         [Tooltip("Le layer qui permet de generer des platforms")]
-        [SerializeField] private LayerMask layer;
+        [SerializeField] private LayerMask _layerMask;
 
         [Header("Paramètres d'animation")]
         [Tooltip("Profondeur sous le sol d'où la plateforme commence à monter")]
@@ -41,17 +42,21 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private AnimationCurve _riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         #endregion
 
-        #region Private Properties
+        #region Unity Lifecycle
 
-        private int layerMask;
+        private void Update()
+        {
+            if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            {
+                CastSpell();
+            }
+        }
 
         #endregion
 
-        
-
         #region Public Methods
 
-        public void CastSpell(bool spellmode)
+        public void CastSpell()
         {
             Debug.Log("Casting a platform!");
             if (_platformPrefab == null)
@@ -72,17 +77,17 @@ namespace GlimmerOfHope.Gameplay
             // Origine du raycast bien au-dessus du sol
             Vector3 rayOrigin = spawnCenter + Vector3.up * _raycastOriginHeight;
 
-            // On ne détecte QUE les colliders sur le layer EarthPlatform
-            //if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit,
-            //                    _raycastMaxDistance, earthPlatformLayerMask))
-            //{
-            //    Vector3 targetPosition = hit.point + Vector3.up * _targetHeightOffset;
-            //    SpawnPlatform(targetPosition);
-            //}
-            //else
-            //{
-            //    Debug.Log("Aucune zone avec le bon layer détectée devant le joueur.");
-            //}
+            // On ne détecte QUE les colliders sur le layer 
+            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit,
+                                _raycastMaxDistance, _layerMask))
+            {
+                Vector3 targetPosition = hit.point + Vector3.up * _targetHeightOffset;
+                SpawnPlatform(targetPosition);
+            }
+            else
+            {
+                Debug.Log("Aucune zone avec le bon layer détectée devant le joueur.");
+            }
         }
 
         #endregion
@@ -94,6 +99,8 @@ namespace GlimmerOfHope.Gameplay
             Vector3 startPosition = targetPosition - Vector3.up * _startDepth;
 
             GameObject platform = Instantiate(_platformPrefab, startPosition, Quaternion.identity);
+
+            platform.transform.forward = _playerTransform.forward;
 
             StartCoroutine(RisePlatform(platform, startPosition, targetPosition));
         }

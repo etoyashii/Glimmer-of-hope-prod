@@ -256,7 +256,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!1 &152490024
+--- !u!1 &119650009
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,24 +264,24 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 152490028}
-  - component: {fileID: 152490027}
-  - component: {fileID: 152490026}
-  - component: {fileID: 152490025}
-  m_Layer: 0
-  m_Name: Plane
+  - component: {fileID: 119650013}
+  - component: {fileID: 119650012}
+  - component: {fileID: 119650011}
+  - component: {fileID: 119650010}
+  m_Layer: 10
+  m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!64 &152490025
-MeshCollider:
+--- !u!65 &119650010
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152490024}
+  m_GameObject: {fileID: 119650009}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -293,17 +293,16 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!23 &152490026
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &119650011
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152490024}
+  m_GameObject: {fileID: 119650009}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -346,26 +345,26 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!33 &152490027
+--- !u!33 &119650012
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152490024}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &152490028
+  m_GameObject: {fileID: 119650009}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &119650013
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 152490024}
+  m_GameObject: {fileID: 119650009}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -2.17, z: 0}
-  m_LocalScale: {x: 12.68, y: 12.68, z: 12.68}
-  m_ConstrainProportionsScale: 1
+  m_LocalPosition: {x: 2.0337, y: -3.68, z: -3.0819}
+  m_LocalScale: {x: 37.95925, y: 1, z: 38.957813}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -484,7 +483,6 @@ GameObject:
   - component: {fileID: 315749162}
   - component: {fileID: 315749163}
   - component: {fileID: 315749157}
-  - component: {fileID: 315749153}
   m_Layer: 0
   m_Name: Cinemachine
   m_TagString: MainCamera
@@ -492,14 +490,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &315749153
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 315749152}
-  m_Enabled: 1
 --- !u!4 &315749155
 Transform:
   m_ObjectHideFlags: 0
@@ -948,6 +938,7 @@ GameObject:
   - component: {fileID: 624255007}
   - component: {fileID: 624255008}
   - component: {fileID: 624255011}
+  - component: {fileID: 624255012}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1175,6 +1166,53 @@ MonoBehaviour:
   detectionLength: 0.51
   sphereCastRadius: 0.25
   maxWallLookAngle: 30
+--- !u!114 &624255012
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 624254997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4baa8d9b6d9a47c468917c460e4e17b7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.GeneratePlatform
+  _platformPrefab: {fileID: 2035987089044380612, guid: 2b7398a3d7196fc49bb4da41f6037831, type: 3}
+  _playerTransform: {fileID: 624255003}
+  _spawnDistance: 3
+  _raycastOriginHeight: 5
+  _raycastMaxDistance: 20
+  _layerMask:
+    serializedVersion: 2
+    m_Bits: 1024
+  _startDepth: 2
+  _riseDuration: 0.6
+  _targetHeightOffset: 0
+  _riseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &693431580
 GameObject:
   m_ObjectHideFlags: 0
@@ -1623,5 +1661,5 @@ SceneRoots:
   - {fileID: 1107878484}
   - {fileID: 1431389595}
   - {fileID: 1106941732}
-  - {fileID: 152490028}
   - {fileID: 315749155}
+  - {fileID: 119650013}
