@@ -41,9 +41,6 @@ namespace GlimmerOfHope.Gameplay
 
         [SerializeField] private AnimationCurve _movementCurve = AnimationCurve.Linear(0.0f, 0.0f, 1.0f, 1.0f);
 
-        [Header("Player Interactions")]
-        [SerializeField] private Transform _playerTransform;
-        [SerializeField] private Transform _snapPointTransform;
         #endregion
 
         #region PrivateFields
@@ -164,11 +161,6 @@ namespace GlimmerOfHope.Gameplay
                 }
 
                 transform.position = bezierPosition;
-
-                if (_playerTransform != null && _snapPointTransform != null)
-                {
-                    _playerTransform.position = _snapPointTransform.position;
-                }
 
                 yield return null;
             }
