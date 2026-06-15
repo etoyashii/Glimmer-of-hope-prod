@@ -160,7 +160,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             }
             else
             {
-                // Normal ground/air movement — preserve vertical velocity
+                // Normal ground/air movement ï¿½ preserve vertical velocity
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
