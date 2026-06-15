@@ -1,0 +1,43 @@
+name: 🐛 Bug report
+description: Please, check if the issue you want to submit doesn't exist. If you have more details about an already submitted issue, add the relevant information to the already existing ticket and add [UPDATED]
+title: "[PLACE YOU FIND THE ISSUE] Short context about the issue "
+labels: ["bug"]
+
+body:
+  - type: input
+    attributes:
+      label: Build version
+      description: "Git branch name and Date + hour"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Detailed description
+      description: "Full details about the bug"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Steps to reproduce
+      description: |
+        Describe the steps to reproduce the bug:
+        Step 1:
+        Step 2:
+        Step 3:
+        [...]
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Expected behavior
+      description: "What you expected to happen"
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Screen / Video
+      description: "Screenshot or video if applicable"
