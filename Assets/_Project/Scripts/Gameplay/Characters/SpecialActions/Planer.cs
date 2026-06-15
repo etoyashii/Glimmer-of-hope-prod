@@ -4,56 +4,72 @@ using UnityEngine;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// a planer limiting falling speed,
-    /// trigered by the jump button if pressed while not being grounded.
+    /// A planer limiting falling speed,
+    /// triggered by the jump button if pressed while not being grounded.
     /// </summary>
     public class Planer : MonoBehaviour
     {
         #region Serialized Field
-        [Header("Refs")]
-        [Tooltip("Controller of the Player")]
-        [SerializeField] private CharacterController _controller;
-        [SerializeField] private Movement _playerMovement;
 
-        [Tooltip("maximum falling speed while planer is active")]
-        [SerializeField] private float _planningVerticalVelocity = -1;
+        [Header("Refs")]
+        [SerializeField] private Rigidbody _rb;
+
+        [Tooltip("Maximum falling speed while planer is active")]
+        [SerializeField] private float _planningVerticalVelocity = -1f;
+
+        [Header("Ground Check")]
+        [SerializeField] private float _groundCheckDistance = 0.2f;
+        [SerializeField] private LayerMask _groundLayer;
+
         #endregion
 
-        #region Private fields
+        #region Private Fields
+
         private bool _isPlanningActive = false;
+
+        #endregion
+
+        #region Private Methods
+
+        private bool IsGrounded()
+        {
+            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+        }
+
         #endregion
 
         #region Unity Lifecycle
-        private void Update()
+
+        private void FixedUpdate()
         {
-            //Make sure that the planner is always desabled while the player is on the ground
-            if (_controller.isGrounded)
+            // Disable planer automatically when grounded
+            if (IsGrounded())
             {
                 if (_isPlanningActive) _isPlanningActive = false;
+                return;
             }
-            
-            //Lerps the vertical velocity of the player to the maximum falling speed when planer is active
-            if (_isPlanningActive)
+
+            // Clamp falling speed when planer is active
+            if (_isPlanningActive && _rb.linearVelocity.y < _planningVerticalVelocity)
             {
-                if (_playerMovement.verticalVelocity <= _planningVerticalVelocity)
-                {
-                    _playerMovement.verticalVelocity = Mathf.Lerp(_playerMovement.verticalVelocity, _planningVerticalVelocity, 0.5f);
-                }
+                Vector3 vel = _rb.linearVelocity;
+                vel.y = Mathf.Lerp(vel.y, _planningVerticalVelocity, 0.5f);
+                _rb.linearVelocity = vel;
             }
         }
+
         #endregion
 
         #region Public Methods
-        // Method called on the button that triggers and cancel the planner 
+
+        // Method called on the button that triggers and cancels the planer
         public void PerformPlaner()
         {
-            if (_controller.isGrounded) return;
-            if (!_isPlanningActive)
-            {
-                _isPlanningActive = true;
-            }
-            else _isPlanningActive = false;
+            if (IsGrounded()) return;
+
+            _isPlanningActive = !_isPlanningActive;
         }
+
         #endregion
     }
 }
