@@ -1,3 +1,4 @@
+using Codice.CM.Common;
 using System;
 using Unity.Cinemachine;
 using UnityEngine;
@@ -36,6 +37,11 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [SerializeField] private Camera _playerCamera;
         [SerializeField] private Climbing _climbing;
 
+        // Cached ground check values
+        [Header("Ground Check")]
+        [SerializeField] private float _groundCheckDistance = 0.2f;
+        [SerializeField] private LayerMask _groundLayer;
+
         #endregion
 
         #region Public Properties
@@ -59,6 +65,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         private Vector3 _airCurrentForce = Vector3.zero;
         private bool _inAirCurrent = false;
+        private Animator _animator;
 
         #endregion
 
@@ -70,6 +77,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 _rb = GetComponent<Rigidbody>();
             
             _rb.freezeRotation = true;
+            _animator = GetComponent<Animator>();
         }
 
         private void OnEnable()
@@ -93,11 +101,18 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             ApplyMovement();
             ApplyAirCurrent();
             ApplyRotation();
+            _animator.SetBool("IsGrounded", IsGrounded());
         }
 
         #endregion
 
         #region Public Methods
+
+        public bool IsGrounded()
+        {
+            _animator.SetBool("IsGrounded", true);
+            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+        }
 
         public void SetMovementEnabled(bool enabled)
         {
@@ -150,7 +165,14 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
                 _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
+
+
+
+                _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
+
             }
+
+
         }
 
         private void ApplyAirCurrent()

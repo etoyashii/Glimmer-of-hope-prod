@@ -28,31 +28,20 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
-        #region Private Fields
 
-        // Cached ground check values
-        [Header("Ground Check")]
-        [SerializeField] private float _groundCheckDistance = 0.2f;
-        [SerializeField] private LayerMask _groundLayer;
+        private Animator _animator;
 
-        #endregion
-
-        #region Private Methods
-
-        private bool IsGrounded()
+        private void Awake()
         {
-            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+            _animator = GetComponent<Animator>();
         }
-
-        #endregion
-
         #region Public Methods
 
         // Give the player a vertical impulse of the jumpForce value
         public void PerformJump(float jumpForce)
         {
             Debug.Log($"[Jump] PerformJump called with jumpForce: {jumpForce}");
-            if (!IsGrounded()) return;
+            if (!_playerMovement.IsGrounded()) return;
 
             if (jumpForce < _jumpImpulseLimit)
             {
@@ -74,6 +63,7 @@ namespace GlimmerOfHope.Gameplay
             }
             _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            _animator.SetTrigger("Jump");
         }
 
         #endregion
