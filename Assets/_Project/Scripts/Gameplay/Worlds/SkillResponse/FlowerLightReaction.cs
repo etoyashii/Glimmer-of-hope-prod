@@ -1,4 +1,6 @@
 using DG.Tweening.Plugins.Core.PathCore;
+using GlimmerOfHope.Gameplay.Character.SpecialActions;
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -46,6 +48,7 @@ namespace GlimmerOfHope.Gameplay
         private float _currentMovementProgress;
         private float _currentCurveValue;
 
+
         #endregion
 
         #region UnityLifecycle
@@ -61,6 +64,8 @@ namespace GlimmerOfHope.Gameplay
         }
 
         #endregion
+
+        #region PublicMethods
 
         //Enlighten Skill call by detecting the parent LightReaction then launch this method (heritage)
         public override void PerformLight()
@@ -79,6 +84,8 @@ namespace GlimmerOfHope.Gameplay
             ChangeState(FlowerState.MovingToEnd);
             StartCoroutine(Move());
         }
+
+        #endregion
 
         #region PrivateMethods
 
