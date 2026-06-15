@@ -1064,7 +1064,7 @@ GameObject:
   - component: {fileID: 679370980}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1178,8 +1178,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19d939b82729e524e9eff74fa27c34ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.Movement
-  _speed: 20
+  _speed: 15
   _acceleration: 0.15
+  _extraGravity: 20
   _moveAction: {fileID: -8626764955168770317, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
   _rb: {fileID: 679370980}
   _playerCamera: {fileID: 1184606605}
@@ -1201,7 +1202,7 @@ MonoBehaviour:
   _jumpVFX: {fileID: 0}
   _impulseVFX: {fileID: 0}
   _jumpImpulseLimit: 6
-  _groundCheckDistance: 0.2
+  _groundCheckDistance: 1.2
   _groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -1219,7 +1220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Planer
   _rb: {fileID: 679370980}
   _planningVerticalVelocity: -0.5
-  _groundCheckDistance: 0.2
+  _groundCheckDistance: 1.2
   _groundLayer:
     serializedVersion: 2
     m_Bits: 512
@@ -1231,7 +1232,7 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 679370970}
   serializedVersion: 5
-  m_Mass: 100
+  m_Mass: 1
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_CenterOfMass: {x: 0, y: 0, z: 0}
@@ -1697,13 +1698,13 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 100
+          m_FloatArgument: 25
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 679370970}
+      - m_Target: {fileID: 679370979}
         m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.Planer, GlimmerOfHope.Gameplay
-        m_MethodName: 
+        m_MethodName: PerformPlaner
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

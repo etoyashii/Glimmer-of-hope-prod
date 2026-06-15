@@ -26,6 +26,10 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [Tooltip("How quickly the player reaches full speed (1 = instant, 0 = never).")]
         [SerializeField] private float _acceleration = 0.15f;
 
+        [Range(0f, 50f)]
+        [Tooltip("Extra gravity to apply only to the player")]
+        [SerializeField] private float _extraGravity = 20f;
+
         [Header("References")]
         [SerializeField] private InputActionReference _moveAction;
         [SerializeField] private Rigidbody _rb;
@@ -145,6 +149,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
+                _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
             }
         }
 
@@ -152,7 +157,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         {
             if (!_inAirCurrent) return;
 
-            _rb.AddForce(_airCurrentForce, ForceMode.Acceleration);
+            _rb.AddForce(_airCurrentForce, ForceMode.Impulse);
         }
 
         private void ApplyRotation()
