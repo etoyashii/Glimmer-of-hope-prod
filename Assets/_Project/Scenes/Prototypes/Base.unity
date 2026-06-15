@@ -246,8 +246,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb55b76b45c7dd54da756c0f0514cf1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Windcurrent
-  _airCurrentDirection: {x: 0, y: 1, z: 0}
+  _direction: {x: 0, y: 1, z: 0}
   _force: 5
+  _playerTag: Player
 --- !u!1 &71307853
 GameObject:
   m_ObjectHideFlags: 0
@@ -601,7 +602,7 @@ GameObject:
   - component: {fileID: 262650598}
   - component: {fileID: 262650597}
   - component: {fileID: 262650596}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -713,7 +714,7 @@ GameObject:
   - component: {fileID: 346463123}
   - component: {fileID: 346463122}
   - component: {fileID: 346463121}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1057,10 +1058,10 @@ GameObject:
   - component: {fileID: 679370973}
   - component: {fileID: 679370972}
   - component: {fileID: 679370971}
-  - component: {fileID: 679370977}
   - component: {fileID: 679370975}
   - component: {fileID: 679370978}
   - component: {fileID: 679370979}
+  - component: {fileID: 679370980}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -1178,36 +1179,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.Movement
   _speed: 20
-  _gravity: -9.81
+  _acceleration: 0.15
   _moveAction: {fileID: -8626764955168770317, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
-  _controller: {fileID: 679370977}
-  _playerCamera: {fileID: 2116444103}
-  verticalVelocity: 0
---- !u!143 &679370977
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 679370970}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  _rb: {fileID: 679370980}
+  _playerCamera: {fileID: 1184606605}
+  _climbing: {fileID: 0}
 --- !u!114 &679370978
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1220,11 +1196,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fda540e41c271c4a84c84764951bdf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Jump
-  _controller: {fileID: 679370977}
+  _rb: {fileID: 679370980}
   _playerMovement: {fileID: 679370975}
   _jumpVFX: {fileID: 0}
   _impulseVFX: {fileID: 0}
   _jumpImpulseLimit: 6
+  _groundCheckDistance: 0.2
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
 --- !u!114 &679370979
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1237,9 +1217,39 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3553d622c0b9b6148b761f230d9c9fff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Planer
-  _controller: {fileID: 679370977}
-  _playerMovement: {fileID: 679370975}
+  _rb: {fileID: 679370980}
   _planningVerticalVelocity: -0.5
+  _groundCheckDistance: 0.2
+  _groundLayer:
+    serializedVersion: 2
+    m_Bits: 512
+--- !u!54 &679370980
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 679370970}
+  serializedVersion: 5
+  m_Mass: 100
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 112
+  m_CollisionDetection: 0
 --- !u!1 &692325745
 GameObject:
   m_ObjectHideFlags: 0
@@ -1687,13 +1697,13 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 10
+          m_FloatArgument: 100
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 679370979}
+      - m_Target: {fileID: 679370970}
         m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.Planer, GlimmerOfHope.Gameplay
-        m_MethodName: PerformPlaner
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1753,7 +1763,7 @@ GameObject:
   - component: {fileID: 1580082042}
   - component: {fileID: 1580082041}
   - component: {fileID: 1580082040}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
