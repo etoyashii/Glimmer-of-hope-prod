@@ -58,7 +58,6 @@ namespace GlimmerOfHope.Gameplay.Dialogue
 
         private void TriggerDialogue()
         {
-            Debug.Log("dsqdqs");
             _hasTriggered = true;
 
             //_onDialogueEvent.Raise(_dialogueKey);
