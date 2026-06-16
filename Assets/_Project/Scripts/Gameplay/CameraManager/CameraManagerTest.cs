@@ -5,9 +5,13 @@ using static GlimmerOfHope.Gameplay.CameraManager;
 
 namespace GlimmerOfHope.Gameplay
 {
+    /// <summary>
+    /// Tester clavier pour valider toutes les fonctionnalités du CameraManager en Play Mode.
+    /// Chaque touche déclenche un cas de test différent, visible dans la Console et via OnGUI.
+    /// </summary>
     public class CameraManagerTester : MonoBehaviour
     {
-        #region public properties
+        #region Public Properties
         [Header("Cibles")]
         public GameObject followTarget;
         public GameObject lookAtTarget;
@@ -39,7 +43,7 @@ namespace GlimmerOfHope.Gameplay
         public CameraShapeType shakeShape = CameraShapeType.Bump;
         #endregion
 
-        #region private properties
+        #region Private Fields
         private InputAction _keyH, _keyJ;
         private InputAction _key1, _key2, _key3;
         private InputAction _keyQ;
@@ -51,7 +55,7 @@ namespace GlimmerOfHope.Gameplay
         #region Unity LifeCycle
         private void Awake()
         {
-            // Fallback : cherche le Player par tag si followTarget non assigné
+            // Fallback : cherche le Player par tag si followTarget non assigné dans l'Inspector
             if (followTarget == null)
             {
                 var player = GameObject.FindWithTag("Player");
@@ -64,20 +68,21 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnDestroy()
         {
+            // Libère toutes les InputActions pour éviter les fuites mémoire
             _key1.Dispose(); _key2.Dispose(); _key3.Dispose();
             _keyQ.Dispose();
             _keyF.Dispose(); _keyG.Dispose(); _keyR.Dispose();
             _keyL.Dispose(); _keyD.Dispose(); _keyV.Dispose();
             _keyB.Dispose(); _keyC.Dispose();
-            _keyH.Dispose();
-            _keyJ.Dispose();
+            _keyH.Dispose(); _keyJ.Dispose();
         }
         #endregion
 
         #region Private Methods
+
+        /// Crée, bind et active toutes les InputActions du tester.
         private void RegisterInputs()
         {
-            // Création et binding des touches
             _key1 = new InputAction("Key1", InputActionType.Button, "<Keyboard>/1");
             _key2 = new InputAction("Key2", InputActionType.Button, "<Keyboard>/2");
             _key3 = new InputAction("Key3", InputActionType.Button, "<Keyboard>/3");
@@ -110,6 +115,7 @@ namespace GlimmerOfHope.Gameplay
             _keyL.Enable(); _keyD.Enable(); _keyV.Enable();
             _keyB.Enable(); _keyC.Enable();
 
+            // Shake : déclaré séparément pour rester groupé avec sa logique
             _keyH = new InputAction("KeyH", InputActionType.Button, "<Keyboard>/h");
             _keyJ = new InputAction("KeyJ", InputActionType.Button, "<Keyboard>/j");
             _keyH.performed += _ => TestShake();
@@ -117,6 +123,8 @@ namespace GlimmerOfHope.Gameplay
             _keyH.Enable();
             _keyJ.Enable();
         }
+
+        // --- Tests Shake ---
 
         private void TestShake()
         {
@@ -132,16 +140,20 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.StopShake();
         }
 
+        // --- Tests FreeCam ---
+
         private void TestToggleFreeCam()
         {
             if (!EnsureManager()) return;
             _freeCamActive = !_freeCamActive;
             Debug.Log($"[TEST][C] FreeCam → {(_freeCamActive ? "ON" : "OFF")}");
-
             Transform target = followTarget != null ? followTarget.transform : null;
             CameraManager.Instance.SetFreeCam(_freeCamActive, freeCamSensitivity, target, freeCamDistance);
         }
 
+        // --- Tests Switch ---
+
+        /// Switch par nom avec blend par défaut (EaseInOut 0.5s).
         private void TestSwitchByName(string camName)
         {
             if (!EnsureManager()) return;
@@ -149,6 +161,7 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.SwitchCamera(camName);
         }
 
+        /// Switch par référence directe sur cams[0] avec blend Linear 1s.
         private void TestSwitchByReference()
         {
             if (!EnsureManager()) return;
@@ -158,12 +171,15 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.SwitchCamera(cams[0], 1f, CinemachineBlendDefinition.Styles.Linear);
         }
 
+        /// Switch instantané (Cut) vers cam2.
         private void TestSwitchCut()
         {
             if (!EnsureManager()) return;
             Debug.Log($"[TEST] SwitchCamera(name={cam2Name}, Cut)");
             CameraManager.Instance.SwitchCamera(cam2Name, 0f, CinemachineBlendDefinition.Styles.Cut);
         }
+
+        // --- Tests ConfigureCamera ---
 
         private void TestFollow()
         {
@@ -197,6 +213,7 @@ namespace GlimmerOfHope.Gameplay
             });
         }
 
+        /// Follow et LookAt sur deux cibles distinctes.
         private void TestFollowWithSeparateLookAt()
         {
             if (!EnsureTarget()) return;
@@ -220,7 +237,9 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.ConfigureCamera(CameraSettings.WithFOV(testFOV));
         }
 
-        // Vérifie que le CameraManager est disponible
+        // --- Guards ---
+
+        ///Vérifie que le CameraManager singleton est disponible.
         private bool EnsureManager()
         {
             if (CameraManager.Instance != null) return true;
@@ -228,7 +247,7 @@ namespace GlimmerOfHope.Gameplay
             return false;
         }
 
-        // Vérifie que le CameraManager et le followTarget sont disponibles
+        /// Vérifie que le CameraManager et le followTarget sont disponibles.
         private bool EnsureTarget()
         {
             if (!EnsureManager()) return false;
@@ -237,6 +256,7 @@ namespace GlimmerOfHope.Gameplay
             return false;
         }
 
+        /// Affiche le récapitulatif des touches en haut à gauche de l'écran.
         private void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10, 10, 400, 320));
