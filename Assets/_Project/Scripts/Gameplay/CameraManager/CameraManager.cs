@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Cinemachine;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Cinemachine;
+using static Unity.Cinemachine.CinemachineImpulseDefinition;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -11,12 +12,13 @@ namespace GlimmerOfHope.Gameplay
         public CinemachineCamera[] cam;
         [Tooltip("La Main Camera de la scène (avec CinemachineBrain)")]
         public Camera mainCamera;
+
+        public enum CameraShapeType { Bump, Explosion, Recoil, Rumble }
         #endregion
 
         #region private properties
         private CinemachineBrain _brain;
         private Camera _mainCamera;
-
         private CinemachineCamera _currentCam;
 
         // --- FreeCam ---
@@ -28,13 +30,14 @@ namespace GlimmerOfHope.Gameplay
         private float _freeCamDistance = 5f;
         private Transform _freeCamTarget;
 
-        // --- Shake System (Cinemachine Impulse) ---
+        // --- Shake (Cinemachine Impulse) ---
         private CinemachineImpulseSource _impulseSource;
         #endregion
 
         #region Unity LifeCycle
         private void Awake()
         {
+            // Singleton
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
             DontDestroyOnLoad(gameObject);
@@ -52,13 +55,11 @@ namespace GlimmerOfHope.Gameplay
             // Récupère ou ajoute dynamiquement la source d'impulsion sur le Manager
             _impulseSource = GetComponent<CinemachineImpulseSource>();
             if (_impulseSource == null)
-            {
                 _impulseSource = gameObject.AddComponent<CinemachineImpulseSource>();
-            }
         }
+
         private void Update()
         {
-
             if (!_isFreeCam || _mainCamera == null) return;
 
             if (_mouse == null)
@@ -68,23 +69,21 @@ namespace GlimmerOfHope.Gameplay
             }
 
             var delta = _mouse.delta.ReadValue();
-            float mouseX = delta.x * _freeCamSensitivity * 0.1f;
-            float mouseY = delta.y * _freeCamSensitivity * 0.1f;
-
-            _freeCamYaw += mouseX;
-            _freeCamPitch -= mouseY;
+            _freeCamYaw += delta.x * _freeCamSensitivity * 0.1f;
+            _freeCamPitch -= delta.y * _freeCamSensitivity * 0.1f;
             _freeCamPitch = Mathf.Clamp(_freeCamPitch, -89f, 89f);
+
+            Quaternion rotation = Quaternion.Euler(_freeCamPitch, _freeCamYaw, 0f);
 
             if (_freeCamTarget != null)
             {
-                Quaternion rotation = Quaternion.Euler(_freeCamPitch, _freeCamYaw, 0f);
-                Vector3 offset = rotation * new Vector3(0f, 0f, -_freeCamDistance);
-                _mainCamera.transform.position = _freeCamTarget.position + offset;
+                // Orbite autour de la cible
+                _mainCamera.transform.position = _freeCamTarget.position + rotation * new Vector3(0f, 0f, -_freeCamDistance);
                 _mainCamera.transform.rotation = rotation;
             }
             else
             {
-                _mainCamera.transform.rotation = Quaternion.Euler(_freeCamPitch, _freeCamYaw, 0f);
+                _mainCamera.transform.rotation = rotation;
             }
         }
         #endregion
@@ -99,6 +98,7 @@ namespace GlimmerOfHope.Gameplay
             if (target == null) { Debug.LogWarning($"[CameraManager] Caméra non trouvée : {cameraName}"); return; }
             SwitchCamera(target, blendTime, blendStyle);
         }
+
         public void SwitchCamera(
             CinemachineCamera targetCamera,
             float blendTime = 0.5f,
@@ -112,6 +112,7 @@ namespace GlimmerOfHope.Gameplay
 
             _brain.DefaultBlend = new CinemachineBlendDefinition(blendStyle, blendTime);
 
+            // Donne la priorité la plus haute à la caméra cible
             int highestPriority = 0;
             foreach (var c in cam)
                 if (c.Priority > highestPriority)
@@ -120,6 +121,7 @@ namespace GlimmerOfHope.Gameplay
             targetCamera.Priority = highestPriority + 1;
             _currentCam = targetCamera;
         }
+
         public void SetFreeCam(bool enabled, float sensitivity = 2f, Transform target = null, float distance = 5f)
         {
             _freeCamSensitivity = sensitivity;
@@ -133,6 +135,7 @@ namespace GlimmerOfHope.Gameplay
                 _brain.enabled = false;
                 _isFreeCam = true;
 
+                // Initialise yaw/pitch depuis la position courante de la caméra
                 if (_freeCamTarget != null)
                 {
                     Vector3 dir = _mainCamera.transform.position - _freeCamTarget.position;
@@ -164,6 +167,7 @@ namespace GlimmerOfHope.Gameplay
                 Debug.Log("[CameraManager] FreeCam OFF");
             }
         }
+
         public void ConfigureCamera(CameraSettings settings)
         {
             if (_currentCam == null) { Debug.LogWarning("[CameraManager] Aucune caméra active !"); return; }
@@ -184,42 +188,41 @@ namespace GlimmerOfHope.Gameplay
             });
         }
 
-
-        /// <summary>
-        /// Déclenche un tremblement de caméra via le système Cinemachine Impulse.
-        /// </summary>
-        public void ShakeCamera(float duration, float amplitude = 1f, float frequency = 1f)
+        /// <summary>Déclenche un tremblement de caméra via Cinemachine Impulse.</summary>
+        public void ShakeCamera(float duration, float amplitude = 1f, float frequency = 1f, CameraShapeType shape = CameraShapeType.Bump)
         {
             if (_impulseSource == null) return;
 
-            // On génère une direction aléatoire pour l'impact (X et Y)
-            Vector3 randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f).normalized;
+            _impulseSource.DefaultVelocity = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f).normalized * amplitude;
 
-            // On applique l'amplitude directement comme multiplicateur de la force de l'impact
-            _impulseSource.DefaultVelocity = randomDirection * amplitude;
+            _impulseSource.ImpulseDefinition.ImpulseDuration = duration;
 
             var envelope = _impulseSource.ImpulseDefinition.TimeEnvelope;
-
-            // Pour que le shake commence instantanément, dure, puis s'estompe gentiment :
             envelope.AttackTime = 0f;
             envelope.SustainTime = duration * 0.7f;
             envelope.DecayTime = duration * 0.3f;
-
             _impulseSource.ImpulseDefinition.TimeEnvelope = envelope;
             _impulseSource.ImpulseDefinition.FrequencyGain = frequency;
 
+            _impulseSource.ImpulseDefinition.ImpulseShape = shape switch
+            {
+                CameraShapeType.Bump => ImpulseShapes.Bump,
+                CameraShapeType.Explosion => ImpulseShapes.Explosion,
+                CameraShapeType.Recoil => ImpulseShapes.Recoil,
+                CameraShapeType.Rumble => ImpulseShapes.Rumble,
+                _ => ImpulseShapes.Bump,
+            };
+
             _impulseSource.GenerateImpulseWithVelocity(_impulseSource.DefaultVelocity);
 
-            Debug.Log($"[CameraManager] Impulse Shake | amplitude={amplitude} | duration={duration} | frequency={frequency}");
+            Debug.Log($"[CameraManager] Shake | shape={shape} | amplitude={amplitude} | duration={duration} | frequency={frequency}");
         }
+
         public void StopShake()
         {
             if (CinemachineImpulseManager.Instance != null)
-            {
                 CinemachineImpulseManager.Instance.Clear();
-            }
         }
-
         #endregion
 
         #region Private Methods
@@ -234,6 +237,7 @@ namespace GlimmerOfHope.Gameplay
             if (s.FollowOffset == null) return;
             Vector3 offset = s.FollowOffset.Value;
 
+            // Applique l'offset sur le premier composant de position trouvé
             var f = camera.GetComponent<CinemachineFollow>();
             if (f != null) { f.FollowOffset = offset; return; }
 
@@ -265,6 +269,7 @@ namespace GlimmerOfHope.Gameplay
                     if (o != null) o.TrackerSettings.PositionDamping = d;
                 }
             }
+
             if (s.RotationDamping.HasValue)
             {
                 float d = s.RotationDamping.Value;
@@ -277,6 +282,5 @@ namespace GlimmerOfHope.Gameplay
             }
         }
         #endregion
-
     }
 }

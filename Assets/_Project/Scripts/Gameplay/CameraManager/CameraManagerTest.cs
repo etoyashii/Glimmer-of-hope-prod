@@ -1,6 +1,7 @@
-﻿using UnityEngine;
+﻿using Unity.Cinemachine;
+using UnityEngine;
 using UnityEngine.InputSystem;
-using Unity.Cinemachine;
+using static GlimmerOfHope.Gameplay.CameraManager;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -35,6 +36,7 @@ namespace GlimmerOfHope.Gameplay
         public float shakeDuration = 0.5f;
         public float shakeAmplitude = 2f;
         public float shakeFrequency = 2f;
+        public CameraShapeType shakeShape = CameraShapeType.Bump;
         #endregion
 
         #region private properties
@@ -43,13 +45,13 @@ namespace GlimmerOfHope.Gameplay
         private InputAction _keyQ;
         private InputAction _keyF, _keyG, _keyR, _keyL, _keyD, _keyV;
         private InputAction _keyB, _keyC;
-        private InputAction _keySpace;
         private bool _freeCamActive = false;
         #endregion
 
         #region Unity LifeCycle
         private void Awake()
         {
+            // Fallback : cherche le Player par tag si followTarget non assigné
             if (followTarget == null)
             {
                 var player = GameObject.FindWithTag("Player");
@@ -60,8 +62,6 @@ namespace GlimmerOfHope.Gameplay
 
         private void Start() => RegisterInputs();
 
-
-
         private void OnDestroy()
         {
             _key1.Dispose(); _key2.Dispose(); _key3.Dispose();
@@ -69,16 +69,15 @@ namespace GlimmerOfHope.Gameplay
             _keyF.Dispose(); _keyG.Dispose(); _keyR.Dispose();
             _keyL.Dispose(); _keyD.Dispose(); _keyV.Dispose();
             _keyB.Dispose(); _keyC.Dispose();
-            _keySpace.Dispose();
             _keyH.Dispose();
             _keyJ.Dispose();
         }
-
         #endregion
 
         #region Private Methods
         private void RegisterInputs()
         {
+            // Création et binding des touches
             _key1 = new InputAction("Key1", InputActionType.Button, "<Keyboard>/1");
             _key2 = new InputAction("Key2", InputActionType.Button, "<Keyboard>/2");
             _key3 = new InputAction("Key3", InputActionType.Button, "<Keyboard>/3");
@@ -91,7 +90,6 @@ namespace GlimmerOfHope.Gameplay
             _keyV = new InputAction("KeyV", InputActionType.Button, "<Keyboard>/v");
             _keyB = new InputAction("KeyB", InputActionType.Button, "<Keyboard>/b");
             _keyC = new InputAction("KeyC", InputActionType.Button, "<Keyboard>/c");
-            _keySpace = new InputAction("Space", InputActionType.Button, "<Keyboard>/space");
 
             _key1.performed += _ => TestSwitchByName(cam1Name);
             _key2.performed += _ => TestSwitchByName(cam2Name);
@@ -105,14 +103,12 @@ namespace GlimmerOfHope.Gameplay
             _keyV.performed += _ => TestFOVOnly();
             _keyB.performed += _ => TestSwitchCut();
             _keyC.performed += _ => TestToggleFreeCam();
-            _keySpace.performed += _ => PrintStatus();
 
             _key1.Enable(); _key2.Enable(); _key3.Enable();
             _keyQ.Enable();
             _keyF.Enable(); _keyG.Enable(); _keyR.Enable();
             _keyL.Enable(); _keyD.Enable(); _keyV.Enable();
             _keyB.Enable(); _keyC.Enable();
-            _keySpace.Enable();
 
             _keyH = new InputAction("KeyH", InputActionType.Button, "<Keyboard>/h");
             _keyJ = new InputAction("KeyJ", InputActionType.Button, "<Keyboard>/j");
@@ -120,14 +116,13 @@ namespace GlimmerOfHope.Gameplay
             _keyJ.performed += _ => TestStopShake();
             _keyH.Enable();
             _keyJ.Enable();
-
         }
 
         private void TestShake()
         {
             if (!EnsureManager()) return;
-            Debug.Log($"[TEST][H] ShakeCamera | duration={shakeDuration} | amplitude={shakeAmplitude} | frequency={shakeFrequency}");
-            CameraManager.Instance.ShakeCamera(shakeDuration, shakeAmplitude, shakeFrequency);
+            Debug.Log($"[TEST][H] ShakeCamera | duration={shakeDuration} | amplitude={shakeAmplitude} | frequency={shakeFrequency} | shape={shakeShape}");
+            CameraManager.Instance.ShakeCamera(shakeDuration, shakeAmplitude, shakeFrequency, shakeShape);
         }
 
         private void TestStopShake()
@@ -136,6 +131,7 @@ namespace GlimmerOfHope.Gameplay
             Debug.Log("[TEST][J] StopShake");
             CameraManager.Instance.StopShake();
         }
+
         private void TestToggleFreeCam()
         {
             if (!EnsureManager()) return;
@@ -224,32 +220,7 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.ConfigureCamera(CameraSettings.WithFOV(testFOV));
         }
 
-        private void PrintStatus()
-        {
-            if (!EnsureManager()) return;
-            Debug.Log("=== [CameraManager Status] ===");
-            foreach (var c in CameraManager.Instance.cam)
-            {
-                if (c == null) continue;
-                string posComp = "aucun";
-                if (c.GetComponent<CinemachineFollow>() != null) posComp = "Follow";
-                else if (c.GetComponent<CinemachineOrbitalFollow>() != null) posComp = "OrbitalFollow";
-                else if (c.GetComponent<CinemachinePositionComposer>() != null) posComp = "PositionComposer";
-
-                string rotComp = "aucun";
-                if (c.GetComponent<CinemachineRotationComposer>() != null) rotComp = "RotationComposer";
-                else if (c.GetComponent<CinemachineHardLookAt>() != null) rotComp = "HardLookAt";
-                else if (c.GetComponent<CinemachinePanTilt>() != null) rotComp = "PanTilt";
-
-                Debug.Log($"  [{c.name}] Priority={c.Priority} | FOV={c.Lens.FieldOfView:F1} | " +
-                          $"Follow={(c.Follow != null ? c.Follow.name : "null")} | " +
-                          $"LookAt={(c.LookAt != null ? c.LookAt.name : "null")} | " +
-                          $"Pos={posComp} | Rot={rotComp}");
-            }
-            Debug.Log($"  FreeCam={_freeCamActive}");
-            Debug.Log("==============================");
-        }
-
+        // Vérifie que le CameraManager est disponible
         private bool EnsureManager()
         {
             if (CameraManager.Instance != null) return true;
@@ -257,6 +228,7 @@ namespace GlimmerOfHope.Gameplay
             return false;
         }
 
+        // Vérifie que le CameraManager et le followTarget sont disponibles
         private bool EnsureTarget()
         {
             if (!EnsureManager()) return false;
@@ -273,7 +245,7 @@ namespace GlimmerOfHope.Gameplay
                 $"[1] Switch → {cam1Name}\n" +
                 $"[2] Switch → {cam2Name}\n" +
                 $"[3] Switch → {cam3Name}\n" +
-                "[Q] Switch ref cams[0] (Linear 1s)\n" +
+                "[A] Switch ref cams[0] (Linear 1s)\n" +
                 $"[F] Follow + offsetA {offsetA}\n" +
                 $"[G] Follow + offsetB {offsetB} + FOV {testFOV}\n" +
                 "[R] Reset offset (0,0,0)\n" +
@@ -283,8 +255,7 @@ namespace GlimmerOfHope.Gameplay
                 "[B] Switch Cut instantané\n" +
                 $"[C] FreeCam toggle ({(_freeCamActive ? "ON ✓" : "OFF")})\n" +
                 $"[H] Shake dur={shakeDuration} amp={shakeAmplitude} freq={shakeFrequency}\n" +
-                "[J] Stop Shake\n" +
-                "[Space] Status console"
+                "[J] Stop Shake\n"
             );
             GUILayout.EndArea();
         }
