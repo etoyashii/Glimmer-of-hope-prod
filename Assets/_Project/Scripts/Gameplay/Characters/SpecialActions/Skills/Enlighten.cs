@@ -68,7 +68,7 @@ namespace GlimmerOfHope.Gameplay
         {
             Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _lightRange, _layerMask);
+            Collider[] colliders = Physics.OverlapSphere(_light.transform.position, _lightRange, _layerMask);
 
             for (int i = 0; i < colliders.Length; i++)
             {
