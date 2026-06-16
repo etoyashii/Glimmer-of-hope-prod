@@ -70,6 +70,7 @@ namespace GlimmerOfHope.Gameplay
         //Enlighten Skill call by detecting the parent LightReaction then launch this method (heritage)
         public override void PerformLight()
         {
+            Debug.Log("Ligthed");
             if (IsStateIsCurrent(FlowerState.Idle) == false) return; //Switch security
 
             ChangeState(FlowerState.MovingToStart);

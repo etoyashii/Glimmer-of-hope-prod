@@ -28,13 +28,10 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
-
+        [SerializeField]
         private Animator _animator;
 
-        private void Awake()
-        {
-            _animator = GetComponent<Animator>();
-        }
+        
         #region Public Methods
 
         // Give the player a vertical impulse of the jumpForce value
