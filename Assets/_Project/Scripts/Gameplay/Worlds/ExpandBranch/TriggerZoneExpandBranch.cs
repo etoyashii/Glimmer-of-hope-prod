@@ -1,3 +1,5 @@
+using PlasticGui.WorkspaceWindow.QueryViews.Branches;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static Codice.Client.Common.EventTracking.TrackFeatureUseEvent.Features.DesktopGUI.Filters;
@@ -7,10 +9,52 @@ namespace GlimmerOfHope.Gameplay
     /// <summary>
     /// Manage the activation of the branch
     /// </summary>
+
     public class TriggerZoneExpandBranch : MonoBehaviour
     {
-        public Vector3 toPoint; //where the branch must go when grow     on the branch ?
+        #region Serialized Fields
+
+        [SerializeField] private GameObject platform;
+
+        #endregion
+
+        #region Public Properties
+
+        public Transform toPoint; //where the branch must go when grow     on the branch ?
         public float maxLookAngle = 30f;
+        public float duration = 10f;
+
+        #endregion
+
+        #region Private Properties
+
+        private bool _isActive;
+        private float _progress;
+
+        #endregion
+
+        #region Unity Lifecycle
+        private void Awake()
+        {
+            _progress = duration;
+
+            platform.SetActive(false);
+        }
+
+        private void Update()
+        {
+            if (_isActive)
+            {
+                _progress -= Time.deltaTime;
+
+                if (_progress <= 0f)
+                {
+                    _isActive = false;
+                    platform.SetActive(false);
+                    Debug.Log("La branche ce retracte");
+                }
+            }
+        }
 
         private void OnTriggerStay(Collider other)
         {
@@ -25,17 +69,21 @@ namespace GlimmerOfHope.Gameplay
                     bool canActivate = CheckInteraction(false, other.transform);
 
                     if (canActivate)
-                        Debug.Log("Grow branch");
+                        GrowBranch();
                 }
                 else if (Keyboard.current.eKey.wasPressedThisFrame) //push
                 {
                     bool canActivate = CheckInteraction(true, other.transform);
 
                     if (canActivate)
-                        Debug.Log("Grow branch");
+                        GrowBranch();
                 }
             }
         }
+
+        #endregion
+
+        #region Private Methods
 
         private bool CheckInteraction(bool isPush, Transform tr)
         {
@@ -61,5 +109,16 @@ namespace GlimmerOfHope.Gameplay
             Debug.Log("Isnt looking in the correct direction : " + lookAngle);
             return false;
         }
+
+        private void GrowBranch()
+        {
+            Debug.Log("Grow branch");
+
+            _isActive = true;
+            platform.SetActive(true);
+            _progress = duration;
+        }
+
+        #endregion
     }
 }
