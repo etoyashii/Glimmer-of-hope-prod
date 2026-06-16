@@ -13,6 +13,7 @@ namespace GlimmerOfHope.Gameplay
 
         [Header("Refs")]
         [SerializeField] private Rigidbody _rb;
+        [SerializeField] private Movement _playerMovement;
 
         [Tooltip("Maximum falling speed while planer is active")]
         [SerializeField] private float _planningVerticalVelocity = -1f;
@@ -43,7 +44,7 @@ namespace GlimmerOfHope.Gameplay
         private void FixedUpdate()
         {
             // Disable planer automatically when grounded
-            if (IsGrounded())
+            if (_playerMovement.IsGrounded())
             {
                 if (_isPlanningActive) _isPlanningActive = false;
                 return;
@@ -56,6 +57,8 @@ namespace GlimmerOfHope.Gameplay
                 vel.y = Mathf.Lerp(vel.y, _planningVerticalVelocity, 0.5f);
                 _rb.linearVelocity = vel;
             }
+            
+            Debug.Log("Planner : " +  _isPlanningActive);
         }
 
         #endregion
@@ -65,7 +68,7 @@ namespace GlimmerOfHope.Gameplay
         // Method called on the button that triggers and cancels the planer
         public void PerformPlaner()
         {
-            if (IsGrounded()) return;
+            if (_playerMovement.IsGrounded()) return;
 
             _isPlanningActive = !_isPlanningActive;
         }
