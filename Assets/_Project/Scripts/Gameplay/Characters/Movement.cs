@@ -1,16 +1,18 @@
+using Codice.CM.Common;
+using System;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 {
     /// <summary>
-    /// For the player movement. Based on gravity, velocity and deltaTime.
+    /// For the player movement. Based on Rigidbody physics.
     /// </summary>
 
     #region Dependancies
 
-    [RequireComponent(typeof(CharacterController))]
-    [RequireComponent(typeof(SkillManager))]
+    [RequireComponent(typeof(Rigidbody))]
 
     #endregion
     public class Movement : MonoBehaviour
@@ -20,66 +22,69 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [Header("Mouvement")]
         [Range(1.0f, 100.0f)]
         [SerializeField] private float _speed = 20.0f;
-        [Range(-30.0f, 30.0f)]
-        [SerializeField] private float _gravity = -9.81f;
-        [Header("Rotation")]
-        [Range(0.01f, 1.0f)]
-        [SerializeField] private float _rotationSensitivity = 0.2f;
+
+        [Range(0f, 1f)]
+        [Tooltip("How quickly the player reaches full speed (1 = instant, 0 = never).")]
+        [SerializeField] private float _acceleration = 0.15f;
+
+        [Range(0f, 50f)]
+        [Tooltip("Extra gravity to apply only to the player")]
+        [SerializeField] private float _extraGravity = 20f;
 
         [Header("References")]
         [SerializeField] private InputActionReference _moveAction;
-        [SerializeField] private InputActionReference _swipeAction;
-        [SerializeField] private CharacterController _controller;
+        [SerializeField] private Rigidbody _rb;
+        [SerializeField] private Camera _playerCamera;
+        [SerializeField] private Climbing _climbing;
 
+        // Cached ground check values
+        [Header("Ground Check")]
+        [SerializeField] private float _groundCheckDistance = 0.2f;
+        [SerializeField] private LayerMask _groundLayer;
 
         #endregion
 
         #region Public Properties
 
-        public Vector3 MoveDirection => new(_direction.x, 0f, _direction.y);
+        public Vector3 MoveDirection => _targetMoveDirection;
+
+        #endregion
+
+        #region Event Actions
+
+        public event Action OnPlayerStartMoving;
+        public event Action OnPlayerStopMoving;
 
         #endregion
 
         #region Private Fields
 
-        private Vector2 _direction;
-        private Vector2 _swipeDelta;
-        private float _verticalVelocity;
+        private Vector2 _input;
+        private Vector3 _targetMoveDirection;
         private bool _movementEnabled = true;
+
+        private Vector3 _airCurrentForce = Vector3.zero;
+        private bool _inAirCurrent = false;
+        private Animator _animator;
 
         #endregion
 
         #region Unity Lifecycle
+
+        private void Awake()
+        {
+            if (_rb == null)
+                _rb = GetComponent<Rigidbody>();
+            
+            _rb.freezeRotation = true;
+            _animator = GetComponent<Animator>();
+        }
 
         private void OnEnable()
         {
             _moveAction.action.Enable();
             _moveAction.action.performed += OnMovementStarted;
             _moveAction.action.canceled += OnMovementCanceled;
-
-            _swipeAction.action.Enable();
-            _swipeAction.action.performed += OnSwipePerformed;
-            _swipeAction.action.canceled += OnSwipeCanceled;
-        }
-
-        private void Update()
-        {
-            if (!_movementEnabled) return;
-
-            if (_controller.isGrounded && _verticalVelocity < 0f)
-                _verticalVelocity = -2f;
-
-            _verticalVelocity += _gravity * Time.deltaTime;
-
-            Vector3 move = transform.right * _direction.x + transform.forward * _direction.y;
-            move.y = _verticalVelocity;
-
-            _controller.Move(_speed * Time.deltaTime * move);
-
-            if (_swipeDelta.sqrMagnitude < 0.01f) return;
-
-            float yRotation = _swipeDelta.x * _rotationSensitivity;
-            transform.Rotate(Vector3.up, yRotation, Space.World);
         }
 
         private void OnDisable()
@@ -87,42 +92,117 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _moveAction.action.Disable();
             _moveAction.action.performed -= OnMovementStarted;
             _moveAction.action.canceled -= OnMovementCanceled;
+        }
 
-            _swipeAction.action.Disable();
-            _swipeAction.action.performed -= OnSwipePerformed;
-            _swipeAction.action.canceled -= OnSwipeCanceled;
+        private void FixedUpdate()
+        {
+            if (!_movementEnabled) return;
+
+            ApplyMovement();
+            ApplyAirCurrent();
+            ApplyRotation();
+            _animator.SetBool("IsGrounded", IsGrounded());
         }
 
         #endregion
 
         #region Public Methods
 
+        public bool IsGrounded()
+        {
+            _animator.SetBool("IsGrounded", true);
+            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+        }
+
         public void SetMovementEnabled(bool enabled)
         {
             _movementEnabled = enabled;
 
-            if (!enabled) _direction = Vector2.zero;
+            if (!enabled)
+            {
+                _input = Vector2.zero;
+                // Stop horizontal movement but preserve vertical (gravity)
+                _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
+            }
+        }
+
+        // Method called in AirCurrent.cs
+        public void SetAirCurrent(bool active, Vector3 airCurrentForce = default)
+        {
+            _inAirCurrent = active;
+            _airCurrentForce = active ? airCurrentForce : Vector3.zero;
         }
 
         #endregion
 
         #region Private Methods
 
+        private void ApplyMovement()
+        {
+            Vector3 cameraForward = _playerCamera.transform.forward;
+            Vector3 cameraRight = _playerCamera.transform.right;
+            cameraForward.y = 0f;
+            cameraRight.y = 0f;
+            cameraForward.Normalize();
+            cameraRight.Normalize();
+
+            _targetMoveDirection = (cameraRight * _input.x + cameraForward * _input.y).normalized;
+
+            if (_climbing != null && _climbing.climbing)
+            {
+                // Project movement along the wall surface
+                Vector3 wallNormal = _climbing.frontWallHit.normal;
+                Vector3 temp = new Vector3(_targetMoveDirection.x, _input.y, _targetMoveDirection.z);
+                Vector3 moveAlongWall = Vector3.ProjectOnPlane(temp, wallNormal);
+
+                Vector3 climbVelocity = moveAlongWall * (_speed / 5f);
+                _rb.linearVelocity = climbVelocity;
+            }
+            else
+            {
+                // Normal ground/air movement � preserve vertical velocity
+                Vector3 targetVelocity = _targetMoveDirection * _speed;
+                targetVelocity.y = _rb.linearVelocity.y;
+                _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
+                _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
+
+
+
+                _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
+
+            }
+
+
+        }
+
+        private void ApplyAirCurrent()
+        {
+            if (!_inAirCurrent) return;
+
+            _rb.AddForce(_airCurrentForce, ForceMode.Impulse);
+        }
+
+        private void ApplyRotation()
+        {
+            if (_climbing != null && _climbing.climbing) return;
+            if (_targetMoveDirection.magnitude < 0.1f) return;
+
+            Quaternion toRotate = Quaternion.LookRotation(_targetMoveDirection);
+            transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.fixedDeltaTime);
+        }
+
         private void OnMovementStarted(InputAction.CallbackContext context)
         {
-            _direction = context.ReadValue<Vector2>();
+            _input = context.ReadValue<Vector2>();
+            OnPlayerStartMoving?.Invoke();
         }
 
         private void OnMovementCanceled(InputAction.CallbackContext context)
         {
-            _direction = Vector2.zero;
+            _input = Vector2.zero;
+            OnPlayerStopMoving?.Invoke();
         }
 
-        private void OnSwipePerformed(InputAction.CallbackContext context)
-            => _swipeDelta = context.ReadValue<Vector2>();
-
-        private void OnSwipeCanceled(InputAction.CallbackContext context)
-            => _swipeDelta = Vector2.zero;
         #endregion
     }
 }
