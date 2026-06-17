@@ -1,5 +1,9 @@
-using UnityEngine;
 using GlimmerOfHope.Core.Events;
+using System.Collections;
+using Unity.Cinemachine;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace GlimmerOfHope.Gameplay.Dialogue
 {
@@ -19,6 +23,11 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         [SerializeField] private string _playerTag = "Player";
         [SerializeField] private bool _triggerOnce = true;
 
+        [Header("Camera")]
+        [SerializeField] private CinemachineCamera _camera;
+        [SerializeField] private Volume _volume;
+        private CinematicBarsEffect _cineBars;
+
         #endregion
 
         #region Private Fields
@@ -32,12 +41,13 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         private void Awake()
         {
             GetComponent<SphereCollider>().isTrigger = true;
+            _volume.profile.TryGet(out _cineBars);
         }
 
         private void OnTriggerEnter(Collider other)
         {
             if (!other.CompareTag(_playerTag)) return;
-            if (_triggerOnce && _hasTriggered) return;
+           // if (_triggerOnce && _hasTriggered) return;
 
             TriggerDialogue();
         }
@@ -49,7 +59,30 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         private void TriggerDialogue()
         {
             _hasTriggered = true;
-            _onDialogueEvent.Raise(_dialogueKey);
+
+            //_onDialogueEvent.Raise(_dialogueKey);
+            StartCoroutine(SetUpBars(true));
+            _camera.Priority = 15;
+        }
+
+        private void OnTriggerExit(Collider other)
+        {
+            _camera.Priority = 0;
+            StartCoroutine(SetUpBars(false));
+        }
+
+        IEnumerator SetUpBars(bool dir)
+        {
+            float t = 0f;
+            while (t < 2f)
+            {
+                t += Time.deltaTime;
+                if (dir)
+                    _cineBars.barSize.value = Mathf.Lerp(0f, 0.12f, t);
+                else
+                    _cineBars.barSize.value = Mathf.Lerp(0.12f, 0f, t);
+                yield return null;
+            }
         }
 
         #endregion

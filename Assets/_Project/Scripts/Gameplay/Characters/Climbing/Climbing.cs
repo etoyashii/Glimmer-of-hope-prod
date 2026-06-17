@@ -87,7 +87,25 @@ namespace GlimmerOfHope.Gameplay
             _wallLookAngle = Vector3.Angle(orientation.forward, -frontWallHit.normal);
         }
 
-        private void StartClimbing()
+        private void ClimbingMovement()
+        {
+
+        }
+
+        private void StopClimbing()
+        {
+            climbing = false;
+
+            //update cam
+            _rotationComposer.enabled = false;
+            _orbitalFollow.HorizontalAxis.Recentering.Enabled = false;
+        }
+
+        #endregion
+
+        #region PublicMethod
+
+        public void StartClimbing()
         {
             climbing = true;
 
@@ -101,20 +119,6 @@ namespace GlimmerOfHope.Gameplay
             _orbitalFollow.HorizontalAxis.Recentering.Enabled = true;
             _orbitalFollow.HorizontalAxis.Recentering.Wait = 0f;
             _orbitalFollow.HorizontalAxis.Recentering.Time = 2f;
-        }
-
-        private void ClimbingMovement()
-        {
-            
-        }
-
-        private void StopClimbing()
-        {
-            climbing = false;
-
-            //update cam
-            _rotationComposer.enabled = false;
-            _orbitalFollow.HorizontalAxis.Recentering.Enabled = false;
         }
 
         #endregion

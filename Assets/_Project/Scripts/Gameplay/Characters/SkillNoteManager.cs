@@ -1,8 +1,10 @@
+using GlimmerOfHope.Gameplay.Character.SpecialActions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -30,6 +32,11 @@ namespace GlimmerOfHope.Gameplay
         [Range(4, 7)]
         [SerializeField] private int _maxNoteNumber = 4;
 
+        [Header("Learning Skill Reference")]
+        [SerializeField] private SkillManager _skillLearningManager;
+
+        [Header("Player Skill Input Reference")]
+        [SerializeField] private List<Button> _playerSkillInputList;
         #endregion
 
         #region PrivateFields
@@ -39,10 +46,14 @@ namespace GlimmerOfHope.Gameplay
         private int _validCheck = 0;
 
         private Coroutine _currentChrono;
+
         #endregion
 
         #region UnityLifecycle
-
+        private void Awake()
+        {
+            _skillLearningManager._skillTypeUnlocked += NewSkillLearned;
+        }
         private void Start()
         {
             _inputNoteList = new();
@@ -51,6 +62,11 @@ namespace GlimmerOfHope.Gameplay
             {
                 _inputNoteList.Add(-1); //default value
             }
+        }
+
+        private void OnDisable()
+        {
+            _skillLearningManager._skillTypeUnlocked -= NewSkillLearned;
         }
 
         #endregion
@@ -70,6 +86,12 @@ namespace GlimmerOfHope.Gameplay
 
         #region PrivateMethods
 
+        private void NewSkillLearned(int index)
+        {
+            
+            StartCoroutine(RevealCombo(0.4f, 0.2f, index));
+        }
+
         private void CheckNoteCombo()
         {
             for (int i = 0; i < _comboList.Count; i++)
@@ -87,7 +109,8 @@ namespace GlimmerOfHope.Gameplay
 
                 if (_validCheck == _currentInputNumber && _currentInputNumber == _comboList[i]._combo.Count)
                 {
-                    _comboList[i]._useSkill?.Invoke();
+                    if (_skillLearningManager.IsSkillUnlocked(i))
+                        _comboList[i]._useSkill?.Invoke();
                     break;
                 }
             }
@@ -132,6 +155,27 @@ namespace GlimmerOfHope.Gameplay
 
             CheckNoteCombo();
             ResetNotes();
+        }
+
+        private IEnumerator RevealCombo(float t1, float t2, int index)
+        {
+            int comboLength = _comboList[index]._combo.Count;
+            Debug.Log(index);
+
+            for (int i = 0; i < comboLength; i++)
+            {
+                int currentInputIndex = _comboList[index]._combo[i];
+                Image image = _playerSkillInputList[currentInputIndex].GetComponent<Image>();
+                Color baseColor = image.color;
+
+                yield return new WaitForSeconds(t1);
+                image.color = Color.red;
+
+
+                yield return new WaitForSeconds(t2);
+                image.color = baseColor;
+            }
+
         }
 
         #endregion

@@ -1214,7 +1214,6 @@ GameObject:
   - component: {fileID: 616172018}
   - component: {fileID: 616172023}
   - component: {fileID: 616172022}
-  - component: {fileID: 616172021}
   - component: {fileID: 616172020}
   - component: {fileID: 616172019}
   m_Layer: 0
@@ -1320,6 +1319,7 @@ MonoBehaviour:
   _minIntensity: 0
   _maxIntensity: 12
   _transitionDelay: 1
+  _lightRange: 2
 --- !u!114 &616172019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1376,31 +1376,6 @@ MonoBehaviour:
   _useForceWave: 1
   _forceWaveDuration: 0.3
   _forcePulseCount: 3
---- !u!143 &616172021
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 616172011}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &616172022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1471,7 +1446,8 @@ MonoBehaviour:
   _gravity: -9.81
   _moveAction: {fileID: -8626764955168770317, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
   _controller: {fileID: 624255007}
-  _playerCamera: {fileID: 7400265418334996485}
+  _playerCamera: {fileID: 7400265418334996487}
+  _climbing: {fileID: 0}
   verticalVelocity: 0
 --- !u!114 &624254999
 MonoBehaviour:
