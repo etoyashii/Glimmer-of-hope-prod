@@ -1694,8 +1694,16 @@ PrefabInstance:
       value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: 7558670451838007653, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: Damping.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558670451838007653, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: TargetOffset.y
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 7558670451838007653, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: CenterOnActivate
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8227043134563641518, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: Radius
@@ -1704,6 +1712,22 @@ PrefabInstance:
     - target: {fileID: 8227043134563641518, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: TargetOffset.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227043134563641518, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: VerticalAxis.Center
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227043134563641518, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: VerticalAxis.Range.x
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227043134563641518, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: VerticalAxis.Range.y
+      value: 55
+      objectReference: {fileID: 0}
+    - target: {fileID: 8227043134563641518, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: TrackerSettings.PositionDamping.y
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8236867393645484099, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: Target.TrackingTarget
@@ -1765,8 +1789,7 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3931509811639964827, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects:
     - {fileID: 7230184150964934903, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
     m_AddedGameObjects:
@@ -8639,7 +8662,7 @@ MonoBehaviour:
   _playerMovement: {fileID: 349846572}
   _jumpVFX: {fileID: 0}
   _impulseVFX: {fileID: 0}
-  _jumpImpulseLimit: 3
+  _jumpImpulseLimit: 5
   _animator: {fileID: 349846576}
 --- !u!114 &732217724
 MonoBehaviour:

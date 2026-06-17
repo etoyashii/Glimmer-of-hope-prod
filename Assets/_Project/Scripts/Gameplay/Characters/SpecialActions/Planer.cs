@@ -57,8 +57,6 @@ namespace GlimmerOfHope.Gameplay
                 vel.y = Mathf.Lerp(vel.y, _planningVerticalVelocity, 0.5f);
                 _rb.linearVelocity = vel;
             }
-            
-            Debug.Log("Planner : " +  _isPlanningActive);
         }
 
         #endregion
