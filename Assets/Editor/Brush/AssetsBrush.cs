@@ -195,7 +195,7 @@ public class BrushManagerEditor : Editor
 
             float area = Mathf.PI * drawer._circleRadius * drawer._circleRadius;
             int assetsToSpawn = Mathf.Max(1, Mathf.RoundToInt(area * drawer.Density * drawer.MultDensity));
-            float overlapRadius = 1f / Mathf.Max(*drawer.MultDensity, drawer.Density);
+            float overlapRadius = 1f / Mathf.Max(drawer.MultDensity, drawer.Density);
 
             for (int i = 0; i < assetsToSpawn; i++)
             {
@@ -234,7 +234,7 @@ public class BrushManagerEditor : Editor
                     // Random rotation and scale
                     newnewGO.transform.Rotate(Vector3.right, 90f);
                     newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
-                    float newScale = Random.Range(newTemplate._limiteSize.x * drawer.multSize, newTemplate._limiteSize.y * drawer.multSize);
+                    float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
                     newnewGO.transform.localScale = Vector3.one * newScale * drawer.SizeMult;
                 }
             }
