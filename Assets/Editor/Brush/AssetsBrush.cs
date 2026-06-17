@@ -193,8 +193,9 @@ public class BrushManagerEditor : Editor
         {
             lastActionWasAdd = true;
 
-            int assetsToSpawn = 10 * (int)( Mathf.Max(5, drawer._circleRadius) / 5);
-            invertDensity = 1f / drawer.Density;
+            float area = Mathf.PI * drawer._circleRadius * drawer._circleRadius;
+            int assetsToSpawn = Mathf.Max(1, Mathf.RoundToInt(area * drawer.Density * drawer.MultDensity));
+            float overlapRadius = 1f / Mathf.Max(drawer.MultDensity, drawer.Density);
 
             for (int i = 0; i < assetsToSpawn; i++)
             {
@@ -219,7 +220,7 @@ public class BrushManagerEditor : Editor
 
                 // Check for collisions before placing
                 int layerMaskWithoutGround = ~drawer.GroundLayerMask;
-                Collider[] hitColliders = Physics.OverlapSphere(spawnPos, 5 * invertDensity, layerMaskWithoutGround);
+                Collider[] hitColliders = Physics.OverlapSphere(spawnPos, overlapRadius, layerMaskWithoutGround);
 
                 if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
                 {
@@ -231,9 +232,10 @@ public class BrushManagerEditor : Editor
                         drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
                     );
                     // Random rotation and scale
-                    newnewGO.transform.Rotate(Vector3.up, Random.Range(0f, 360f));
+                    newnewGO.transform.Rotate(Vector3.right, 90f);
+                    newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
                     float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
-                    newnewGO.transform.localScale = Vector3.one * newScale;
+                    newnewGO.transform.localScale = Vector3.one * newScale * drawer.SizeMult;
                 }
             }
         }
