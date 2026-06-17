@@ -3,6 +3,7 @@ using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using GlimmerOfHope.Gameplay.Dialogue;
+using System.Collections.Generic;
 
 namespace GlimmerOfHope.Editor.Dialogue.Graph
 {

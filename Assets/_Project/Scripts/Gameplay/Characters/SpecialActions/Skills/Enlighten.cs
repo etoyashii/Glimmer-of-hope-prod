@@ -68,7 +68,7 @@ namespace GlimmerOfHope.Gameplay
         {
             Ray ray = new(transform.position, transform.TransformDirection(Vector3.forward));
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, _lightRange, _layerMask);
+            Collider[] colliders = Physics.OverlapSphere(_light.transform.position, _lightRange, _layerMask);
 
             for (int i = 0; i < colliders.Length; i++)
             {
@@ -121,12 +121,6 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnDrawGizmos()
         {
-            // Set the color with custom alpha.
-            Gizmos.color = new Color(1f, 0f, 0f, 1.0f); // Red with custom alpha
-
-            // Draw the sphere.
-            Gizmos.DrawSphere(transform.position, _lightRange);
-
             // Draw wire sphere outline.
             Gizmos.color = Color.white;
             Gizmos.DrawWireSphere(transform.position, _lightRange);

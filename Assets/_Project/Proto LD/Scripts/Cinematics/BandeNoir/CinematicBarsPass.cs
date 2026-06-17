@@ -13,6 +13,7 @@ public class CinematicBarsPass : ScriptableRenderPass
     #region Propreties
     private Material material;
     private static readonly int BarSizeID = Shader.PropertyToID("_BarSize");
+    private static readonly int OffsetID = Shader.PropertyToID("_Offset");
     #endregion
 
     #region Methods
@@ -48,6 +49,7 @@ public class CinematicBarsPass : ScriptableRenderPass
             passData.source = source;
 
             material.SetFloat(BarSizeID, effect.barSize.value);
+            material.SetFloat(OffsetID, effect.offset.value);
 
             builder.UseTexture(source);
             builder.SetRenderAttachment(destination, 0);

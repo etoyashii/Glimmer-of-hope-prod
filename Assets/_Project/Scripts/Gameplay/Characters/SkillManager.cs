@@ -1,89 +1,73 @@
+using System;
+using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 {
+    [Serializable]
+    public class SkillUnlock
+    {
+        public string _skillName;
+        public bool _isUnlocked;
+    }
+
     public class SkillManager : MonoBehaviour
     {
+        #region Enums
+        
+        public enum SkillType
+        {
+            IncreaseLight,
+            DecreaseLight,
+            Jump,
+            Pull,
+            Push,
+            PlatformMaker,
+            Swim,
+            EmotionCheck,
+            Climb,
+            Warm,
+            DestroyBlock,
+            ShadowClone,
+            Slide,
+            Cold,
+            Propulsion,
+            Planer
+        }
+        #endregion
+
         #region SerializeFields
 
         [Header("Skills unlocked")]
-        [SerializeField] private bool _hasPush = false;
-        [SerializeField] private bool _hasJump = false;
-        [SerializeField] private bool _hasClimb = false;
-        // Here new boolean for new skills :
+        [SerializeField] private List<SkillUnlock> _learningSkillList;
 
         #endregion
 
-        #region Private Fields
+        #region Events
 
-        private int _skillUnlocked = -1;
-
-        #endregion
-
-        #region Public Properties
-
-        public bool HasPush => _hasPush;
-        public bool HasJump => _hasJump;
-        public bool HasClimb => _hasClimb;
-
-        #endregion
-
-        #region Unity Lifecycle
-
-        //Temporary
-        private void Awake()
-        {
-            _hasPush = false;
-            _hasJump = true;
-            _hasClimb = false;
-        }
+        public event Action<int> _skillTypeUnlocked;
 
         #endregion
 
         #region Public Methods
 
-        public void UnlockSkill()
+        public void UnlockSkill(int skillType)
         {
-            switch (_skillUnlocked)
-            {
-                case 0:
-                    UnlockPushRock();
-                    break;
-                case 1:
-                    UnlockJump();
-                    break;
-                case 2:
-                    UnlockClimb();
-                    break;
+            if (IsSkillUnlocked(skillType)) return;
 
-                // and more Methods called with new skills !
-            }
-
-            _skillUnlocked++;
+            _learningSkillList[skillType]._isUnlocked = true;
+            _skillTypeUnlocked?.Invoke(skillType);
         }
 
         #endregion
 
-        #region Private Methods
+        #region Helpers
 
-        private void UnlockPushRock()
+        public bool IsSkillUnlocked(int skillIndex)
         {
-            _hasPush = true;
-            Debug.Log("[SkillManager] Compétence POUSSER débloquée !");
+            return _learningSkillList[skillIndex]._isUnlocked;
         }
-
-        private void UnlockJump()
-        {
-            _hasJump = true;
-            Debug.Log("[SkillManager] Compétence SAUT débloquée !");
-        }
-
-        private void UnlockClimb()
-        {
-            _hasClimb = true;
-            Debug.Log("[SkillManager] Compétence ESCALADE débloquée !");
-        }
-        // New skills here :
 
         #endregion
     }
