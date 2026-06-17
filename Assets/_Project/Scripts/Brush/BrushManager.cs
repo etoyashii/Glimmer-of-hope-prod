@@ -25,6 +25,10 @@ namespace GlimmerOfHope.Core
         [Range(1f, 10f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
         [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
+        [Range(0.0001f, 0.01f), Tooltip("Base value is 0.001")]
+        [SerializeField] private float _multDensity = 0.001f;              // to adjust density
+        [Tooltip("1 is the base value and serves as a size multiplier for all assets placed afterward.")]]
+        [SerializeField] private float _multSize = 1f;              // asset size multiplicator
         #endregion
 
         #region Private Fields
@@ -45,11 +49,17 @@ namespace GlimmerOfHope.Core
         public Vector3 Pos => _pos;
         public float RaycastDistance => RAYCAST_DISTANCE;
         public int RevertNumber => _revertNumber;
+        public float MultDensity => _multDensity;
+        public float MultSize => _multSize;
         public void SetPos(Vector3 pos) { _pos = pos; }
         #endregion
 
         #region Unity Lifecycle
-        private void Awake()
+        private void OnValidate()
+        {
+            _groundLayerMask = _groundLayer.value;
+        }
+        private void OnEnable()
         {
             _groundLayerMask = _groundLayer.value;
         }
