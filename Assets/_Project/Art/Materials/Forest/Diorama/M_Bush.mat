@@ -36,18 +36,34 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _NormalMap:
+        m_Texture: {fileID: 2800000, guid: eb28436a581b6564a8a899fac865e620, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SideTex:
+        m_Texture: {fileID: 2800000, guid: 6edea9767c6bf7345b48e0f0fef2388e, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - _topTex:
+        m_Texture: {fileID: 2800000, guid: dfd1e3081e686344e95a489bc6f7e59f, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NormalMapHeight: 1
+    - _BottomColorHeight: 0
+    - _NormalMapHeight: 0.74
     - _Smoothness: 0.36
-    - _TopTexHeight: -8.31
+    - _Smothness: 0
+    - _TopTexHeight: -999
     m_Colors:
     - _BaseColor: {r: 0.50274974, g: 0.85660374, b: 0.41860446, a: 1}
     - _Color: {r: 0.5027497, g: 0.85660374, b: 0.41860443, a: 1}
+    - _NormalTiling: {r: 7, g: 7, b: 0, a: 0}
+    - _Tiling: {r: 13, g: 13, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6537070297879852162
