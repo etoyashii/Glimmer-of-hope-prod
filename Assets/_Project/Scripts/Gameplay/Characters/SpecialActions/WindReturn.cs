@@ -8,8 +8,6 @@ namespace GlimmerOfHope.Gameplay
 {
     #region Dependencies
 
-    //needed for the isgrounded
-    [RequireComponent(typeof(CharacterController))]
 
     #endregion
 
@@ -47,7 +45,6 @@ namespace GlimmerOfHope.Gameplay
         //if we are currently in the return animation
         private bool _isReturning;
 
-        private CharacterController _cc;
         private Movement _movement;
         private float _savePosCooldown = 0f;
 
@@ -57,7 +54,6 @@ namespace GlimmerOfHope.Gameplay
 
         void Start()
         {
-            _cc = GetComponent<CharacterController>();
             _movement = GetComponent<Movement>();
             _lastSafePos = transform.position;
         }
@@ -66,7 +62,7 @@ namespace GlimmerOfHope.Gameplay
         {
             if (_savePosCooldown > 0f) _savePosCooldown -= Time.deltaTime;
 
-            if (_cc.isGrounded && !_isReturning && _savePosCooldown <= 0f)
+            if (_movement.IsGrounded() && !_isReturning && _savePosCooldown <= 0f)
             {
                 float now = Time.time;
 
@@ -100,8 +96,6 @@ namespace GlimmerOfHope.Gameplay
         {
             _isReturning = true;
 
-            //to avoid any movement during the animation
-            _cc.enabled = false;
             _movement.enabled = false;
 
             Vector3 startPos = transform.position;
@@ -123,12 +117,11 @@ namespace GlimmerOfHope.Gameplay
             {
                 t += Time.deltaTime;
                 float ratio = windCurve.Evaluate(t / duration);
-                transform.position = QuadraticBezier(startPos, controlPoint, endPos, ratio);
+                transform.position = QuadraticBezier(startPos, controlPoint, endPos , ratio);
                 yield return null;
             }
 
-            transform.position = _lastSafePos;
-            _cc.enabled = true;
+            //transform.position = _lastSafePos ;
             _movement.enabled = true;
             _savePosCooldown = savePosDelay;
             _isReturning = false;
