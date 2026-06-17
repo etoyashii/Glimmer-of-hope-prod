@@ -1,4 +1,4 @@
-﻿using Unity.Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using static GlimmerOfHope.Gameplay.CameraManager;
@@ -6,13 +6,13 @@ using static GlimmerOfHope.Gameplay.CameraManager;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// Tester clavier pour valider toutes les fonctionnalités du CameraManager en Play Mode.
-    /// Chaque touche déclenche un cas de test différent, visible dans la Console et via OnGUI.
+    /// Keyboard tester to validate all CameraManager features in Play Mode.
+    /// Each key triggers a different test case, visible in the Console and via OnGUI.
     /// </summary>
     public class CameraManagerTester : MonoBehaviour
     {
         #region Public Properties
-        [Header("Cibles")]
+        [Header("Targets")]
         public GameObject followTarget;
         public GameObject lookAtTarget;
 
@@ -27,7 +27,7 @@ namespace GlimmerOfHope.Gameplay
         public Vector3 testPositionDamping = new Vector3(1f, 1f, 1f);
         public float testRotationDamping = 0.5f;
 
-        [Header("Noms des caméras")]
+        [Header("Camera Names")]
         public string cam1Name = "Cam1";
         public string cam2Name = "Cam2";
         public string cam3Name = "Cam3";
@@ -55,12 +55,12 @@ namespace GlimmerOfHope.Gameplay
         #region Unity LifeCycle
         private void Awake()
         {
-            // Fallback : cherche le Player par tag si followTarget non assigné dans l'Inspector
+            // Fallback: looks for the Player by tag if followTarget is not assigned in the Inspector
             if (followTarget == null)
             {
                 var player = GameObject.FindWithTag("Player");
                 if (player != null) followTarget = player;
-                else Debug.LogWarning("[Tester] Pas de followTarget et pas de tag 'Player'.");
+                else Debug.LogWarning("[Tester] No followTarget and no 'Player' tag.");
             }
         }
 
@@ -68,7 +68,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnDestroy()
         {
-            // Libère toutes les InputActions pour éviter les fuites mémoire
+            // Releases all InputActions to avoid memory leaks
             _key1.Dispose(); _key2.Dispose(); _key3.Dispose();
             _keyQ.Dispose();
             _keyF.Dispose(); _keyG.Dispose(); _keyR.Dispose();
@@ -80,7 +80,7 @@ namespace GlimmerOfHope.Gameplay
 
         #region Private Methods
 
-        /// Crée, bind et active toutes les InputActions du tester.
+        /// Creates, binds, and enables all of the tester's InputActions.
         private void RegisterInputs()
         {
             _key1 = new InputAction("Key1", InputActionType.Button, "<Keyboard>/1");
@@ -115,7 +115,7 @@ namespace GlimmerOfHope.Gameplay
             _keyL.Enable(); _keyD.Enable(); _keyV.Enable();
             _keyB.Enable(); _keyC.Enable();
 
-            // Shake : déclaré séparément pour rester groupé avec sa logique
+            // Shake: declared separately to stay grouped with its logic
             _keyH = new InputAction("KeyH", InputActionType.Button, "<Keyboard>/h");
             _keyJ = new InputAction("KeyJ", InputActionType.Button, "<Keyboard>/j");
             _keyH.performed += _ => TestShake();
@@ -124,7 +124,7 @@ namespace GlimmerOfHope.Gameplay
             _keyJ.Enable();
         }
 
-        // --- Tests Shake ---
+        // --- Shake Tests ---
 
         private void TestShake()
         {
@@ -140,7 +140,7 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.StopShake();
         }
 
-        // --- Tests FreeCam ---
+        // --- FreeCam Tests ---
 
         private void TestToggleFreeCam()
         {
@@ -151,9 +151,9 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.SetFreeCam(_freeCamActive, freeCamSensitivity, target, freeCamDistance);
         }
 
-        // --- Tests Switch ---
+        // --- Switch Tests ---
 
-        /// Switch par nom avec blend par défaut (EaseInOut 0.5s).
+        /// Switch by name with default blend (EaseInOut 0.5s).
         private void TestSwitchByName(string camName)
         {
             if (!EnsureManager()) return;
@@ -161,17 +161,17 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.SwitchCamera(camName);
         }
 
-        /// Switch par référence directe sur cams[0] avec blend Linear 1s.
+        /// Switch by direct reference on cams[0] with Linear 1s blend.
         private void TestSwitchByReference()
         {
             if (!EnsureManager()) return;
             var cams = CameraManager.Instance.cam;
-            if (cams == null || cams.Length == 0) { Debug.LogWarning("[TEST] cam[] est vide !"); return; }
+            if (cams == null || cams.Length == 0) { Debug.LogWarning("[TEST] cam[] is empty!"); return; }
             Debug.Log($"[TEST] SwitchCamera(ref={cams[0].name}, Linear 1s)");
             CameraManager.Instance.SwitchCamera(cams[0], 1f, CinemachineBlendDefinition.Styles.Linear);
         }
 
-        /// Switch instantané (Cut) vers cam2.
+        /// Instant switch (Cut) to cam2.
         private void TestSwitchCut()
         {
             if (!EnsureManager()) return;
@@ -179,7 +179,7 @@ namespace GlimmerOfHope.Gameplay
             CameraManager.Instance.SwitchCamera(cam2Name, 0f, CinemachineBlendDefinition.Styles.Cut);
         }
 
-        // --- Tests ConfigureCamera ---
+        // --- ConfigureCamera Tests ---
 
         private void TestFollow()
         {
@@ -213,11 +213,11 @@ namespace GlimmerOfHope.Gameplay
             });
         }
 
-        /// Follow et LookAt sur deux cibles distinctes.
+        /// Follow and LookAt on two separate targets.
         private void TestFollowWithSeparateLookAt()
         {
             if (!EnsureTarget()) return;
-            if (lookAtTarget == null) { Debug.LogWarning("[TEST][L] lookAtTarget est null !"); return; }
+            if (lookAtTarget == null) { Debug.LogWarning("[TEST][L] lookAtTarget is null!"); return; }
             Debug.Log($"[TEST][L] Follow={followTarget.name} LookAt={lookAtTarget.name}");
             CameraManager.Instance.ConfigureCamera(
                 CameraSettings.WithFollowAndLookAt(followTarget.transform, lookAtTarget.transform, offsetA));
@@ -239,24 +239,24 @@ namespace GlimmerOfHope.Gameplay
 
         // --- Guards ---
 
-        ///Vérifie que le CameraManager singleton est disponible.
+        ///Checks that the CameraManager singleton is available.
         private bool EnsureManager()
         {
             if (CameraManager.Instance != null) return true;
-            Debug.LogError("[Tester] CameraManager.Instance est null !");
+            Debug.LogError("[Tester] CameraManager.Instance is null!");
             return false;
         }
 
-        /// Vérifie que le CameraManager et le followTarget sont disponibles.
+        /// Checks that the CameraManager and followTarget are available.
         private bool EnsureTarget()
         {
             if (!EnsureManager()) return false;
             if (followTarget != null) return true;
-            Debug.LogWarning("[Tester] followTarget est null !");
+            Debug.LogWarning("[Tester] followTarget is null!");
             return false;
         }
 
-        /// Affiche le récapitulatif des touches en haut à gauche de l'écran.
+        /// Displays the key summary in the top-left corner of the screen.
         private void OnGUI()
         {
             GUILayout.BeginArea(new Rect(10, 10, 400, 320));
@@ -269,10 +269,10 @@ namespace GlimmerOfHope.Gameplay
                 $"[F] Follow + offsetA {offsetA}\n" +
                 $"[G] Follow + offsetB {offsetB} + FOV {testFOV}\n" +
                 "[R] Reset offset (0,0,0)\n" +
-                $"[L] Follow + LookAt séparé ({(lookAtTarget != null ? lookAtTarget.name : "non assigné")})\n" +
+                $"[L] Follow + separate LookAt ({(lookAtTarget != null ? lookAtTarget.name : "not assigned")})\n" +
                 $"[D] Damping pos={testPositionDamping} rot={testRotationDamping}\n" +
                 $"[V] FOV → {testFOV}\n" +
-                "[B] Switch Cut instantané\n" +
+                "[B] Instant Cut switch\n" +
                 $"[C] FreeCam toggle ({(_freeCamActive ? "ON ✓" : "OFF")})\n" +
                 $"[H] Shake dur={shakeDuration} amp={shakeAmplitude} freq={shakeFrequency}\n" +
                 "[J] Stop Shake\n"
