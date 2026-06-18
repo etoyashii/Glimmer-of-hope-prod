@@ -91,7 +91,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             UpdateTextField(language);
             UpdateTimingLabel();
             UpdateActionsLabel();
-            _choiceManager?.RebuildUI(language);
+            _choiceManager?.RefreshLanguage(language);
         }
 
         public void SetLocalizedText(string language, string text)
@@ -184,7 +184,6 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
             _choiceManager = new ChoiceManager(this, _choicePorts, _choiceContainer, lang =>
             {
-                _choiceManager?.RebuildUI(lang);
             });
 
             _conditionContainer = new VisualElement();

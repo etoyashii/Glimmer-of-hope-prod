@@ -51,7 +51,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                 Orientation.Horizontal,
                 Direction.Output,
                 Port.Capacity.Single,
-                typeof(int));
+                typeof(float));
 
             port.portName = TruncateLabel(choiceText, 30);
             port.portColor = CHOICE_COLOR;
@@ -65,7 +65,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                 Orientation.Horizontal,
                 Direction.Output,
                 Port.Capacity.Single,
-                typeof(bool));
+                typeof(float));
 
             port.portName = condition;
             port.portColor = CONDITION_COLOR;

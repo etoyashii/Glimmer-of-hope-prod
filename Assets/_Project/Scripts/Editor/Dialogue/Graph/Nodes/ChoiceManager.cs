@@ -16,6 +16,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         private readonly List<Port> _ports;
         private readonly VisualElement _container;
         private readonly Dictionary<int, Dictionary<string, string>> _choiceTexts = new();
+        private readonly Dictionary<int, TextField> _choiceFields = new();
         private Action<string> _onChanged;
         private string _activeLanguage = "fr";
 
@@ -81,6 +82,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         {
             _activeLanguage = language;
             ClearPorts();
+            _choiceFields.Clear();
             _container.Clear();
 
             if (_node.LineSO != null && _node.LineSO.HasChoices)
@@ -91,6 +93,14 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
             BuildAddButton();
             _node.RefreshPorts();
+        }
+
+        public void RefreshLanguage(string language)
+        {
+            _activeLanguage = language;
+
+            foreach (var kvp in _choiceFields)
+                kvp.Value.SetValueWithoutNotify(GetChoiceText(kvp.Key, language));
         }
 
         public void AddChoice()
@@ -196,6 +206,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                 _onChanged?.Invoke(capturedLang);
             });
             row.Add(textField);
+            _choiceFields[index] = textField;
 
             var port = DialoguePortFactory.CreateChoiceOutput(_node, "", index);
             _ports.Add(port);

@@ -22,7 +22,7 @@ namespace GlimmerOfHope.Core
         [SerializeField] private GameObject _stokageAssetsUseless;   // Parent for deleted/inactive assets
         [SerializeField] private LayerMask _groundLayer;              // Layer mask for ground detection
         [SerializeField] private bool _deleteMode = false;            // Toggle delete mode
-        [Range(1f, 10f)]
+        [Range(1f, 100f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
         [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
         [Range(0.0001f, 0.01f), Tooltip("Base value is 0.001")]
@@ -64,7 +64,10 @@ namespace GlimmerOfHope.Core
             _groundLayerMask = _groundLayer.value;
         }
 
-        void Update() { }
+        void Update()
+        { 
+            
+        }
         #endregion
 
         #region Private Methods
