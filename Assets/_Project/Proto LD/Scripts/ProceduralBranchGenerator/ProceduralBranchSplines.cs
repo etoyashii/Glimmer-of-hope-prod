@@ -43,6 +43,12 @@ public class ProceduralBranchSplines : MonoBehaviour
     [SerializeField]
     [Range(0, 1)]
     private float _maxVerticalAngle = 0.2f;
+    [SerializeField]
+    [Range(0, 5)]
+    private int _alignmentSteps = 2;
+    [SerializeField]
+    [Range(0, 4)]
+    private int _branchSinkSteps = 2;
 
     [Header("Noise and twist")]
     [SerializeField]
@@ -164,7 +170,8 @@ public class ProceduralBranchSplines : MonoBehaviour
     /// <param name="parentKnotIndex"></param>
     void GenerateBranch(Vector3 origin, Vector3 direction,
                         int depth, int numPoints, float stepDist,
-                        int parentId, int parentKnotIndex)
+                        int parentId, int parentKnotIndex,
+                        Vector3 alignFromDir = default, int alignSteps = 0, int sinkSteps = 0)
     {
         if (depth > _recursionDepth) return;
 
@@ -173,7 +180,7 @@ public class ProceduralBranchSplines : MonoBehaviour
         var knots = new List<BezierKnot>();
 
         Vector3 pos = origin;
-        Vector3 dir = direction.normalized;
+        Vector3 dir = (sinkSteps > 0 || alignSteps > 0) ? alignFromDir.normalized : direction.normalized;
 
         float noiseOffsetX = (float)(_rng.NextDouble() * 1000f);
         float noiseOffsetZ = (float)(_rng.NextDouble() * 1000f);
@@ -188,21 +195,35 @@ public class ProceduralBranchSplines : MonoBehaviour
 
         for (int i = 0; i < numPoints; i++)
         {
-            float t = (float)i / Mathf.Max(numPoints - 1, 1);
+            if (sinkSteps > 0 && i < sinkSteps)
+            {
+                // Phase sink : suit strictement parentDir — ces knots sont à l'intérieur
+                // du mesh parent (origine décalée en arrière), le neck taper les cache.
+                dir = alignFromDir.normalized;
+            }
+            else if (alignSteps > 0 && i < sinkSteps + alignSteps)
+            {
+                // Phase alignement : slerp de parentDir → branchDir sans bruit.
+                float alignT = (float)(i - sinkSteps + 1) / alignSteps;
+                dir = Vector3.Slerp(alignFromDir, direction, alignT).normalized;
+            }
+            else
+            {
+                float t = (float)i / Mathf.Max(numPoints - 1, 1);
 
-            float nx = (Mathf.PerlinNoise(t * _noiseFrequency + noiseOffsetX, 0.3f) - 0.5f) * 2f;
-            float nz = (Mathf.PerlinNoise(0.7f, t * _noiseFrequency + noiseOffsetZ) - 0.5f) * 2f;
-            Vector3 noiseVec = new Vector3(nx, 0f, nz) * _noiseForce + Vector3.down * _gravityInfluence;
+                float nx = (Mathf.PerlinNoise(t * _noiseFrequency + noiseOffsetX, 0.3f) - 0.5f) * 2f;
+                float nz = (Mathf.PerlinNoise(0.7f, t * _noiseFrequency + noiseOffsetZ) - 0.5f) * 2f;
+                Vector3 noiseVec = new Vector3(nx, 0f, nz) * _noiseForce + Vector3.down * _gravityInfluence;
 
-            noiseVec = Quaternion.AngleAxis(twistAccum, dir) * noiseVec;
+                noiseVec = Quaternion.AngleAxis(twistAccum, dir) * noiseVec;
+                twistAccum += _twistDegreesPerStep;
 
-            Vector3 newDir = (dir + noiseVec).normalized;
+                Vector3 newDir = (dir + noiseVec).normalized;
 
-            float maxSlopeY = Mathf.Sin(_maxSlopeDeg * Mathf.Deg2Rad);
-            newDir.y = Mathf.Clamp(newDir.y, -maxSlopeY, maxSlopeY);
-            newDir = newDir.normalized;
-
-            dir = newDir;
+                float maxSlopeY = Mathf.Sin(_maxSlopeDeg * Mathf.Deg2Rad) * (1f + depth * _maxVerticalAngle);
+                newDir.y = Mathf.Clamp(newDir.y, -maxSlopeY, maxSlopeY);
+                dir = newDir.normalized;
+            }
 
             knotPositions[i] = pos;
             knotDirections[i] = dir;
@@ -272,13 +293,18 @@ public class ProceduralBranchSplines : MonoBehaviour
 
             float spread = Mathf.Clamp(
                 _branchAngleSpread + (float)((_rng.NextDouble() - 0.5) * _branchAngleVariance * 2f), 5f, 175f);
-            Vector3 branchDir = Vector3.Slerp(parentDir, spreadDir, Mathf.Sin(spread * Mathf.Deg2Rad)).normalized;
+            Vector3 spreadAxis = Vector3.Cross(parentDir, spreadDir).normalized;
+            Vector3 branchDir = Quaternion.AngleAxis(spread, spreadAxis) * parentDir;
 
             int childPoints = Mathf.Max(3, Mathf.RoundToInt(_pointsPerBranch * Mathf.Pow(_pointCountMultiplierPerDepth, depth)));
             float childStep = parentStepDist * Mathf.Pow(_lengthMultiplierPerDepth, depth);
 
-            GenerateBranch(origin, branchDir, depth, childPoints, childStep,
-                           parentId, parentKnotIndex);
+            // L'origine est décalée de sinkSteps en arrière dans le parent.
+            // Les knots sink traversent le parent de l'intérieur vers la surface.
+            Vector3 sunkOrigin = origin - parentDir * (_branchSinkSteps * childStep);
+            GenerateBranch(sunkOrigin, branchDir, depth, childPoints, childStep,
+                           parentId, parentKnotIndex,
+                           parentDir, _alignmentSteps, _branchSinkSteps);
         }
     }
     #endregion
