@@ -64,6 +64,7 @@ namespace GlimmerOfHope.Gameplay
         #region Private Methods
         private void Push()
         {
+
             Debug.Log("Executing Wind Push!");
             // Get the forward of the caster
             Vector3 forward = new Vector3(
@@ -132,5 +133,97 @@ namespace GlimmerOfHope.Gameplay
             }
         }
         #endregion
+
+        private void OnDrawGizmos()
+        {
+            // Par exemple, pour visualiser un OverlapCapsule centré sur un objet
+            // avec une direction selon l'axe Y local
+            OverlapCapsuleGizmo.DrawCapsuleGizmo(
+                center: _playerTransform.position + (_playerTransform.forward * _pushLength/2) ,
+                direction: _playerTransform.forward,
+                radius: _pushRadius,
+                height: _pushLength,
+                color: new Color(0f, 1f, 0.5f, 0.25f)
+            );
+        }
+
+        public class OverlapCapsuleGizmo : MonoBehaviour
+        {
+            [Header("Capsule Settings")]
+            public float radius = 0.5f;
+            public float height = 2.0f;
+            public Vector3 direction = Vector3.up;
+            public Color gizmoColor = new Color(0f, 1f, 0.5f, 0.3f);
+
+            private void OnDrawGizmos()
+            {
+                DrawCapsuleGizmo(transform.position, direction, radius, height, gizmoColor);
+            }
+
+            public static void DrawCapsuleGizmo(
+                Vector3 center,
+                Vector3 direction,
+                float radius,
+                float height,
+                Color color)
+            {
+                // Calcul des centres des deux demi-sphères
+                // L'offset est la distance depuis le centre jusqu'à chaque sphere-center
+                float offset = Mathf.Max(0f, (height / 2f) - radius);
+                Vector3 dir = direction.normalized;
+
+                Vector3 point0 = center - dir * offset; // bas
+                Vector3 point1 = center + dir * offset; // haut
+
+                // Rotation pour orienter les cercles perpendiculairement à la capsule
+                Quaternion rot = Quaternion.FromToRotation(Vector3.up, dir);
+
+                Color prevColor = Gizmos.color;
+
+                // --- Remplissage semi-transparent ---
+                Gizmos.color = color;
+                // On dessine les sphères aux deux extrémités
+                Gizmos.DrawSphere(point0, radius);
+                Gizmos.DrawSphere(point1, radius);
+
+                // --- Contour wire ---
+                Gizmos.color = new Color(color.r, color.g, color.b, 1f);
+
+                // Sphères fil de fer
+                Gizmos.DrawWireSphere(point0, radius);
+                Gizmos.DrawWireSphere(point1, radius);
+
+                // 4 lignes reliant les sphères (les "côtés" de la capsule)
+                DrawCapsuleSideLines(point0, point1, radius, rot);
+
+                // Points centraux pour debug
+                Gizmos.DrawSphere(point0, 0.02f);
+                Gizmos.DrawSphere(point1, 0.02f);
+
+                Gizmos.color = prevColor;
+            }
+
+            private static void DrawCapsuleSideLines(
+                Vector3 p0, Vector3 p1,
+                float radius, Quaternion rot)
+            {
+                // 4 directions perpendiculaires à l'axe
+                Vector3[] perps = new Vector3[]
+                {
+            rot * Vector3.right,
+            rot * Vector3.left,
+            rot * Vector3.forward,
+            rot * Vector3.back
+                };
+
+                foreach (var perp in perps)
+                {
+                    Gizmos.DrawLine(
+                        p0 + perp * radius,
+                        p1 + perp * radius
+                    );
+                }
+            }
+        }
     }
 }
