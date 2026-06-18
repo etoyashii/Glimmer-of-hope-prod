@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7916617997652665636
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -10.458343
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 3.1193635
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 4.082259
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5754084199372789682, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 4300000, guid: 4e36559c2c26d6141994c8b5c40c3997, type: 2}
+    - target: {fileID: 919132149155446097, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      propertyPath: m_Name
+      value: arbre portail
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 7658378326913779046}
+  m_SourcePrefab: {fileID: 100100000, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+--- !u!1 &6997489696787929205 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 70e8066353cb2fd43b34ec8fe4ec5148, type: 3}
+  m_PrefabInstance: {fileID: 7916617997652665636}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &7658378326913779046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6997489696787929205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 02af2dad862c13e41b3cd8966e7ee3fd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.BlenderMeshFixer
+  importMesh: {fileID: 4300000, guid: 4e36559c2c26d6141994c8b5c40c3997, type: 2}
