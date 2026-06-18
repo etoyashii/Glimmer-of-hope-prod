@@ -1,7 +1,9 @@
+using GlimmerOfHope.Core;
+using NaughtyAttributes.Test;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 using UnityEngine;
-using GlimmerOfHope.Core;
 
 /// <summary>
 /// Custom editor for BrushManager, handling asset placement/deletion.
@@ -9,37 +11,55 @@ using GlimmerOfHope.Core;
 [CustomEditor(typeof(BrushManager))]
 public class BrushManagerEditor : Editor
 {
-    private AssetTemplate GetTempltateByWeight(BrushManager drawer, int totalWeight)
+    private AssetTemplate GetTemplateByWeight(BrushManager drawer)
     {
         // Randomly select an asset template based on their weights
-        int reste = Random.Range(0, totalWeight);
-        int i = 0;
-        List<AssetTemplate> listTemplate = drawer.Assets;
-        while (reste > 0)
+        // Only consider active (non-disabled) asset structs
+        List<AssetTemplate> activeAssets = new();
+        foreach (AssetsStruct aStruct in drawer.Assets)
         {
-            reste -= drawer.Assets[i]._weight;
-            if (reste > 0)
+            if (!aStruct._isDisable)
             {
-                i++;
+                foreach (AssetTemplate aTemplate in aStruct._template)
+                {
+                    activeAssets.Add(aTemplate);
+                }
             }
         }
-        return drawer.Assets[i];
+
+        if (activeAssets.Count <= 0) return null;
+
+        // Calculate total weight only on active assets
+        int totalWeight = 0;
+        foreach (AssetTemplate template in activeAssets)
+        {
+            totalWeight += template._weight;
+        }
+
+        int reste = Random.Range(0, totalWeight);
+        int i = 0;
+        while (reste > 0)
+        {
+            reste -= activeAssets[i]._weight;
+            if (reste > 0) i++;
+        }
+        return activeAssets[i];
     }
 
     private void OnSceneGUI()
     {
         BrushManager drawer = (BrushManager)target;
-        List<AssetTemplate> assets = drawer.Assets;
+        List<AssetTemplate> assets = new();
+        foreach (AssetsStruct aStruct in drawer.Assets)
+        {
+            foreach (AssetTemplate assetTemplate in aStruct._template)
+            {
+                assets.Add(assetTemplate);
+            }
+        }
         bool deleteMod = drawer.DeleteMode;
         bool lastActionWasAdd = drawer._lastActionWasAdd;
-        int totalWeight = 0;
 
-        // Calculate total weight for all asset templates
-        foreach (AssetTemplate template in assets)
-        {
-            totalWeight += template._weight;
-        }
-        float invertDensity = 1f;
         if (drawer == null || assets == null || assets.Count == 0) return;
 
         // Handle mouse and keyboard input for brush tool
@@ -127,7 +147,7 @@ public class BrushManagerEditor : Editor
             else if (scrollDelta < 0)
             {
                 drawer._circleRadius -= 0.5f;
-                drawer._circleRadius = Mathf.Max(1f, drawer._circleRadius);
+                drawer._circleRadius = Mathf.Max(0.1f, drawer._circleRadius);
             }
             e.Use();
         }
@@ -195,7 +215,9 @@ public class BrushManagerEditor : Editor
 
             float area = Mathf.PI * drawer._circleRadius * drawer._circleRadius;
             int assetsToSpawn = Mathf.Max(1, Mathf.RoundToInt(area * drawer.Density * drawer.MultDensity));
-            float overlapRadius = 1f / Mathf.Max(drawer.MultDensity, drawer.Density);
+
+            // overlapRadius based only on Density: high density = smaller gap between objects
+            float overlapRadius = 1f / Mathf.Max(1f, drawer.Density);
 
             for (int i = 0; i < assetsToSpawn; i++)
             {
@@ -216,26 +238,29 @@ public class BrushManagerEditor : Editor
                 }
 
                 // Select random asset template based on weight
-                AssetTemplate newTemplate = GetTempltateByWeight(drawer, totalWeight);
+                AssetTemplate newTemplate = GetTemplateByWeight(drawer);
 
-                // Check for collisions before placing
-                int layerMaskWithoutGround = ~drawer.GroundLayerMask;
-                Collider[] hitColliders = Physics.OverlapSphere(spawnPos, overlapRadius, layerMaskWithoutGround);
-
-                if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
+                if (newTemplate != null)
                 {
-                    // Instantiate asset
-                    GameObject newnewGO = Instantiate(
-                        newTemplate._asset,
-                        spawnPos,
-                        Quaternion.FromToRotation(Vector3.up, spawnHit.normal),
-                        drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
-                    );
-                    // Random rotation and scale
-                    newnewGO.transform.Rotate(Vector3.right, 90f);
-                    newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
-                    float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
-                    newnewGO.transform.localScale = Vector3.one * newScale * drawer.SizeMult;
+                    // Check for collisions before placing
+                    int layerMaskWithoutGround = ~drawer.GroundLayerMask;
+                    Collider[] hitColliders = Physics.OverlapSphere(spawnPos, overlapRadius, layerMaskWithoutGround);
+
+                    if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
+                    {
+                        // Instantiate asset
+                        GameObject newnewGO = Instantiate(
+                            newTemplate._asset,
+                            spawnPos,
+                            Quaternion.FromToRotation(Vector3.up, spawnHit.normal),
+                            drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
+                        );
+                        // Random rotation and scale
+                        newnewGO.transform.Rotate(Vector3.right, -90f - newTemplate._rotation);
+                        newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
+                        float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
+                        newnewGO.transform.localScale = newnewGO.transform.localScale * newScale * drawer.SizeMult;
+                    }
                 }
             }
         }

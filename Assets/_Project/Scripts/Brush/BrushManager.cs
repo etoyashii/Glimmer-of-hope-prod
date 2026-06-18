@@ -14,10 +14,11 @@ namespace GlimmerOfHope.Core
         #region Constants
         private int SEGMENTS = 320;          // Number of segments for the circle gizmo
         private float RAYCAST_DISTANCE = 100f; // Max distance for ground raycast
+        
         #endregion
 
         #region Serialized Fields
-        [SerializeField] private List<AssetTemplate> _assets = new(); // List of available asset templates
+        [SerializeField] private List<AssetsStruct> _assets = new(); // List of available asset templates
         [SerializeField] private GameObject _stokageAssets;          // Parent for active assets
         [SerializeField] private GameObject _stokageAssetsUseless;   // Parent for deleted/inactive assets
         [SerializeField] private LayerMask _groundLayer;              // Layer mask for ground detection
@@ -39,7 +40,7 @@ namespace GlimmerOfHope.Core
         #region Public Properties
         public float _circleRadius = 5f; // Radius of the brush circle
         [HideInInspector] public bool _lastActionWasAdd = true; // If action was add Asset = true else false
-        public List<AssetTemplate> Assets => _assets;
+        public List<AssetsStruct> Assets => _assets;
         public GameObject StokageAssets => _stokageAssets;
         public GameObject StokageAssetsUseless => _stokageAssetsUseless;
         public LayerMask GroundLayer => _groundLayer;
