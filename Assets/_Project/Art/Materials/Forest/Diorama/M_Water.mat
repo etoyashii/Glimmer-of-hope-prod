@@ -21,23 +21,18 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: M_Water
-  m_Shader: {fileID: -6465566751694194690, guid: f989cf067aad870429a9c1fa4bc4dde6, type: 3}
+  m_Shader: {fileID: -6465566751694194690, guid: 93b17167b99edf543b525933c9605f7f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
-  m_ValidKeywords:
-  - _ALPHAPREMULTIPLY_ON
-  - _SURFACE_TYPE_TRANSPARENT
+  m_ValidKeywords: []
   m_InvalidKeywords: []
   m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
-  stringTagMap:
-    RenderType: Transparent
+  stringTagMap: {}
   disabledShaderPasses:
   - MOTIONVECTORS
-  - DepthOnly
-  - SHADOWCASTER
   m_LockedProperties: 
   m_SavedProperties:
     serializedVersion: 3
@@ -73,6 +68,8 @@ Material:
     - _CastShadows: 0
     - _Cull: 0
     - _Depth: 1
+    - _DstBlend: 10
+    - _DstBlendAlpha: 10
     - _Float: -0.28
     - _FoamColor: 0
     - _FoamOutlineSize: 0.067
@@ -98,11 +95,11 @@ Material:
     - _AbsorptionColor: {r: 1, g: 1, b: 1, a: 1}
     - _BorderFoamSpeed: {r: 0.05, g: 0.05, b: 0, a: 0}
     - _BorderFoamexictement: {r: 0.01, g: 0.01, b: 0, a: 0}
-    - _FoamColor: {r: 0.6509434, g: 0.6509434, b: 0.6509434, a: 1}
+    - _FoamColor: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
     - _FoamScroll: {r: -0.005, g: 0, b: 0, a: 0}
     - _RipplesRange: {r: -19.08, g: 1, b: 0, a: 0}
     - _ShadowColor: {r: 0.2735849, g: 0.26584193, b: 0.26197046, a: 1}
-    - _ShadowDirection: {r: -0.02, g: -0.02, b: 0, a: 0}
+    - _ShadowDirection: {r: -0.04, g: -0.04, b: 0, a: 0}
     - _Vector2: {r: 0, g: 1, b: 0, a: 0}
     - _WaterColor: {r: 0.31305623, g: 0.9770184, b: 0.990566, a: 1}
   m_BuildTextureStacks: []
