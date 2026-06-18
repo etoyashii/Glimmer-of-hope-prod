@@ -127,7 +127,7 @@ public class BrushManagerEditor : Editor
             else if (scrollDelta < 0)
             {
                 drawer._circleRadius -= 0.5f;
-                drawer._circleRadius = Mathf.Max(0.1f, drawer._circleRadius);
+                drawer._circleRadius = Mathf.Max(1f, drawer._circleRadius);
             }
             e.Use();
         }
