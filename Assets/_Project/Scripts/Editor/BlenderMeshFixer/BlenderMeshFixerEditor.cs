@@ -85,7 +85,7 @@ namespace GlimmerOfHope.Editor
             MeshFilter mf = fixer.GetComponent<MeshFilter>();
             if (!ValidateMeshFilter(mf)) return;
 
-            // Retrieve the source mesh (uses importMesh if it exists, otherwise falls back to the original FBX asset)
+            // Retrieve the source mesh (uses importMesh if it exists, or use the original FBX asset)
             Mesh sourceMesh = GetOrCaptureImportMesh(fixer, mf);
             if (sourceMesh == null) return;
 
@@ -106,7 +106,7 @@ namespace GlimmerOfHope.Editor
         }
 
         /// <summary>
-        /// Ensures we have a valid starting mesh, tracking the persistent baked mesh asset for iterative modifications.
+        /// Make sure we have a valid starting mesh, tracking the persistent baked mesh asset for modifications.
         /// </summary>
         private static Mesh GetOrCaptureImportMesh(BlenderMeshFixer fixer, MeshFilter mf)
         {
@@ -127,7 +127,7 @@ namespace GlimmerOfHope.Editor
         }
 
         /// <summary>
-        /// Instantiates a deep copy of the source mesh and manually transforms its vertices and normals in local space.
+        /// Instantiates a copy of the source mesh and manually transforms its vertices and normals in local space.
         /// </summary>
         private static Mesh BakeMeshWithTransform(Mesh source, Quaternion rotation, Vector3 scale, string newName)
         {
@@ -159,8 +159,7 @@ namespace GlimmerOfHope.Editor
         /// <summary>
         /// Serializes the new mesh data to disk, updates references, resets scene transform, and regenerates the Prefab asset safely.
         /// </summary>
-        private static void SaveMeshAndPrefab(MeshFilter mf, BlenderMeshFixer fixer,
-                                             Mesh bakedMesh, bool resetRot, bool resetScale)
+        private static void SaveMeshAndPrefab(MeshFilter mf, BlenderMeshFixer fixer,Mesh bakedMesh, bool resetRot, bool resetScale)
         {
             EnsureFolderExists();
 
@@ -182,10 +181,10 @@ namespace GlimmerOfHope.Editor
                 AssetDatabase.SaveAssets();
             }
 
-            // Update the component reference so further modifications chain onto this asset
+            // Update the component reference
             fixer.importMesh = bakedMesh;
 
-            // Register undo states for a seamless Unity Editor workflow
+            // Register undo states for Unity Editor workflow
             Undo.RecordObject(mf, "Bake Mesh");
             Undo.RecordObject(fixer.transform, "Bake Mesh Transform");
             Undo.RecordObject(fixer, "Bake Mesh Fixer");
