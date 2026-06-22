@@ -46,10 +46,10 @@ namespace GlimmerOfHope.Gameplay
 
         private void Update()
         {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                CastSpell();
-            }
+            //if (Keyboard.current.spaceKey.wasPressedThisFrame)
+            //{
+            //    CastSpell();
+            //}
         }
 
         #endregion
