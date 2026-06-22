@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using GlimmerOfHope.Core;
 
 [Serializable]
 public struct AssetsStruct

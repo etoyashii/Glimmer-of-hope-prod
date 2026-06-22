@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Custom editor for BrushManager, handling asset placement/deletion.
@@ -11,6 +12,8 @@ using UnityEngine;
 [CustomEditor(typeof(BrushManager))]
 public class BrushManagerEditor : Editor
 {
+    private Vector3 _lastClearPosition = Vector3.positiveInfinity;
+
     private AssetTemplate GetTemplateByWeight(BrushManager drawer)
     {
         // Randomly select an asset template based on their weights
@@ -58,6 +61,7 @@ public class BrushManagerEditor : Editor
             }
         }
         bool deleteMod = drawer.DeleteMode;
+        bool clearMod = drawer.ClearMode;
         bool lastActionWasAdd = drawer._lastActionWasAdd;
 
         if (drawer == null || assets == null || assets.Count == 0) return;
@@ -156,7 +160,8 @@ public class BrushManagerEditor : Editor
         if (e.type == EventType.MouseDown && e.button == 0)
         {
             deleteMod = drawer.DeleteMode;
-            if (!deleteMod)
+            clearMod = drawer.ClearMode;
+            if (!deleteMod && !clearMod)
             {
                 drawer._lastActionWasAdd = true;
                 lastActionWasAdd = drawer._lastActionWasAdd;
@@ -182,12 +187,14 @@ public class BrushManagerEditor : Editor
         // Clean up empty temporary parents on mouse up
         if (e.type == EventType.MouseUp)
         {
-            if (!deleteMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
+            _lastClearPosition = Vector3.positiveInfinity;
+
+            if (!deleteMod && !clearMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
             {
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
             }
-            if (deleteMod && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
+            if ((deleteMod || clearMod) && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
             {
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
@@ -209,7 +216,7 @@ public class BrushManagerEditor : Editor
         }
 
         // Place assets on left mouse drag
-        if (!deleteMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
+        if (!deleteMod && !clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
             lastActionWasAdd = true;
 
@@ -265,7 +272,7 @@ public class BrushManagerEditor : Editor
             }
         }
         // Delete assets on left mouse drag in delete mode
-        else if (deleteMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
+        else if (deleteMod && !clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
             lastActionWasAdd = false;
             int layerMaskWithoutGround = ~drawer.GroundLayerMask;
@@ -276,6 +283,33 @@ public class BrushManagerEditor : Editor
             {
                 collider.gameObject.transform.parent = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).transform;
             }
+        }
+        else if (clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
+        {
+            lastActionWasAdd = false;
+
+            Ray worldRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+            Physics.Raycast(worldRay, out hit);
+
+            float minStep = drawer._circleRadius * 0.5f;
+            if (e.type != EventType.MouseDown && Vector3.Distance(hit.point, _lastClearPosition) < minStep)
+            {
+                e.Use();
+                return;
+            }
+            _lastClearPosition = hit.point;
+
+            int layerMaskWithoutGround = ~drawer.GroundLayerMask;
+            Collider[] hitColliders = Physics.OverlapSphere(hit.point, drawer._circleRadius, layerMaskWithoutGround);
+            foreach (Collider collider in hitColliders)
+            {
+                if (Random.Range(0, 100) < drawer.ProbClearAssets)
+                {
+                    collider.gameObject.transform.parent = drawer.StokageAssetsUseless.transform
+                        .GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).transform;
+                }
+            }
+            e.Use();
         }
     }
 }
