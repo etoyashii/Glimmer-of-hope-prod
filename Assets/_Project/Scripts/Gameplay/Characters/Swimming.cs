@@ -31,9 +31,9 @@ namespace GlimmerOfHope.Gameplay
 
         #region Private Fields
 
-        private bool _isSwimmingUnlocked = false;
+        [SerializeField] public bool _isSwimmingUnlocked = true;
         private bool _isSwimming = false;
-        private float _waterSurfaceY = 0f;
+        public float _waterSurfaceY = 0f;
 
         private static readonly int _animIsSwimming = Animator.StringToHash("IsSwimming");
         private static readonly int _animSwimSpeed = Animator.StringToHash("SwimSpeed");
@@ -48,12 +48,6 @@ namespace GlimmerOfHope.Gameplay
 
         #region Unity Lifecycle
 
-        private void Awake()
-        {
-            if (_rb == null)
-                _rb = GetComponent<Rigidbody>();
-        }
-
         private void FixedUpdate()
         {
             if (!_isSwimming) return;
@@ -64,6 +58,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log("Entered");
             if (!other.CompareTag("Water")) return;
             if (!_isSwimmingUnlocked) return;
 
@@ -101,25 +96,26 @@ namespace GlimmerOfHope.Gameplay
 
         #region Private Methods
 
-        private void EnterWater()
+        public void EnterWater()
         {
             _isSwimming = true;
 
             // Hand off movement control to this script
-            _playerMovement.SetMovementEnabled(false);
+            _playerMovement.SetMovementEnabled(true);
 
             // Kill any vertical momentum (no splashing through the surface)
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+            _rb.linearVelocity = new Vector3(0f, 0f, 0f);
             _rb.useGravity = false;
 
             UpdateAnimator();
         }
 
-        private void ExitWater()
+        public void ExitWater()
         {
             _isSwimming = false;
 
             _rb.useGravity = true;
+            _rb.linearVelocity = new Vector3(0f, 0f, 0f);
             _playerMovement.SetMovementEnabled(true);
 
             UpdateAnimator();
@@ -148,7 +144,7 @@ namespace GlimmerOfHope.Gameplay
 
             // Drive animator
             if (_animator != null)
-                _animator.SetFloat(_animSwimSpeed, swimDirection.magnitude);
+                _animator.SetFloat(_animSwimSpeed, targetVelocity.magnitude);
         }
 
         private void LockToSurface()
