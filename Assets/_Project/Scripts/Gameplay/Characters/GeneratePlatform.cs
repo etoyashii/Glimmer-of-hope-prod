@@ -1,56 +1,66 @@
+using System;
 using System.Collections;
-using UnityEditor.UIElements;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay
 {
     public class GeneratePlatform : MonoBehaviour
     {
-        #region Serialized Fields
-        [Header("Références")]
-        [Tooltip("Le prefab de la plateform")]
-        [SerializeField] private GameObject _platformPrefab;
+        #region Inner Types
 
-        [Tooltip("Transform du joueur (ou de la caméra) pour calculre la direction")]
-        [SerializeField] private Transform _playerTransform;
+        [Serializable]
+        public class SurfaceEntry
+        {
+            [Tooltip("Layer de la surface détectée.")]
+            public LayerMask layer;
 
-        [Header("Paramètres de détection")]
-        [Tooltip("Distance devant le joueur où la plateforme doit apparaître")]
-        [SerializeField] private float _spawnDistance = 3f;
+            [Tooltip("Prefab à spawner sur cette surface.")]
+            public GameObject platformPrefab;
+        }
 
-        [Tooltip("Hauteur depuis laquelle le raycast part (au-dessus du sol)")]
-        [SerializeField] private float _raycastOriginHeight = 5f;
-
-        [Tooltip("Longueur maximale du raycast vers le bas")]
-        [SerializeField] private float _raycastMaxDistance = 20f;
-
-        [Tooltip("Le layer qui permet de generer des platforms")]
-        [SerializeField] private LayerMask _layerMask;
-
-        [Header("Paramètres d'animation")]
-        [Tooltip("Profondeur sous le sol d'où la plateforme commence à monter")]
-        [SerializeField] private float _startDepth = 2f;
-
-        [Tooltip("Durée de l'animation de montée en secondes")]
-        [SerializeField] private float _riseDuration = 0.6f;
-
-        [Tooltip("Hauteur cible au-dessus du point d'impact (0 = au ras du sol)")]
-        [SerializeField] private float _targetHeightOffset = 0f;
-
-        [Tooltip("Courbe d'animation de la montée")]
-        [SerializeField] private AnimationCurve _riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         #endregion
 
-        #region Unity Lifecycle
+        #region Serialized Fields
 
-        private void Update()
-        {
-            if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            {
-                CastSpell();
-            }
-        }
+        [Header("Références")]
+        [Tooltip("Transform du joueur (ou de la caméra) pour calculer la direction.")]
+        [SerializeField] private Transform _playerTransform;
+
+        [Header("Surfaces & Prefabs")]
+        [Tooltip("Associe chaque layer de surface à un prefab de plateforme.")]
+        [SerializeField] private SurfaceEntry[] _surfaceEntries;
+
+        [Header("Paramètres de détection")]
+        [Tooltip("Distance devant le joueur où le raycast part.")]
+        [SerializeField] private float _spawnDistance = 3f;
+
+        [Tooltip("Hauteur depuis laquelle le raycast horizontal part (pour les murs).")]
+        [SerializeField] private float _wallRaycastHeight = 1f;
+
+        [Tooltip("Longueur maximale du raycast horizontal vers le mur.")]
+        [SerializeField] private float _wallRaycastDistance = 5f;
+
+        [Tooltip("Hauteur depuis laquelle le raycast sol part (au-dessus du sol).")]
+        [SerializeField] private float _groundRaycastOriginHeight = 5f;
+
+        [Tooltip("Longueur maximale du raycast vers le bas.")]
+        [SerializeField] private float _groundRaycastDistance = 20f;
+
+        [Tooltip("Layer mask global : tous les layers détectables.")]
+        [SerializeField] private LayerMask _allDetectableLayers;
+
+        [Header("Paramètres d'animation")]
+        [Tooltip("Profondeur / distance depuis laquelle la plateforme commence à sortir.")]
+        [SerializeField] private float _startDepth = 2f;
+
+        [Tooltip("Durée de l'animation de montée en secondes.")]
+        [SerializeField] private float _riseDuration = 0.6f;
+
+        [Tooltip("Hauteur cible au-dessus du point d'impact (0 = au ras de la surface).")]
+        [SerializeField] private float _targetHeightOffset = 0f;
+
+        [Tooltip("Courbe d'animation de la montée.")]
+        [SerializeField] private AnimationCurve _riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         #endregion
 
@@ -58,49 +68,116 @@ namespace GlimmerOfHope.Gameplay
 
         public void CastSpell()
         {
-            Debug.Log("Casting a platform!");
-            if (_platformPrefab == null)
-            {
-                Debug.LogWarning("platform Prefab non assigné !");
-                return;
-            }
+            // 1 — Essaie d'abord un raycast horizontal pour détecter un mur
+            if (TryCastOnWall()) return;
 
-            // Point devant le joueur (ignore l'axe Y pour rester horizontal)
-            Vector3 flatForward = new Vector3(
-                _playerTransform.forward.x,
-                0f,
-                _playerTransform.forward.z
-                ).normalized;
-
-            Vector3 spawnCenter = _playerTransform.position + flatForward * _spawnDistance;
-
-            // Origine du raycast bien au-dessus du sol
-            Vector3 rayOrigin = spawnCenter + Vector3.up * _raycastOriginHeight;
-
-            // On ne détecte QUE les colliders sur le layer 
-            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit,
-                                _raycastMaxDistance, _layerMask))
-            {
-                Vector3 targetPosition = hit.point + Vector3.up * _targetHeightOffset;
-                SpawnPlatform(targetPosition);
-            }
-            else
-            {
-                Debug.Log("Aucune zone avec le bon layer détectée devant le joueur.");
-            }
+            // 2 — Sinon, raycast vers le bas pour détecter le sol
+            TryCastOnGround();
         }
 
         #endregion
 
-        #region Private Methods
-        private void SpawnPlatform(Vector3 targetPosition)
+        #region Private Methods — Detection
+
+        /// <summary>Raycast horizontal depuis la hauteur du joueur pour détecter un mur devant.</summary>
+        private bool TryCastOnWall()
         {
-            // Position de départ sous le sol
-            Vector3 startPosition = targetPosition - Vector3.up * _startDepth;
+            Vector3 flatForward = GetFlatForward();
+            Vector3 rayOrigin = _playerTransform.position + Vector3.up * _wallRaycastHeight;
 
-            GameObject platform = Instantiate(_platformPrefab, startPosition, Quaternion.identity);
+            if (!Physics.Raycast(rayOrigin, flatForward, out RaycastHit hit,
+                                 _wallRaycastDistance, _allDetectableLayers))
+                return false;
 
-            platform.transform.forward = _playerTransform.forward;
+            // La normale du hit détermine si c'est bien un mur (normale ~horizontale)
+            if (Mathf.Abs(hit.normal.y) > 0.5f)
+                return false; // c'est une surface horizontale, pas un mur
+
+            GameObject prefab = GetPrefabForLayer(hit.collider.gameObject.layer);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"[GeneratePlatform] Aucun prefab associé au layer '{LayerMask.LayerToName(hit.collider.gameObject.layer)}'.");
+                return false;
+            }
+
+            // Position : collée au mur, à la hauteur du joueur
+            Vector3 targetPosition = hit.point + hit.normal * _targetHeightOffset;
+
+            // Sortie depuis le mur (direction opposée à la normale du mur)
+            SpawnPlatform(prefab, targetPosition, -hit.normal, isWall: true);
+            return true;
+        }
+
+        /// <summary>Raycast vers le bas pour détecter une surface horizontale (sol, eau…).</summary>
+        private bool TryCastOnGround()
+        {
+            Vector3 flatForward = GetFlatForward();
+            Vector3 spawnCenter = _playerTransform.position + flatForward * _spawnDistance;
+            Vector3 rayOrigin = spawnCenter + Vector3.up * _groundRaycastOriginHeight;
+
+            if (!Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit,
+                                 _groundRaycastDistance, _allDetectableLayers))
+            {
+                Debug.Log("[GeneratePlatform] Aucune surface détectée devant le joueur.");
+                return false;
+            }
+
+            GameObject prefab = GetPrefabForLayer(hit.collider.gameObject.layer);
+            if (prefab == null)
+            {
+                Debug.LogWarning($"[GeneratePlatform] Aucun prefab associé au layer '{LayerMask.LayerToName(hit.collider.gameObject.layer)}'.");
+                return false;
+            }
+
+            Vector3 targetPosition = hit.point + Vector3.up * _targetHeightOffset;
+
+            // Sortie depuis le bas (direction vers le haut)
+            SpawnPlatform(prefab, targetPosition, Vector3.up, isWall: false);
+            return true;
+        }
+
+        /// <summary>Retourne le prefab associé au layer donné, ou null si aucun n'est trouvé.</summary>
+        private GameObject GetPrefabForLayer(int layer)
+        {
+            foreach (SurfaceEntry entry in _surfaceEntries)
+            {
+                // LayerMask contient le layer si le bit correspondant est à 1
+                if ((entry.layer.value & (1 << layer)) != 0)
+                    return entry.platformPrefab;
+            }
+            return null;
+        }
+
+        private Vector3 GetFlatForward()
+        {
+            return new Vector3(
+                _playerTransform.forward.x,
+                0f,
+                _playerTransform.forward.z
+            ).normalized;
+        }
+
+        #endregion
+
+        #region Private Methods — Spawn
+
+        private void SpawnPlatform(GameObject prefab, Vector3 targetPosition, Vector3 exitDirection, bool isWall)
+        {
+            // Départ : enfoncé dans la surface dans la direction opposée à la sortie
+            Vector3 startPosition = targetPosition - exitDirection * _startDepth;
+
+            GameObject platform = Instantiate(prefab, startPosition, Quaternion.identity);
+
+            if (isWall)
+            {
+                // Plateforme murale : toujours horizontale, face orientée vers le joueur
+                platform.transform.rotation = Quaternion.identity;
+            }
+            else
+            {
+                // Plateforme au sol : orientée dans la direction du joueur
+                platform.transform.forward = GetFlatForward();
+            }
 
             StartCoroutine(RisePlatform(platform, startPosition, targetPosition));
         }
@@ -119,9 +196,9 @@ namespace GlimmerOfHope.Gameplay
                 yield return null;
             }
 
-            // S'assure que la plateforme est exactement à la position cible
             platform.transform.position = to;
         }
+
         #endregion
     }
 }
