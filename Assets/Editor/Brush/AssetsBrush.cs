@@ -263,8 +263,16 @@ public class BrushManagerEditor : Editor
                             drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
                         );
                         // Random rotation and scale
-                        newnewGO.transform.Rotate(Vector3.right, -90f - newTemplate._rotation);
-                        newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
+                        if (!newTemplate._fullRotation)
+                        {
+                            //newnewGO.transform.Rotate(Vector3.right, -90f - newTemplate._rotation);
+                            newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                        } else
+                        {
+                            newnewGO.transform.Rotate(Vector3.right, Random.Range(0, 360f));
+                            newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
+                            newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                        }
                         float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
                         newnewGO.transform.localScale = newnewGO.transform.localScale * newScale * drawer.SizeMult;
                     }
