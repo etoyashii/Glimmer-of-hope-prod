@@ -470,7 +470,7 @@ Transform:
   m_GameObject: {fileID: 1878710184181024329}
   serializedVersion: 2
   m_LocalRotation: {x: -0.02954908, y: 0.0000034290883, z: 0.00000010137067, w: 0.99956334}
-  m_LocalPosition: {x: 99.97335, y: 3.8374941, z: 54.332718}
+  m_LocalPosition: {x: 358.97336, y: 0.87149405, z: -676.6673}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -818,7 +818,7 @@ MonoBehaviour:
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
+          m_IntArgument: 5
           m_FloatArgument: 4
           m_StringArgument: 
           m_BoolArgument: 0
@@ -1060,14 +1060,14 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
-  - _combo: 00000000000000000000000000000000
+  - _combo: 02000000
     _useSkill:
       m_PersistentCalls:
         m_Calls:
         - m_Target: {fileID: 6898946096776791428}
           m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.GeneratePlatform, GlimmerOfHope.Gameplay
-          m_MethodName: CastSpell
-          m_Mode: 6
+          m_MethodName: PerformSkill
+          m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
             m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -1201,6 +1201,8 @@ MonoBehaviour:
   - _skillName: Pull
     _isUnlocked: 0
   - _skillName: Push
+    _isUnlocked: 0
+  - _skillName: GeneratePlatform
     _isUnlocked: 0
   - _skillName: Swim
     _isUnlocked: 0
@@ -2779,7 +2781,7 @@ GameObject:
   - component: {fileID: 6898946096776791428}
   - component: {fileID: 5586497624083309220}
   - component: {fileID: 2762465872023941048}
-  - component: {fileID: 8835208492122272549}
+  - component: {fileID: 583817841913294454}
   m_Layer: 0
   m_Name: SkillList
   m_TagString: Untagged
@@ -2989,14 +2991,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4baa8d9b6d9a47c468917c460e4e17b7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.GeneratePlatform
-  _platformPrefab: {fileID: 919132149155446097, guid: cfa9b3660fc6a40429eced5bc93bd4ff, type: 3}
+  _cooldownTime: 2
+  isActive: 1
   _playerTransform: {fileID: 3042084320906130243}
+  _surfaceEntries:
+  - layer:
+      serializedVersion: 2
+      m_Bits: 512
+    platformPrefab: {fileID: 5189476349818547843, guid: a35594e527c8df74385372356b3782fb, type: 3}
   _spawnDistance: 3
-  _raycastOriginHeight: 5
-  _raycastMaxDistance: 20
-  _layerMask:
+  _wallRaycastHeight: 1
+  _wallRaycastDistance: 5
+  _groundRaycastOriginHeight: 5
+  _groundRaycastDistance: 20
+  _allDetectableLayers:
     serializedVersion: 2
-    m_Bits: 8
+    m_Bits: 512
   _startDepth: 2
   _riseDuration: 0.6
   _targetHeightOffset: 0
@@ -3060,33 +3070,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8283505e3429604f8fa84ffe45ccf36, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.ShadowClone
---- !u!54 &8835208492122272549
-Rigidbody:
+--- !u!114 &583817841913294454
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9036868892351871006}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ec8e107c1d864f849bf8a9f409f54cd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Swimming
+  _rb: {fileID: 3158832817305414917}
+  _playerMovement: {fileID: 2612396029083631424}
+  _animator: {fileID: 4911231289304305236}
+  _swimSpeed: 5
+  _surfaceLockStrength: 10
+  _surfaceTolerance: 0.05
+  _isSwimmingUnlocked: 1
+  _waterSurfaceY: 0
 --- !u!1 &9145508619299889208
 GameObject:
   m_ObjectHideFlags: 0
@@ -3510,15 +3513,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.550995
+      value: 244.449
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.1054945
+      value: -2.8605056
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.6346054
+      value: -732.6346
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3550,15 +3553,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3475693823866867731, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 259
       objectReference: {fileID: 0}
     - target: {fileID: 3475693823866867731, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -2.966
       objectReference: {fileID: 0}
     - target: {fileID: 3475693823866867731, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -731
       objectReference: {fileID: 0}
     - target: {fileID: 3475693823866867731, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_ConstrainProportionsScale
@@ -3571,6 +3574,10 @@ PrefabInstance:
     - target: {fileID: 4285163718492998313, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_Name
       value: Skeleton
+      objectReference: {fileID: 0}
+    - target: {fileID: 4285163718492998313, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: m_TagString
+      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4488570217002441744, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: _rb

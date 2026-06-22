@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
 {
-    public class GeneratePlatform : MonoBehaviour
+    public class GeneratePlatform : Skills
     {
         #region Inner Types
 
@@ -66,7 +66,7 @@ namespace GlimmerOfHope.Gameplay
 
         #region Public Methods
 
-        public void CastSpell()
+        public override void PerformSkill()
         {
             // 1 — Essaie d'abord un raycast horizontal pour détecter un mur
             if (TryCastOnWall()) return;
@@ -82,6 +82,8 @@ namespace GlimmerOfHope.Gameplay
         /// <summary>Raycast horizontal depuis la hauteur du joueur pour détecter un mur devant.</summary>
         private bool TryCastOnWall()
         {
+            Debug.Log("Executing GeneratePlatform");
+
             Vector3 flatForward = GetFlatForward();
             Vector3 rayOrigin = _playerTransform.position + Vector3.up * _wallRaycastHeight;
 
