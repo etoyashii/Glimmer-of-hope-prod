@@ -119,31 +119,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &49217723 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 9036868892351871006, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+--- !u!114 &49217739 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 583817841913294454, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
   m_PrefabInstance: {fileID: 1530152143}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &49217739
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49217723}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ec8e107c1d864f849bf8a9f409f54cd7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Swimming
-  _rb: {fileID: 584272684}
-  _playerMovement: {fileID: 584272681}
-  _animator: {fileID: 584272682}
-  _swimSpeed: 5
-  _surfaceLockStrength: 10
-  _surfaceTolerance: 0.05
-  _isSwimmingUnlocked: 1
-  _waterSurfaceY: 0
 --- !u!1 &59354837
 GameObject:
   m_ObjectHideFlags: 0
@@ -271,8 +257,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bb55b76b45c7dd54da756c0f0514cf1f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Windcurrent
-  _direction: {x: 0, y: 1, z: 0}
-  _force: 5
+  _direction: {x: 1, y: 1, z: 0}
+  _force: 1
   _playerTag: Player
 --- !u!1 &73369935
 GameObject:
@@ -673,27 +659,6 @@ Transform:
   - {fileID: 1684563941}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &584272681 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2612396029083631424, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-  m_PrefabInstance: {fileID: 1530152143}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19d939b82729e524e9eff74fa27c34ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.Movement
---- !u!95 &584272682 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4911231289304305236, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-  m_PrefabInstance: {fileID: 1530152143}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &584272684 stripped
-Rigidbody:
-  m_CorrespondingSourceObject: {fileID: 3158832817305414917, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-  m_PrefabInstance: {fileID: 1530152143}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1530152143
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -704,63 +669,27 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 556447614927376363, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 244.449
-      objectReference: {fileID: 0}
-    - target: {fileID: 556447614927376363, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.8605056
+      value: 220.07901
       objectReference: {fileID: 0}
     - target: {fileID: 556447614927376363, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -732.6346
+      value: -738.1846
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 358.97336
-      objectReference: {fileID: 0}
-    - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.87149405
+      value: 334.60336
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -676.6673
-      objectReference: {fileID: 0}
-    - target: {fileID: 2412934612408166905, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: m_TagString
-      value: Player
-      objectReference: {fileID: 0}
-    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _comboList.Array.data[5]._combo.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: '_comboList.Array.data[5]._combo.Array.data[0]'
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _comboList.Array.data[5]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _comboList.Array.data[5]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: PerformSkill
-      objectReference: {fileID: 0}
-    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _comboList.Array.data[5]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
-      value: 0
+      value: -682.2173
       objectReference: {fileID: 0}
     - target: {fileID: 3042084320906130243, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 259
-      objectReference: {fileID: 0}
-    - target: {fileID: 3042084320906130243, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -2.966
+      value: 234.63
       objectReference: {fileID: 0}
     - target: {fileID: 3042084320906130243, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -731
+      value: -736.55
       objectReference: {fileID: 0}
     - target: {fileID: 4130340860610653889, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -802,93 +731,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.size
-      value: 16
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[5]._skillName
-      value: GeneratePlatform
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[6]._skillName
-      value: Swim
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[7]._skillName
-      value: EmotionCheck
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[8]._skillName
-      value: Climb
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[9]._skillName
-      value: Warm
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[10]._skillName
-      value: DestroyBlock
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[11]._skillName
-      value: ShadowClone
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[12]._skillName
-      value: Slide
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[13]._skillName
-      value: Cold
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[14]._skillName
-      value: Propulsion
-      objectReference: {fileID: 0}
-    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _learningSkillList.Array.data[15]._skillName
-      value: Planer
-      objectReference: {fileID: 0}
     - target: {fileID: 6107827751402620983, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_Name
       value: InitialSceneSetup
       objectReference: {fileID: 0}
-    - target: {fileID: 6898946096776791428, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: isActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6898946096776791428, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _cooldownTime
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6898946096776791428, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _surfaceEntries.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6898946096776791428, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _allDetectableLayers.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 6898946096776791428, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _surfaceEntries.Array.data[0].layer.m_Bits
-      value: 512
-      objectReference: {fileID: 0}
-    - target: {fileID: 6898946096776791428, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: _surfaceEntries.Array.data[0].platformPrefab
-      value: 
-      objectReference: {fileID: 5189476349818547843, guid: a35594e527c8df74385372356b3782fb, type: 3}
-    - target: {fileID: 7969681171338426672, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 9036868892351871006, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 49217739}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
 --- !u!1 &1580082038
 GameObject:
