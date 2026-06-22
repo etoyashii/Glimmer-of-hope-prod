@@ -4,15 +4,18 @@ namespace GlimmerOfHope.Gameplay
 {
     public class Swimmingtrigger : MonoBehaviour
     {
+        #region Serialized Fields
         [SerializeField] public Swimming _swimming;
+        #endregion
 
+        #region Private Methods
         private void OnTriggerEnter(Collider other)
         {
 
             if (!other.CompareTag("Player")) return;
             if (!_swimming._isSwimmingUnlocked) return;
 
-            // Snap water surface Y from the top of the water collider
+            
             _swimming._waterSurfaceY = GetComponent<Collider>().bounds.max.y;
 
             _swimming.EnterWater();
@@ -23,5 +26,6 @@ namespace GlimmerOfHope.Gameplay
 
             _swimming.ExitWater();
         }
+        #endregion
     }
 }

@@ -159,7 +159,7 @@ namespace GlimmerOfHope.Gameplay
             }
             else
             {
-                // Close enough — kill vertical velocity to avoid oscillation
+                // Close enough -> kill vertical velocity to avoid weird oscillations
                 _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
             }
         }

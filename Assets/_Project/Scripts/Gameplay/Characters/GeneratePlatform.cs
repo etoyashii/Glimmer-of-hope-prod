@@ -68,10 +68,10 @@ namespace GlimmerOfHope.Gameplay
 
         public override void PerformSkill()
         {
-            // 1 — Essaie d'abord un raycast horizontal pour détecter un mur
+            // try raycast for walls
             if (TryCastOnWall()) return;
 
-            // 2 — Sinon, raycast vers le bas pour détecter le sol
+            // if no wall found, try raycast for ground
             TryCastOnGround();
         }
 
@@ -79,7 +79,7 @@ namespace GlimmerOfHope.Gameplay
 
         #region Private Methods — Detection
 
-        /// <summary>Raycast horizontal depuis la hauteur du joueur pour détecter un mur devant.</summary>
+        /// <summary>horizontal raycast to detect walls in front of caster.</summary>
         private bool TryCastOnWall()
         {
             Debug.Log("Executing GeneratePlatform");
@@ -91,9 +91,9 @@ namespace GlimmerOfHope.Gameplay
                                  _wallRaycastDistance, _allDetectableLayers))
                 return false;
 
-            // La normale du hit détermine si c'est bien un mur (normale ~horizontale)
+            // normal of hit objects tell us if its a wall or not
             if (Mathf.Abs(hit.normal.y) > 0.5f)
-                return false; // c'est une surface horizontale, pas un mur
+                return false; 
 
             GameObject prefab = GetPrefabForLayer(hit.collider.gameObject.layer);
             if (prefab == null)
@@ -102,15 +102,15 @@ namespace GlimmerOfHope.Gameplay
                 return false;
             }
 
-            // Position : collée au mur, à la hauteur du joueur
+            
             Vector3 targetPosition = hit.point + hit.normal * _targetHeightOffset;
 
-            // Sortie depuis le mur (direction opposée à la normale du mur)
+            // Spawn platform on the wall
             SpawnPlatform(prefab, targetPosition, -hit.normal, isWall: true);
             return true;
         }
 
-        /// <summary>Raycast vers le bas pour détecter une surface horizontale (sol, eau…).</summary>
+        /// <summary>raycast towards the ground in front of caster to detect grount or water where platform could spawn.</summary>
         private bool TryCastOnGround()
         {
             Vector3 flatForward = GetFlatForward();
@@ -133,17 +133,17 @@ namespace GlimmerOfHope.Gameplay
 
             Vector3 targetPosition = hit.point + Vector3.up * _targetHeightOffset;
 
-            // Sortie depuis le bas (direction vers le haut)
+            // spawn from the ground
             SpawnPlatform(prefab, targetPosition, Vector3.up, isWall: false);
             return true;
         }
 
-        /// <summary>Retourne le prefab associé au layer donné, ou null si aucun n'est trouvé.</summary>
+        /// <summary>return prefab associated to raycasted object's layer</summary>
         private GameObject GetPrefabForLayer(int layer)
         {
             foreach (SurfaceEntry entry in _surfaceEntries)
             {
-                // LayerMask contient le layer si le bit correspondant est à 1
+                // LayerMask to compare the layers and find the right ones
                 if ((entry.layer.value & (1 << layer)) != 0)
                     return entry.platformPrefab;
             }
@@ -165,19 +165,19 @@ namespace GlimmerOfHope.Gameplay
 
         private void SpawnPlatform(GameObject prefab, Vector3 targetPosition, Vector3 exitDirection, bool isWall)
         {
-            // Départ : enfoncé dans la surface dans la direction opposée à la sortie
+            // depart in the surface
             Vector3 startPosition = targetPosition - exitDirection * _startDepth;
 
             GameObject platform = Instantiate(prefab, startPosition, Quaternion.identity);
 
             if (isWall)
             {
-                // Plateforme murale : toujours horizontale, face orientée vers le joueur
+                // wall => spawn horizontally
                 platform.transform.rotation = Quaternion.identity;
             }
             else
             {
-                // Plateforme au sol : orientée dans la direction du joueur
+                // ground => spawn vertically
                 platform.transform.forward = GetFlatForward();
             }
 
