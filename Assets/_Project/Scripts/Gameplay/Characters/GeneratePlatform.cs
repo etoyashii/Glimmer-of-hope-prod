@@ -11,55 +11,58 @@ namespace GlimmerOfHope.Gameplay
         [Serializable]
         public class SurfaceEntry
         {
-            [Tooltip("Layer de la surface détectée.")]
+            [Tooltip("Detectable layer")]
             public LayerMask layer;
 
-            [Tooltip("Prefab à spawner sur cette surface.")]
+            [Tooltip("Prefab to spawn on this layer")]
             public GameObject platformPrefab;
+
+            [Tooltip("Previzualisation prefab.")]
+            public GameObject preBuildPlatformPrefab;
         }
 
         #endregion
 
         #region Serialized Fields
 
-        [Header("Références")]
-        [Tooltip("Transform du joueur (ou de la caméra) pour calculer la direction.")]
+        [Header("Refs")]
+        [Tooltip("Caster's transform from wich are made the raycasts")]
         [SerializeField] private Transform _playerTransform;
 
         [Header("Surfaces & Prefabs")]
-        [Tooltip("Associe chaque layer de surface à un prefab de plateforme.")]
+        [Tooltip("Associate every layer with a different prefab")]
         [SerializeField] private SurfaceEntry[] _surfaceEntries;
 
-        [Header("Paramètres de détection")]
-        [Tooltip("Distance devant le joueur où le raycast part.")]
+        [Header("Detection Parameters")]
+        [Tooltip("Raycast distance in front of the caster")]
         [SerializeField] private float _spawnDistance = 3f;
 
-        [Tooltip("Hauteur depuis laquelle le raycast horizontal part (pour les murs).")]
+        [Tooltip("For walls => height from wich the raycats is casted")]
         [SerializeField] private float _wallRaycastHeight = 1f;
 
-        [Tooltip("Longueur maximale du raycast horizontal vers le mur.")]
+        [Tooltip("For walls => maw distance of raycast")]
         [SerializeField] private float _wallRaycastDistance = 5f;
 
-        [Tooltip("Hauteur depuis laquelle le raycast sol part (au-dessus du sol).")]
+        [Tooltip("For the ground => height from wich the vertical raycast is casted")]
         [SerializeField] private float _groundRaycastOriginHeight = 5f;
 
-        [Tooltip("Longueur maximale du raycast vers le bas.")]
+        [Tooltip("For the ground => Max distance of vertical raycast")]
         [SerializeField] private float _groundRaycastDistance = 20f;
 
-        [Tooltip("Layer mask global : tous les layers détectables.")]
+        [Tooltip("Every detectable layers")]
         [SerializeField] private LayerMask _allDetectableLayers;
 
-        [Header("Paramètres d'animation")]
-        [Tooltip("Profondeur / distance depuis laquelle la plateforme commence à sortir.")]
+        [Header("Animations parameters")]
+        [Tooltip("Depth from wich the plateform comes from")]
         [SerializeField] private float _startDepth = 2f;
 
-        [Tooltip("Durée de l'animation de montée en secondes.")]
+        [Tooltip("Animation time (in seconds)")]
         [SerializeField] private float _riseDuration = 0.6f;
 
-        [Tooltip("Hauteur cible au-dessus du point d'impact (0 = au ras de la surface).")]
+        [Tooltip("Final Height of the platform (0 = at the surface of raycasted object) ")]
         [SerializeField] private float _targetHeightOffset = 0f;
 
-        [Tooltip("Courbe d'animation de la montée.")]
+        [Tooltip("Animation curve")]
         [SerializeField] private AnimationCurve _riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
 
         #endregion
