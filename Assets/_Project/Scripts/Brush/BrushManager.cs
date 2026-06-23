@@ -14,7 +14,6 @@ namespace GlimmerOfHope.Core
         #region Constants
         private int SEGMENTS = 320;          // Number of segments for the circle gizmo
         private float RAYCAST_DISTANCE = 100f; // Max distance for ground raycast
-        
         #endregion
 
         #region Serialized Fields
@@ -33,6 +32,8 @@ namespace GlimmerOfHope.Core
         [SerializeField] private float _multDensity = 0.001f;              // to adjust density
         [Tooltip("1 is the base value and serves as a size multiplier for all assets placed afterward.")]
         [SerializeField] private float _sizeMult = 1f;              // asset size multiplicator
+        [Range(0f, 90f), Tooltip("Maximum slope angle (in degrees) on which assets can be placed. 0 = flat only, 90 = no restriction.")]
+        [SerializeField] private float _maxSlopeAngle = 30f;        // Max slope angle for asset placement
         #endregion
 
         #region Private Fields
@@ -43,6 +44,7 @@ namespace GlimmerOfHope.Core
         #region Public Properties
         public float _circleRadius = 5f; // Radius of the brush circle
         [HideInInspector] public bool _lastActionWasAdd = true; // If action was add Asset = true else false
+        public Color _actualColor = Color.green;
         public List<AssetsStruct> Assets => _assets;
         public GameObject StokageAssets => _stokageAssets;
         public GameObject StokageAssetsUseless => _stokageAssetsUseless;
@@ -57,6 +59,7 @@ namespace GlimmerOfHope.Core
         public int RevertNumber => _revertNumber;
         public float MultDensity => _multDensity;
         public float SizeMult => _sizeMult;
+        public float MaxSlopeAngle => _maxSlopeAngle;
         public void SetPos(Vector3 pos) { _pos = pos; }
         #endregion
 
@@ -71,8 +74,8 @@ namespace GlimmerOfHope.Core
         }
 
         void Update()
-        { 
-            
+        {
+
         }
         #endregion
 
@@ -82,7 +85,7 @@ namespace GlimmerOfHope.Core
         /// </summary>
         private void OnDrawGizmos()
         {
-            Handles.color = Color.white;
+            Handles.color = _actualColor;
 
             if (SEGMENTS <= 0) SEGMENTS = 32;
 
