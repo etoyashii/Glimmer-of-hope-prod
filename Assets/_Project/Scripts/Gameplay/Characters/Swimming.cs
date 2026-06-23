@@ -16,6 +16,7 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Movement _playerMovement;
         [SerializeField] private Animator _animator;
+        [SerializeField] private Transform _playerTransform;
 
         [Header("Swimming Settings")]
         [Tooltip("Speed of the player while swimming.")]
@@ -139,7 +140,7 @@ namespace GlimmerOfHope.Gameplay
             if (swimDirection.magnitude > 0.1f)
             {
                 Quaternion toRotate = Quaternion.LookRotation(swimDirection);
-                transform.rotation = Quaternion.Lerp(transform.rotation, toRotate, 10f * Time.fixedDeltaTime);
+                _playerTransform.transform.rotation = Quaternion.Lerp(_playerTransform.transform.rotation, toRotate, 10f * Time.fixedDeltaTime);
             }
 
             // Drive animator
@@ -149,7 +150,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void LockToSurface()
         {
-            float currentY = transform.position.y;
+            float currentY = _playerTransform.transform.position.y;
             float diff = _waterSurfaceY - currentY;
 
             if (Mathf.Abs(diff) > _surfaceTolerance)

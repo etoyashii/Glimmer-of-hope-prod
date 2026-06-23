@@ -17,7 +17,7 @@ namespace GlimmerOfHope.Gameplay
 
             
             _swimming._waterSurfaceY = GetComponent<Collider>().bounds.max.y;
-
+            Debug.Log("" + GetComponent<Collider>().bounds.max.y);
             _swimming.EnterWater();
         }
         private void OnTriggerExit(Collider other)
