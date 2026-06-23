@@ -47,6 +47,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         #region Public Properties
 
         public Vector3 MoveDirection => _targetMoveDirection;
+        public float GroundCheckDistance => _groundCheckDistance;
 
         #endregion
 

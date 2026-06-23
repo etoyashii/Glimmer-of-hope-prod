@@ -1,5 +1,7 @@
+using GlimmerOfHope.Gameplay.Character.SpecialActions;
 using System.Collections;
 using UnityEngine;
+using UnityEngine.InputSystem.HID;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -46,6 +48,10 @@ namespace GlimmerOfHope.Gameplay
 
         [Tooltip("Number of impulse during the Force Application")]
         [SerializeField] private int _forcePulseCount = 3;
+
+        [SerializeField] private Movement _playerMovement;
+
+        [SerializeField] private LayerMask _lilipodLayer;
         #endregion
 
         #region Constants
@@ -82,6 +88,7 @@ namespace GlimmerOfHope.Gameplay
                 _pushRadius,
                 _detectionMask
             );
+               
 
             // Play the VFX
             if (_pushVFX != null)
@@ -89,6 +96,14 @@ namespace GlimmerOfHope.Gameplay
                 _pushVFX.transform.position = _playerTransform.position;
                 _pushVFX.transform.rotation = Quaternion.LookRotation(forward);
                 _pushVFX.Play();
+            }
+
+            if (_playerMovement.IsGrounded())
+            {
+                if (Physics.Raycast(_playerTransform.position, Vector3.down, out var hit, _playerMovement.GroundCheckDistance, _lilipodLayer))
+                {
+                    hit.rigidbody.AddForce(_playerTransform.forward * -1 * _pushForce, ForceMode.Impulse);
+                }
             }
 
             // Filter the objects raycasted to get the pushables
@@ -115,6 +130,7 @@ namespace GlimmerOfHope.Gameplay
 
                 // Push = forward + elevation
                 Vector3 pushDir = (forward + Vector3.up * (_upwardForce / _pushForce)).normalized;
+
 
                 if (_useForceWave)
                     StartCoroutine(ApplyGustWave(rb, pushDir, finalForce));
