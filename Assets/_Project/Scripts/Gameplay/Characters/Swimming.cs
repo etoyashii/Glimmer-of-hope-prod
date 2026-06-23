@@ -7,6 +7,7 @@ namespace GlimmerOfHope.Gameplay
     /// Handles surface swimming. The player stays locked at water level
     /// and moves using the same inputs as Movement.cs.
     /// Must be unlocked explicitly via SetSwimmingUnlocked(true).
+    /// Needs the water to have a collider set on trigger mode + SwimmingTrigger.cs
     /// </summary>
     public class Swimming : MonoBehaviour
     {
