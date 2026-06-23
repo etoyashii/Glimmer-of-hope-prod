@@ -152,6 +152,15 @@ namespace GlimmerOfHope.Gameplay
             }
             return null;
         }
+        private GameObject GetPreBuildPrefabForLayer(int layer)
+        {
+            foreach (SurfaceEntry entry in _surfaceEntries)
+            {
+                if ((entry.layer.value & (1 << layer)) != 0)
+                    return entry.preBuildPlatformPrefab;
+            }
+            return null;
+        }
 
         private Vector3 GetFlatForward()
         {
