@@ -94,14 +94,16 @@ namespace GlimmerOfHope.Gameplay
             {
                 if (!col.CompareTag(PUSHABLE_TAG)) continue;
 
-                Rigidbody rb = col.attachedRigidbody;
-                if (rb == null || rb.isKinematic) continue;
-
                 if (col.transform.gameObject.TryGetComponent<RotatedByPushPull>(out RotatedByPushPull rotatedByPushPull))
                 {
                     rotatedByPushPull.Rotate();
                     continue;
                 }
+                
+                Rigidbody rb = col.attachedRigidbody;
+                
+                if (rb == null || rb.isKinematic) continue;
+
 
                 // Check if the object is in fact in front of the caster
                 Vector3 toObject = (col.transform.position - _playerTransform.position).normalized;

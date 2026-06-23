@@ -96,6 +96,12 @@ namespace GlimmerOfHope.Gameplay
             {
                 if (!col.CompareTag(PUSHABLE_TAG)) continue;
 
+                if (col.transform.gameObject.TryGetComponent<RotatedByPushPull>(out RotatedByPushPull rotatedByPushPull))
+                {
+                    rotatedByPushPull.Rotate();
+                    continue;
+                }
+
                 Rigidbody rb = col.attachedRigidbody;
                 if (rb == null || rb.isKinematic) continue;
 

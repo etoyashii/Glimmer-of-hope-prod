@@ -6,7 +6,7 @@ namespace GlimmerOfHope.Gameplay
     {
         #region SerializeField
 
-        [SerializeField] private Vector3 _targetRotation;
+        [SerializeField] private Quaternion _targetRotation;
 
         #endregion
 
@@ -14,7 +14,8 @@ namespace GlimmerOfHope.Gameplay
 
         public void Rotate()
         {
-            transform.Rotate(_targetRotation);
+            transform.rotation = _targetRotation;
+            //transform.Rotate(_targetRotation);
         }
 
         #endregion
