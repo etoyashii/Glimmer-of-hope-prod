@@ -14,17 +14,17 @@ namespace GlimmerOfHope.Gameplay
 
         [Header("Reference")]
         [Tooltip("The static point of the spring.")]
-        [SerializeField] private Transform anchor;
+        [SerializeField] private Transform _anchor;
 
         [Header("Variable")]
         [Min(0f)]
         [Tooltip("Under this value the spring will do nothing.")]
-        [SerializeField] private float minDistance;
+        [SerializeField] private float _minDistance;
 
         [Tooltip("Max distance possible complete stop at this distance.")]
-        [SerializeField] private float maxDistance;
+        [SerializeField] private float _maxDistance;
 
-        [SerializeField] private float springStrength = 1f;
+        [SerializeField] private float _springStrength = 1f;
 
         #endregion
 
@@ -41,39 +41,39 @@ namespace GlimmerOfHope.Gameplay
         {
             if (!isActive) return;
 
-            Vector3 toAnchor = anchor.position - transform.position;
+            Vector3 toAnchor = _anchor.position - transform.position;
             float distance = toAnchor.magnitude;
             Vector3 dir = toAnchor.normalized;
 
-            if (distance >= minDistance && distance <= maxDistance) //if between the min and the max => spring active
+            if (distance >= _minDistance && distance <= _maxDistance) //if between the min and the max => spring active
             {
-                currentPullForce = springStrength * (distance - minDistance);
+                currentPullForce = _springStrength * (distance - _minDistance);
                 transform.position += dir * currentPullForce * Time.fixedDeltaTime;
             }
 
-            if (distance > maxDistance)
+            if (distance > _maxDistance)
             {
                 //bloquage de la position au max
-                transform.position = anchor.position - dir * maxDistance;
+                transform.position = _anchor.position - dir * _maxDistance;
             }
         }
 
         #endregion
 
         #region Public Methods
-        public void SetAnchor(Transform _anchor)
+        public void SetAnchor(Transform anchor)
         {
-            anchor = _anchor;
+            _anchor = anchor;
         }
 
-        public void SetMinDistance(float _minDistance)
+        public void SetMinDistance(float minDistance)
         {
-            minDistance = _minDistance;
+            _minDistance = minDistance;
         }
 
-        public void SetMaxDistance(float _maxDistance)
+        public void SetMaxDistance(float maxDistance)
         {
-            maxDistance = _maxDistance;
+            _maxDistance = maxDistance;
         }
 
         #endregion        

@@ -13,21 +13,21 @@ namespace GlimmerOfHope.Gameplay
         #region SerializeField
 
         [SerializeField] private GameObject _player;
-        [SerializeField] private Jump jump;
-        [SerializeField] private Movement movement;
+        [SerializeField] private Jump _jump;
+        [SerializeField] private Movement _movement;
 
-        [SerializeField] private float startTensionDistance = 3f; //commence a tirer sur le player a partir de cette distance
-        [SerializeField] private float maxDistance = 10f;//tension graduel avec la distance jusqu'a bloquer le joueur a la distance max
-        [SerializeField] private float targetedYOffset = 5f;
-        [SerializeField] private float acceleration = 1f;
+        [SerializeField] private float _startTensionDistance = 3f; //commence a tirer sur le player a partir de cette distance
+        [SerializeField] private float _maxDistance = 10f;//tension graduel avec la distance jusqu'a bloquer le joueur a la distance max
+        [SerializeField] private float _targetedYOffset = 5f;
+        [SerializeField] private float _acceleration = 1f;
 
-        [SerializeField] private bool isAttached = false;
+        [SerializeField] private bool _isAttached = false;
 
         #endregion
 
         #region Private Properties
 
-        private Spring playerSpring;
+        private Spring _playerSpring;
 
         #endregion
 
@@ -35,16 +35,16 @@ namespace GlimmerOfHope.Gameplay
 
         private void Awake()
         {
-            jump.OnStartJumping += PlayerJump;            
+            _jump.OnStartJumping += PlayerJump;            
 
-            playerSpring = _player.GetComponent<Spring>();
+            _playerSpring = _player.GetComponent<Spring>();
         }
 
         private void Update()
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame) //to jump because button doesnt work
             {
-                jump.PerformJump(4);
+                _jump.PerformJump(4);
             }
 
             if (Keyboard.current.eKey.wasPressedThisFrame) //to start the link, to do differently with the spell
@@ -60,12 +60,12 @@ namespace GlimmerOfHope.Gameplay
 
         private void AttachToPlayer()
         {
-            isAttached = true;
+            _isAttached = true;
 
-            playerSpring.isActive = true;
-            playerSpring.SetMinDistance(startTensionDistance);
-            playerSpring.SetMaxDistance(maxDistance);
-            playerSpring.SetAnchor(transform);
+            _playerSpring.isActive = true;
+            _playerSpring.SetMinDistance(_startTensionDistance);
+            _playerSpring.SetMaxDistance(_maxDistance);
+            _playerSpring.SetAnchor(transform);
         }
 
         #endregion
@@ -74,17 +74,17 @@ namespace GlimmerOfHope.Gameplay
 
         public void PlayerJump()//function called with an invoke in jump
         {
-            if (!isAttached) return;
+            if (!_isAttached) return;
 
-            isAttached = false;
+            _isAttached = false;
 
             //player try to jump will being attached so throw him in the correct dir
-            playerSpring.isActive = false;
+            _playerSpring.isActive = false;
             
-            Vector3 offsetPoint = transform.position + new Vector3(0, targetedYOffset, 0);
+            Vector3 offsetPoint = transform.position + new Vector3(0, _targetedYOffset, 0);
             Vector3 dir = offsetPoint - _player.transform.position;
 
-            Vector3 force = dir.normalized * playerSpring.currentPullForce * 200 * acceleration;
+            Vector3 force = dir.normalized * _playerSpring.currentPullForce * 200 * _acceleration;
 
             _player.GetComponent<Rigidbody>().AddForce(force, ForceMode.Acceleration);
         }
