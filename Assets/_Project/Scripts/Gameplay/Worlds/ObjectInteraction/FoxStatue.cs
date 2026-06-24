@@ -1,0 +1,74 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
+
+namespace GlimmerOfHope.Gameplay
+{
+    /// <summary>
+    /// Activate StatueFox dialog (onboarding commands) when player goes on triggerbox
+    /// Watch out ! This script not working for more than 1 string (Work In Progress script)
+    /// </summary>
+    public class FoxStatue : MonoBehaviour
+    {
+        #region SerializeField
+
+        [SerializeField] private GameObject _skillUI;
+        [SerializeField] private GameObject _talkUI;
+        [SerializeField] private TextMeshProUGUI _textMesh;
+        [SerializeField] private List<string> _textList;
+
+        #endregion
+
+        #region PrivateFields
+
+        private bool _wasAlreadyTalked = false;
+
+        #endregion
+
+        #region UnityLifecycle
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("Player"))
+            {
+                ToggleUI();
+                _wasAlreadyTalked = true;
+                Speak();
+
+            }
+        }
+
+        private void Speak()
+        {
+            if (_textList.Count <= 0) return;
+
+            _textMesh.text = _textList[0];
+        }
+
+
+        #endregion
+
+        #region PublicMethods
+
+        public void FinishDialog()
+        {
+            ToggleUI();
+        }
+
+        #endregion
+
+        #region PrivateMethods
+
+        private void ToggleUI()
+        {
+            if (_wasAlreadyTalked == true) return;
+
+            _skillUI.SetActive(!_skillUI.activeSelf);
+            _talkUI.SetActive(!_talkUI.activeSelf);
+        }
+
+        #endregion
+    }
+}
