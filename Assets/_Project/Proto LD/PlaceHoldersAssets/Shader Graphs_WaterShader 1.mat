@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Tree_Saule
-  m_Shader: {fileID: -6465566751694194690, guid: 2e7ea9a67a948f141bbf500dff3f8a9f, type: 3}
+  m_Name: Shader Graphs_WaterShader 1
+  m_Shader: {fileID: -6465566751694194690, guid: f989cf067aad870429a9c1fa4bc4dde6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
@@ -24,14 +24,6 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
-    - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 2779dcf2ca4fc1f4ba68539bc848042f, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
-    - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 5051ab6ab1034a641b24b5648fad2bb9, type: 3}
-        m_Scale: {x: 1, y: 1}
-        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -46,21 +38,30 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AO: 0.5
-    - _Blend: 10
-    - _Metallic: 0
-    - _NMStrength: -0.45
+    - _AO: 0
+    - _AbsorptionAmount: 1
+    - _Alpha: 0.5
+    - _BubblePower: 2
+    - _BubbleSize: 2
+    - _FoamOutlineSize: 0.031
+    - _GrainPower: 1
+    - _GrainSize: 1
+    - _LittleBubble: 3
+    - _LittleBubblePower: 2
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Smoothness: 0
-    - _Tile: 0.36
-    - _TileMT: 0.008
-    - _TileNM: 0.008
+    - _RipplesAmount: 2
+    - _RipplesRange: 1.16
     - _XRMotionVectorsPass: 1
-    m_Colors: []
+    m_Colors:
+    - _BorderFoamSpeed: {r: 0, g: 10.86, b: 0, a: 0}
+    - _BorderFoamexictement: {r: 0, g: 0.1, b: 0, a: 0}
+    - _FoamColor: {r: 1, g: 1, b: 1, a: 1}
+    - _FoamScroll: {r: 0, g: -1, b: 0, a: 0}
+    - _WaterColor: {r: 0.6509434, g: 0, b: 0.4977804, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6341007282640886218
+--- !u!114 &8913612400591690056
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
