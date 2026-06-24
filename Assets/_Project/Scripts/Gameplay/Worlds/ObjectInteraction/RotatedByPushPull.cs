@@ -10,9 +10,7 @@ namespace GlimmerOfHope.Gameplay
         #region SerializeField
 
         [SerializeField] private Quaternion _targetRotation;
-        [SerializeField] private GameObject _trunk;
         [SerializeField] private float _timeToRotate;
-        //[SerializeField] private GameObject _foliage;
 
         #endregion
 
@@ -20,37 +18,28 @@ namespace GlimmerOfHope.Gameplay
 
         public void Rotate()
         {
-            Instantiate(_trunk);
-            //transform.Rotate(_targetRotation);
+            StartCoroutine(RotateProgressively());
         }
 
         #endregion
 
         #region Coroutines
 
-        private IEnumerator ProgressivRotation()
+        private IEnumerator RotateProgressively()
         {
             float currentTime = 0.0f;
-            float _currentMovementProgress = 0.0f;
-
-            while (_currentMovementProgress < 1.0f)
-            {
-                _currentMovementProgress += Time.deltaTime / currentTime;
-                _currentMovementProgress = Mathf.Clamp01(_currentMovementProgress);
-
-                //transform.position = bezierPosition;
-
-                yield return null;
-            }
+            Quaternion startRota = transform.rotation;
 
             while (currentTime < _timeToRotate)
             {
-                transform.rotation = _targetRotation;
+                float progress = currentTime / _timeToRotate;
 
+                transform.rotation = Quaternion.Lerp(startRota, _targetRotation, progress);
                 currentTime += Time.deltaTime;
                 yield return null;
             }
 
+            transform.rotation = _targetRotation;
         }
 
         #endregion
