@@ -4,6 +4,12 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
 {
+    /// <summary>
+    /// To generate platforms on walls or ground. The player can aim at a surface,
+    /// and a ghost preview of the platform will appear.
+    /// Pressing the skill button again confirms the spawn,
+    /// and the platform rises from below the surface if ground or to the wall if walls.
+    /// </summary>
     public class GeneratePlatform : Skills
     {
         #region Inner Types
