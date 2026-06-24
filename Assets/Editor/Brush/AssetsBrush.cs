@@ -1,7 +1,10 @@
+using GlimmerOfHope.Core;
+using NaughtyAttributes.Test;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
 using UnityEngine;
-using GlimmerOfHope.Core;
+using UnityEngine.UIElements;
 
 /// <summary>
 /// Custom editor for BrushManager, handling asset placement/deletion.
@@ -9,37 +12,58 @@ using GlimmerOfHope.Core;
 [CustomEditor(typeof(BrushManager))]
 public class BrushManagerEditor : Editor
 {
-    private AssetTemplate GetTempltateByWeight(BrushManager drawer, int totalWeight)
+    private Vector3 _lastClearPosition = Vector3.positiveInfinity;
+
+    private AssetTemplate GetTemplateByWeight(BrushManager drawer)
     {
         // Randomly select an asset template based on their weights
-        int reste = Random.Range(0, totalWeight);
-        int i = 0;
-        List<AssetTemplate> listTemplate = drawer.Assets;
-        while (reste > 0)
+        // Only consider active (non-disabled) asset structs
+        List<AssetTemplate> activeAssets = new();
+        foreach (AssetsStruct aStruct in drawer.Assets)
         {
-            reste -= drawer.Assets[i]._weight;
-            if (reste > 0)
+            if (!aStruct._isDisable)
             {
-                i++;
+                foreach (AssetTemplate aTemplate in aStruct._template)
+                {
+                    activeAssets.Add(aTemplate);
+                }
             }
         }
-        return drawer.Assets[i];
+
+        if (activeAssets.Count <= 0) return null;
+
+        // Calculate total weight only on active assets
+        int totalWeight = 0;
+        foreach (AssetTemplate template in activeAssets)
+        {
+            totalWeight += template._weight;
+        }
+
+        int reste = Random.Range(0, totalWeight);
+        int i = 0;
+        while (reste > 0)
+        {
+            reste -= activeAssets[i]._weight;
+            if (reste > 0) i++;
+        }
+        return activeAssets[i];
     }
 
     private void OnSceneGUI()
     {
         BrushManager drawer = (BrushManager)target;
-        List<AssetTemplate> assets = drawer.Assets;
-        bool deleteMod = drawer.DeleteMode;
-        bool lastActionWasAdd = drawer._lastActionWasAdd;
-        int totalWeight = 0;
-
-        // Calculate total weight for all asset templates
-        foreach (AssetTemplate template in assets)
+        List<AssetTemplate> assets = new();
+        foreach (AssetsStruct aStruct in drawer.Assets)
         {
-            totalWeight += template._weight;
+            foreach (AssetTemplate assetTemplate in aStruct._template)
+            {
+                assets.Add(assetTemplate);
+            }
         }
-        float invertDensity = 1f;
+        bool deleteMod = drawer.DeleteMode;
+        bool clearMod = drawer.ClearMode;
+        bool lastActionWasAdd = drawer._lastActionWasAdd;
+
         if (drawer == null || assets == null || assets.Count == 0) return;
 
         // Handle mouse and keyboard input for brush tool
@@ -127,7 +151,7 @@ public class BrushManagerEditor : Editor
             else if (scrollDelta < 0)
             {
                 drawer._circleRadius -= 0.5f;
-                drawer._circleRadius = Mathf.Max(1f, drawer._circleRadius);
+                drawer._circleRadius = Mathf.Max(0.1f, drawer._circleRadius);
             }
             e.Use();
         }
@@ -136,8 +160,10 @@ public class BrushManagerEditor : Editor
         if (e.type == EventType.MouseDown && e.button == 0)
         {
             deleteMod = drawer.DeleteMode;
-            if (!deleteMod)
+            clearMod = drawer.ClearMode;
+            if (!deleteMod && !clearMod)
             {
+                drawer._actualColor = Color.green;
                 drawer._lastActionWasAdd = true;
                 lastActionWasAdd = drawer._lastActionWasAdd;
                 GameObject newGO = new GameObject("TempParent");
@@ -162,12 +188,15 @@ public class BrushManagerEditor : Editor
         // Clean up empty temporary parents on mouse up
         if (e.type == EventType.MouseUp)
         {
-            if (!deleteMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
+            _lastClearPosition = Vector3.positiveInfinity;
+
+            if (!deleteMod && !clearMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
             {
+                drawer._actualColor = Color.green;
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
             }
-            if (deleteMod && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
+            if ((deleteMod || clearMod) && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
             {
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
@@ -189,19 +218,22 @@ public class BrushManagerEditor : Editor
         }
 
         // Place assets on left mouse drag
-        if (!deleteMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
+        if (!deleteMod && !clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
+            drawer._actualColor = Color.green;
             lastActionWasAdd = true;
 
             float area = Mathf.PI * drawer._circleRadius * drawer._circleRadius;
             int assetsToSpawn = Mathf.Max(1, Mathf.RoundToInt(area * drawer.Density * drawer.MultDensity));
-            float overlapRadius = 1f / Mathf.Max(drawer.MultDensity, drawer.Density);
+
+            // overlapRadius based only on Density: high density == smaller gap between objects
+            float overlapRadius = 1f / Mathf.Max(1f, drawer.Density);
 
             for (int i = 0; i < assetsToSpawn; i++)
             {
                 // Random position within brush radius
                 float angle = Random.Range(0f, Mathf.PI * 2f);
-                float distance = Random.Range(0f, drawer._circleRadius);
+                float distance = drawer._circleRadius * Mathf.Sqrt(Random.Range(0f, 1f));
                 Vector3 spawnPos = new Vector3(
                     Mathf.Cos(angle) * distance,
                     0,
@@ -210,38 +242,51 @@ public class BrushManagerEditor : Editor
 
                 // Raycast to ground
                 Ray spawnRay = new Ray(spawnPos + Vector3.up * drawer.RaycastDistance, Vector3.down);
-                if (Physics.Raycast(spawnRay, out RaycastHit spawnHit, drawer.RaycastDistance * 2f, drawer.GroundLayer))
+                if (!Physics.Raycast(spawnRay, out RaycastHit spawnHit, drawer.RaycastDistance * 2f, drawer.GroundLayer))
+                    continue;
+
+                spawnPos = spawnHit.point;
+
+                // Skip if slope exceeds max angle
+                if (Vector3.Angle(Vector3.up, spawnHit.normal) > drawer.MaxSlopeAngle)
+                    continue;
+
+                AssetTemplate newTemplate = GetTemplateByWeight(drawer);
+                if (newTemplate != null)
                 {
-                    spawnPos = spawnHit.point;
-                }
+                    int layerMaskWithoutGround = ~drawer.GroundLayerMask;
+                    Collider[] hitColliders = Physics.OverlapSphere(spawnPos, overlapRadius, layerMaskWithoutGround);
 
-                // Select random asset template based on weight
-                AssetTemplate newTemplate = GetTempltateByWeight(drawer, totalWeight);
-
-                // Check for collisions before placing
-                int layerMaskWithoutGround = ~drawer.GroundLayerMask;
-                Collider[] hitColliders = Physics.OverlapSphere(spawnPos, overlapRadius, layerMaskWithoutGround);
-
-                if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
-                {
-                    // Instantiate asset
-                    GameObject newnewGO = Instantiate(
-                        newTemplate._asset,
-                        spawnPos,
-                        Quaternion.FromToRotation(Vector3.up, spawnHit.normal),
-                        drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
-                    );
-                    // Random rotation and scale
-                    newnewGO.transform.Rotate(Vector3.right, 90f);
-                    newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
-                    float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
-                    newnewGO.transform.localScale = Vector3.one * newScale * drawer.SizeMult;
+                    if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
+                    {
+                        GameObject newnewGO = Instantiate(
+                            newTemplate._asset,
+                            spawnPos,
+                            Quaternion.FromToRotation(Vector3.up, spawnHit.normal),
+                            drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
+                        );
+                        // Random rotation and scale
+                        if (!newTemplate._fullRotation)
+                        {
+                            //newnewGO.transform.Rotate(Vector3.right, -90f - newTemplate._rotation);
+                            newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                        }
+                        else
+                        {
+                            newnewGO.transform.Rotate(Vector3.right, Random.Range(0, 360f));
+                            newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
+                            newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                        }
+                        float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
+                        newnewGO.transform.localScale = newnewGO.transform.localScale * newScale * drawer.SizeMult;
+                    }
                 }
             }
         }
         // Delete assets on left mouse drag in delete mode
-        else if (deleteMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
+        else if (deleteMod && !clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
+            drawer._actualColor = Color.red;
             lastActionWasAdd = false;
             int layerMaskWithoutGround = ~drawer.GroundLayerMask;
             Ray worldRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);
@@ -251,6 +296,34 @@ public class BrushManagerEditor : Editor
             {
                 collider.gameObject.transform.parent = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).transform;
             }
+        }
+        else if (clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
+        {
+            drawer._actualColor = Color.orange;
+            lastActionWasAdd = false;
+
+            Ray worldRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);
+            Physics.Raycast(worldRay, out hit);
+
+            float minStep = drawer._circleRadius * 0.5f;
+            if (e.type != EventType.MouseDown && Vector3.Distance(hit.point, _lastClearPosition) < minStep)
+            {
+                e.Use();
+                return;
+            }
+            _lastClearPosition = hit.point;
+
+            int layerMaskWithoutGround = ~drawer.GroundLayerMask;
+            Collider[] hitColliders = Physics.OverlapSphere(hit.point, drawer._circleRadius, layerMaskWithoutGround);
+            foreach (Collider collider in hitColliders)
+            {
+                if (Random.Range(0, 100) < drawer.ProbClearAssets)
+                {
+                    collider.gameObject.transform.parent = drawer.StokageAssetsUseless.transform
+                        .GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).transform;
+                }
+            }
+            e.Use();
         }
     }
 }

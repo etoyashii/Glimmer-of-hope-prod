@@ -17,18 +17,23 @@ namespace GlimmerOfHope.Core
         #endregion
 
         #region Serialized Fields
-        [SerializeField] private List<AssetTemplate> _assets = new(); // List of available asset templates
+        [SerializeField] private List<AssetsStruct> _assets = new(); // List of available asset templates
         [SerializeField] private GameObject _stokageAssets;          // Parent for active assets
         [SerializeField] private GameObject _stokageAssetsUseless;   // Parent for deleted/inactive assets
         [SerializeField] private LayerMask _groundLayer;              // Layer mask for ground detection
         [SerializeField] private bool _deleteMode = false;            // Toggle delete mode
-        [Range(1f, 100f)]
+        [SerializeField] private bool _clearMode = false;            // Toggle clear mode
+        [Range(1, 100)]
+        [SerializeField] private int _probClearAssets = 20;            // Pourcentage of assets cleared
+        [Range(1f, 10f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
         [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
         [Range(0.0001f, 0.01f), Tooltip("Base value is 0.001")]
         [SerializeField] private float _multDensity = 0.001f;              // to adjust density
         [Tooltip("1 is the base value and serves as a size multiplier for all assets placed afterward.")]
         [SerializeField] private float _sizeMult = 1f;              // asset size multiplicator
+        [Range(0f, 90f), Tooltip("Maximum slope angle (in degrees) on which assets can be placed. 0 = flat only, 90 = no restriction.")]
+        [SerializeField] private float _maxSlopeAngle = 30f;        // Max slope angle for asset placement
         #endregion
 
         #region Private Fields
@@ -39,11 +44,14 @@ namespace GlimmerOfHope.Core
         #region Public Properties
         public float _circleRadius = 5f; // Radius of the brush circle
         [HideInInspector] public bool _lastActionWasAdd = true; // If action was add Asset = true else false
-        public List<AssetTemplate> Assets => _assets;
+        public Color _actualColor = Color.green;
+        public List<AssetsStruct> Assets => _assets;
         public GameObject StokageAssets => _stokageAssets;
         public GameObject StokageAssetsUseless => _stokageAssetsUseless;
         public LayerMask GroundLayer => _groundLayer;
         public bool DeleteMode => _deleteMode;
+        public bool ClearMode => _clearMode;
+        public int ProbClearAssets => _probClearAssets;
         public float Density => _density;
         public int GroundLayerMask => _groundLayerMask;
         public Vector3 Pos => _pos;
@@ -51,6 +59,7 @@ namespace GlimmerOfHope.Core
         public int RevertNumber => _revertNumber;
         public float MultDensity => _multDensity;
         public float SizeMult => _sizeMult;
+        public float MaxSlopeAngle => _maxSlopeAngle;
         public void SetPos(Vector3 pos) { _pos = pos; }
         #endregion
 
@@ -65,8 +74,8 @@ namespace GlimmerOfHope.Core
         }
 
         void Update()
-        { 
-            
+        {
+
         }
         #endregion
 
@@ -76,7 +85,7 @@ namespace GlimmerOfHope.Core
         /// </summary>
         private void OnDrawGizmos()
         {
-            Handles.color = Color.white;
+            Handles.color = _actualColor;
 
             if (SEGMENTS <= 0) SEGMENTS = 32;
 
