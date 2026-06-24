@@ -37,6 +37,8 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Caster's transform from which raycasts are made")]
         [SerializeField] private Transform _playerTransform;
 
+        [SerializeField] private Camera _camera;
+
         [Header("Surfaces & Prefabs")]
         [Tooltip("Associate every layer with a different prefab")]
         [SerializeField] private SurfaceEntry[] _surfaceEntries;
@@ -147,7 +149,7 @@ namespace GlimmerOfHope.Gameplay
             _confirmedExitDirection = exitDir;
             _confirmedIsWall = isWall;
 
-            // Spawn the ghost preview at final position (no rise animation)
+            // Spawn the ghost preview at final position (no animation)
             _previewInstance = Instantiate(preBuildPrefab, targetPos, Quaternion.identity);
             SetLayerRecursive(_previewInstance, _previewLayer);
             ApplyOrientation(_previewInstance, isWall);
@@ -228,7 +230,7 @@ namespace GlimmerOfHope.Gameplay
             Vector3 flatForward = GetFlatForward();
             Vector3 wallOrigin = _playerTransform.position + Vector3.up * _wallRaycastHeight;
 
-            if (Physics.Raycast(wallOrigin, flatForward, out RaycastHit wallHit,
+            if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit wallHit,
                                 _wallRaycastDistance, _allDetectableLayers))
             {
                 if (Mathf.Abs(wallHit.normal.y) <= 0.5f) // it's a wall
@@ -240,30 +242,24 @@ namespace GlimmerOfHope.Gameplay
                     if (prefab != null && preBuildPrefab != null)
                     {
                         targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
-                        exitDir = -wallHit.normal;
+                        exitDir = wallHit.normal;
                         isWall = true;
                         return true;
                     }
                 }
-            }
-
-            // --- Ground raycast ---
-            Vector3 spawnCenter = _playerTransform.position + flatForward * _spawnDistance;
-            Vector3 groundOrigin = spawnCenter + Vector3.up * _groundRaycastOriginHeight;
-
-            if (Physics.Raycast(groundOrigin, Vector3.down, out RaycastHit groundHit,
-                                _groundRaycastDistance, _allDetectableLayers))
-            {
-                int layer = groundHit.collider.gameObject.layer;
-                prefab = GetPrefabForLayer(layer);
-                preBuildPrefab = GetPreBuildPrefabForLayer(layer);
-
-                if (prefab != null && preBuildPrefab != null)
+                else
                 {
-                    targetPos = groundHit.point + Vector3.up * _targetHeightOffset;
-                    exitDir = Vector3.up;
-                    isWall = false;
-                    return true;
+                    int layer = wallHit.collider.gameObject.layer;
+                    prefab = GetPrefabForLayer(layer);
+                    preBuildPrefab = GetPreBuildPrefabForLayer(layer);
+
+                    if (prefab != null && preBuildPrefab != null)
+                    {
+                        targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
+                        exitDir = Vector3.up;
+                        isWall = false;
+                        return true;
+                    }
                 }
             }
 
