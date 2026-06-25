@@ -46,12 +46,12 @@ namespace GlimmerOfHope.Gameplay
         {
             if (_textList.Count <= 0) return;
 
+            _playerMovemement.SetMovementEnabled(false);
             _textMesh.text = _textList[0];
 
             if (_statueId < 0) return;
 
             PlayerSignalManager.Instance.SetSkillLearnId(_statueId);
-            _playerMovemement.SetMovementEnabled(false);
         }
 
         #endregion

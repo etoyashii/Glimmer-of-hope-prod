@@ -50,6 +50,8 @@ namespace GlimmerOfHope.Gameplay
 
         public void SendSkillLearn()
         {
+            if (_learnSkillId < 0) return;
+
             OnSkillLearn?.Invoke(_learnSkillId);
         }
 
