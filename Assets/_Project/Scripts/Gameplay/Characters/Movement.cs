@@ -159,20 +159,27 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 Vector3 climbVelocity = moveAlongWall * (_speed / 5f);
                 _rb.linearVelocity = climbVelocity;
             }
-            else
+            else if (!IsGrounded())
             {
-                // Normal ground/air movement � preserve vertical velocity
+                // Normal air movement preserve vertical velocity
+                _rb.useGravity = true;
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
                 _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
 
-
-
-                _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
+            }
+            else
+            {
+                // Normal ground movement nulify gravity 
+                _rb.useGravity = false;
+                Vector3 targetVelocity = _targetMoveDirection * _speed;
+                _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
 
             }
 
+
+            _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude);
 
         }
 
