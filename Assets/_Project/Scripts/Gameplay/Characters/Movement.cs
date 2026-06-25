@@ -49,6 +49,13 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         public Vector3 MoveDirection => _targetMoveDirection;
         public float GroundCheckDistance => _groundCheckDistance;
 
+        public bool IsSwimming
+        {
+            get => _isSwimming;
+
+            set => _isSwimming = value;
+        }
+
         #endregion
 
         #region Event Actions
@@ -67,6 +74,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         private Vector3 _airCurrentForce = Vector3.zero;
         private bool _inAirCurrent = false;
         private Animator _animator;
+        private bool _isSwimming = false;
 
         #endregion
 
@@ -159,7 +167,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 Vector3 climbVelocity = moveAlongWall * (_speed / 5f);
                 _rb.linearVelocity = climbVelocity;
             }
-            else if (!IsGrounded())
+            else if (!IsGrounded() && !IsSwimming)
             {
                 // Normal air movement preserve vertical velocity
                 _rb.useGravity = true;

@@ -101,7 +101,7 @@ namespace GlimmerOfHope.Gameplay
         public void EnterWater()
         {
             _isSwimming = true;
-
+            _playerMovement.IsSwimming = true;
             // Hand off movement control to this script
             _playerMovement.SetMovementEnabled(true);
 
@@ -115,6 +115,7 @@ namespace GlimmerOfHope.Gameplay
         public void ExitWater()
         {
             _isSwimming = false;
+            _playerMovement.IsSwimming = false;
 
             _rb.useGravity = true;
             _rb.linearVelocity = new Vector3(0f, 0f, 0f);
