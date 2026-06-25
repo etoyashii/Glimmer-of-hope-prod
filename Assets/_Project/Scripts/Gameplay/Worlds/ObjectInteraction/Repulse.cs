@@ -20,7 +20,7 @@ namespace GlimmerOfHope.Gameplay
                 Vector3 newVector = Vector3.back + Vector3.up / _attenuationRatio;
 
                 collision.rigidbody.AddForce(newVector * _forceImpulse, ForceMode.Impulse);
-                PlayerSignalManager.GetInstance().SendBlinkSignal();
+                PlayerSignalManager.Instance.SendBlinkSignal();
             }
         }
     }

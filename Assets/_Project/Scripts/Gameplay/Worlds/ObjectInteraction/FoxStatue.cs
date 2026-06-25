@@ -14,6 +14,7 @@ namespace GlimmerOfHope.Gameplay
     {
         #region SerializeField
 
+        [SerializeField] private int _statueId = 1;
         [SerializeField] private GameObject _skillUI;
         [SerializeField] private GameObject _talkUI;
         [SerializeField] private TextMeshProUGUI _textMesh;
@@ -36,7 +37,6 @@ namespace GlimmerOfHope.Gameplay
                 ToggleUI();
                 _wasAlreadyTalked = true;
                 Speak();
-
             }
         }
 
@@ -45,16 +45,10 @@ namespace GlimmerOfHope.Gameplay
             if (_textList.Count <= 0) return;
 
             _textMesh.text = _textList[0];
-        }
 
+            if (_statueId < 0) return;
 
-        #endregion
-
-        #region PublicMethods
-
-        public void FinishDialog()
-        {
-            ToggleUI();
+            PlayerSignalManager.Instance.SetSkillLearnId(_statueId);
         }
 
         #endregion

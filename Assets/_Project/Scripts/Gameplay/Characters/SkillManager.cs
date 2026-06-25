@@ -52,10 +52,18 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         #region Public Methods
 
+        private void Awake()
+        {
+            PlayerSignalManager.Instance.OnSkillLearn += UnlockSkill;
+        }
+
+        private void OnDisable()
+        {
+            PlayerSignalManager.Instance.OnSkillLearn -= UnlockSkill;
+        }
+
         public void UnlockSkill(int skillType)
         {
-            if (IsSkillUnlocked(skillType)) return;
-
             _learningSkillList[skillType]._isUnlocked = true;
             _skillTypeUnlocked?.Invoke(skillType);
         }
