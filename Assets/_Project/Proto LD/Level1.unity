@@ -18682,6 +18682,7 @@ GameObject:
   - component: {fileID: 1235564539}
   - component: {fileID: 1235564538}
   - component: {fileID: 1235564541}
+  - component: {fileID: 1235564542}
   m_Layer: 9
   m_Name: ForestTerrain
   m_TagString: Untagged
@@ -18784,6 +18785,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e69cdcffe2311e14492c98cf600395bc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
+--- !u!114 &1235564542
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1235564537}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf8d4169204d4946855c439cad726db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.AutoTerrainLayer.AutoTerrainLayerByHeight
+  rules:
+  - layer: {fileID: 8574412962073106934, guid: a188a95cdce415946af3552a73a0785e, type: 2}
+    minHeight: 0
+    maxHeight: 16
+  - layer: {fileID: 8574412962073106934, guid: d7feef2d34c10fb478a07a13abbe9816, type: 2}
+    minHeight: 16
+    maxHeight: 30
 --- !u!1 &1248619568
 GameObject:
   m_ObjectHideFlags: 0
@@ -30438,15 +30458,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2644.42
+      value: 2546.3499
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 378.75348
+      value: 359.92346
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6428.8926
+      value: 6298.903
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -30554,15 +30574,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7493386266502388762, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2644.77
+      value: 2546.7
       objectReference: {fileID: 0}
     - target: {fileID: 7493386266502388762, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 379.23
+      value: 360.4
       objectReference: {fileID: 0}
     - target: {fileID: 7493386266502388762, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6431.09
+      value: 6301.1
       objectReference: {fileID: 0}
     - target: {fileID: 7969681171338426672, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
