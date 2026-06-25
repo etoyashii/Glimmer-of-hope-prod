@@ -14,10 +14,8 @@ namespace GlimmerOfHope.Gameplay
             {
                 if (_instance == null)
                 {
-                    // Crée un nouveau GameObject si l'instance n'existe pas
-                    GameObject singletonObject = new GameObject(typeof(PlayerSignalManager).Name);
-                    _instance = singletonObject.AddComponent<PlayerSignalManager>();
-                    DontDestroyOnLoad(singletonObject); // Optionnel : garde l'instance entre les scènes
+                    Debug.LogError("PlayerSignalManager: Aucune instance trouvée dans la scène. Ajoutez un GameObject avec ce composant.");
+                    return null;
                 }
                 return _instance;
             }
@@ -27,11 +25,11 @@ namespace GlimmerOfHope.Gameplay
         {
             if (_instance != null && _instance != this)
             {
-                Destroy(gameObject); // Détruit les duplicates
+                Destroy(gameObject);
                 return;
             }
             _instance = this;
-            DontDestroyOnLoad(gameObject); // Optionnel
+            DontDestroyOnLoad(gameObject);
         }
         #endregion
 
@@ -41,7 +39,7 @@ namespace GlimmerOfHope.Gameplay
         #endregion
 
         #region Private Fields
-        private int _learnSkillId = 5;
+        private int _learnSkillId = -1;
         #endregion
 
         #region Public Methods
