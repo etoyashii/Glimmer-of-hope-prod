@@ -4,7 +4,7 @@ using System.Linq;
 [RequireComponent(typeof(Terrain))]
 public class AutoTerrainLayerByHeight : MonoBehaviour
 {
-    public Terrain terrain;
+    private Terrain terrain;
     public LayerHeightRule[] rules; // Tableau de règles (layer + plage de hauteurs)
 
     private float[,,] originalAlphamaps; // Pour l'Undo
