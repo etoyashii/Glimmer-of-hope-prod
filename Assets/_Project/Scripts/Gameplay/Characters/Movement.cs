@@ -1,6 +1,4 @@
-using Codice.CM.Common;
 using System;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -56,6 +54,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             set => _isSwimming = value;
         }
 
+        public RaycastHit lastHit;
         #endregion
 
         #region Event Actions
@@ -120,7 +119,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         public bool IsGrounded()
         {
             _animator.SetBool("IsGrounded", true);
-            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+            return Physics.Raycast(transform.position, Vector3.down, out lastHit, _groundCheckDistance, _groundLayer);
         }
 
         public void SetMovementEnabled(bool enabled)
