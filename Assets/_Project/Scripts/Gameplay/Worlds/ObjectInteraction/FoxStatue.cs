@@ -36,8 +36,10 @@ namespace GlimmerOfHope.Gameplay
         {
             if (other.gameObject.CompareTag("Player"))
             {
-                ToggleUI();
+                if (_wasAlreadyTalked == true) return;
+
                 _wasAlreadyTalked = true;
+                ToggleUI();
                 Speak();
             }
         }
@@ -60,8 +62,6 @@ namespace GlimmerOfHope.Gameplay
 
         private void ToggleUI()
         {
-            if (_wasAlreadyTalked == true) return;
-
             _skillUI.SetActive(!_skillUI.activeSelf);
             _talkUI.SetActive(!_talkUI.activeSelf);
         }
