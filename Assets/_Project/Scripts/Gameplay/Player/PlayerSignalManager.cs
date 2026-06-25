@@ -14,7 +14,6 @@ namespace GlimmerOfHope.Gameplay
             {
                 if (_instance == null)
                 {
-                    Debug.LogError("PlayerSignalManager: Aucune instance trouvée dans la scène. Ajoutez un GameObject avec ce composant.");
                     return null;
                 }
                 return _instance;
