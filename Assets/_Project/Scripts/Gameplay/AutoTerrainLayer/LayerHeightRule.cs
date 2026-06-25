@@ -10,9 +10,7 @@ namespace GlimmerOfHope.Gameplay.AutoTerrainLayer
     {
         #region Public Properties
         public TerrainLayer layer; // The TerrainLayer to Apply
-        [Range(0f, 600f), Tooltip("Hauteur minimale World (0 = bas, 600 = haut)")]
         public float minHeight;     // The Min Height of the layer to apply
-        [Range(0f, 600f), Tooltip("Hauteur maximale World (0 = bas, 600 = haut)")]
         public float maxHeight;     // The Max Height of the layer to apply
         #endregion
     }

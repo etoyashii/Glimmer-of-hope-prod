@@ -93,8 +93,10 @@ namespace GlimmerOfHope.Gameplay.AutoTerrainLayer
                     bool isInRuleRange = false;
                     for (int i = 0; i < rules.Length; i++)
                     {
-                        float min = rules[i].minHeight / 600f;
-                        float max = rules[i].maxHeight / 600f;
+
+
+                        float min = rules[i].minHeight / terrain.terrainData.size.y;
+                        float max = rules[i].maxHeight / terrain.terrainData.size.y;
                         if (height >= min && height <= max)
                         {
                             // Resets ALL layers for this point
