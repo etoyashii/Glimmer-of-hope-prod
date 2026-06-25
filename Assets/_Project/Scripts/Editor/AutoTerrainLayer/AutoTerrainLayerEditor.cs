@@ -1,26 +1,39 @@
 using UnityEditor;
 using UnityEngine;
+using GlimmerOfHope.Gameplay.AutoTerrainLayer;
 
-[CustomEditor(typeof(AutoTerrainLayerByHeight))]
-public class AutoTerrainLayerByHeightEditor : Editor
+namespace GlimmerOfHope.Editor.AutoTerrainLayer
 {
-    public override void OnInspectorGUI()
+    /// <summary>
+    /// Adds a Custom Editor for the AutoTerrainLayer component
+    /// Adds 2 buttons for Apply and Undo
+    /// </summary>
+    [CustomEditor(typeof(AutoTerrainLayerByHeight))]
+    public class AutoTerrainLayerByHeightEditor : UnityEditor.Editor
     {
-        DrawDefaultInspector();
-
-        AutoTerrainLayerByHeight script = (AutoTerrainLayerByHeight)target;
-
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
-
-        if (GUILayout.Button("Appliquer les Layers par Hauteur", GUILayout.Height(30)))
+        #region Public Methods
+        public override void OnInspectorGUI()
         {
-            script.ApplyLayersByHeight();
-        }
+            DrawDefaultInspector();
 
-        if (GUILayout.Button("Undo (Annuler)", GUILayout.Height(30)))
-        {
-            script.UndoLayers();
+            AutoTerrainLayerByHeight script = (AutoTerrainLayerByHeight)target;
+
+            EditorGUILayout.Space();
+            EditorGUILayout.LabelField("Actions", EditorStyles.boldLabel);
+
+            // A Button that allow you to apply the layers by Heights
+            if (GUILayout.Button("Appliquer les Layers par Hauteur", GUILayout.Height(30)))
+            {
+                script.ApplyLayersByHeight();
+            }
+
+            //  A Button that allow you to undo a layer paint (only 1 action is recorded for undo)
+
+            if (GUILayout.Button("Undo (Annuler)", GUILayout.Height(30)))
+            {
+                script.UndoLayers();
+            }
         }
+        #endregion
     }
 }

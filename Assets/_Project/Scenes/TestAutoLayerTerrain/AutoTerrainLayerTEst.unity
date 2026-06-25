@@ -150,14 +150,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6bf8d4169204d4946855c439cad726db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::AutoTerrainLayerByHeight
-  terrain: {fileID: 41230822}
   rules:
   - layer: {fileID: 8574412962073106934, guid: 2053d3755d75d5140abe3e5c85258c4a, type: 2}
-    minHeight: 0
-    maxHeight: 300
+    minHeight: 150
+    maxHeight: 200
   - layer: {fileID: 8574412962073106934, guid: f376cc6f0fa1dfd458886c7ec3554b57, type: 2}
-    minHeight: 301
-    maxHeight: 300
+    minHeight: 200
+    maxHeight: 400
+  - layer: {fileID: 8574412962073106934, guid: 01bc23e52f3fe4a4395e46bc30c15886, type: 2}
+    minHeight: 400
+    maxHeight: 600
 --- !u!154 &41230821
 TerrainCollider:
   m_ObjectHideFlags: 0
