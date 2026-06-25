@@ -1,3 +1,4 @@
+using GlimmerOfHope.Gameplay.Character.SpecialActions;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private GameObject _talkUI;
         [SerializeField] private TextMeshProUGUI _textMesh;
         [SerializeField] private List<string> _textList;
+        [SerializeField] private Movement _playerMovemement;
 
         #endregion
 
@@ -49,6 +51,7 @@ namespace GlimmerOfHope.Gameplay
             if (_statueId < 0) return;
 
             PlayerSignalManager.Instance.SetSkillLearnId(_statueId);
+            _playerMovemement.SetMovementEnabled(false);
         }
 
         #endregion

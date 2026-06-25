@@ -84,9 +84,6 @@ namespace GlimmerOfHope.Gameplay
 
             if (_pullVFX != null)
             {
-                // orient the vfx towards the caster 
-                _pullVFX.transform.position = _playerTransform.position + forward * _pullLength;
-                _pullVFX.transform.rotation = Quaternion.LookRotation(-forward);
                 _pullVFX.Play();
             }
 
