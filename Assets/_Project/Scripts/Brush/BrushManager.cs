@@ -25,10 +25,10 @@ namespace GlimmerOfHope.Core
         [SerializeField] private bool _clearMode = false;            // Toggle clear mode
         [Range(1, 100)]
         [SerializeField] private int _probClearAssets = 20;            // Pourcentage of assets cleared
-        [Range(1f, 10f)]
+        [Range(1f, 20f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
         [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
-        [Range(0.0001f, 0.01f), Tooltip("Base value is 0.001")]
+        [Range(0.0001f, 0.05f), Tooltip("Base value is 0.001")]
         [SerializeField] private float _multDensity = 0.001f;              // to adjust density
         [Tooltip("1 is the base value and serves as a size multiplier for all assets placed afterward.")]
         [SerializeField] private float _sizeMult = 1f;              // asset size multiplicator
