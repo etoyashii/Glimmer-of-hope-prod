@@ -163,6 +163,7 @@ public class BrushManagerEditor : Editor
             clearMod = drawer.ClearMode;
             if (!deleteMod && !clearMod)
             {
+                drawer._actualColor = Color.green;
                 drawer._lastActionWasAdd = true;
                 lastActionWasAdd = drawer._lastActionWasAdd;
                 GameObject newGO = new GameObject("TempParent");
@@ -191,6 +192,7 @@ public class BrushManagerEditor : Editor
 
             if (!deleteMod && !clearMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
             {
+                drawer._actualColor = Color.green;
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
             }
@@ -218,19 +220,20 @@ public class BrushManagerEditor : Editor
         // Place assets on left mouse drag
         if (!deleteMod && !clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
+            drawer._actualColor = Color.green;
             lastActionWasAdd = true;
 
             float area = Mathf.PI * drawer._circleRadius * drawer._circleRadius;
             int assetsToSpawn = Mathf.Max(1, Mathf.RoundToInt(area * drawer.Density * drawer.MultDensity));
 
-            // overlapRadius based only on Density: high density = smaller gap between objects
+            // overlapRadius based only on Density: high density == smaller gap between objects
             float overlapRadius = 1f / Mathf.Max(1f, drawer.Density);
 
             for (int i = 0; i < assetsToSpawn; i++)
             {
                 // Random position within brush radius
                 float angle = Random.Range(0f, Mathf.PI * 2f);
-                float distance = Random.Range(0f, drawer._circleRadius);
+                float distance = drawer._circleRadius * Mathf.Sqrt(Random.Range(0f, 1f));
                 Vector3 spawnPos = new Vector3(
                     Mathf.Cos(angle) * distance,
                     0,
@@ -239,23 +242,23 @@ public class BrushManagerEditor : Editor
 
                 // Raycast to ground
                 Ray spawnRay = new Ray(spawnPos + Vector3.up * drawer.RaycastDistance, Vector3.down);
-                if (Physics.Raycast(spawnRay, out RaycastHit spawnHit, drawer.RaycastDistance * 2f, drawer.GroundLayer))
-                {
-                    spawnPos = spawnHit.point;
-                }
+                if (!Physics.Raycast(spawnRay, out RaycastHit spawnHit, drawer.RaycastDistance * 2f, drawer.GroundLayer))
+                    continue;
 
-                // Select random asset template based on weight
+                spawnPos = spawnHit.point;
+
+                // Skip if slope exceeds max angle
+                if (Vector3.Angle(Vector3.up, spawnHit.normal) > drawer.MaxSlopeAngle)
+                    continue;
+
                 AssetTemplate newTemplate = GetTemplateByWeight(drawer);
-
                 if (newTemplate != null)
                 {
-                    // Check for collisions before placing
                     int layerMaskWithoutGround = ~drawer.GroundLayerMask;
                     Collider[] hitColliders = Physics.OverlapSphere(spawnPos, overlapRadius, layerMaskWithoutGround);
 
                     if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
                     {
-                        // Instantiate asset
                         GameObject newnewGO = Instantiate(
                             newTemplate._asset,
                             spawnPos,
@@ -267,7 +270,8 @@ public class BrushManagerEditor : Editor
                         {
                             //newnewGO.transform.Rotate(Vector3.right, -90f - newTemplate._rotation);
                             newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
-                        } else
+                        }
+                        else
                         {
                             newnewGO.transform.Rotate(Vector3.right, Random.Range(0, 360f));
                             newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
@@ -282,6 +286,7 @@ public class BrushManagerEditor : Editor
         // Delete assets on left mouse drag in delete mode
         else if (deleteMod && !clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
+            drawer._actualColor = Color.red;
             lastActionWasAdd = false;
             int layerMaskWithoutGround = ~drawer.GroundLayerMask;
             Ray worldRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);
@@ -294,6 +299,7 @@ public class BrushManagerEditor : Editor
         }
         else if (clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
         {
+            drawer._actualColor = Color.orange;
             lastActionWasAdd = false;
 
             Ray worldRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);

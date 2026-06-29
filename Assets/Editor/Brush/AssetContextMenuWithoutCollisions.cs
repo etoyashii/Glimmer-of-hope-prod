@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEditor;
 using System.IO;
 
-public class AssetContextMenu
+public class AssetContextMenuWithoutCollisions
 {
     private const string PREFAB_OUTPUT_PATH = "Assets/_Project/Prefabs/BrushAssets";
     private const string TEMPLATE_OUTPUT_PATH = "Assets/_Project/Data/BrushAssets";
 
-    [MenuItem("Assets/Brush Tool/Add Convex Collider + Create Template", false, 0)]
+    [MenuItem("Assets/Brush Tool/Without collisions with player", false, 0)]
     private static void AddColliderAndCreateTemplate()
     {
         GameObject selected = Selection.activeObject as GameObject;
@@ -35,6 +35,7 @@ public class AssetContextMenu
 
         // Instantiate the asset (works for both fbx and prefab)
         GameObject instance = PrefabUtility.InstantiatePrefab(selected) as GameObject;
+        instance.layer = LayerMask.NameToLayer("IgnoreCollisions");
 
         // Add convex MeshCollider on every MeshFilter (children included)
         MeshFilter[] meshFilters = instance.GetComponentsInChildren<MeshFilter>();
