@@ -14,15 +14,19 @@ namespace GlimmerOfHope.Core
         #region Constants
         private int SEGMENTS = 320;          // Number of segments for the circle gizmo
         private float RAYCAST_DISTANCE = 100f; // Max distance for ground raycast
+        
         #endregion
 
         #region Serialized Fields
-        [SerializeField] private List<AssetTemplate> _assets = new(); // List of available asset templates
+        [SerializeField] private List<AssetsStruct> _assets = new(); // List of available asset templates
         [SerializeField] private GameObject _stokageAssets;          // Parent for active assets
         [SerializeField] private GameObject _stokageAssetsUseless;   // Parent for deleted/inactive assets
         [SerializeField] private LayerMask _groundLayer;              // Layer mask for ground detection
         [SerializeField] private bool _deleteMode = false;            // Toggle delete mode
-        [Range(1f, 100f)]
+        [SerializeField] private bool _clearMode = false;            // Toggle clear mode
+        [Range(1, 100)]
+        [SerializeField] private int _probClearAssets = 20;            // Pourcentage of assets cleared
+        [Range(1f, 10f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
         [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
         [Range(0.0001f, 0.01f), Tooltip("Base value is 0.001")]
@@ -39,11 +43,13 @@ namespace GlimmerOfHope.Core
         #region Public Properties
         public float _circleRadius = 5f; // Radius of the brush circle
         [HideInInspector] public bool _lastActionWasAdd = true; // If action was add Asset = true else false
-        public List<AssetTemplate> Assets => _assets;
+        public List<AssetsStruct> Assets => _assets;
         public GameObject StokageAssets => _stokageAssets;
         public GameObject StokageAssetsUseless => _stokageAssetsUseless;
         public LayerMask GroundLayer => _groundLayer;
         public bool DeleteMode => _deleteMode;
+        public bool ClearMode => _clearMode;
+        public int ProbClearAssets => _probClearAssets;
         public float Density => _density;
         public int GroundLayerMask => _groundLayerMask;
         public Vector3 Pos => _pos;
