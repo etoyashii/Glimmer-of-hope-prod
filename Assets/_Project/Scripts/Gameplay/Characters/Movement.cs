@@ -48,6 +48,8 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public Vector3 MoveDirection => _targetMoveDirection;
 
+        public RaycastHit lastHit;
+
         #endregion
 
         #region Event Actions
@@ -113,9 +115,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public bool IsGrounded()
         {
-            //if (_animator != null)
-            //    _animator.SetBool("IsGrounded", true);
-            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+            if (_animator != null)
+                _animator.SetBool("IsGrounded", true);
+            return Physics.Raycast(transform.position, Vector3.down, out lastHit, _groundCheckDistance, _groundLayer);
         }
 
         public void SetMovementEnabled(bool enabled)
@@ -171,8 +173,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
                 _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
 
+
                 if (_animator != null)
-                    _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude);
+                    _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
 
             }
 
