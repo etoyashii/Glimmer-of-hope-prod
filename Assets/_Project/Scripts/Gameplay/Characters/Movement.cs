@@ -128,6 +128,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             if (!enabled)
             {
                 _targetMoveDirection = Vector3.zero;
+                _input = Vector2.zero;
                 // Stop horizontal movement but preserve vertical (gravity)
                 _rb.linearVelocity = new Vector3(0f, 0f, 0f);
                 _animator.SetFloat("Speed", 0f);
@@ -155,7 +156,11 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             cameraRight.Normalize();
 
             if (_movementEnabled) _targetMoveDirection = (cameraRight * _input.x + cameraForward * _input.y).normalized;
-            else _targetMoveDirection = Vector3.zero;
+            else
+            {
+                _targetMoveDirection = Vector3.zero;
+                _input = Vector2.zero;
+            }
 
             if (_climbing != null && _climbing.climbing)
             {
