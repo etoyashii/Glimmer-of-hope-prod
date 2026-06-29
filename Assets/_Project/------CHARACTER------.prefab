@@ -207,6 +207,7 @@ MonoBehaviour:
   _jumpVFX: {fileID: 0}
   _impulseVFX: {fileID: 0}
   _jumpImpulseLimit: 3
+  _animator: {fileID: 0}
 --- !u!114 &4641229236118914750
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -220,6 +221,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Planer
   _rb: {fileID: 0}
+  _playerMovement: {fileID: 0}
   _planningVerticalVelocity: -0.5
   _groundCheckDistance: 0.2
   _groundLayer:
@@ -478,7 +480,7 @@ Transform:
   m_GameObject: {fileID: 4993858438963674670}
   serializedVersion: 2
   m_LocalRotation: {x: 0.026555194, y: -0.000000001704006, z: 7.7543076e-11, w: 0.9996474}
-  m_LocalPosition: {x: 18.100006, y: 88.29824, z: -166.6223}
+  m_LocalPosition: {x: 0, y: 1.804235, z: -5.7223015}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -756,7 +758,7 @@ Transform:
   m_GameObject: {fileID: 6020073472818927081}
   serializedVersion: 2
   m_LocalRotation: {x: 0.026555195, y: -0.0000000017031482, z: 4.524339e-11, w: 0.9996474}
-  m_LocalPosition: {x: 18.100006, y: 88.29824, z: -166.6223}
+  m_LocalPosition: {x: -1281.3029, y: 88.29822, z: -2155.3198}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1175,7 +1177,7 @@ Transform:
   m_GameObject: {fileID: 7389841703856884403}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -410.66632, y: 1.74064, z: 9.12299}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1216,7 +1218,7 @@ Transform:
   m_GameObject: {fileID: 8474844754600564271}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 18.100006, y: 86.494, z: -160.9}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1418,15 +1420,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 381768130743933473, guid: 603b3aa4abac86f4083d2dd26f02cb2d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 18.100006
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 381768130743933473, guid: 603b3aa4abac86f4083d2dd26f02cb2d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 88.74
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 381768130743933473, guid: 603b3aa4abac86f4083d2dd26f02cb2d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -160.9
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 381768130743933473, guid: 603b3aa4abac86f4083d2dd26f02cb2d, type: 3}
       propertyPath: m_LocalRotation.w
