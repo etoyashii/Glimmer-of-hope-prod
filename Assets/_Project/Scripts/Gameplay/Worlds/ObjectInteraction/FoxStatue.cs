@@ -17,6 +17,7 @@ namespace GlimmerOfHope.Gameplay
 
         [SerializeField] private int _statueId = 1;
         [SerializeField] private GameObject _skillUI;
+        [SerializeField] private GameObject _jumpUI;
         [SerializeField] private GameObject _talkUI;
         [SerializeField] private TextMeshProUGUI _textMesh;
         [SerializeField] private List<string> _textList;
