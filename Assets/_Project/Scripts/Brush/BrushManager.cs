@@ -44,7 +44,7 @@ namespace GlimmerOfHope.Core
         #region Public Properties
         public float _circleRadius = 5f; // Radius of the brush circle
         [HideInInspector] public bool _lastActionWasAdd = true; // If action was add Asset = true else false
-        public Color _actualColor = Color.green;
+        [HideInInspector] public Color _actualColor = Color.green;
         public List<AssetsStruct> Assets => _assets;
         public GameObject StokageAssets => _stokageAssets;
         public GameObject StokageAssetsUseless => _stokageAssetsUseless;

@@ -48,6 +48,8 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public Vector3 MoveDirection => _targetMoveDirection;
 
+        public RaycastHit lastHit;
+
         #endregion
 
         #region Event Actions
@@ -78,6 +80,8 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             
             _rb.freezeRotation = true;
             _animator = GetComponent<Animator>();
+            if (_animator == null)
+                Debug.LogWarning("There is no animator set in the script movement");
         }
 
         private void OnEnable()
@@ -101,7 +105,8 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             ApplyMovement();
             ApplyAirCurrent();
             ApplyRotation();
-            _animator.SetBool("IsGrounded", IsGrounded());
+            if (_animator != null)
+                _animator.SetBool("IsGrounded", IsGrounded());
         }
 
         #endregion
@@ -110,8 +115,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public bool IsGrounded()
         {
-            _animator.SetBool("IsGrounded", true);
-            return Physics.Raycast(transform.position, Vector3.down, _groundCheckDistance, _groundLayer);
+            if (_animator != null)
+                _animator.SetBool("IsGrounded", true);
+            return Physics.Raycast(transform.position, Vector3.down, out lastHit, _groundCheckDistance, _groundLayer);
         }
 
         public void SetMovementEnabled(bool enabled)
@@ -158,17 +164,18 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 Vector3 climbVelocity = moveAlongWall * (_speed / 5f);
                 _rb.linearVelocity = climbVelocity;
             }
-            else
+            else if (new Vector3 (_input.x, 0f, _input.y).magnitude > 0.1f || (IsGrounded()))
             {
                 // Normal ground/air movement � preserve vertical velocity
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
+
                 _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
 
 
-
-                _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
+                if (_animator != null)
+                    _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
 
             }
 
