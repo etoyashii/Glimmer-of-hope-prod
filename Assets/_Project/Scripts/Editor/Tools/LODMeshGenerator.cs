@@ -53,12 +53,17 @@ namespace GlimmerOfHope.Editor.Tools
         // so two strategies asking for the same quality reuse one asset instead of regenerating.
         private static string ResolveLodPath(Mesh source, int level, float quality)
         {
-            string sourcePath = AssetDatabase.GetAssetPath(source);
-            if (string.IsNullOrEmpty(sourcePath)) return null; // runtime/primitive mesh with no asset on disk
-
-            string dir = Path.GetDirectoryName(sourcePath).Replace("\\", "/");
             string quality100 = Mathf.RoundToInt(quality * 100f).ToString();
             string fileName = source.name + "_LOD" + level + "_q" + quality100 + ".asset";
+
+            string sourcePath = AssetDatabase.GetAssetPath(source);
+
+            // Built-in/primitive ("Library/...") or runtime meshes have no editable source folder:
+            // persist the LOD under a shared project folder instead of crashing on an out-of-Assets path.
+            if (string.IsNullOrEmpty(sourcePath) || !sourcePath.StartsWith("Assets/"))
+                return LODSettings.FALLBACK_FOLDER + "/" + fileName;
+
+            string dir = Path.GetDirectoryName(sourcePath).Replace("\\", "/");
             return dir + "/" + LODSettings.GENERATED_FOLDER + "/" + fileName;
         }
 

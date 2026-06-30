@@ -61,6 +61,9 @@ namespace GlimmerOfHope.Editor.Tools
         public const string LOD2_SUFFIX = "_LOD2";
         public const string GENERATED_FOLDER = "LOD_Generated";
 
+        // LODs of built-in/primitive or runtime meshes land here: they have no editable source folder.
+        public const string FALLBACK_FOLDER = "Assets/_Project/" + GENERATED_FOLDER;
+
         public static readonly string[] MASS_KEYWORDS =
         {
             "grass", "fleur", "herbe", "buisson", "flower", "arbre", "bush", "tree", "plant"

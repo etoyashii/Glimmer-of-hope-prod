@@ -83,13 +83,17 @@ namespace GlimmerOfHope.Editor.Tools
             return renderer;
         }
 
-        // The original renderer must go, otherwise it draws on top of the LOD children.
+        // The original renderer must not draw on top of the LOD children. We disable it instead of
+        // removing it: some objects (procedural meshes like BranchMeshBuilder) RequireComponent the
+        // MeshRenderer/MeshFilter, and Unity refuses to remove a required component. A disabled
+        // renderer simply stops drawing, which is all we need.
         private static void StripRootRenderer(GameObject root, bool useUndo)
         {
             var renderer = root.GetComponent<MeshRenderer>();
-            var filter = root.GetComponent<MeshFilter>();
-            if (renderer != null) Remove(renderer, useUndo);
-            if (filter != null) Remove(filter, useUndo);
+            if (renderer == null) return;
+
+            if (useUndo) Undo.RecordObject(renderer, "Disable LOD root renderer");
+            renderer.enabled = false;
         }
 
         private static void CleanExisting(GameObject root, bool useUndo)
