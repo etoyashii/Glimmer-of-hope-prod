@@ -1,5 +1,7 @@
+using NUnit.Framework;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
@@ -94,6 +96,12 @@ namespace GlimmerOfHope.Gameplay
         private Vector3 _confirmedExitDirection;
         private bool _confirmedIsWall;
 
+        [Header("Platform Limit")]
+        [Tooltip("Maximum number of platforms alive at once. The oldest one is destroyed when the limit is exceeded.")]
+        [SerializeField] private int _maxPlatforms = 3;
+
+        private List<GameObject> _platforms = new();
+
         #endregion
 
         #region Unity Lifecycle
@@ -131,7 +139,7 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
-        #region Private Methods — Preview
+        #region Private Methods ? Preview
 
         private void EnterPreview()
         {
@@ -166,7 +174,7 @@ namespace GlimmerOfHope.Gameplay
             if (!TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
                                out Vector3 targetPos, out Vector3 exitDir, out bool isWall))
             {
-                // Surface lost — hide ghost but stay in preview state
+                // Surface lost hide ghost but stay in preview state
                 if (_previewInstance != null)
                     _previewInstance.SetActive(false);
                 return;
@@ -211,7 +219,7 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
-        #region Private Methods — Detection
+        #region Private Methods ? Detection
 
         /// <summary>
         /// Unified hit resolution : tries wall first, then ground.
@@ -226,7 +234,7 @@ namespace GlimmerOfHope.Gameplay
             exitDir = Vector3.up;
             isWall = false;
 
-            // --- Wall raycast ---
+            // Wall raycast 
             Vector3 flatForward = GetFlatForward();
             Vector3 wallOrigin = _playerTransform.position + Vector3.up * _wallRaycastHeight;
 
@@ -293,7 +301,7 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
-        #region Private Methods — Spawn & Orientation
+        #region Private Methods ? Spawn & Orientation
 
         private void ApplyOrientation(GameObject obj, bool isWall)
         {
@@ -308,6 +316,23 @@ namespace GlimmerOfHope.Gameplay
             GameObject platform = Instantiate(prefab, startPosition, Quaternion.identity);
             ApplyOrientation(platform, isWall);
             StartCoroutine(RisePlatform(platform, startPosition, targetPosition));
+
+            EnforcePlatformLimit(platform);
+        }
+
+        /// <summary>Tracks the new platform and destroys the oldest one if the limit is exceeded.</summary>
+        private void EnforcePlatformLimit(GameObject newPlatform)
+        {
+            _platforms.Add(newPlatform);
+
+            while (_platforms.Count > _maxPlatforms)
+            {
+                GameObject oldest = _platforms[0];
+                _platforms.RemoveAt(0);
+
+                if (oldest != null)
+                    Destroy(oldest);
+            }
         }
 
         private IEnumerator RisePlatform(GameObject platform, Vector3 from, Vector3 to)
@@ -332,7 +357,6 @@ namespace GlimmerOfHope.Gameplay
             foreach (Transform child in obj.transform)
                 SetLayerRecursive(child.gameObject, layer);
         }
-
         #endregion
     }
 }
