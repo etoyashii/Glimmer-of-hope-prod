@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
+#if UNITY_EDITOR
 namespace GlimmerOfHope.Core
 {
     /// <summary>
@@ -14,6 +15,7 @@ namespace GlimmerOfHope.Core
         #region Constants
         private int SEGMENTS = 320;          // Number of segments for the circle gizmo
         private float RAYCAST_DISTANCE = 100f; // Max distance for ground raycast
+
         #endregion
 
         #region Serialized Fields
@@ -118,3 +120,5 @@ namespace GlimmerOfHope.Core
         #endregion
     }
 }
+
+#endif

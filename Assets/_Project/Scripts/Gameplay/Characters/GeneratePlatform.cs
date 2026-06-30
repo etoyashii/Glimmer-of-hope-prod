@@ -1,108 +1,353 @@
+using NUnit.Framework;
+using System;
 using System.Collections;
-using UnityEditor.UIElements;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay
 {
-    public class GeneratePlatform : MonoBehaviour
+    /// <summary>
+    /// To generate platforms on walls or ground. The player can aim at a surface,
+    /// and a ghost preview of the platform will appear.
+    /// Pressing the skill button again confirms the spawn,
+    /// and the platform rises from below the surface if ground or to the wall if walls.
+    /// </summary>
+    public class GeneratePlatform : Skills
     {
-        #region Serialized Fields
-        [Header("Références")]
-        [Tooltip("Le prefab de la plateform")]
-        [SerializeField] private GameObject _platformPrefab;
+        #region Inner Types
 
-        [Tooltip("Transform du joueur (ou de la caméra) pour calculre la direction")]
+        [Serializable]
+        public class SurfaceEntry
+        {
+            [Tooltip("Detectable layer")]
+            public LayerMask layer;
+            public TerrainLayer _terrainLayer;
+            [Tooltip("Prefab to spawn on this layer")]
+            public GameObject platformPrefab;
+
+            [Tooltip("Preview prefab (should use a transparent material)")]
+            public GameObject preBuildPlatformPrefab;
+        }
+
+        private enum SpellState { Idle, Previewing }
+
+        #endregion
+
+        #region Serialized Fields
+
+        [Header("Refs")]
+        [Tooltip("Caster's transform from which raycasts are made")]
         [SerializeField] private Transform _playerTransform;
 
-        [Header("Paramètres de détection")]
-        [Tooltip("Distance devant le joueur où la plateforme doit apparaître")]
+        [SerializeField] private Camera _camera;
+
+        [Header("Surfaces & Prefabs")]
+        [Tooltip("Associate every layer with a different prefab")]
+        [SerializeField] private SurfaceEntry[] _surfaceEntries;
+
+        [Header("Detection Parameters")]
+        [Tooltip("Raycast distance in front of the caster")]
         [SerializeField] private float _spawnDistance = 3f;
 
-        [Tooltip("Hauteur depuis laquelle le raycast part (au-dessus du sol)")]
-        [SerializeField] private float _raycastOriginHeight = 5f;
+        [Tooltip("For walls => height from which the raycast is cast")]
+        [SerializeField] private float _wallRaycastHeight = 1f;
 
-        [Tooltip("Longueur maximale du raycast vers le bas")]
-        [SerializeField] private float _raycastMaxDistance = 20f;
+        [Tooltip("For walls => max distance of raycast")]
+        [SerializeField] private float _wallRaycastDistance = 5f;
 
-        [Tooltip("Le layer qui permet de generer des platforms")]
-        [SerializeField] private LayerMask _layerMask;
+        [Tooltip("For the ground => height from which the vertical raycast is cast")]
+        [SerializeField] private float _groundRaycastOriginHeight = 5f;
 
-        [Header("Paramètres d'animation")]
-        [Tooltip("Profondeur sous le sol d'où la plateforme commence à monter")]
+        [Tooltip("For the ground => max distance of vertical raycast")]
+        [SerializeField] private float _groundRaycastDistance = 20f;
+
+        [Tooltip("Every detectable layer")]
+        [SerializeField] private LayerMask _allDetectableLayers;
+
+        [Header("Animation Parameters")]
+        [Tooltip("Depth from which the platform rises")]
         [SerializeField] private float _startDepth = 2f;
 
-        [Tooltip("Durée de l'animation de montée en secondes")]
+        [Tooltip("Animation time (in seconds)")]
         [SerializeField] private float _riseDuration = 0.6f;
 
-        [Tooltip("Hauteur cible au-dessus du point d'impact (0 = au ras du sol)")]
+        [Tooltip("Final height of the platform (0 = flush with surface)")]
         [SerializeField] private float _targetHeightOffset = 0f;
 
-        [Tooltip("Courbe d'animation de la montée")]
+
+        [SerializeField] private Terrain _terrain;
+
+
+        [Tooltip("Animation curve")]
         [SerializeField] private AnimationCurve _riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
+
+        #endregion
+
+        #region Private Fields
+
+        private SpellState _state = SpellState.Idle;
+
+        // Preview ghost instance currently shown
+        private GameObject _previewInstance;
+
+        [Header("Preview")]
+        [Tooltip("Layer assigned to the preview ghost so raycasts ignore it. Use the built-in 'Ignore Raycast' layer (2) or create a dedicated 'Preview' layer and exclude it from _allDetectableLayers.")]
+        [SerializeField] private int _previewLayer = 2; // 2 = Ignore Raycast by default
+
+        // Data resolved during preview, reused on confirm
+        private GameObject _confirmedPrefab;
+        private Vector3 _confirmedTargetPosition;
+        private Vector3 _confirmedExitDirection;
+        private bool _confirmedIsWall;
+
+        [Header("Platform Limit")]
+        [Tooltip("Maximum number of platforms alive at once. The oldest one is destroyed when the limit is exceeded.")]
+        [SerializeField] private int _maxPlatforms = 3;
+
+        private List<GameObject> _platforms = new();
+
         #endregion
 
         #region Unity Lifecycle
 
         private void Update()
         {
-            //if (Keyboard.current.spaceKey.wasPressedThisFrame)
-            //{
-            //    CastSpell();
-            //}
+            if (_state == SpellState.Previewing)
+                UpdatePreview();
         }
 
         #endregion
 
         #region Public Methods
 
-        public void CastSpell()
+        /// <summary>
+        /// First press : enter preview mode.
+        /// Second press : confirm and spawn the platform.
+        /// </summary>
+        public override void PerformSkill()
         {
-            Debug.Log("Casting a platform!");
-            if (_platformPrefab == null)
+            if (_state == SpellState.Idle)
+                EnterPreview();
+            else
+                ConfirmSpawn();
+        }
+
+        /// <summary>Cancel the preview without spawning anything.</summary>
+        public void CancelPreview()
+        {
+            if (_state != SpellState.Previewing) return;
+
+            ClearPreview();
+            _state = SpellState.Idle;
+        }
+
+        #endregion
+
+        #region Private Methods ? Preview
+
+        private void EnterPreview()
+        {
+            // Try to resolve a hit right away; abort if nothing detectable
+            if (!TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
+                               out Vector3 targetPos, out Vector3 exitDir, out bool isWall))
             {
-                Debug.LogWarning("platform Prefab non assigné !");
+                Debug.Log("[GeneratePlatform] No detectable surface found.");
                 return;
             }
 
-            // Point devant le joueur (ignore l'axe Y pour rester horizontal)
-            Vector3 flatForward = new Vector3(
-                _playerTransform.forward.x,
-                0f,
-                _playerTransform.forward.z
-                ).normalized;
+            // Store resolved data for confirm step
+            _confirmedPrefab = prefab;
+            _confirmedTargetPosition = targetPos;
+            _confirmedExitDirection = exitDir;
+            _confirmedIsWall = isWall;
 
-            Vector3 spawnCenter = _playerTransform.position + flatForward * _spawnDistance;
+            // Spawn the ghost preview at final position (no animation)
+            _previewInstance = Instantiate(preBuildPrefab, targetPos, Quaternion.identity);
+            SetLayerRecursive(_previewInstance, _previewLayer);
+            ApplyOrientation(_previewInstance, isWall);
 
-            // Origine du raycast bien au-dessus du sol
-            Vector3 rayOrigin = spawnCenter + Vector3.up * _raycastOriginHeight;
+            _state = SpellState.Previewing;
+        }
 
-            // On ne détecte QUE les colliders sur le layer 
-            if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit,
-                                _raycastMaxDistance, _layerMask))
+        /// <summary>
+        /// Called every frame while previewing.
+        /// Re-resolves the raycast so the ghost follows the player's aim in real time.
+        /// </summary>
+        private void UpdatePreview()
+        {
+            if (!TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
+                               out Vector3 targetPos, out Vector3 exitDir, out bool isWall))
             {
-                Vector3 targetPosition = hit.point + Vector3.up * _targetHeightOffset;
-                SpawnPlatform(targetPosition);
+                // Surface lost hide ghost but stay in preview state
+                if (_previewInstance != null)
+                    _previewInstance.SetActive(false);
+                return;
             }
-            else
+
+            // Update stored data in case the player moved
+            _confirmedPrefab = prefab;
+            _confirmedTargetPosition = targetPos;
+            _confirmedExitDirection = exitDir;
+            _confirmedIsWall = isWall;
+
+            // Move / swap ghost if needed
+            if (_previewInstance == null || _previewInstance.activeSelf == false)
             {
-                Debug.Log("Aucune zone avec le bon layer détectée devant le joueur.");
+                ClearPreview();
+                _previewInstance = Instantiate(preBuildPrefab, targetPos, Quaternion.identity);
+                SetLayerRecursive(_previewInstance, _previewLayer);
+            }
+
+            _previewInstance.SetActive(true);
+            _previewInstance.transform.position = targetPos;
+            ApplyOrientation(_previewInstance, isWall);
+        }
+
+        private void ConfirmSpawn()
+        {
+            ClearPreview();
+            _state = SpellState.Idle;
+
+            SpawnPlatform(_confirmedPrefab, _confirmedTargetPosition,
+                          _confirmedExitDirection, _confirmedIsWall);
+        }
+
+        private void ClearPreview()
+        {
+            if (_previewInstance != null)
+            {
+                Destroy(_previewInstance);
+                _previewInstance = null;
             }
         }
 
         #endregion
 
-        #region Private Methods
-        private void SpawnPlatform(Vector3 targetPosition)
+        #region Private Methods ? Detection
+
+        /// <summary>
+        /// Unified hit resolution : tries wall first, then ground.
+        /// Returns true if a valid surface + prefab pair was found.
+        /// </summary>
+        private bool TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
+                                   out Vector3 targetPos, out Vector3 exitDir, out bool isWall)
         {
-            // Position de départ sous le sol
-            Vector3 startPosition = targetPosition - Vector3.up * _startDepth;
+            prefab = null;
+            preBuildPrefab = null;
+            targetPos = Vector3.zero;
+            exitDir = Vector3.up;
+            isWall = false;
 
-            GameObject platform = Instantiate(_platformPrefab, startPosition, Quaternion.identity);
+            // Wall raycast 
+            Vector3 flatForward = GetFlatForward();
+            Vector3 wallOrigin = _playerTransform.position + Vector3.up * _wallRaycastHeight;
 
-            platform.transform.forward = _playerTransform.forward;
+            if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit wallHit,
+                                _wallRaycastDistance, _allDetectableLayers))
+            {
+                int layer = wallHit.collider.gameObject.layer;
+                if (IsOnTerrainLayer(GetTerrainLayerForLayer(layer), wallHit.point))
+                {
+                    if (Mathf.Abs(wallHit.normal.y) <= 0.5f) // it's a wall
+                    {
+                        prefab = GetPrefabForLayer(layer);
+                        preBuildPrefab = GetPreBuildPrefabForLayer(layer);
 
+                        if (prefab != null && preBuildPrefab != null)
+                        {
+                            targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
+                            exitDir = wallHit.normal;
+                            isWall = true;
+                            return true;
+                        }
+                    }
+                    else
+                    {
+                        prefab = GetPrefabForLayer(layer);
+                        preBuildPrefab = GetPreBuildPrefabForLayer(layer);
+
+                        if (prefab != null && preBuildPrefab != null)
+                        {
+                            targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
+                            exitDir = Vector3.up;
+                            isWall = false;
+                            return true;
+                        }
+                    }
+
+                }
+            }
+
+            return false;
+        }
+
+        private GameObject GetPrefabForLayer(int layer)
+        {
+            foreach (SurfaceEntry entry in _surfaceEntries)
+                if ((entry.layer.value & (1 << layer)) != 0)
+                    return entry.platformPrefab;
+            return null;
+        }
+
+        private GameObject GetPreBuildPrefabForLayer(int layer)
+        {
+            foreach (SurfaceEntry entry in _surfaceEntries)
+                if ((entry.layer.value & (1 << layer)) != 0)
+                    return entry.preBuildPlatformPrefab;
+            return null;
+        }
+
+        private TerrainLayer GetTerrainLayerForLayer(int layer)
+        {
+            foreach (SurfaceEntry entry in _surfaceEntries)
+                if ((entry.layer.value & (1 << layer)) != 0)
+                    return entry._terrainLayer;
+            return null;
+        }
+
+        private Vector3 GetFlatForward()
+        {
+            return new Vector3(
+                _playerTransform.forward.x,
+                0f,
+                _playerTransform.forward.z
+            ).normalized;
+        }
+
+        #endregion
+
+        #region Private Methods ? Spawn & Orientation
+
+        private void ApplyOrientation(GameObject obj, bool isWall)
+        {
+            obj.transform.rotation = isWall ? Quaternion.identity
+                                             : Quaternion.LookRotation(GetFlatForward());
+        }
+
+        private void SpawnPlatform(GameObject prefab, Vector3 targetPosition,
+                                   Vector3 exitDirection, bool isWall)
+        {
+            Vector3 startPosition = targetPosition - exitDirection * _startDepth;
+            GameObject platform = Instantiate(prefab, startPosition, Quaternion.identity);
+            ApplyOrientation(platform, isWall);
             StartCoroutine(RisePlatform(platform, startPosition, targetPosition));
+
+            EnforcePlatformLimit(platform);
+        }
+
+        /// <summary>Tracks the new platform and destroys the oldest one if the limit is exceeded.</summary>
+        private void EnforcePlatformLimit(GameObject newPlatform)
+        {
+            _platforms.Add(newPlatform);
+
+            while (_platforms.Count > _maxPlatforms)
+            {
+                GameObject oldest = _platforms[0];
+                _platforms.RemoveAt(0);
+
+                if (oldest != null)
+                    Destroy(oldest);
+            }
         }
 
         private IEnumerator RisePlatform(GameObject platform, Vector3 from, Vector3 to)
@@ -112,16 +357,65 @@ namespace GlimmerOfHope.Gameplay
             while (elapsed < _riseDuration)
             {
                 elapsed += Time.deltaTime;
-                float t = Mathf.Clamp01(elapsed / _riseDuration);
-                float curvedT = _riseCurve.Evaluate(t);
-
+                float curvedT = _riseCurve.Evaluate(Mathf.Clamp01(elapsed / _riseDuration));
                 platform.transform.position = Vector3.Lerp(from, to, curvedT);
                 yield return null;
             }
 
-            // S'assure que la plateforme est exactement à la position cible
             platform.transform.position = to;
         }
+
+        /// <summary>Recursively sets the layer on a GameObject and all its children.</summary>
+        private static void SetLayerRecursive(GameObject obj, int layer)
+        {
+            obj.layer = layer;
+            foreach (Transform child in obj.transform)
+                SetLayerRecursive(child.gameObject, layer);
+        }
         #endregion
+        public bool IsOnTerrainLayer(TerrainLayer terrainLayer, Vector3 worldPos)
+        {
+            if (terrainLayer == null || _terrain == null)
+                return true;
+
+            TerrainData data = _terrain.terrainData;
+            Vector3 terrainPos = _terrain.transform.position;
+
+            // Convert world position to alphamap coordinates
+            float relX = Mathf.Clamp01((worldPos.x - terrainPos.x) / data.size.x);
+            float relZ = Mathf.Clamp01((worldPos.z - terrainPos.z) / data.size.z);
+            int mapX = Mathf.Clamp((int)(relX * data.alphamapWidth), 0, data.alphamapWidth - 1);
+            int mapZ = Mathf.Clamp((int)(relZ * data.alphamapHeight), 0, data.alphamapHeight - 1);
+
+            float[,,] alphamaps = data.GetAlphamaps(mapX, mapZ, 1, 1);
+
+            // Find the index of the target TerrainLayer
+            TerrainLayer[] layers = data.terrainLayers;
+            int targetIndex = -1;
+            for (int i = 0; i < layers.Length; i++)
+            {
+                if (layers[i] == terrainLayer)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            if (targetIndex < 0) return false;
+
+            // Check if target layer is dominant at this position
+            int dominantIndex = 0;
+            float maxVal = 0f;
+            for (int i = 0; i < alphamaps.GetLength(2); i++)
+            {
+                if (alphamaps[0, 0, i] > maxVal)
+                {
+                    maxVal = alphamaps[0, 0, i];
+                    dominantIndex = i;
+                }
+            }
+
+            return dominantIndex == targetIndex;
+        }
     }
 }

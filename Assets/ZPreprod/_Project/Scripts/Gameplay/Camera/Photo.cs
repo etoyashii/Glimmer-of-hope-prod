@@ -65,7 +65,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
                 }
                 Debug.Log(string.Format("Took screenshot to: {0}", filename));
                 _takeShot = false;
-                _cameraManager.ChangeEffectVisibility(true);
+   //             _cameraManager.ChangeEffectVisibility(true);
             }
         }
 

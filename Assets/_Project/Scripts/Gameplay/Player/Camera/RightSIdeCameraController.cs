@@ -8,18 +8,20 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// CameraController using a swipe on the right side of the screen.
+    /// CameraController using either a swipe on the right side of the screen (mobile)
+    /// or a right-click + mouse drag (PC), depending on the current platform.
     /// Use EnhancedTouchSupport to avoid conflict with other Touch Inputs.
     /// </summary>
     [RequireComponent(typeof(CinemachineOrbitalFollow))]
     public class RightSideCameraController : MonoBehaviour
     {
         #region Serialized Fields
+
         [Header("Sensibility")]
         [SerializeField] private float _horizontalGain = 0.3f;
         [SerializeField] private float _verticalGain = 0.3f;
 
-        [Header("Active zone")]
+        [Header("Active zone (mobile only)")]
         [Range(0f, 1f)]
         [Tooltip("Horizontal limit => every touches left are ignored")]
         [SerializeField] private float _horizontalSplitRatio = 0.5f;
@@ -27,28 +29,90 @@ namespace GlimmerOfHope.Gameplay
         [Range(0f, 1f)]
         [Tooltip("Vertical limit => every touches under are ignored")]
         [SerializeField] private float _verticalSplitRatio = 0.2f;
+
+        [Header("References")]
+        [Tooltip("Swipe action: One Modifier (Right Mouse Button) + Delta [Mouse], used on PC.")]
+        [SerializeField] private InputActionReference _swipeAction;
+
         #endregion
 
         #region Private Fields
+
         private CinemachineOrbitalFollow _orbitalFollow;
         private int _trackedFingerId = -1;
         private Vector2 _lookDelta;
+
+        // True on Desktop/Editor builds, false on mobile (Android/iOS)
+        private bool _useMouseInput;
+
         #endregion
 
         #region Unity Lifecycle
-        void Awake()
+
+        private void Awake()
         {
             _orbitalFollow = GetComponent<CinemachineOrbitalFollow>();
+
+#if UNITY_ANDROID || UNITY_IOS
+            _useMouseInput = false;
+#else
+            _useMouseInput = true;
+#endif
         }
 
-        
-        void OnEnable() => EnhancedTouchSupport.Enable();
-        void OnDisable() => EnhancedTouchSupport.Disable();
+        private void OnEnable()
+        {
+            if (_useMouseInput)
+            {
+                _swipeAction.action.Enable();
+            }
+            else
+            {
+                EnhancedTouchSupport.Enable();
+            }
+        }
 
-        void Update()
+        private void OnDisable()
+        {
+            if (_useMouseInput)
+            {
+                _swipeAction.action.Disable();
+            }
+            else
+            {
+                EnhancedTouchSupport.Disable();
+            }
+        }
+
+        private void Update()
         {
             _lookDelta = Vector2.zero;
 
+            if (_useMouseInput)
+                UpdateMouseLook();
+            else
+                UpdateTouchLook();
+
+            ApplyCameraRotation();
+        }
+
+        #endregion
+
+        #region Private Methods — Mouse (PC)
+
+        private void UpdateMouseLook()
+        {
+            // The action is only "performed" while the Right Mouse Button modifier is held,
+            // so reading its value already gives us drag delta or zero otherwise.
+            _lookDelta = _swipeAction.action.ReadValue<Vector2>();
+        }
+
+        #endregion
+
+        #region Private Methods — Touch (Mobile)
+
+        private void UpdateTouchLook()
+        {
             foreach (var touch in Touch.activeTouches)
             {
                 switch (touch.phase)
@@ -59,9 +123,7 @@ namespace GlimmerOfHope.Gameplay
 
                     case TouchPhase.Moved:
                         if (touch.touchId == _trackedFingerId)
-                        {
                             _lookDelta = touch.delta;
-                        }
                         break;
 
                     case TouchPhase.Stationary:
@@ -74,12 +136,8 @@ namespace GlimmerOfHope.Gameplay
                         break;
                 }
             }
-
-            ApplyCameraRotation();
         }
-        #endregion
 
-        #region Private Methods
         private void TryBeginLook(Touch touch)
         {
             if (_trackedFingerId != -1) return;
@@ -93,6 +151,16 @@ namespace GlimmerOfHope.Gameplay
             _trackedFingerId = -1;
             _lookDelta = Vector2.zero;
         }
+
+        private bool IsInRightZone(Vector2 screenPos)
+        {
+            return screenPos.x > Screen.width * _horizontalSplitRatio
+                && screenPos.y > Screen.height * _verticalSplitRatio;
+        }
+
+        #endregion
+
+        #region Private Methods — Shared
 
         private void ApplyCameraRotation()
         {
@@ -108,11 +176,6 @@ namespace GlimmerOfHope.Gameplay
             );
         }
 
-        private bool IsInRightZone(Vector2 screenPos)
-        {
-            return screenPos.x > Screen.width * _horizontalSplitRatio
-                && screenPos.y > Screen.height * _verticalSplitRatio;
-        }
         #endregion
     }
 }

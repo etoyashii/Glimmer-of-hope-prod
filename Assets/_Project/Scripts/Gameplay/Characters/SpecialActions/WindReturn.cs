@@ -46,7 +46,7 @@ namespace GlimmerOfHope.Gameplay
         #region Private Properties
 
         //queue used to save position depending on the time. We only use the recents one
-        private Queue<(Vector3 pos, float time)> _positionBuffer = new Queue<(Vector3, float)>(); 
+        private Queue<(Vector3 pos, float time)> _positionBuffer = new Queue<(Vector3, float)>();
 
         //last pos save while being on the ground
         private Vector3 _lastSafePos;
