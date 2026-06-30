@@ -21,7 +21,7 @@ namespace GlimmerOfHope.Gameplay
         {
             [Tooltip("Detectable layer")]
             public LayerMask layer;
-
+            public TerrainLayer _terrainLayer;
             [Tooltip("Prefab to spawn on this layer")]
             public GameObject platformPrefab;
 
@@ -73,6 +73,10 @@ namespace GlimmerOfHope.Gameplay
 
         [Tooltip("Final height of the platform (0 = flush with surface)")]
         [SerializeField] private float _targetHeightOffset = 0f;
+
+
+        [SerializeField] private Terrain _terrain;
+
 
         [Tooltip("Animation curve")]
         [SerializeField] private AnimationCurve _riseCurve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
@@ -241,33 +245,36 @@ namespace GlimmerOfHope.Gameplay
             if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit wallHit,
                                 _wallRaycastDistance, _allDetectableLayers))
             {
-                if (Mathf.Abs(wallHit.normal.y) <= 0.5f) // it's a wall
+                int layer = wallHit.collider.gameObject.layer;
+                if (IsOnTerrainLayer(GetTerrainLayerForLayer(layer), wallHit.point))
                 {
-                    int layer = wallHit.collider.gameObject.layer;
-                    prefab = GetPrefabForLayer(layer);
-                    preBuildPrefab = GetPreBuildPrefabForLayer(layer);
-
-                    if (prefab != null && preBuildPrefab != null)
+                    if (Mathf.Abs(wallHit.normal.y) <= 0.5f) // it's a wall
                     {
-                        targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
-                        exitDir = wallHit.normal;
-                        isWall = true;
-                        return true;
-                    }
-                }
-                else
-                {
-                    int layer = wallHit.collider.gameObject.layer;
-                    prefab = GetPrefabForLayer(layer);
-                    preBuildPrefab = GetPreBuildPrefabForLayer(layer);
+                        prefab = GetPrefabForLayer(layer);
+                        preBuildPrefab = GetPreBuildPrefabForLayer(layer);
 
-                    if (prefab != null && preBuildPrefab != null)
-                    {
-                        targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
-                        exitDir = Vector3.up;
-                        isWall = false;
-                        return true;
+                        if (prefab != null && preBuildPrefab != null)
+                        {
+                            targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
+                            exitDir = wallHit.normal;
+                            isWall = true;
+                            return true;
+                        }
                     }
+                    else
+                    {
+                        prefab = GetPrefabForLayer(layer);
+                        preBuildPrefab = GetPreBuildPrefabForLayer(layer);
+
+                        if (prefab != null && preBuildPrefab != null)
+                        {
+                            targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
+                            exitDir = Vector3.up;
+                            isWall = false;
+                            return true;
+                        }
+                    }
+
                 }
             }
 
@@ -287,6 +294,14 @@ namespace GlimmerOfHope.Gameplay
             foreach (SurfaceEntry entry in _surfaceEntries)
                 if ((entry.layer.value & (1 << layer)) != 0)
                     return entry.preBuildPlatformPrefab;
+            return null;
+        }
+
+        private TerrainLayer GetTerrainLayerForLayer(int layer)
+        {
+            foreach (SurfaceEntry entry in _surfaceEntries)
+                if ((entry.layer.value & (1 << layer)) != 0)
+                    return entry._terrainLayer;
             return null;
         }
 
@@ -358,5 +373,49 @@ namespace GlimmerOfHope.Gameplay
                 SetLayerRecursive(child.gameObject, layer);
         }
         #endregion
+        public bool IsOnTerrainLayer(TerrainLayer terrainLayer, Vector3 worldPos)
+        {
+            if (terrainLayer == null || _terrain == null)
+                return true;
+
+            TerrainData data = _terrain.terrainData;
+            Vector3 terrainPos = _terrain.transform.position;
+
+            // Convert world position to alphamap coordinates
+            float relX = Mathf.Clamp01((worldPos.x - terrainPos.x) / data.size.x);
+            float relZ = Mathf.Clamp01((worldPos.z - terrainPos.z) / data.size.z);
+            int mapX = Mathf.Clamp((int)(relX * data.alphamapWidth), 0, data.alphamapWidth - 1);
+            int mapZ = Mathf.Clamp((int)(relZ * data.alphamapHeight), 0, data.alphamapHeight - 1);
+
+            float[,,] alphamaps = data.GetAlphamaps(mapX, mapZ, 1, 1);
+
+            // Find the index of the target TerrainLayer
+            TerrainLayer[] layers = data.terrainLayers;
+            int targetIndex = -1;
+            for (int i = 0; i < layers.Length; i++)
+            {
+                if (layers[i] == terrainLayer)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            if (targetIndex < 0) return false;
+
+            // Check if target layer is dominant at this position
+            int dominantIndex = 0;
+            float maxVal = 0f;
+            for (int i = 0; i < alphamaps.GetLength(2); i++)
+            {
+                if (alphamaps[0, 0, i] > maxVal)
+                {
+                    maxVal = alphamaps[0, 0, i];
+                    dominantIndex = i;
+                }
+            }
+
+            return dominantIndex == targetIndex;
+        }
     }
 }
