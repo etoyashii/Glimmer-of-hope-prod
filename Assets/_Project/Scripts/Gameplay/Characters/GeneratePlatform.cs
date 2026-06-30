@@ -94,11 +94,18 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Layer assigned to the preview ghost so raycasts ignore it. Use the built-in 'Ignore Raycast' layer (2) or create a dedicated 'Preview' layer and exclude it from _allDetectableLayers.")]
         [SerializeField] private int _previewLayer = 2; // 2 = Ignore Raycast by default
 
+        [Tooltip("Material applied to the preview when the platform CAN be built here.")]
+        [SerializeField] private Material _validPreviewMaterial;
+
+        [Tooltip("Material applied to the preview when the platform CANNOT be built here.")]
+        [SerializeField] private Material _invalidPreviewMaterial;
+
         // Data resolved during preview, reused on confirm
         private GameObject _confirmedPrefab;
         private Vector3 _confirmedTargetPosition;
         private Vector3 _confirmedExitDirection;
         private bool _confirmedIsWall;
+        private bool _canBuildAtCurrentTarget;
 
         [Header("Platform Limit")]
         [Tooltip("Maximum number of platforms alive at once. The oldest one is destroyed when the limit is exceeded.")]
@@ -147,9 +154,10 @@ namespace GlimmerOfHope.Gameplay
 
         private void EnterPreview()
         {
-            // Try to resolve a hit right away; abort if nothing detectable
+            // Try to resolve a hit right away; abort if nothing detectable at all
             if (!TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
-                               out Vector3 targetPos, out Vector3 exitDir, out bool isWall))
+                               out Vector3 targetPos, out Vector3 exitDir, out bool isWall,
+                               out bool canBuild))
             {
                 Debug.Log("[GeneratePlatform] No detectable surface found.");
                 return;
@@ -160,11 +168,13 @@ namespace GlimmerOfHope.Gameplay
             _confirmedTargetPosition = targetPos;
             _confirmedExitDirection = exitDir;
             _confirmedIsWall = isWall;
+            _canBuildAtCurrentTarget = canBuild;
 
             // Spawn the ghost preview at final position (no animation)
             _previewInstance = Instantiate(preBuildPrefab, targetPos, Quaternion.identity);
             SetLayerRecursive(_previewInstance, _previewLayer);
             ApplyOrientation(_previewInstance, isWall);
+            ApplyPreviewColor(_previewInstance, canBuild);
 
             _state = SpellState.Previewing;
         }
@@ -176,9 +186,10 @@ namespace GlimmerOfHope.Gameplay
         private void UpdatePreview()
         {
             if (!TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
-                               out Vector3 targetPos, out Vector3 exitDir, out bool isWall))
+                               out Vector3 targetPos, out Vector3 exitDir, out bool isWall,
+                               out bool canBuild))
             {
-                // Surface lost hide ghost but stay in preview state
+                // Surface lost entirely � hide ghost but stay in preview state
                 if (_previewInstance != null)
                     _previewInstance.SetActive(false);
                 return;
@@ -189,6 +200,7 @@ namespace GlimmerOfHope.Gameplay
             _confirmedTargetPosition = targetPos;
             _confirmedExitDirection = exitDir;
             _confirmedIsWall = isWall;
+            _canBuildAtCurrentTarget = canBuild;
 
             // Move / swap ghost if needed
             if (_previewInstance == null || _previewInstance.activeSelf == false)
@@ -201,10 +213,18 @@ namespace GlimmerOfHope.Gameplay
             _previewInstance.SetActive(true);
             _previewInstance.transform.position = targetPos;
             ApplyOrientation(_previewInstance, isWall);
+            ApplyPreviewColor(_previewInstance, canBuild);
         }
 
         private void ConfirmSpawn()
         {
+            // Refuse to spawn if the current target isn't buildable (wrong terrain layer)
+            if (!_canBuildAtCurrentTarget)
+            {
+                Debug.Log("[GeneratePlatform] Cannot build here � invalid terrain layer.");
+                return;
+            }
+
             ClearPreview();
             _state = SpellState.Idle;
 
@@ -227,55 +247,46 @@ namespace GlimmerOfHope.Gameplay
 
         /// <summary>
         /// Unified hit resolution : tries wall first, then ground.
-        /// Returns true if a valid surface + prefab pair was found.
+        /// Returns true if ANY valid surface + prefab pair was found (regardless of terrain layer match).
+        /// canBuild tells whether the platform is actually allowed to be built there (terrain layer check).
         /// </summary>
         private bool TryResolveHit(out GameObject prefab, out GameObject preBuildPrefab,
-                                   out Vector3 targetPos, out Vector3 exitDir, out bool isWall)
+                                   out Vector3 targetPos, out Vector3 exitDir, out bool isWall,
+                                   out bool canBuild)
         {
             prefab = null;
             preBuildPrefab = null;
             targetPos = Vector3.zero;
             exitDir = Vector3.up;
             isWall = false;
-
-            // Wall raycast 
-            Vector3 flatForward = GetFlatForward();
-            Vector3 wallOrigin = _playerTransform.position + Vector3.up * _wallRaycastHeight;
+            canBuild = false;
 
             if (Physics.Raycast(_camera.transform.position, _camera.transform.forward, out RaycastHit wallHit,
                                 _wallRaycastDistance, _allDetectableLayers))
             {
                 int layer = wallHit.collider.gameObject.layer;
-                if (IsOnTerrainLayer(GetTerrainLayerForLayer(layer), wallHit.point))
+                prefab = GetPrefabForLayer(layer);
+                preBuildPrefab = GetPreBuildPrefabForLayer(layer);
+
+                if (prefab == null || preBuildPrefab == null)
+                    return false;
+
+                canBuild = IsOnTerrainLayer(GetTerrainLayerForLayer(layer), wallHit.point);
+
+                if (Mathf.Abs(wallHit.normal.y) <= 0.5f) // it's a wall
                 {
-                    if (Mathf.Abs(wallHit.normal.y) <= 0.5f) // it's a wall
-                    {
-                        prefab = GetPrefabForLayer(layer);
-                        preBuildPrefab = GetPreBuildPrefabForLayer(layer);
-
-                        if (prefab != null && preBuildPrefab != null)
-                        {
-                            targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
-                            exitDir = wallHit.normal;
-                            isWall = true;
-                            return true;
-                        }
-                    }
-                    else
-                    {
-                        prefab = GetPrefabForLayer(layer);
-                        preBuildPrefab = GetPreBuildPrefabForLayer(layer);
-
-                        if (prefab != null && preBuildPrefab != null)
-                        {
-                            targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
-                            exitDir = Vector3.up;
-                            isWall = false;
-                            return true;
-                        }
-                    }
-
+                    targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
+                    exitDir = wallHit.normal;
+                    isWall = true;
                 }
+                else
+                {
+                    targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
+                    exitDir = Vector3.up;
+                    isWall = false;
+                }
+
+                return true;
             }
 
             return false;
@@ -371,6 +382,25 @@ namespace GlimmerOfHope.Gameplay
             obj.layer = layer;
             foreach (Transform child in obj.transform)
                 SetLayerRecursive(child.gameObject, layer);
+        }
+
+        /// <summary>
+        /// Swaps the preview material on every renderer of the ghost (and its children)
+        /// to reflect whether the platform can currently be built here.
+        /// </summary>
+        private void ApplyPreviewColor(GameObject ghost, bool canBuild)
+        {
+            Material targetMaterial = canBuild ? _validPreviewMaterial : _invalidPreviewMaterial;
+            if (targetMaterial == null) return;
+
+            Renderer[] renderers = ghost.GetComponentsInChildren<Renderer>();
+            foreach (Renderer renderer in renderers)
+            {
+                Material[] mats = renderer.sharedMaterials;
+                for (int i = 0; i < mats.Length; i++)
+                    mats[i] = targetMaterial;
+                renderer.sharedMaterials = mats;
+            }
         }
         #endregion
         public bool IsOnTerrainLayer(TerrainLayer terrainLayer, Vector3 worldPos)
