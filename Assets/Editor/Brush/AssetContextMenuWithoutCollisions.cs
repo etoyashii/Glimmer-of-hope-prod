@@ -69,7 +69,7 @@ public class AssetContextMenuWithoutCollisions
         template._asset = savedPrefab;
         template._limiteSize = new Vector2(1f, 1f);
         template._weight = 1;
-        template._rotation = 0f;
+        template._rotation = Vector3.zero;
 
         string templatePath = AssetDatabase.GenerateUniqueAssetPath(
             Path.Combine(TEMPLATE_OUTPUT_PATH, assetName + "_Template.asset")

@@ -343,7 +343,24 @@ public class BrushManagerEditor : Editor
                         // Random rotation and scale
                         if (!newTemplate._fullRotation)
                         {
-                            newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                            Vector3 temp = new Vector3(newnewGO.transform.rotation.x, newnewGO.transform.rotation.y, newnewGO.transform.rotation.z);
+                            temp += newTemplate._rotation;
+                            newnewGO.transform.Rotate(temp);
+                            if (!newTemplate._noRandomRotation)
+                            {
+                                switch (newTemplate._rotationType)
+                                {
+                                    case rotationType.xRotation:
+                                        newnewGO.transform.Rotate(Vector3.right, Random.Range(0, 360f));
+                                        break;
+                                    case rotationType.yRotation:
+                                        newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                                        break;
+                                    case rotationType.zRotation:
+                                        newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
+                                        break;
+                                }
+                            }
                         }
                         else
                         {
