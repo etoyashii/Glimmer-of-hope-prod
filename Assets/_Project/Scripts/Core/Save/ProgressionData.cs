@@ -7,22 +7,19 @@ namespace GlimmerOfHope.Core.Save
     [Serializable]
     public class ProgressionData
     {
-        public string currentWorld;
-        public int currentLevel;
+        public string currentWorld;  // monde d'ou le joueur c'est déconnecté
+        public int currentLevel;    // level du monde ou le joueur c déconecter / checkpoint
         public List<string> unlockedWorlds = new(); // PAS SURe
         public List<string> completedLevels = new();   // PAS SURe
         public List<string> collectedItems = new();        /// collectibles débloqué(secrets)
         public List<string> dialogueFlags = new();        /// dialogues joué ???
-        public Dictionary<string, int> statistics = new();
-
+        public Dictionary<string, int> statistics = new();  /// contient les stat actuel du joueur (vitesse , spell ??? etc)
 
         /////////////////////////////////
         public Vector3 pos;        /// pos joueur
 
         public List<string> Inventory = new();/// inventaire
         public List<string> UnlockedItems = new(); //rien pour l'instant
-
-
 
         /// <summary>
         /// save manquant :
