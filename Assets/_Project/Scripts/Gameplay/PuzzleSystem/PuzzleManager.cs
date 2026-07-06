@@ -263,11 +263,14 @@ namespace GlimmerOfHope.Gameplay.Puzzles
     [Serializable]
     public struct PuzzleSaveData
     {
-        /// <summary>Unique identifier matching PuzzleManager._puzzleId.</summary>
+        //Unique identifier matching PuzzleManager._puzzleId
         public string PuzzleId;
 
-        /// <summary>True if the player has solved this puzzle at least once.</summary>
+        //True if the player has solved this puzzle
         public bool IsSolved;
+
+        //True if the puzzle has already been triggered (presentation cinematic, dialogue...)
+        public bool WasPuzzleActivated;
     }
 
     #endregion
