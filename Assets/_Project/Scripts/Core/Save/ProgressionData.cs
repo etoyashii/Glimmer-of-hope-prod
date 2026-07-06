@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace GlimmerOfHope.Core.Save
 {
@@ -8,11 +9,28 @@ namespace GlimmerOfHope.Core.Save
     {
         public string currentWorld;
         public int currentLevel;
-        public List<string> unlockedWorlds = new();
-        public List<string> completedLevels = new();
-        public List<string> collectedItems = new();
-        public List<string> dialogueFlags = new();
+        public List<string> unlockedWorlds = new(); // PAS SURe
+        public List<string> completedLevels = new();   // PAS SURe
+        public List<string> collectedItems = new();        /// collectibles débloqué(secrets)
+        public List<string> dialogueFlags = new();        /// dialogues joué ???
         public Dictionary<string, int> statistics = new();
+
+
+        /////////////////////////////////
+        public Vector3 pos;        /// pos joueur
+
+        public List<string> Inventory = new();/// inventaire
+        public List<string> UnlockedItems = new(); //rien pour l'instant
+
+
+
+        /// <summary>
+        /// save manquant :
+        /// ----------------
+        /// /// Hub(objet debloquer et posés + tenues débloqué et porté)
+        /// états énigmes ,cinématiques jouer ou non
+        /// </summary>
+
 
         public bool IsWorldUnlocked(string worldId)
         {

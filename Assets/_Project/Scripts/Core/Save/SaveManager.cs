@@ -38,7 +38,7 @@ namespace GlimmerOfHope.Core.Save
                 CurrentSave.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
                 var json = JsonUtility.ToJson(CurrentSave, true);
                 File.WriteAllText(SavePath, json);
-                Debug.Log("[SaveManager] Game saved successfully.");
+                Debug.Log("[SaveManager] Game saved successfully."   + SavePath);
             }
             catch (Exception e)
             {
