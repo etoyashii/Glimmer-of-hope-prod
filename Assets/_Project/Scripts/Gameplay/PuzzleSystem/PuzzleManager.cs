@@ -49,6 +49,9 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         [Tooltip("Fired once when the puzzle is solved for the first time.")]
         public UnityEvent OnPuzzleSolved;
 
+        [Tooltip("Fired once when the puzzle is triggered")]
+        public UnityEvent OnPuzzleTriggered;
+
         [Tooltip("Fired when the puzzle is reset.")]
         public UnityEvent OnPuzzleReset;
 
@@ -80,7 +83,8 @@ namespace GlimmerOfHope.Gameplay.Puzzles
 
         #region Private Fields
 
-        private bool _hasBeenSolvedOnce;
+        private bool _hasBeenSolvedOnce = false;
+        private bool _hasBeenTriggered = false;
 
         #endregion
 
@@ -125,6 +129,16 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         #endregion
 
         #region Public Methods
+
+        public void TriggerPuzzle()
+        {
+            if (!_hasBeenTriggered)
+            {
+            _hasBeenTriggered = true;
+            OnPuzzleTriggered?.Invoke();
+            Debug.Log($"'{_puzzleName}' has been triggered.");
+            }
+        }
 
         /// <summary>
         /// Resets all elements of this puzzle to their initial state.
@@ -183,7 +197,8 @@ namespace GlimmerOfHope.Gameplay.Puzzles
             return new PuzzleSaveData
             {
                 PuzzleId = _puzzleId,
-                IsSolved = _hasBeenSolvedOnce
+                IsSolved = _hasBeenSolvedOnce,
+                WasPuzzleActivated = _hasBeenTriggered
             };
         }
 

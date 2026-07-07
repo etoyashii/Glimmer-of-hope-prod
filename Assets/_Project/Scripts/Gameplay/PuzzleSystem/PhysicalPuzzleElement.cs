@@ -18,6 +18,8 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         [Tooltip("Distance tolerance to the target position to consider this element solved.")]
         [SerializeField] private float _solveDistance = 0.5f;
 
+        [SerializeField] private bool _isSnappable;
+
         #endregion
 
         #region Private Fields
