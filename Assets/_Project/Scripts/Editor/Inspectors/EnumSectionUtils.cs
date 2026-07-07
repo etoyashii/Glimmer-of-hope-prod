@@ -29,6 +29,7 @@ namespace GlimmerOfHope.Editor
         //check s'il y a des Enum sections dans le MonoBehaviour
         public static bool HasAnySections(SerializedObject so)
         {
+            if (so == null) return false;
             Type type = so.targetObject.GetType();
             if (_hasSectionsCache.TryGetValue(type, out bool result))
                 return result;

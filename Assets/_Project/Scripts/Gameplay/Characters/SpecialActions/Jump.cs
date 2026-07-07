@@ -1,4 +1,5 @@
 using GlimmerOfHope.Gameplay.Character.SpecialActions;
+using System;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
@@ -31,6 +32,8 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField]
         private Animator _animator;
 
+        public event Action OnStartJumping;
+
         
         #region Public Methods
 
@@ -39,7 +42,6 @@ namespace GlimmerOfHope.Gameplay
         {
             Debug.Log($"[Jump] PerformJump called with jumpForce: {jumpForce}");
             if (!_playerMovement.IsGrounded()) return;
-
             if (jumpForce < _jumpImpulseLimit)
             {
                 if (_jumpVFX != null)
@@ -60,7 +62,9 @@ namespace GlimmerOfHope.Gameplay
             }
             _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
             _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            _animator.SetTrigger("Jump");
+            if (_animator != null)
+                _animator.SetTrigger("Jump");
+            OnStartJumping?.Invoke();
         }
 
         #endregion

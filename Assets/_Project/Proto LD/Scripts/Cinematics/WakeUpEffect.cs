@@ -75,7 +75,8 @@ public class WakeUpEffect : MonoBehaviour
                                                  duration: wakeUpDuration * 0.2f,
                                                  shakeMag: 0.05f));
 
-        t = 0f; float fallback1 = 0.18f;
+        t = 0f; 
+        float fallback1 = 0.18f;
         while (t < fallback1)
         {
             t += Time.deltaTime;
@@ -84,6 +85,7 @@ public class WakeUpEffect : MonoBehaviour
             if (vignette != null) vignette.intensity.value = Mathf.Lerp(0.55f, 0.88f, p);
             yield return null;
         }
+        OpenEyes(0.18f);
 
         //tenta 2
         yield return StartCoroutine(StruggleOpen(0.44f, 0.12f, 0.88f, 0.35f,
@@ -120,24 +122,7 @@ public class WakeUpEffect : MonoBehaviour
         }
 
         // clignement
-        t = 0f;
-        while (t < 0.06f)
-        {
-            t += Time.deltaTime;
-            float p = Mathf.Clamp01(t / 0.06f);
-            cineBars.barSize.value = Mathf.Lerp(0.05f, 0.5f, p);
-            vignette.intensity.value = Mathf.Lerp(0.28f, 0.95f, p);
-            yield return null;
-        }
-        t = 0f;
-        while (t < 0.09f)
-        {
-            t += Time.deltaTime;
-            float p = Mathf.Clamp01(t / 0.09f);
-            cineBars.barSize.value = Mathf.Lerp(0.5f, 0f, p);
-            vignette.intensity.value = Mathf.Lerp(0.95f, 0.2f, p);
-            yield return null;
-        }
+        Flash(0.06f, 0.09f);
 
         // fiin
         t = 0f; float finalPhase = 0.15f;
@@ -163,4 +148,37 @@ public class WakeUpEffect : MonoBehaviour
         cameraEndEnd.Priority = 0;
 
     }
+
+    public void Flash(float openTime, float closeTime)
+    {
+        CloseEyes(closeTime);
+        OpenEyes(openTime);
+    }
+
+    private IEnumerator CloseEyes(float time)
+    {
+        float t = 0f;
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / time);
+            cineBars.barSize.value = Mathf.Lerp(0.05f, 0.5f, p);
+            vignette.intensity.value = Mathf.Lerp(0.28f, 0.95f, p);
+            yield return null;
+        }
+    }
+    private IEnumerator OpenEyes(float time)
+    {
+        float t = 0f;
+        while (t < time)
+        {
+            t += Time.deltaTime;
+            float p = Mathf.Clamp01(t / time);
+            cineBars.barSize.value = Mathf.Lerp(0.5f, 0f, p);
+            vignette.intensity.value = Mathf.Lerp(0.95f, 0f, p);
+            yield return null;
+        }
+    }
+
+
 }
