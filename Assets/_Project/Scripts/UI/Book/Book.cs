@@ -121,9 +121,11 @@ namespace GlimmerOfHope.UI
 
             while (true)
             {
+                //get the wanted rotation in quaternion and with delta time apply the rotation to the page to have the rotate effect
                 Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
                 value += Time.deltaTime * _pageSpeed;
                 _pages[_index].rotation = Quaternion.Slerp(_pages[_index].rotation, targetRotation, value);
+                //get the differance between the wanted rotation and the actual rotation to know if we stop the anim
                 float angle1 = Quaternion.Angle(_pages[_index].rotation, targetRotation);
                 if (angle1 < 0.1f)
                 {
@@ -148,12 +150,13 @@ namespace GlimmerOfHope.UI
 
             while (true)
             {
+                //get the wanted rotation in quaternion and with delta time apply the rotation to the page to have the rotate effect
                 Quaternion targetRotation = Quaternion.Euler(0f, angle, 0f);
                 value += Time.deltaTime * _pageSpeed;
 
                 for (int i = startId; i < lastId; i++)
                     _pages[i].rotation = Quaternion.Slerp(_pages[i].rotation, targetRotation, value);
-
+                //get the differance between the wanted rotation and the actual rotation to know if we stop the anim
                 float angle1 = Quaternion.Angle(_pages[startId].rotation, targetRotation);
 
                 if (angle1 <= 90f && switchSibling)
