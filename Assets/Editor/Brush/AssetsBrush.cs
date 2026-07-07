@@ -259,12 +259,10 @@ public class BrushManagerEditor : Editor
 
                     if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
                     {
-                        GameObject newnewGO = Instantiate(
-                            newTemplate._asset,
-                            spawnPos,
-                            Quaternion.FromToRotation(Vector3.up, spawnHit.normal),
-                            drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
-                        );
+                        GameObject newnewGO = (GameObject)PrefabUtility.InstantiatePrefab(newTemplate._asset);
+
+                        newnewGO.transform.position = spawnPos;
+                        newnewGO.transform.parent = drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform;
                         // Random rotation and scale
                         if (!newTemplate._fullRotation)
                         {
