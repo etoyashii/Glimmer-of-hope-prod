@@ -1,6 +1,4 @@
-using Codice.CM.Common;
 using System;
-using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -47,9 +45,16 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         #region Public Properties
 
         public Vector3 MoveDirection => _targetMoveDirection;
+        public float GroundCheckDistance => _groundCheckDistance;
+
+        public bool IsSwimming
+        {
+            get => _isSwimming;
+
+            set => _isSwimming = value;
+        }
 
         public RaycastHit lastHit;
-
         #endregion
 
         #region Event Actions
@@ -68,6 +73,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         private Vector3 _airCurrentForce = Vector3.zero;
         private bool _inAirCurrent = false;
         private Animator _animator;
+        private bool _isSwimming = false;
 
         #endregion
 
@@ -77,7 +83,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         {
             if (_rb == null)
                 _rb = GetComponent<Rigidbody>();
-            
+
             _rb.freezeRotation = true;
             _animator = GetComponent<Animator>();
             if (_animator == null)
@@ -115,20 +121,20 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public bool IsGrounded()
         {
-            if (_animator != null)
-                _animator.SetBool("IsGrounded", true);
+            _animator.SetBool("IsGrounded", true);
             return Physics.Raycast(transform.position, Vector3.down, out lastHit, _groundCheckDistance, _groundLayer);
         }
 
         public void SetMovementEnabled(bool enabled)
         {
             _movementEnabled = enabled;
-
             if (!enabled)
             {
+                _targetMoveDirection = Vector3.zero;
                 _input = Vector2.zero;
                 // Stop horizontal movement but preserve vertical (gravity)
-                _rb.linearVelocity = new Vector3(0f, _rb.linearVelocity.y, 0f);
+                _rb.linearVelocity = new Vector3(0f, 0f, 0f);
+                _animator.SetFloat("Speed", 0f);
             }
         }
 
@@ -152,7 +158,12 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             cameraForward.Normalize();
             cameraRight.Normalize();
 
-            _targetMoveDirection = (cameraRight * _input.x + cameraForward * _input.y).normalized;
+            if (_movementEnabled) _targetMoveDirection = (cameraRight * _input.x + cameraForward * _input.y).normalized;
+            else
+            {
+                _targetMoveDirection = Vector3.zero;
+                _input = Vector2.zero;
+            }
 
             if (_climbing != null && _climbing.climbing)
             {
@@ -164,21 +175,28 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 Vector3 climbVelocity = moveAlongWall * (_speed / 5f);
                 _rb.linearVelocity = climbVelocity;
             }
-            else if (new Vector3 (_input.x, 0f, _input.y).magnitude > 0.1f || (IsGrounded()))
+            else if (!IsGrounded() && !IsSwimming)
             {
-                // Normal ground/air movement � preserve vertical velocity
+                // Normal air movement preserve vertical velocity
+                _rb.useGravity = true;
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
 
                 _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
 
-
-                if (_animator != null)
-                    _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x,0, _rb.linearVelocity.z).magnitude);
+            }
+            else
+            {
+                // Normal ground movement nulify gravity 
+                _rb.useGravity = false;
+                Vector3 targetVelocity = _targetMoveDirection * _speed;
+                _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
 
             }
 
+
+            _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude);
 
         }
 
