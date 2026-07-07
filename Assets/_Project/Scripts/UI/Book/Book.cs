@@ -64,7 +64,7 @@ namespace GlimmerOfHope.UI
             }
             else
             {
-                LeftAction(pageId - 2);
+                LeftAction(pageId - 1);
 
                 StartCoroutine(Rotates(0, false, pageId - 1, _index + 1));
             }
