@@ -8,7 +8,7 @@ Shader "Custom/StencilReadTexture"
 
     SubShader
     {
-        Tags { "RenderType" = "Transparent" "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent+1"}
+        Tags { "RenderType" = "Opaque" "RenderPipeline" = "UniversalPipeline" "Queue" = "Transparent+1"}
 
         Pass
         {
