@@ -77,21 +77,23 @@ namespace GlimmerOfHope.Editor.Tools
             return candidate;
         }
 
-        // Order matters: the first matching rule wins, so reject cheap cases before the LOD ones.
+        // Order matters: the first matching rule wins. Mass-instanced decoration is caught before the
+        // small/low-poly skips, otherwise thousands of tiny foliage instances get skipped instead of culled.
         private static LODStrategy Recommend(LODCandidate c)
         {
-            // Skip rules — anything we cannot or should not decimate.
             if (c.IsSkinned) { c.Reason = "Mesh skinné"; return LODStrategy.Skip; }     // animated meshes break under simplification
             if (IsUI(c.Renderer)) { c.Reason = "Layer UI"; return LODStrategy.Skip; }   // UI never benefits from distance LOD
-            if (c.TriangleCount < LODSettings.MIN_TRIANGLES) { c.Reason = "Trop peu de triangles"; return LODStrategy.Skip; }
-            if (c.BoundsSize < LODSettings.MIN_BOUNDS) { c.Reason = "Objet minuscule"; return LODStrategy.Skip; }
 
-            // Mass-instanced decoration: cull aggressively when small on screen, the gain scales with the instance count.
+            // Mass-instanced decoration: the win is distance culling and it scales with the count, so it
+            // beats the size/triangle skips (grass, bushes, small flowers are exactly what must be culled).
             if (c.InstanceCount >= LODSettings.MASS_INSTANCE_COUNT || NameMatches(c.Renderer.name, LODSettings.MASS_KEYWORDS))
             {
                 c.Reason = "Déco mass-instanciée";
                 return LODStrategy.LODGroup;
             }
+
+            if (c.TriangleCount < LODSettings.MIN_TRIANGLES) { c.Reason = "Trop peu de triangles"; return LODStrategy.Skip; }
+            if (c.BoundsSize < LODSettings.MIN_BOUNDS) { c.Reason = "Objet minuscule"; return LODStrategy.Skip; }
 
             // Large structures (ground, walls...) stay on screen, so keep a low LOD instead of culling them to nothing.
             if (c.BoundsSize >= LODSettings.LARGE_BOUNDS || NameMatches(c.Renderer.name, LODSettings.STRUCTURE_KEYWORDS))
