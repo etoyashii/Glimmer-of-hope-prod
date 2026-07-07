@@ -106,7 +106,7 @@ namespace GlimmerOfHope.Gameplay.AutoTerrainLayer
                             }
 
                             float center = (min + max) * 0.5f;
-                            float halfRange = (max - min) * 0.5f;
+                            float halfRange = (max - min) * 0.75f;
                             float opacity = 1f;
 
                             if (halfRange > 0f)

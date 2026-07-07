@@ -52,8 +52,7 @@ namespace GlimmerOfHope.Gameplay
         #region UnityLifecycle
         private void Awake()
         {
-            _skillLearningManager._skillTypeUnlocked += ShowCombo;
-
+            _skillLearningManager._skillTypeUnlocked += NewSkillLearned;
         }
         private void Start()
         {
@@ -67,7 +66,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnDisable()
         {
-            _skillLearningManager._skillTypeUnlocked -= ShowCombo;
+            _skillLearningManager._skillTypeUnlocked -= NewSkillLearned;
         }
 
         #endregion
@@ -87,8 +86,9 @@ namespace GlimmerOfHope.Gameplay
 
         #region PrivateMethods
 
-        public void ShowCombo(int index)
+        private void NewSkillLearned(int index)
         {
+            
             StartCoroutine(RevealCombo(0.4f, 0.2f, index));
         }
 
@@ -159,8 +159,6 @@ namespace GlimmerOfHope.Gameplay
 
         private IEnumerator RevealCombo(float t1, float t2, int index)
         {
-            yield return new WaitForSeconds(t1);
-
             int comboLength = _comboList[index]._combo.Count;
             Debug.Log(index);
 

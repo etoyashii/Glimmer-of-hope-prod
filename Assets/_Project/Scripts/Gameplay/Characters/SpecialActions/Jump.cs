@@ -7,6 +7,11 @@ namespace GlimmerOfHope.Gameplay
     /// <summary>
     /// To make the player Jump
     /// </summary>
+    #region Dependancies
+
+    [RequireComponent(typeof(Rigidbody))]
+
+    #endregion
     public class Jump : MonoBehaviour
     {
         #region SerializedField

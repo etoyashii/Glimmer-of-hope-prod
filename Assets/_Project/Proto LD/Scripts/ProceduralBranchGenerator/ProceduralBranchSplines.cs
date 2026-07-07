@@ -4,7 +4,6 @@ using UnityEngine.Splines;
 using Unity.Mathematics;
 using System.Linq;
 
-#if UNITY_EDITOR
 /// <summary>
 /// Generate the branches recursively, 
 /// add the splines then link the splines child begin knot to their parent knot assigment
@@ -284,5 +283,3 @@ public class ProceduralBranchSplines : MonoBehaviour
     }
     #endregion
 }
-
-#endif

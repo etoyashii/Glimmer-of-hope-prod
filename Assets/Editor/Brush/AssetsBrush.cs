@@ -3,6 +3,7 @@ using NaughtyAttributes.Test;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using UnityEditor;
+using UnityEditor.Build.Reporting;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -13,6 +14,20 @@ using UnityEngine.UIElements;
 public class BrushManagerEditor : Editor
 {
     private Vector3 _lastClearPosition = Vector3.positiveInfinity;
+
+    public Vector2 WorldToSplatAlpha(BrushManager drawer, Vector3 worldPos)
+    {
+        Vector3 terrainPos = drawer.UsedTerrain.transform.position;
+        Vector3 terrainSize = drawer.UsedTerrain.terrainData.size;
+
+        float u = (worldPos.x - terrainPos.x) / terrainSize.x;
+        float v = (worldPos.z - terrainPos.z) / terrainSize.z;
+
+        u = Mathf.Clamp01(u);
+        v = Mathf.Clamp01(v);
+
+        return new Vector2(u, v);
+    }
 
     private AssetTemplate GetTemplateByWeight(BrushManager drawer)
     {
@@ -47,6 +62,46 @@ public class BrushManagerEditor : Editor
             if (reste > 0) i++;
         }
         return activeAssets[i];
+    }
+
+    /// <summary>
+    /// Moves every direct child of a TempParent between placedAssets and unplacedAssets lists.
+    /// Used when an entire TempParent (a brush stroke) is moved between active/inactive storage.
+    /// </summary>
+    private void MoveTempParentChildren(Transform tempParent, List<Transform> from, List<Transform> to)
+    {
+        foreach (Transform child in tempParent)
+        {
+            from.Remove(child);
+            if (!to.Contains(child))
+                to.Add(child);
+        }
+    }
+
+    /// <summary>
+    /// Walks up from a hit collider to find the placed asset root:
+    /// the direct child of a TempParent (itself a direct child of StokageAssets).
+    /// Returns null if no such root is found.
+    /// </summary>
+    private Transform GetPlacedAssetRoot(BrushManager drawer, Transform t)
+    {
+        while (t != null)
+        {
+            if (t.parent != null && t.parent.parent == drawer.StokageAssets.transform)
+                return t; // t is a direct child of a TempParent under StokageAssets
+            t = t.parent;
+        }
+        return null;
+    }
+
+    /// <summary>
+    /// Removes destroyed (null) references from both tracking lists.
+    /// Call after any DestroyImmediate that could affect placed/unplaced assets.
+    /// </summary>
+    private void PurgeDestroyedRefs(BrushManager drawer)
+    {
+        drawer.placedAssets.RemoveAll(t => t == null);
+        drawer.unplacedAssets.RemoveAll(t => t == null);
     }
 
     private void OnSceneGUI()
@@ -86,28 +141,34 @@ public class BrushManagerEditor : Editor
                 Debug.Log(lastActionWasAdd);
                 if (lastActionWasAdd)
                 {
-                    // Undo: move last placed asset to inactive storage
+                    // Undo: move last placed TempParent (and its children) to inactive storage
                     if (drawer.StokageAssets.transform.childCount > 0)
                     {
-                        GameObject toDelete = drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).gameObject;
-                        toDelete.transform.parent = drawer.StokageAssetsUseless.transform;
-                        toDelete.SetActive(false);
+                        Transform toDelete = drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1);
+                        MoveTempParentChildren(toDelete, drawer.placedAssets, drawer.unplacedAssets);
+                        toDelete.gameObject.SetActive(false);
+                        toDelete.SetParent(drawer.StokageAssetsUseless.transform);
                     }
                     // Limit inactive storage size
                     if (drawer.StokageAssetsUseless.transform.childCount > drawer.RevertNumber)
                     {
-                        DestroyImmediate(drawer.StokageAssetsUseless.transform.GetChild(0).gameObject);
+                        Transform oldest = drawer.StokageAssetsUseless.transform.GetChild(0);
+                        // These children are about to be destroyed permanently: drop them from tracking
+                        foreach (Transform child in oldest)
+                            drawer.unplacedAssets.Remove(child);
+                        DestroyImmediate(oldest.gameObject);
                     }
                     e.Use();
                 }
                 else
                 {
-                    // Redo: move last deleted asset back to active storage
+                    // Redo: move last deleted TempParent (and its children) back to active storage
                     if (drawer.StokageAssetsUseless.transform.childCount > 0)
                     {
-                        GameObject toDelete = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).gameObject;
-                        toDelete.transform.parent = drawer.StokageAssets.transform;
-                        toDelete.SetActive(true);
+                        Transform toDelete = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1);
+                        toDelete.SetParent(drawer.StokageAssets.transform);
+                        toDelete.gameObject.SetActive(true);
+                        MoveTempParentChildren(toDelete, drawer.unplacedAssets, drawer.placedAssets);
                     }
                     e.Use();
                 }
@@ -116,23 +177,25 @@ public class BrushManagerEditor : Editor
             {
                 if (lastActionWasAdd)
                 {
-                    // Redo: move last deleted asset back to active storage
+                    // Redo: move last deleted TempParent (and its children) back to active storage
                     if (drawer.StokageAssetsUseless.transform.childCount > 0)
                     {
-                        GameObject toAdd = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).gameObject;
-                        toAdd.transform.parent = drawer.StokageAssets.transform;
-                        toAdd.SetActive(true);
+                        Transform toAdd = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1);
+                        toAdd.SetParent(drawer.StokageAssets.transform);
+                        toAdd.gameObject.SetActive(true);
+                        MoveTempParentChildren(toAdd, drawer.unplacedAssets, drawer.placedAssets);
                     }
                     e.Use();
                 }
                 else
                 {
-                    // Undo: move last placed asset to inactive storage
+                    // Undo: move last placed TempParent (and its children) to inactive storage
                     if (drawer.StokageAssets.transform.childCount > 0)
                     {
-                        GameObject toAdd = drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).gameObject;
-                        toAdd.transform.parent = drawer.StokageAssetsUseless.transform;
-                        toAdd.SetActive(false);
+                        Transform toAdd = drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1);
+                        MoveTempParentChildren(toAdd, drawer.placedAssets, drawer.unplacedAssets);
+                        toAdd.gameObject.SetActive(false);
+                        toAdd.SetParent(drawer.StokageAssetsUseless.transform);
                     }
                     e.Use();
                 }
@@ -179,7 +242,10 @@ public class BrushManagerEditor : Editor
                 newGO.SetActive(false);
                 if (drawer.StokageAssetsUseless.transform.childCount > drawer.RevertNumber)
                 {
-                    DestroyImmediate(drawer.StokageAssetsUseless.transform.GetChild(0).gameObject);
+                    Transform oldest = drawer.StokageAssetsUseless.transform.GetChild(0);
+                    foreach (Transform child in oldest)
+                        drawer.unplacedAssets.Remove(child);
+                    DestroyImmediate(oldest.gameObject);
                 }
                 e.Use();
             }
@@ -190,13 +256,15 @@ public class BrushManagerEditor : Editor
         {
             _lastClearPosition = Vector3.positiveInfinity;
 
-            if (!deleteMod && !clearMod && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
+            if (!deleteMod && !clearMod && drawer.StokageAssets.transform.childCount > 0
+                && drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).childCount == 0)
             {
                 drawer._actualColor = Color.green;
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
             }
-            if ((deleteMod || clearMod) && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
+            if ((deleteMod || clearMod) && drawer.StokageAssetsUseless.transform.childCount > 0
+                && drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).childCount == 0)
             {
                 drawer._lastActionWasAdd = !drawer._lastActionWasAdd;
                 lastActionWasAdd = drawer._lastActionWasAdd;
@@ -215,6 +283,9 @@ public class BrushManagerEditor : Editor
                     DestroyImmediate(child.gameObject);
                 }
             }
+
+            // Safety net: drop any references that got destroyed along the way
+            PurgeDestroyedRefs(drawer);
         }
 
         // Place assets on left mouse drag
@@ -251,6 +322,10 @@ public class BrushManagerEditor : Editor
                 if (Vector3.Angle(Vector3.up, spawnHit.normal) > drawer.MaxSlopeAngle)
                     continue;
 
+                // Skip if terrain layer filter is enabled and position is not on the required layer
+                if (!drawer.IsOnTerrainLayer(spawnPos))
+                    continue;
+
                 AssetTemplate newTemplate = GetTemplateByWeight(drawer);
                 if (newTemplate != null)
                 {
@@ -259,15 +334,33 @@ public class BrushManagerEditor : Editor
 
                     if (hitColliders.Length == 0 && drawer.StokageAssets.transform.childCount > 0)
                     {
-                        GameObject newnewGO = (GameObject)PrefabUtility.InstantiatePrefab(newTemplate._asset);
-
-                        newnewGO.transform.position = spawnPos;
-                        newnewGO.transform.parent = drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform;
+                        GameObject newnewGO = Instantiate(
+                            newTemplate._asset,
+                            spawnPos,
+                            Quaternion.FromToRotation(Vector3.up, spawnHit.normal),
+                            drawer.StokageAssets.transform.GetChild(drawer.StokageAssets.transform.childCount - 1).transform
+                        );
                         // Random rotation and scale
                         if (!newTemplate._fullRotation)
                         {
-                            //newnewGO.transform.Rotate(Vector3.right, -90f - newTemplate._rotation);
-                            newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                            Vector3 temp = new Vector3(newnewGO.transform.rotation.x, newnewGO.transform.rotation.y, newnewGO.transform.rotation.z);
+                            temp += newTemplate._rotation;
+                            newnewGO.transform.Rotate(temp);
+                            if (!newTemplate._noRandomRotation)
+                            {
+                                switch (newTemplate._rotationType)
+                                {
+                                    case rotationType.xRotation:
+                                        newnewGO.transform.Rotate(Vector3.right, Random.Range(0, 360f));
+                                        break;
+                                    case rotationType.yRotation:
+                                        newnewGO.transform.Rotate(Vector3.up, Random.Range(0, 360f));
+                                        break;
+                                    case rotationType.zRotation:
+                                        newnewGO.transform.Rotate(Vector3.forward, Random.Range(0, 360f));
+                                        break;
+                                }
+                            }
                         }
                         else
                         {
@@ -277,6 +370,9 @@ public class BrushManagerEditor : Editor
                         }
                         float newScale = Random.Range(newTemplate._limiteSize.x, newTemplate._limiteSize.y);
                         newnewGO.transform.localScale = newnewGO.transform.localScale * newScale * drawer.SizeMult;
+
+                        // Track the placed root (direct child of the current TempParent)
+                        drawer.placedAssets.Add(newnewGO.transform);
                     }
                 }
             }
@@ -290,9 +386,21 @@ public class BrushManagerEditor : Editor
             Ray worldRay = HandleUtility.GUIPointToWorldRay(e.mousePosition);
             Physics.Raycast(worldRay, out hit);
             Collider[] hitColliders = Physics.OverlapSphere(hit.point, drawer._circleRadius, layerMaskWithoutGround);
-            foreach (Collider collider in hitColliders)
+
+            if (drawer.StokageAssetsUseless.transform.childCount > 0)
             {
-                collider.gameObject.transform.parent = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).transform;
+                Transform destination = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1);
+                foreach (Collider collider in hitColliders)
+                {
+                    // Walk up from the hit collider to find the actual tracked root
+                    Transform root = GetPlacedAssetRoot(drawer, collider.transform);
+                    if (root != null && drawer.placedAssets.Contains(root))
+                    {
+                        root.SetParent(destination);
+                        drawer.placedAssets.Remove(root);
+                        drawer.unplacedAssets.Add(root);
+                    }
+                }
             }
         }
         else if (clearMod && e.button == 0 && (e.type == EventType.MouseDown || e.type == EventType.MouseDrag))
@@ -313,12 +421,22 @@ public class BrushManagerEditor : Editor
 
             int layerMaskWithoutGround = ~drawer.GroundLayerMask;
             Collider[] hitColliders = Physics.OverlapSphere(hit.point, drawer._circleRadius, layerMaskWithoutGround);
-            foreach (Collider collider in hitColliders)
+
+            if (drawer.StokageAssetsUseless.transform.childCount > 0)
             {
-                if (Random.Range(0, 100) < drawer.ProbClearAssets)
+                Transform destination = drawer.StokageAssetsUseless.transform.GetChild(drawer.StokageAssetsUseless.transform.childCount - 1);
+                foreach (Collider collider in hitColliders)
                 {
-                    collider.gameObject.transform.parent = drawer.StokageAssetsUseless.transform
-                        .GetChild(drawer.StokageAssetsUseless.transform.childCount - 1).transform;
+                    if (Random.Range(0, 100) < drawer.ProbClearAssets)
+                    {
+                        Transform root = GetPlacedAssetRoot(drawer, collider.transform);
+                        if (root != null && drawer.placedAssets.Contains(root))
+                        {
+                            root.SetParent(destination);
+                            drawer.placedAssets.Remove(root);
+                            drawer.unplacedAssets.Add(root);
+                        }
+                    }
                 }
             }
             e.Use();

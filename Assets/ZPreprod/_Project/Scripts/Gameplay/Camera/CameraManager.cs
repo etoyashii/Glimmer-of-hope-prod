@@ -15,7 +15,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
         public int maxDist = 20;
         public Canvas canvas;
 
-        //       public SO_PhotoTask photoTask;
+        public SO_PhotoTask photoTask;
 
         public GameObject[] switchVisibility;
 
@@ -38,10 +38,10 @@ namespace GlimmerOfHope.Gameplay.GCamera
             _photo = GetComponent<Photo>();
 
             _pictarblesObject = FindObjectsByType<PicturabelObject>(FindObjectsSortMode.None);
-
+            
             _cameraObj = Camera.main.gameObject;
 
-  //          photoTask.Init(canvas);
+            photoTask.Init(canvas);
 
             ChangeEffectVisibility(false);
         }
@@ -54,7 +54,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
             //    SwitchView();
             //}
 
-            if (Keyboard.current.cKey.wasPressedThisFrame && _isInPhotoMode)
+            if(Keyboard.current.cKey.wasPressedThisFrame && _isInPhotoMode)
             {
                 ChangeEffectVisibility(false);
                 //_photo.TakeShot();
@@ -74,7 +74,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
                         if (dist > maxDist)
                         {
                             po.EffectVisible(false);
-  //                          photoTask.CheckName(po.gameObject.name, false);
+                            photoTask.CheckName(po.gameObject.name, false);
                             continue;
                         }
 
@@ -84,19 +84,19 @@ namespace GlimmerOfHope.Gameplay.GCamera
                             if (hit.collider.gameObject == po.gameObject)
                             {
                                 po.EffectVisible(true);
-//                                photoTask.CheckName(po.gameObject.name);
+                                photoTask.CheckName(po.gameObject.name);
                             }
                             else
                             {
                                 po.EffectVisible(false);
-//                                photoTask.CheckName(po.gameObject.name, false);
+                                photoTask.CheckName(po.gameObject.name, false);
                             }
                         }
                     }
                     else
                     {
                         po.EffectVisible(false);
-      //                  photoTask.CheckName(po.gameObject.name, false);
+                        photoTask.CheckName(po.gameObject.name, false);
                     }
                 }
             }
@@ -114,7 +114,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
             }
 
             //canvas.gameObject.SetActive(visible);
-            //photoTask.SetTextVisibility(visible);
+            photoTask.SetTextVisibility(visible);
         }
 
         public void SwitchView()
@@ -125,7 +125,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
             ChangeEffectVisibility(_isInPhotoMode);
 
             //disable other part of the canva when in photo mode
-            foreach (GameObject go in switchVisibility)
+            foreach(GameObject go in switchVisibility)
             {
                 go.SetActive(!go.activeInHierarchy);
             }
