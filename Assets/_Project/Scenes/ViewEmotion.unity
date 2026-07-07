@@ -440,7 +440,7 @@ VisualEffect:
   m_InitialEventNameOverriden: 0
   m_StartSeed: 0
   m_ResetSeedOnPlay: 1
-  m_AllowInstancing: 1
+  m_AllowInstancing: 0
   m_ResourceVersion: 1
   m_PropertySheet:
     m_Float:
@@ -520,12 +520,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 462334578}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.99328685, z: -0, w: -0.11567751}
-  m_LocalPosition: {x: 0, y: 1.56, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: 0, w: 1}
+  m_LocalPosition: {x: 4.4233, y: 0.54999995, z: 12.8587}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1333695268}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &876369915
 GameObject:
@@ -731,6 +731,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2837012463356123785, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4373617817100708004, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -879,9 +883,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 680fc2c5a0d0d504a91d823b21892347, type: 3}
       insertIndex: -1
       addedObject: {fileID: 140639922}
-    - targetCorrespondingSourceObject: {fileID: -8679921383154817045, guid: 680fc2c5a0d0d504a91d823b21892347, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 462334581}
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 680fc2c5a0d0d504a91d823b21892347, type: 3}
       insertIndex: -1
@@ -912,6 +913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2131aac0b00a8146a473c38bf0ea6c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.VFX_Emotion
+  manager: {fileID: 414687856}
   vfx: {fileID: 462334579}
   color: {r: 1, g: 0, b: 0, a: 0}
   amplitude: 0.01
@@ -933,3 +935,4 @@ SceneRoots:
   - {fileID: 876369917}
   - {fileID: 1333695267}
   - {fileID: 1240772138}
+  - {fileID: 462334581}
