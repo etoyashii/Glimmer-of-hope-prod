@@ -68,7 +68,7 @@ namespace GlimmerOfHope.Core.Bootstrap
                 // Auto-save on pause (mobile)
                 if (ServiceLocator.TryGet<SaveManager>(out var saveManager))
                 {
-                    saveManager.Save();
+                    saveManager.SaveAll();
                 }
             }
         }

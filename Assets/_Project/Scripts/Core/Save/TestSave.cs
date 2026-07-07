@@ -9,14 +9,27 @@ namespace GlimmerOfHope.Core
         private void Awake()
         {
             // Enregistre le SaveManager comme service
-            ServiceLocator.Register(new SaveManager());
+            #if DEVELOPMENT_BUILD || UNITY_EDITOR
+                        ServiceLocator.Register(new SaveManager());      // JSON clair
+            #else
+                ServiceLocator.Register(new SecureSaveManager()); // Chiffré
+            #endif
         }
 
         public void Save() {
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
+
             if (ServiceLocator.TryGet<SaveManager>(out var sm))
             {
                 sm.NewGame();
-            } 
+            }
+#else
+            if (ServiceLocator.TryGet<SecureSaveManager>(out var sm))
+            {
+                sm.NewGame();
+            }
+#endif
+
         }
     }
 }

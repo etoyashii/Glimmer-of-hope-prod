@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 using UnityEngine;
-using GlimmerOfHope.Core.Services;
 
 namespace GlimmerOfHope.Core.Save
 {
@@ -11,20 +10,27 @@ namespace GlimmerOfHope.Core.Save
     /// Secure save manager with encryption and checksum validation.
     /// Post-MVP implementation (ADR-006).
     /// </summary>
-    public class SecureSaveManager : IService
+    public class SecureSaveManager : SaveManager
     {
-        private const string SaveFileName = "save.dat";
+        private const string ProgressionSaveFileName = "ProgressionSave.dat";
+        private const string PreferencesSaveFileName = "PreferencecesSave.dat";
+
+        //private const string SaveFileName = "save.dat";
+
         private const string ChecksumSuffix = ".checksum";
 
         // Production: use secure key storage (keychain, etc.)
         private readonly byte[] _encryptionKey;
         private readonly byte[] _iv;
 
-        public SaveData CurrentSave { get; private set; }
-        public bool HasSave => File.Exists(SavePath);
+        new public SaveData CurrentSave { get; private set; }
+        new public bool HasSave => File.Exists(ProgressionSavePath) && File.Exists(PreferencesSavePath);
 
-        private string SavePath => Path.Combine(Application.persistentDataPath, SaveFileName);
-        private string ChecksumPath => SavePath + ChecksumSuffix;
+        private string ProgressionSavePath => Path.Combine(Application.persistentDataPath, ProgressionSaveFileName);
+        private string PreferencesSavePath => Path.Combine(Application.persistentDataPath, PreferencesSaveFileName);
+
+        private string ChecksumPath1 => ProgressionSavePath + ChecksumSuffix;
+        private string ChecksumPath2 => PreferencesSavePath + ChecksumSuffix;
 
         public SecureSaveManager()
         {
@@ -37,11 +43,11 @@ namespace GlimmerOfHope.Core.Save
             Array.Copy(_encryptionKey, _iv, 16);
         }
 
-        public void Initialize()
+        override public  void Initialize() 
         {
             if (HasSave)
             {
-                if (!Load())
+                if (!LoadAll())
                 {
                     Debug.LogWarning("[SecureSaveManager] Save corrupted or tampered. Starting fresh.");
                     CurrentSave = new SaveData();
@@ -53,22 +59,24 @@ namespace GlimmerOfHope.Core.Save
             }
         }
 
-        public void Shutdown()
+        override public void Shutdown() 
         {
-            Save();
+            SaveAll();
         }
 
-        public void Save()
+        override public void SaveProgression()
         {
             try
             {
                 CurrentSave.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-                var json = JsonUtility.ToJson(CurrentSave);
+                var json = JsonUtility.ToJson(CurrentSave.progression);
+                File.WriteAllText(ProgressionSavePath, json);
+               
                 var encrypted = Encrypt(json);
                 var checksum = ComputeChecksum(encrypted);
-
-                File.WriteAllBytes(SavePath, encrypted);
-                File.WriteAllText(ChecksumPath, checksum);
+               
+                File.WriteAllBytes(ProgressionSavePath, encrypted);
+                File.WriteAllText(ChecksumPath1, checksum);            
 
                 Debug.Log("[SecureSaveManager] Game saved securely.");
             }
@@ -76,37 +84,100 @@ namespace GlimmerOfHope.Core.Save
             {
                 Debug.LogError($"[SecureSaveManager] Failed to save: {e.Message}");
             }
+
         }
 
-        public bool Load()
+        override public void SavePreferences()
         {
             try
             {
-                if (!HasSave)
+                CurrentSave.timestamp = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+                var json = JsonUtility.ToJson(CurrentSave.preferences);
+                File.WriteAllText(PreferencesSavePath, json);
+
+                var encrypted = Encrypt(json);
+                var checksum = ComputeChecksum(encrypted);
+
+                File.WriteAllBytes(PreferencesSavePath, encrypted);
+                File.WriteAllText(ChecksumPath2, checksum);
+
+                Debug.Log("[SecureSaveManager] Game saved securely.");
+
+            }
+            catch (Exception e)
+            {
+                Debug.LogError($"[SaveManager] Failed to save: {e.Message}");
+            }
+
+        }
+
+        override public void SaveAll()
+        {
+            this.SaveProgression();
+            this.SavePreferences();
+        }
+
+        override public bool LoadAll()
+        {
+            try
+            {
+                /// SAVE PROGRESSION
                 {
-                    CurrentSave = new SaveData();
-                    return true;
-                }
-
-                var encrypted = File.ReadAllBytes(SavePath);
-
-                // Verify checksum
-                if (File.Exists(ChecksumPath))
-                {
-                    var storedChecksum = File.ReadAllText(ChecksumPath);
-                    var computedChecksum = ComputeChecksum(encrypted);
-
-                    if (storedChecksum != computedChecksum)
+                    if (!HasSave)
                     {
-                        Debug.LogWarning("[SecureSaveManager] Checksum mismatch. Save may be corrupted.");
-                        return false;
+                        CurrentSave = new SaveData();
+                        return true;
                     }
+
+                    var encrypted = File.ReadAllBytes(ProgressionSavePath);
+
+                    // Verify checksum
+                    if (File.Exists(ChecksumPath1))
+                    {
+                        var storedChecksum = File.ReadAllText(ChecksumPath1);
+                        var computedChecksum = ComputeChecksum(encrypted);
+
+                        if (storedChecksum != computedChecksum)
+                        {
+                            Debug.LogWarning("[SecureSaveManager] Checksum mismatch. Save may be corrupted.");
+                            return false;
+                        }
+                    }
+
+                    var json = Decrypt(encrypted);
+                    CurrentSave.progression = JsonUtility.FromJson<ProgressionData>(json);
+
+                    Debug.Log("[SecureSaveManager] Game loaded securely.");
+                }
+                /// SAVE PREFERENCES
+                {
+                    if (!HasSave)
+                    {
+                        CurrentSave = new SaveData();
+                        return true;
+                    }
+
+                    var encrypted = File.ReadAllBytes(PreferencesSavePath);
+
+                    // Verify checksum
+                    if (File.Exists(ChecksumPath2))
+                    {
+                        var storedChecksum = File.ReadAllText(ChecksumPath2);
+                        var computedChecksum = ComputeChecksum(encrypted);
+
+                        if (storedChecksum != computedChecksum)
+                        {
+                            Debug.LogWarning("[SecureSaveManager] Checksum mismatch. Save may be corrupted.");
+                            return false;
+                        }
+                    }
+
+                    var json = Decrypt(encrypted);
+                    CurrentSave.preferences = JsonUtility.FromJson<PreferencesData>(json);
+
+                    Debug.Log("[SecureSaveManager] Game loaded securely.");
                 }
 
-                var json = Decrypt(encrypted);
-                CurrentSave = JsonUtility.FromJson<SaveData>(json);
-
-                Debug.Log("[SecureSaveManager] Game loaded securely.");
                 return true;
             }
             catch (Exception e)
@@ -115,7 +186,11 @@ namespace GlimmerOfHope.Core.Save
                 return false;
             }
         }
-
+        override public void NewGame()
+        {
+            CurrentSave = new SaveData();
+            this.SaveAll();
+        }
         private byte[] Encrypt(string plainText)
         {
             using var aes = Aes.Create();

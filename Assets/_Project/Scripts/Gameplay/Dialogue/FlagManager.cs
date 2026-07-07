@@ -128,7 +128,7 @@ namespace GlimmerOfHope.Gameplay.Dialogue
             if (_saveManager?.CurrentSave?.progression != null)
             {
                 _saveManager.CurrentSave.progression.dialogueFlags = new List<string>(_flags);
-                _saveManager.Save();
+                _saveManager.SaveAll();
             }
         }
 
