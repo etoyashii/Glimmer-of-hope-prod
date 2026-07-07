@@ -10,16 +10,80 @@ namespace GlimmerOfHope.Editor.Tools
         /// <summary>Builds every applicable candidate and returns how many were processed.</summary>
         public static int Apply(IReadOnlyList<LODCandidate> candidates, bool preferPrefab)
         {
-            int applied = 0;
+            var enabledPaths = EnableReadWriteForBlocked(candidates);
+            try
+            {
+                int applied = 0;
+                foreach (var c in candidates)
+                {
+                    if (!IsApplicable(c)) continue;
+                    if (ApplyOne(c, preferPrefab)) applied++;
+                }
+
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+                return applied;
+            }
+            finally
+            {
+                RestoreReadWrite(enabledPaths);
+            }
+        }
+
+        private static List<string> EnableReadWriteForBlocked(IReadOnlyList<LODCandidate> candidates)
+        {
+            var paths = new List<string>();
             foreach (var c in candidates)
             {
-                if (!IsApplicable(c)) continue;
-                if (ApplyOne(c, preferPrefab)) applied++;
+                if (!c.Enabled || c.Chosen == LODStrategy.Skip) continue;
+                if (c.IsSkinned || c.SourceMesh == null || c.IsReadable) continue;
+
+                string path = AssetDatabase.GetAssetPath(c.SourceMesh);
+                if (!string.IsNullOrEmpty(path) && !paths.Contains(path)) paths.Add(path);
+            }
+
+            var flipped = new List<string>();
+            foreach (string path in paths)
+            {
+                var importer = AssetImporter.GetAtPath(path) as ModelImporter;
+                if (importer == null || importer.isReadable) continue;
+
+                importer.isReadable = true;
+                importer.SaveAndReimport();
+                flipped.Add(path);
+            }
+
+            if (flipped.Count > 0) RefreshReadability(candidates);
+            return flipped;
+        }
+
+        private static void RefreshReadability(IReadOnlyList<LODCandidate> candidates)
+        {
+            foreach (var c in candidates)
+            {
+                if (c.Renderer == null) continue;
+
+                var mesh = LODClassifier.ResolveMesh(c.Renderer);
+                c.SourceMesh = mesh;
+                c.IsReadable = mesh != null && mesh.isReadable;
+            }
+        }
+
+        private static void RestoreReadWrite(List<string> paths)
+        {
+            if (paths.Count == 0) return;
+
+            foreach (string path in paths)
+            {
+                var importer = AssetImporter.GetAtPath(path) as ModelImporter;
+                if (importer == null || !importer.isReadable) continue;
+
+                importer.isReadable = false;
+                importer.SaveAndReimport();
             }
 
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-            return applied;
         }
 
         private static bool IsApplicable(LODCandidate c)
