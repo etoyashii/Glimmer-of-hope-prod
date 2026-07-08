@@ -8,31 +8,41 @@ using TouchPhase = UnityEngine.InputSystem.TouchPhase;
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
-    /// CameraController using either a swipe on the right side of the screen (mobile)
-    /// or a right-click + mouse drag (PC), depending on the current platform.
-    /// Use EnhancedTouchSupport to avoid conflict with other Touch Inputs.
+    /// CameraController using either:
+    /// - Mobile: swipe on the right side of the screen
+    /// - KeyboardMouse: right-click + mouse drag
+    /// - Gamepad: right stick
+    /// Switches automatically when InputManager.SetScheme() is called.
     /// </summary>
     [RequireComponent(typeof(CinemachineOrbitalFollow))]
     public class RightSideCameraController : MonoBehaviour
     {
         #region Serialized Fields
 
-        [Header("Sensibility")]
+        [Header("Sensitivity")]
         [SerializeField] private float _horizontalGain = 0.3f;
         [SerializeField] private float _verticalGain = 0.3f;
 
-        [Header("Active zone (mobile only)")]
+        [Header("Active Zone (Mobile only)")]
         [Range(0f, 1f)]
-        [Tooltip("Horizontal limit => every touches left are ignored")]
+        [Tooltip("Horizontal limit: touches to the left of this ratio are ignored.")]
         [SerializeField] private float _horizontalSplitRatio = 0.5f;
 
         [Range(0f, 1f)]
-        [Tooltip("Vertical limit => every touches under are ignored")]
+        [Tooltip("Vertical limit: touches below this ratio are ignored.")]
         [SerializeField] private float _verticalSplitRatio = 0.2f;
 
         [Header("References")]
         [Tooltip("Swipe action: One Modifier (Right Mouse Button) + Delta [Mouse], used on PC.")]
         [SerializeField] private InputActionReference _swipeAction;
+
+        [Tooltip("Right stick action for gamepad camera control.")]
+        [SerializeField] private InputActionReference _rightStickAction;
+
+        [Header("Gamepad Sensitivity")]
+        [Tooltip("Multiplier applied to the right stick value each frame.")]
+        [SerializeField] private float _gamepadHorizontalGain = 3f;
+        [SerializeField] private float _gamepadVerticalGain = 2f;
 
         #endregion
 
@@ -41,9 +51,7 @@ namespace GlimmerOfHope.Gameplay
         private CinemachineOrbitalFollow _orbitalFollow;
         private int _trackedFingerId = -1;
         private Vector2 _lookDelta;
-
-        // True on Desktop/Editor builds, false on mobile (Android/iOS)
-        private bool _useMouseInput;
+        private InputManager.ControlScheme _currentScheme;
 
         #endregion
 
@@ -52,48 +60,64 @@ namespace GlimmerOfHope.Gameplay
         private void Awake()
         {
             _orbitalFollow = GetComponent<CinemachineOrbitalFollow>();
-
-#if UNITY_ANDROID || UNITY_IOS
-            _useMouseInput = false;
-#else
-            _useMouseInput = true;
-#endif
         }
 
         private void OnEnable()
         {
-            if (_useMouseInput)
+            EnhancedTouchSupport.Enable();
+            _swipeAction.action.Enable();
+            _rightStickAction.action.Enable();
+
+            if (InputManager.Instance != null)
             {
-                _swipeAction.action.Enable();
-            }
-            else
-            {
-                EnhancedTouchSupport.Enable();
+                InputManager.Instance.OnSchemeChanged.AddListener(OnSchemeChanged);
+                _currentScheme = InputManager.Instance.CurrentScheme;
             }
         }
 
         private void OnDisable()
         {
-            if (_useMouseInput)
-            {
-                _swipeAction.action.Disable();
-            }
-            else
-            {
-                EnhancedTouchSupport.Disable();
-            }
+            EnhancedTouchSupport.Disable();
+            _swipeAction.action.Disable();
+            _rightStickAction.action.Disable();
+
+            if (InputManager.Instance != null)
+                InputManager.Instance.OnSchemeChanged.RemoveListener(OnSchemeChanged);
         }
 
         private void Update()
         {
             _lookDelta = Vector2.zero;
 
-            if (_useMouseInput)
-                UpdateMouseLook();
-            else
-                UpdateTouchLook();
+            switch (_currentScheme)
+            {
+                case InputManager.ControlScheme.Mobile:
+                    UpdateTouchLook();
+                    break;
+
+                case InputManager.ControlScheme.KeyboardMouse:
+                    UpdateMouseLook();
+                    break;
+
+                case InputManager.ControlScheme.Gamepad:
+                    UpdateGamepadLook();
+                    break;
+            }
 
             ApplyCameraRotation();
+        }
+
+        #endregion
+
+        #region Private Methods — Scheme
+
+        private void OnSchemeChanged(InputManager.ControlScheme scheme)
+        {
+            _currentScheme = scheme;
+
+            // Release any tracked touch immediately when leaving mobile
+            if (scheme != InputManager.ControlScheme.Mobile && _trackedFingerId != -1)
+                ReleaseLook();
         }
 
         #endregion
@@ -102,9 +126,23 @@ namespace GlimmerOfHope.Gameplay
 
         private void UpdateMouseLook()
         {
-            // The action is only "performed" while the Right Mouse Button modifier is held,
-            // so reading its value already gives us drag delta or zero otherwise.
+            // The action only fires while Right Mouse Button is held
             _lookDelta = _swipeAction.action.ReadValue<Vector2>();
+        }
+
+        #endregion
+
+        #region Private Methods — Gamepad
+
+        private void UpdateGamepadLook()
+        {
+            Vector2 stick = _rightStickAction.action.ReadValue<Vector2>();
+
+            // Scale by gains and deltaTime so speed is frame-rate independent
+            _lookDelta = new Vector2(
+                stick.x * _gamepadHorizontalGain * Time.deltaTime * 100f,
+                stick.y * _gamepadVerticalGain * Time.deltaTime * 100f
+            );
         }
 
         #endregion
@@ -142,7 +180,6 @@ namespace GlimmerOfHope.Gameplay
         {
             if (_trackedFingerId != -1) return;
             if (!IsInRightZone(touch.screenPosition)) return;
-
             _trackedFingerId = touch.touchId;
         }
 

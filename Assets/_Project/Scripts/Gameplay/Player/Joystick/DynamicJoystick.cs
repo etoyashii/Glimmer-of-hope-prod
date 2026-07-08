@@ -10,47 +10,76 @@ namespace GlimmerOfHope.Gameplay
     /// <summary>
     /// A dynamically placed joystick only on the left side of the screen.
     /// Using EnhancedTouchSupport to avoid conflicts with other Touch Inputs.
+    /// Automatically disables itself when the active scheme is not Mobile.
     /// </summary>
     public class DynamicJoystick : MonoBehaviour
     {
         #region Serialized Fields
-        [Header("Références UI")]
+
+        [Header("UI References")]
         [SerializeField] private RectTransform _joystickBackground;
         [SerializeField] private RectTransform _joystickHandle;
         [SerializeField] private CanvasGroup _canvasGroup;
         [SerializeField] private Canvas _canvas;
 
-        [Header("Zone d'activation (bas-gauche)")]
+        [Header("Activation Zone (bottom-left)")]
         [Range(0f, 1f)][SerializeField] private float _zoneWidth = 0.5f;
         [Range(0f, 1f)][SerializeField] private float _zoneHeight = 0.5f;
 
-        [Header("Paramètres du joystick")]
-        [SerializeField] private float _joystickRadius = 100f; // UI pixels
+        [Header("Joystick Parameters")]
+        [SerializeField] private float _joystickRadius = 100f;
+
         #endregion
 
         #region Private Fields
+
         private Gamepad _virtualGamepad;
         private int _trackedFingerId = -1;
         private Vector2 _anchorScreenPos;
+        private bool _isActive;
+
         #endregion
 
         #region Unity Lifecycle
-        void Awake()
+
+        private void Awake()
         {
             _virtualGamepad = InputSystem.AddDevice<Gamepad>("VirtualGamepad");
         }
 
-        void OnDestroy()
+        private void OnDestroy()
         {
             if (_virtualGamepad != null)
                 InputSystem.RemoveDevice(_virtualGamepad);
         }
 
-        void OnEnable() => EnhancedTouchSupport.Enable();
-        void OnDisable() => EnhancedTouchSupport.Disable();
+        private void OnEnable()
+        {
+            EnhancedTouchSupport.Enable();
 
-        void Update()
-        {            
+            if (InputManager.Instance != null)
+                InputManager.Instance.OnSchemeChanged.AddListener(OnSchemeChanged);
+        }
+
+        private void OnDisable()
+        {
+            EnhancedTouchSupport.Disable();
+
+            if (InputManager.Instance != null)
+                InputManager.Instance.OnSchemeChanged.RemoveListener(OnSchemeChanged);
+        }
+
+        private void Start()
+        {
+            // Sync with current scheme on startup
+            if (InputManager.Instance != null)
+                _isActive = InputManager.Instance.IsMobile;
+        }
+
+        private void Update()
+        {
+            if (!_isActive) return;
+
             foreach (var touch in Touch.activeTouches)
             {
                 switch (touch.phase)
@@ -73,9 +102,24 @@ namespace GlimmerOfHope.Gameplay
                 }
             }
         }
+
         #endregion
 
-        #region Private Methods
+        #region Private Methods — Scheme
+
+        private void OnSchemeChanged(InputManager.ControlScheme scheme)
+        {
+            _isActive = scheme == InputManager.ControlScheme.Mobile;
+
+            // Release joystick immediately if scheme switches away from mobile mid-drag
+            if (!_isActive && _trackedFingerId != -1)
+                ReleaseJoystick();
+        }
+
+        #endregion
+
+        #region Private Methods — Joystick
+
         private void TryBeginJoystick(Touch touch)
         {
             if (!IsInZone(touch.screenPosition)) return;
@@ -84,8 +128,15 @@ namespace GlimmerOfHope.Gameplay
             _trackedFingerId = touch.touchId;
             _anchorScreenPos = touch.screenPosition;
 
-            _joystickBackground.anchoredPosition = new Vector2 (ScreenToCanvasPoint(touch.screenPosition).x - (_joystickBackground.rect.width/2), ScreenToCanvasPoint(touch.screenPosition).y - (_joystickBackground.rect.height/2));
-            _joystickHandle.anchoredPosition = new Vector2 (-_joystickHandle.rect.width/2, -_joystickHandle.rect.height / 2);
+            Vector2 canvasPos = ScreenToCanvasPoint(touch.screenPosition);
+            _joystickBackground.anchoredPosition = new Vector2(
+                canvasPos.x - _joystickBackground.rect.width / 2f,
+                canvasPos.y - _joystickBackground.rect.height / 2f
+            );
+            _joystickHandle.anchoredPosition = new Vector2(
+                -_joystickHandle.rect.width / 2f,
+                -_joystickHandle.rect.height / 2f
+            );
 
             _canvasGroup.alpha = 1f;
         }
@@ -99,7 +150,11 @@ namespace GlimmerOfHope.Gameplay
             Vector2 clamped = Vector2.ClampMagnitude(deltaUI, _joystickRadius);
             Vector2 normalized = clamped / _joystickRadius;
 
-            _joystickHandle.anchoredPosition = new Vector2 (clamped.x - (_joystickHandle.rect.width / 2), clamped.y - (_joystickHandle.rect.height / 2));
+            _joystickHandle.anchoredPosition = new Vector2(
+                clamped.x - _joystickHandle.rect.width / 2f,
+                clamped.y - _joystickHandle.rect.height / 2f
+            );
+
             SendStickValue(normalized);
         }
 
@@ -136,6 +191,7 @@ namespace GlimmerOfHope.Gameplay
         {
             InputSystem.QueueStateEvent(_virtualGamepad, new GamepadState { leftStick = value });
         }
+
         #endregion
     }
 }
