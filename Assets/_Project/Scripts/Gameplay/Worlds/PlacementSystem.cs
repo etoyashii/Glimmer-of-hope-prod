@@ -15,13 +15,13 @@ namespace GlimmerOfHope.Gameplay
 
         #region Unity Lifecycle
 
-/*        private void Update()
+        private void Update()
         {
             Vector3 mousePosition = _inputManager.GetSelectedMapPosition();
             Vector3Int gridPosition = _grid.WorldToCell(mousePosition);
             _mouseIndicator.transform.position = mousePosition;
             _cellIndicator.transform.position = _grid.CellToWorld(gridPosition);
-        }*/
+        }
 
         #endregion
     }
