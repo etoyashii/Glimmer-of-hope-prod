@@ -5,6 +5,8 @@ namespace OcclusionAddressables
     #region Dependencies
     [RequireComponent(typeof(OcclusionAddressableProxy))]
     #endregion
+
+    /// <summary>Watches for ghost visibility and triggers loading when in range.</summary>
     public class GhostVisibilityWatcher : MonoBehaviour
     {
         #region Private Fields
@@ -28,15 +30,16 @@ namespace OcclusionAddressables
         #endregion
 
         #region Public Methods
-        /// <summary>Appelé par le Manager quand le ghost est dans la reloadDistance.</summary>
+        /// <summary>Called by the Manager when the ghost is within the reloadDistance.</summary>
         public void TriggerLoad()
         {
             if (_loadTriggered) return;
             _loadTriggered = true;
-            // Forcer la visibilité → le proxy lance LoadAndInstantiate
+            // Force visibility → proxy triggers LoadAndInstantiate
             _proxy.SetVisibilityFromManager(true);
         }
 
+        /// <summary>Returns the bounds of the ghost, either from its BoxCollider or a default size.</summary>
         public Bounds GetBounds()
         {
             if (_col != null) return _col.bounds;
