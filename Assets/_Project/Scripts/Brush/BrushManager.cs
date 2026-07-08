@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
-#if UNITY_EDITOR
 namespace GlimmerOfHope.Core
 {
     /// <summary>
@@ -15,7 +14,6 @@ namespace GlimmerOfHope.Core
         #region Constants
         private int SEGMENTS = 320;          // Number of segments for the circle gizmo
         private float RAYCAST_DISTANCE = 100f; // Max distance for ground raycast
-
         #endregion
 
         #region Serialized Fields
@@ -27,15 +25,18 @@ namespace GlimmerOfHope.Core
         [SerializeField] private bool _clearMode = false;            // Toggle clear mode
         [Range(1, 100)]
         [SerializeField] private int _probClearAssets = 20;            // Pourcentage of assets cleared
-        [Range(1f, 10f)]
+        [Range(1f, 20f)]
         [SerializeField] private float _density = 4f;                 // Density of asset placement
         [SerializeField] private int _revertNumber = 10;              // Number of revert in memory
-        [Range(0.0001f, 0.01f), Tooltip("Base value is 0.001")]
+        [Range(0.0001f, 0.05f), Tooltip("Base value is 0.001")]
         [SerializeField] private float _multDensity = 0.001f;              // to adjust density
         [Tooltip("1 is the base value and serves as a size multiplier for all assets placed afterward.")]
         [SerializeField] private float _sizeMult = 1f;              // asset size multiplicator
         [Range(0f, 90f), Tooltip("Maximum slope angle (in degrees) on which assets can be placed. 0 = flat only, 90 = no restriction.")]
         [SerializeField] private float _maxSlopeAngle = 30f;        // Max slope angle for asset placement
+        [SerializeField] private Terrain _terrain;                   // Terrain used for splatmap checks
+        [SerializeField] private bool _useTerrainLayerFilter = false; // Enable/disable terrain layer filtering
+        [SerializeField] private TerrainLayer _terrainLayer;         // Terrain layer required to place assets
         #endregion
 
         #region Private Fields
@@ -62,7 +63,63 @@ namespace GlimmerOfHope.Core
         public float MultDensity => _multDensity;
         public float SizeMult => _sizeMult;
         public float MaxSlopeAngle => _maxSlopeAngle;
+        public Terrain UsedTerrain => _terrain;
+        public bool UseTerrainLayerFilter => _useTerrainLayerFilter;
+        public TerrainLayer TerrainLayer => _terrainLayer;
+        public List<Transform> placedAssets = new();
+        public List<Transform> unplacedAssets = new();
         public void SetPos(Vector3 pos) { _pos = pos; }
+        #endregion
+
+        #region Public Methods
+        /// <summary>
+        /// Returns true if the given world position is on the configured TerrainLayer (splatmap check).
+        /// If filtering is disabled or no TerrainLayer is set, always returns true.
+        /// </summary>
+        public bool IsOnTerrainLayer(Vector3 worldPos)
+        {
+            if (!_useTerrainLayerFilter || _terrainLayer == null || _terrain == null)
+                return true;
+
+            TerrainData data = _terrain.terrainData;
+            Vector3 terrainPos = _terrain.transform.position;
+
+            // Convert world position to alphamap coordinates
+            float relX = Mathf.Clamp01((worldPos.x - terrainPos.x) / data.size.x);
+            float relZ = Mathf.Clamp01((worldPos.z - terrainPos.z) / data.size.z);
+            int mapX = Mathf.Clamp((int)(relX * data.alphamapWidth), 0, data.alphamapWidth - 1);
+            int mapZ = Mathf.Clamp((int)(relZ * data.alphamapHeight), 0, data.alphamapHeight - 1);
+
+            float[,,] alphamaps = data.GetAlphamaps(mapX, mapZ, 1, 1);
+
+            // Find the index of the target TerrainLayer
+            TerrainLayer[] layers = data.terrainLayers;
+            int targetIndex = -1;
+            for (int i = 0; i < layers.Length; i++)
+            {
+                if (layers[i] == _terrainLayer)
+                {
+                    targetIndex = i;
+                    break;
+                }
+            }
+
+            if (targetIndex < 0) return false;
+
+            // Check if target layer is dominant at this position
+            int dominantIndex = 0;
+            float maxVal = 0f;
+            for (int i = 0; i < alphamaps.GetLength(2); i++)
+            {
+                if (alphamaps[0, 0, i] > maxVal)
+                {
+                    maxVal = alphamaps[0, 0, i];
+                    dominantIndex = i;
+                }
+            }
+
+            return dominantIndex == targetIndex;
+        }
         #endregion
 
         #region Unity Lifecycle
@@ -120,5 +177,3 @@ namespace GlimmerOfHope.Core
         #endregion
     }
 }
-
-#endif

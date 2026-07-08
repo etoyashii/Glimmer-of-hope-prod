@@ -43,21 +43,19 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Multiplier applied to the right stick value each frame.")]
         [SerializeField] private float _gamepadHorizontalGain = 3f;
         [SerializeField] private float _gamepadVerticalGain = 2f;
-
         #endregion
 
         #region Private Fields
-
         private CinemachineOrbitalFollow _orbitalFollow;
         private int _trackedFingerId = -1;
         private Vector2 _lookDelta;
+
         private InputManager.ControlScheme _currentScheme;
 
         #endregion
 
         #region Unity Lifecycle
-
-        private void Awake()
+        void Awake()
         {
             _orbitalFollow = GetComponent<CinemachineOrbitalFollow>();
         }
@@ -161,7 +159,9 @@ namespace GlimmerOfHope.Gameplay
 
                     case TouchPhase.Moved:
                         if (touch.touchId == _trackedFingerId)
+                        {
                             _lookDelta = touch.delta;
+                        }
                         break;
 
                     case TouchPhase.Stationary:
@@ -174,8 +174,12 @@ namespace GlimmerOfHope.Gameplay
                         break;
                 }
             }
-        }
 
+            ApplyCameraRotation();
+        }
+        #endregion
+
+        #region Private Methods
         private void TryBeginLook(Touch touch)
         {
             if (_trackedFingerId != -1) return;
@@ -188,16 +192,6 @@ namespace GlimmerOfHope.Gameplay
             _trackedFingerId = -1;
             _lookDelta = Vector2.zero;
         }
-
-        private bool IsInRightZone(Vector2 screenPos)
-        {
-            return screenPos.x > Screen.width * _horizontalSplitRatio
-                && screenPos.y > Screen.height * _verticalSplitRatio;
-        }
-
-        #endregion
-
-        #region Private Methods — Shared
 
         private void ApplyCameraRotation()
         {
@@ -213,6 +207,11 @@ namespace GlimmerOfHope.Gameplay
             );
         }
 
+        private bool IsInRightZone(Vector2 screenPos)
+        {
+            return screenPos.x > Screen.width * _horizontalSplitRatio
+                && screenPos.y > Screen.height * _verticalSplitRatio;
+        }
         #endregion
     }
 }

@@ -79,7 +79,6 @@ namespace GlimmerOfHope.Gameplay
         private void Update()
         {
             if (!_isActive) return;
-
             foreach (var touch in Touch.activeTouches)
             {
                 switch (touch.phase)

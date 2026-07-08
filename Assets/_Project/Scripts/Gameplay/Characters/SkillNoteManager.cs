@@ -122,7 +122,9 @@ namespace GlimmerOfHope.Gameplay
         }
 
         public void ShowCombo(int index)
+
         {
+            
             StartCoroutine(RevealCombo(0.4f, 0.2f, index));
         }
 
@@ -250,8 +252,6 @@ namespace GlimmerOfHope.Gameplay
 
         private IEnumerator RevealCombo(float t1, float t2, int index)
         {
-            yield return new WaitForSeconds(t1);
-
             int comboLength = _comboList[index]._combo.Count;
             Debug.Log(index);
 

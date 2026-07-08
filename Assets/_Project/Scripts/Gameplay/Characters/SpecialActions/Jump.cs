@@ -11,6 +11,11 @@ namespace GlimmerOfHope.Gameplay
     /// On Keyboard/Mouse and Gamepad: jump is triggered by the Jump InputAction
     /// (Space for keyboard, Button South for gamepad).
     /// </summary>
+    #region Dependancies
+
+    [RequireComponent(typeof(Rigidbody))]
+
+    #endregion
     public class Jump : MonoBehaviour
     {
         #region Serialized Fields
