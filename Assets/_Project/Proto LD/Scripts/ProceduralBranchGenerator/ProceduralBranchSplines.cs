@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
 using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+
 
 /// <summary>
 /// Generate the branches recursively, 
@@ -283,3 +286,4 @@ public class ProceduralBranchSplines : MonoBehaviour
     }
     #endregion
 }
+#endif
