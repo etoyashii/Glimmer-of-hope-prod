@@ -1,3 +1,4 @@
+using GlimmerOfHope.Gameplay.Character.SpecialActions;
 using Unity.Cinemachine;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -13,7 +14,7 @@ namespace GlimmerOfHope.Gameplay
 
         [Header("References")]
         public Transform orientation;
-        public CharacterController characterController;
+        public Movement movement;
         public LayerMask whatIsClimbable;
         public GameObject freeCam;
 
@@ -70,7 +71,7 @@ namespace GlimmerOfHope.Gameplay
                 if (!climbing) StartClimbing();
 
                 if (_detectFloorProgress > 0f) _detectFloorProgress -= Time.deltaTime;
-                if (characterController.isGrounded && _detectFloorProgress <= 0f) StopClimbing();
+                if (movement.IsGrounded() && _detectFloorProgress <= 0f) StopClimbing();
             }
 
             //State 3 - None
