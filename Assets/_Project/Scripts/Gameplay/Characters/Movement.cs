@@ -83,7 +83,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         {
             if (_rb == null)
                 _rb = GetComponent<Rigidbody>();
-            
+
             _rb.freezeRotation = true;
             _animator = GetComponent<Animator>();
             if (_animator == null)

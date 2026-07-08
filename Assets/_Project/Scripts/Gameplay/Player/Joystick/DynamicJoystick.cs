@@ -25,7 +25,7 @@ namespace GlimmerOfHope.Gameplay
         [Range(0f, 1f)][SerializeField] private float _zoneHeight = 0.5f;
 
         [Header("Paramètres du joystick")]
-        [SerializeField] private float _joystickRadius = 100f; // UI pixels
+        [SerializeField] private float _joystickRadius = 100f; // en pixels UI
         #endregion
 
         #region Private Fields
@@ -50,7 +50,7 @@ namespace GlimmerOfHope.Gameplay
         void OnDisable() => EnhancedTouchSupport.Disable();
 
         void Update()
-        {            
+        {
             foreach (var touch in Touch.activeTouches)
             {
                 switch (touch.phase)
