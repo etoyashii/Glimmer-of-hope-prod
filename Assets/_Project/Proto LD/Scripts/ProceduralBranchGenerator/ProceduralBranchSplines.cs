@@ -2,6 +2,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Splines;
 using Unity.Mathematics;
+using System.Linq;
+#if UNITY_EDITOR
+using UnityEditor;
+
 
 [ExecuteInEditMode]
 [RequireComponent(typeof(SplineContainer))]
@@ -197,4 +201,6 @@ public class ProceduralBranchSplines : MonoBehaviour
             GenerateBranch(origin, branchDir, depth, childPoints, childStep, parentId, parentKnotIndex);
         }
     }
+    #endregion
 }
+#endif
