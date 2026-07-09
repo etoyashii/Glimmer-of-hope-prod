@@ -49,14 +49,15 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public Vector3 MoveDirection => _targetMoveDirection;
         public float GroundCheckDistance => _groundCheckDistance;
-        public RaycastHit lastHit;
 
         public bool IsSwimming
         {
             get => _isSwimming;
+
             set => _isSwimming = value;
         }
 
+        public RaycastHit lastHit;
         #endregion
 
         #region Event Actions
@@ -134,22 +135,20 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public bool IsGrounded()
         {
-            return Physics.Raycast(transform.position, Vector3.down,
-                                   out lastHit, _groundCheckDistance, _groundLayer);
+            _animator.SetBool("IsGrounded", true);
+            return Physics.Raycast(transform.position, Vector3.down, out lastHit, _groundCheckDistance, _groundLayer);
         }
 
         public void SetMovementEnabled(bool enabled)
         {
             _movementEnabled = enabled;
-
             if (!enabled)
             {
                 _targetMoveDirection = Vector3.zero;
                 _input = Vector2.zero;
-                _rb.linearVelocity = Vector3.zero;
-
-                if (_animator != null)
-                    _animator.SetFloat("Speed", 0f);
+                // Stop horizontal movement but preserve vertical (gravity)
+                _rb.linearVelocity = new Vector3(0f, 0f, 0f);
+                _animator.SetFloat("Speed", 0f);
             }
         }
 
@@ -173,9 +172,12 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             cameraForward.Normalize();
             cameraRight.Normalize();
 
-            _targetMoveDirection = _movementEnabled
-                ? (cameraRight * _input.x + cameraForward * _input.y).normalized
-                : Vector3.zero;
+            if (_movementEnabled) _targetMoveDirection = (cameraRight * _input.x + cameraForward * _input.y).normalized;
+            else
+            {
+                _targetMoveDirection = Vector3.zero;
+                _input = Vector2.zero;
+            }
 
             if (_climbing != null && _climbing.climbing)
             {
@@ -186,22 +188,26 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             }
             else if (!IsGrounded() && !IsSwimming)
             {
+                // Normal air movement preserve vertical velocity
                 _rb.useGravity = true;
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
                 _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
+
             }
             else
             {
+                // Normal ground movement nulify gravity 
                 _rb.useGravity = false;
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
+
             }
 
-            if (_animator != null)
-                _animator.SetFloat("Speed",
-                    new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z).magnitude);
+
+            _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude);
+
         }
 
         private void ApplyAirCurrent()
