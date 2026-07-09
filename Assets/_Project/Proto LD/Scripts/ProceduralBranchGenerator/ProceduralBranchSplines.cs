@@ -201,6 +201,5 @@ public class ProceduralBranchSplines : MonoBehaviour
             GenerateBranch(origin, branchDir, depth, childPoints, childStep, parentId, parentKnotIndex);
         }
     }
-    #endregion
 }
 #endif
