@@ -12,12 +12,24 @@ public class BranchMeshBuilderEditor : Editor
 
         EditorGUILayout.Space(10);
 
+        var splines = builder.GetComponent<ProceduralBranchSplines>();
+        if (splines != null && GUILayout.Button("Generate Branches", GUILayout.Height(36)))
+        {
+            splines.Generate();
+            EditorUtility.SetDirty(splines);
+        }
+
+        EditorGUILayout.Space(4);
+
         // ── Build ──────────────────────────────────────────────────
         if (GUILayout.Button("Build Mesh", GUILayout.Height(36)))
         {
             builder.BuildMesh();
             EditorUtility.SetDirty(builder);
-            EditorUtility.SetDirty(builder.GetComponent<MeshFilter>());
+            var mf = builder.GetComponent<MeshFilter>();
+            EditorUtility.SetDirty(mf);
+            if (mf.sharedMesh != null)
+                EditorUtility.SetDirty(mf.sharedMesh);
         }
 
         // ── Stats ──────────────────────────────────────────────────
