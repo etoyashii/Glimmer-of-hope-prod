@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
+
+
 
 namespace GlimmerOfHope.Gameplay.GCamera
 {
@@ -28,6 +29,8 @@ namespace GlimmerOfHope.Gameplay.GCamera
 
         private List<TextMeshProUGUI> _txts;
 
+        public GameObject textPrefab;
+
         private Object _textOBJ;
 
         #endregion
@@ -39,7 +42,7 @@ namespace GlimmerOfHope.Gameplay.GCamera
 
             _canvas = canva;
 
-            _textOBJ = AssetDatabase.LoadAssetAtPath("Assets/_Project/Prefabs/UI/Camera/Text.prefab", typeof(GameObject));
+          //  _textOBJ = AssetDatabase.LoadAssetAtPath("Assets/_Project/Prefabs/UI/Camera/Text.prefab", typeof(GameObject));
 
             foreach (string _name in nameObject)
             {
@@ -80,3 +83,4 @@ namespace GlimmerOfHope.Gameplay.GCamera
         #endregion
     }
 }
+
