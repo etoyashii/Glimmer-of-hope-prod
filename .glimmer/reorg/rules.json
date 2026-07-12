@@ -1,0 +1,382 @@
+{
+  "_doc": [
+    "Regles de rangement, derivees de ADR-007 (arborescence) et ADR-010 (scenes).",
+    "Lues par plan.py, qui les applique a l'arbre REEL au moment ou on le lance.",
+    "On ne fige pas un manifeste ici : l'arbre bougera d'ici le gel. On fige les REGLES.",
+    "",
+    "Premiere regle qui matche = gagnante. L'ordre compte."
+  ],
+
+  "sanctuaires": {
+    "_doc": [
+      "Ne jamais deplacer. Ces chemins ont un sens pour Unity, pas pour nous.",
+      "Un dossier nomme Resources/ est magique A N'IMPORTE QUELLE PROFONDEUR : Unity y charge",
+      "PAR NOM (DOTween le fait). Idem StreamingAssets/. Les deplacer = casse muette au runtime,",
+      "invisible a la compilation."
+    ],
+    "prefixes": [
+      "Assets/Plugins/",
+      "Assets/StreamingAssets/",
+      "Assets/ScriptTemplates/",
+      "Assets/AddressableAssetsData/",
+      "Assets/TextMesh Pro/",
+      "Assets/Settings/"
+    ],
+    "dossiers_magiques": ["Resources", "StreamingAssets", "Editor Default Resources", "Gizmos"]
+  },
+
+  "regles": [
+    {
+      "id": "resources-fusion",
+      "_doc": [
+        "Deux racines Resources/ coexistent (Assets/Resources et ZPreprod/Resources). Unity les",
+        "FUSIONNE a l'execution : deux assets homonymes = comportement indefini. On unifie sur la",
+        "racine canonique en preservant le chemin APRES Resources/ — c'est lui, et lui seul, que",
+        "Resources.Load() resout. Le chemin de chargement est donc rigoureusement inchange."
+      ],
+      "source_regex": "^Assets/ZPreprod/Resources/(?P<reste>.+)$",
+      "destination": "Assets/Resources/{reste}",
+      "raison": "fusion des deux racines Resources"
+    },
+
+    {
+      "id": "tiers-gabriel-aguiar",
+      "source_regex": "^Assets/GabrielAguiarProductions/(?P<reste>.+)$",
+      "destination": "Assets/ThirdParty/GabrielAguiarProductions/{reste}",
+      "raison": "pack Asset Store — ADR-007 : tout pack externe sous ThirdParty/"
+    },
+    {
+      "id": "tiers-zacxophone",
+      "_doc": "Pack d'oiseaux Asset Store, enfoui sous Proto LD/PlaceHoldersAssets/.",
+      "source_regex": "^Assets/_Project/Proto LD/PlaceHoldersAssets/Zacxophone/(?P<reste>.+)$",
+      "destination": "Assets/ThirdParty/Zacxophone_LowPolyBirds/{reste}",
+      "raison": "pack Asset Store — ADR-007 : tout pack externe sous ThirdParty/"
+    },
+
+    {
+      "id": "code-orphelin-editor",
+      "_doc": [
+        "LE POINT DELICAT. Ces scripts sont dans Assembly-CSharp-Editor (dossier magique Editor/).",
+        "Les envoyer sous Scripts/Editor/ les ferait basculer dans l'asmdef GlimmerOfHope.Editor,",
+        "qui ne peut PAS voir Assembly-CSharp (BrushManager, AssetTemplate) : CS0246 garanti.",
+        "Un asmdef ne peut pas referencer Assembly-CSharp — c'est une regle Unity, pas un reglage.",
+        "On les regroupe donc sous Legacy/Editor/ : toujours un dossier magique Editor/, toujours",
+        "hors asmdef → MEME assembly, deplacement pur. Le code ne bouge pas, il se range.",
+        "Les faire entrer dans l'asmdef est une vague de CODE, pas de rangement."
+      ],
+      "source_regex": "^Assets/Editor/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Scripts/Legacy/Editor/{reste}",
+      "raison": "script editeur hors asmdef — regroupe sans changer d'assembly"
+    },
+    {
+      "id": "code-orphelin-inventory",
+      "source_regex": "^Assets/ZPreprod/Inventory/Scripts/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Scripts/Legacy/Inventory/{reste}",
+      "raison": "script hors asmdef — regroupe sans changer d'assembly"
+    },
+    {
+      "id": "code-orphelin-zpreprod",
+      "source_regex": "^Assets/ZPreprod/_Project/(?:Scripts|UI)/(?P<reste>.+\\.cs)$",
+      "destination": "Assets/_Project/Scripts/Legacy/{reste}",
+      "raison": "script hors asmdef — regroupe sans changer d'assembly"
+    },
+    {
+      "id": "code-orphelin-protold",
+      "source_regex": "^Assets/_Project/Proto LD/Scripts/(?P<reste>.+\\.cs)$",
+      "destination": "Assets/_Project/Scripts/Legacy/{reste}",
+      "raison": "script hors asmdef — regroupe sans changer d'assembly"
+    },
+    {
+      "id": "code-orphelin-brush",
+      "source_regex": "^Assets/_Project/Scripts/Brush/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Scripts/Legacy/Brush/{reste}",
+      "raison": "script hors asmdef — regroupe sans changer d'assembly"
+    },
+    {
+      "id": "code-orphelin-dev",
+      "source_regex": "^Assets/_Project/Scripts/Dev/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Scripts/Legacy/Dev/{reste}",
+      "raison": "script hors asmdef — regroupe sans changer d'assembly"
+    },
+    {
+      "id": "shader-hlsl-protold",
+      "_doc": "Le .shader qui accompagne les scripts de cinematique : c'est de l'Art, pas du code C#.",
+      "source_regex": "^Assets/_Project/Proto LD/Scripts/.+/(?P<nom>[^/]+\\.shader)$",
+      "destination": "Assets/_Project/Art/Shaders/{nom}",
+      "raison": "shader range avec les shaders"
+    },
+
+    {
+      "id": "scenes-bac-a-sable-par-prenom",
+      "_doc": [
+        "ADR-010 : les scenes se classent par FONCTION, jamais par auteur. 20 des 53 scenes du",
+        "depot sont rangees sous un prenom. Le prenom devient un prefixe de nom de fichier plutot",
+        "qu'un dossier : on garde la tracabilite, on perd la balkanisation."
+      ],
+      "source_regex": "^Assets/_Project/Scenes/Proto/(?P<auteur>[^/]+)/(?P<nom>.+)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{auteur}_{nom}",
+      "raison": "ADR-010 : scene classee par auteur → bac a sable"
+    },
+    {
+      "id": "scenes-prototypes",
+      "source_regex": "^Assets/_Project/Scenes/Prototypes/(?P<nom>.+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : prototype → bac a sable"
+    },
+    {
+      "id": "scenes-zpreprod",
+      "source_regex": "^Assets/ZPreprod/_Project/Scene/Prototypes/(?P<nom>.+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : prototype → bac a sable"
+    },
+    {
+      "id": "scenes-art",
+      "source_regex": "^Assets/_Project/Scenes/Art/(?P<nom>.+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : scene d'essai → bac a sable"
+    },
+    {
+      "id": "scenes-build",
+      "_doc": "Les 3 scenes du build + le bootstrap. Elles seules sont Core.",
+      "source_exact": [
+        "Assets/_Project/Scenes/_Bootstrap.unity",
+        "Assets/_Project/Scenes/MainMenu.unity",
+        "Assets/_Project/Scenes/Gameplay.unity"
+      ],
+      "destination_dir": "Assets/_Project/Scenes/Core/",
+      "raison": "ADR-010 : scene du build"
+    },
+    {
+      "id": "scenes-restantes-racine",
+      "_doc": "Tout ce qui traine a la racine de Scenes/ et n'est pas au build = bac a sable.",
+      "source_regex": "^Assets/_Project/Scenes/(?P<nom>[^/]+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : hors build → bac a sable"
+    },
+    {
+      "id": "scenes-protold",
+      "source_regex": "^Assets/_Project/Proto LD/(?P<nom>[^/]+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : prototype LD → bac a sable"
+    },
+    {
+      "id": "scenes-ld-forest",
+      "source_regex": "^Assets/_Project/LD/LD Forest/(?P<nom>.+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Levels/{nom}",
+      "raison": "ADR-010 : niveau jouable"
+    },
+    {
+      "id": "scene-import-art",
+      "source_regex": "^Assets/_Project/Art/(?P<nom>[^/]+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : une scene ne vit pas dans Art/"
+    },
+    {
+      "id": "scene-terrain-test",
+      "source_regex": "^Assets/_Project/Scenes/TestAutoLayerTerrain/(?P<nom>.+\\.unity)$",
+      "destination": "Assets/_Project/Scenes/Sandbox/{nom}",
+      "raison": "ADR-010 : scene de test → bac a sable"
+    },
+
+    {
+      "id": "terrains-racine",
+      "_doc": [
+        "18 terrains + 5 TerrainData a la racine d'Assets/. C'est de la DONNEE VIVANTE, pas du",
+        "dechet : on la deplace, on ne la supprime pas. La cause mecanique est identifiee (B4) :",
+        "BranchMeshBuilderEditor ouvrait un panneau de sauvegarde sur un dossier inexistant et",
+        "Unity repliait silencieusement sur la racine."
+      ],
+      "source_regex": "^Assets/(?P<nom>(?:[^/]*\\.terrain\\.asset|New Terrain [^/]*\\.asset|TerrainData_[^/]*\\.asset))$",
+      "destination": "Assets/_Project/LD/Terrains/{nom}",
+      "raison": "ADR-007 : aucun fichier a la racine d'Assets/"
+    },
+    {
+      "id": "terrainlayers-homonymes",
+      "_doc": [
+        "TROIS fichiers s'appellent NewLayer.terrainlayer, dans trois dossiers differents. Unity",
+        "les a nommes tout seul : le nom ne porte aucune intention. Regroupes tels quels, ils",
+        "s'ecrasent — plan.py refuse et signale la collision. On tranche ici, dans le fichier que",
+        "l'humain relit, pas dans le script.",
+        "On les DISTINGUE par leur provenance. On ne les DEDOUBLONNE pas : savoir lequel des trois",
+        "est le bon est une decision d'artiste, et un renommage garde les GUID donc reste annulable."
+      ],
+      "map": {
+        "Assets/NewLayer.terrainlayer":
+          "Assets/_Project/LD/TerrainLayers/NewLayer_Racine.terrainlayer",
+        "Assets/_Project/Art/Shader/NewLayer.terrainlayer":
+          "Assets/_Project/LD/TerrainLayers/NewLayer_Shader.terrainlayer",
+        "Assets/_Project/Scenes/TestAutoLayerTerrain/NewLayer.terrainlayer":
+          "Assets/_Project/LD/TerrainLayers/NewLayer_AutoLayer.terrainlayer"
+      },
+      "raison": "trois homonymes auto-nommes par Unity — distingues par provenance"
+    },
+    {
+      "id": "terrainlayers-racine",
+      "source_regex": "^Assets/(?P<nom>[^/]+\\.terrainlayer)$",
+      "destination": "Assets/_Project/LD/TerrainLayers/{nom}",
+      "raison": "ADR-007 : aucun fichier a la racine d'Assets/"
+    },
+    {
+      "id": "terrainlayers-partout",
+      "source_regex": "^Assets/_Project/(?:LD/TerrainLayer|Art/Shader|Scenes/TestAutoLayerTerrain|Proto LD)/(?P<nom>[^/]+\\.terrainlayer)$",
+      "destination": "Assets/_Project/LD/TerrainLayers/{nom}",
+      "raison": "les terrain layers etaient eparpilles sur 5 dossiers"
+    },
+    {
+      "id": "terrainlayers-forest",
+      "source_regex": "^Assets/_Project/LD/LD Forest/(?P<nom>[^/]+\\.terrainlayer)$",
+      "destination": "Assets/_Project/LD/TerrainLayers/{nom}",
+      "raison": "les terrain layers etaient eparpilles sur 5 dossiers"
+    },
+    {
+      "id": "input-racine",
+      "source_regex": "^Assets/(?P<nom>[^/]+\\.inputactions)$",
+      "destination": "Assets/_Project/Settings/Input/{nom}",
+      "raison": "ADR-007 : aucun fichier a la racine d'Assets/"
+    },
+    {
+      "id": "brush-racine",
+      "source_regex": "^Assets/(?P<nom>[^/]+\\.brush)$",
+      "destination": "Assets/_Project/Data/BrushAssets/{nom}",
+      "raison": "ADR-007 : aucun fichier a la racine d'Assets/"
+    },
+    {
+      "id": "vrac-racine",
+      "_doc": [
+        "Ce qui reste a la racine : GameObject.prefab, 'pack_fleurs_lowpoly (11).prefab', une",
+        "texture nommee d34a659c5dc947bd… . Noms sans intention. On ne les supprime PAS : ils",
+        "peuvent etre references. On les met en quarantaine visible, a trier par un humain."
+      ],
+      "source_regex": "^Assets/(?P<nom>[^/]+\\.(?:prefab|png|jpg|jpeg|mat|asset|fbx|obj))$",
+      "destination": "Assets/_Project/_ATrier/{nom}",
+      "raison": "ADR-007 : aucun fichier a la racine d'Assets/ — a trier"
+    },
+
+    {
+      "id": "art-zpreprod",
+      "source_regex": "^Assets/ZPreprod/_Project/Art/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Art/Legacy_ZPreprod/{reste}",
+      "raison": "unification : ZPreprod etait un second arbre _Project parallele"
+    },
+    {
+      "id": "materiaux-zpreprod",
+      "source_regex": "^Assets/ZPreprod/Materials/(?P<nom>.+)$",
+      "destination": "Assets/_Project/Art/Materials/Legacy_ZPreprod/{nom}",
+      "raison": "unification : ZPreprod etait un second arbre _Project parallele"
+    },
+    {
+      "id": "import-zpreprod",
+      "source_regex": "^Assets/ZPreprod/Import/(?P<nom>.+)$",
+      "destination": "Assets/_Project/Art/Models/Legacy_ZPreprod/{nom}",
+      "raison": "unification : ZPreprod etait un second arbre _Project parallele"
+    },
+
+    {
+      "id": "art-mesh-vers-models",
+      "_doc": "ADR-008 : le vocabulaire de categories est une liste FERMEE. 'Mesh' devient 'Models', 'Shader' devient 'Shaders'.",
+      "source_regex": "^Assets/_Project/Art/Mesh/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Art/Models/{reste}",
+      "raison": "ADR-008 : vocabulaire ferme (Models, pas Mesh)"
+    },
+    {
+      "id": "art-shader-vers-shaders",
+      "source_regex": "^Assets/_Project/Art/Shader/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Art/Shaders/{reste}",
+      "raison": "ADR-008 : vocabulaire ferme (Shaders, pas Shader)"
+    },
+    {
+      "id": "art-ui-vers-textures",
+      "source_regex": "^Assets/_Project/Art/UI/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Art/Textures/UI/{reste}",
+      "raison": "ADR-008 : Art/ se range par TYPE, puis par domaine"
+    },
+
+    {
+      "id": "protold-light",
+      "source_regex": "^Assets/_Project/Proto LD/Light/(?P<reste>.+)$",
+      "destination": "Assets/_Project/LD/Lighting/{reste}",
+      "raison": "sort d'un dossier a espace ('Proto LD')"
+    },
+    {
+      "id": "protold-level1",
+      "source_regex": "^Assets/_Project/Proto LD/Level1/(?P<reste>.+)$",
+      "destination": "Assets/_Project/LD/Lighting/Level1/{reste}",
+      "raison": "sort d'un dossier a espace ('Proto LD')"
+    },
+    {
+      "id": "protold-prefabs",
+      "source_regex": "^Assets/_Project/Proto LD/prefabs/(?P<nom>.+)$",
+      "destination": "Assets/_Project/Prefabs/Environment/{nom}",
+      "raison": "sort d'un dossier a espace ('Proto LD')"
+    },
+    {
+      "id": "protold-placeholders",
+      "source_regex": "^Assets/_Project/Proto LD/PlaceHoldersAssets/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Art/Placeholders/{reste}",
+      "raison": "sort d'un dossier a espace ('Proto LD')"
+    },
+    {
+      "id": "protold-reste",
+      "source_regex": "^Assets/_Project/Proto LD/(?P<nom>[^/]+)$",
+      "destination": "Assets/_Project/LD/{nom}",
+      "raison": "sort d'un dossier a espace ('Proto LD')"
+    },
+
+    {
+      "id": "ld-forest-prefabs",
+      "source_regex": "^Assets/_Project/LD/LD Forest/PrefabForBrush/(?P<nom>.+)$",
+      "destination": "Assets/_Project/Prefabs/BrushAssets/Forest/{nom}",
+      "raison": "sort d'un dossier a espace ('LD Forest')"
+    },
+    {
+      "id": "ld-forest-reste",
+      "source_regex": "^Assets/_Project/LD/LD Forest/(?P<nom>[^/]+)$",
+      "destination": "Assets/_Project/LD/Forest/{nom}",
+      "raison": "sort d'un dossier a espace ('LD Forest')"
+    },
+    {
+      "id": "ld-racine-art",
+      "_doc": "Deux FBX et un materiau trainent a la racine de LD/ : c'est de l'Art, pas du level design.",
+      "source_regex": "^Assets/_Project/LD/(?P<nom>[^/]+\\.(?:fbx|FBX|obj))$",
+      "destination": "Assets/_Project/Art/Models/Foliage/{nom}",
+      "raison": "ADR-007 : Art/ se range par type"
+    },
+    {
+      "id": "ld-racine-mat",
+      "source_regex": "^Assets/_Project/LD/(?P<nom>[^/]+\\.mat)$",
+      "destination": "Assets/_Project/Art/Materials/{nom}",
+      "raison": "ADR-007 : Art/ se range par type"
+    },
+
+    {
+      "id": "art-racine-vrac",
+      "_doc": "Un FBX traine a la racine d'Art/. Art/ se range par type, il n'a pas de racine fourre-tout.",
+      "source_regex": "^Assets/_Project/Art/(?P<nom>[^/]+\\.(?:fbx|FBX|obj|png|jpg|jpeg|mat))$",
+      "destination": "Assets/_Project/Art/Models/{nom}",
+      "raison": "ADR-007 : Art/ se range par type"
+    },
+    {
+      "id": "audio-vers-art",
+      "source_regex": "^Assets/_Project/Audio/(?P<reste>.+)$",
+      "destination": "Assets/_Project/Art/Audio/{reste}",
+      "raison": "ADR-007 : Audio est une categorie d'Art"
+    }
+  ],
+
+  "renommages": {
+    "_doc": [
+      "ADR-008 : les seuls renommages autorises sont les FAUTES D'ORTHOGRAPHE. Un renommage de",
+      "masse sur un depot a 25 contributeurs avec LFS detruirait la semaine de tout le monde.",
+      "SM_ZF_ (118 fichiers) est GELE : le prefixe a deborde, il ne veut plus rien dire, mais on",
+      "ne le retrocede pas — on cesse de le propager.",
+      "Applique au NOM DE FICHIER seulement, apres le calcul de destination."
+    ],
+    "segments_chemin": {
+      "Folliage": "Foliage"
+    },
+    "noms_fichiers": {
+      "Folliage": "Foliage",
+      "Brich": "Birch"
+    }
+  }
+}
