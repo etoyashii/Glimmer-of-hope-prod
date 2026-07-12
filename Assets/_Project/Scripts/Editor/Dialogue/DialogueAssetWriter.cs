@@ -1,3 +1,4 @@
+using GlimmerOfHope.Editor.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -165,7 +166,7 @@ namespace GlimmerOfHope.Editor.Dialogue
             if (!AssetDatabase.IsValidFolder(DialogueCSVFormat.DIALOGUE_ROOT))
                 return map;
 
-            var guids = AssetDatabase.FindAssets($"t:{typeof(T).Name}", new[] { DialogueCSVFormat.DIALOGUE_ROOT });
+            var guids = AssetSearch.FindInFolder($"t:{typeof(T).Name}", DialogueCSVFormat.DIALOGUE_ROOT);
 
             foreach (var guid in guids)
             {
@@ -213,7 +214,7 @@ namespace GlimmerOfHope.Editor.Dialogue
             if (!AssetDatabase.IsValidFolder(DialogueCSVFormat.CHARACTERS_FOLDER))
                 return result;
 
-            var guids = AssetDatabase.FindAssets("t:CharacterSO", new[] { DialogueCSVFormat.CHARACTERS_FOLDER });
+            var guids = AssetSearch.FindInFolder("t:CharacterSO", DialogueCSVFormat.CHARACTERS_FOLDER);
 
             foreach (var guid in guids)
             {

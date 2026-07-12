@@ -1,3 +1,4 @@
+using GlimmerOfHope.Editor.Common;
 using System;
 using System.Collections.Generic;
 using UnityEditor;
@@ -144,7 +145,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         private List<string> LoadConversationNames()
         {
             var names = new List<string> { "(choisir...)" };
-            var guids = AssetDatabase.FindAssets("t:ConversationSO", new[] { DialogueCSVFormat.CONVERSATIONS_FOLDER });
+            var guids = AssetSearch.FindInFolder("t:ConversationSO", DialogueCSVFormat.CONVERSATIONS_FOLDER);
 
             foreach (var guid in guids)
             {
@@ -162,7 +163,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             if (convId == "(choisir...)")
                 return null;
 
-            var guids = AssetDatabase.FindAssets("t:ConversationSO", new[] { DialogueCSVFormat.CONVERSATIONS_FOLDER });
+            var guids = AssetSearch.FindInFolder("t:ConversationSO", DialogueCSVFormat.CONVERSATIONS_FOLDER);
 
             foreach (var guid in guids)
             {
