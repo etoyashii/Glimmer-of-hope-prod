@@ -120,6 +120,13 @@ def rien_en_vol(base):
         br = br.strip()
         if not br or br in ignorees or "/" not in br:
             continue
+        # Exemptions volontaires, decidees hors de ce script :
+        #   origin/Maain, origin/main = destination AVAL de la PR d'integration, pas une
+        #     source a faire atterrir ici (les fusionner inverserait le sens du flux).
+        #   origin/ref/*             = branches de reference gardees expres (perf, IA, save,
+        #     shader) : archivees, jamais reintegrees.
+        if br in ("origin/Maain", "origin/main") or br.startswith("origin/ref/"):
+            continue
         devant = git("rev-list", "--count", f"origin/{base}..{br}")
         if devant is None:
             continue
