@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace GlimmerOfHope.UI.Utils
 {
@@ -38,7 +39,7 @@ namespace GlimmerOfHope.UI.Utils
 
         public void RestartGame()
         {
-            UnityEngine.SceneManagement.SceneManager.LoadScene("LV_Main");
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
 
         public void UpdateSpellModeText()

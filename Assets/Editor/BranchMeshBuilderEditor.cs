@@ -4,6 +4,10 @@ using UnityEngine;
 [CustomEditor(typeof(BranchMeshBuilder))]
 public class BranchMeshBuilderEditor : Editor
 {
+    const string MeshRoot = "Assets/_Project/Art/Mesh";
+    const string GeneratedFolder = "_Generated";
+    const string OutputFolder = MeshRoot + "/" + GeneratedFolder;
+
     public override void OnInspectorGUI()
     {
         DrawDefaultInspector();
@@ -50,14 +54,15 @@ public class BranchMeshBuilderEditor : Editor
 
     void SaveMeshAsset(BranchMeshBuilder builder)
     {
-        // Propose un chemin par défaut dans Assets/Meshes/
-        string defaultPath = $"Assets/Meshes/{builder.BakedMesh.name}.asset";
+        if (!AssetDatabase.IsValidFolder(OutputFolder))
+            AssetDatabase.CreateFolder(MeshRoot, GeneratedFolder);
+
         string path = EditorUtility.SaveFilePanelInProject(
             "Sauvegarder le mesh",
             builder.BakedMesh.name,
             "asset",
             "Choisir où sauvegarder le mesh",
-            "Assets/Meshes"
+            OutputFolder
         );
 
         if (string.IsNullOrEmpty(path)) return;
@@ -78,7 +83,7 @@ public class BranchMeshBuilderEditor : Editor
 
             // Réassigne l'asset existant au MeshFilter
             builder.BakedMesh = existing;
-            builder.GetComponent<MeshFilter>().mesh = existing;
+            builder.GetComponent<MeshFilter>().sharedMesh = existing;
         }
         else
         {
