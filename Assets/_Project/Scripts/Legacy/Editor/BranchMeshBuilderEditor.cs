@@ -4,7 +4,7 @@ using UnityEngine;
 [CustomEditor(typeof(BranchMeshBuilder))]
 public class BranchMeshBuilderEditor : Editor
 {
-    const string MeshRoot = "Assets/_Project/Art/Mesh";
+    const string MeshRoot = "Assets/_Project/Art/Models";
     const string GeneratedFolder = "_Generated";
     const string OutputFolder = MeshRoot + "/" + GeneratedFolder;
 

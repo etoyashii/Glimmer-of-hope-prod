@@ -64,7 +64,7 @@ namespace GlimmerOfHope.Editor.Tools
         // NEVER derive from the folder of its source: writing next to the source puts the output back
         // inside the scanned tree, the next pass picks it up as a candidate, and the tool builds LODs
         // of its own LODs — nesting one folder deeper on each run.
-        public const string GENERATED_ROOT = "Assets/_Project/Art/Mesh/_Generated/LOD";
+        public const string GENERATED_ROOT = "Assets/_Project/Art/Models/_Generated/LOD";
 
         public static readonly string[] MASS_KEYWORDS =
         {
