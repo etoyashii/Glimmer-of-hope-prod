@@ -1,8 +1,9 @@
 using UnityEngine;
 using TMPro;
+using GlimmerOfHope.Core.Localization;
 using GlimmerOfHope.Core.Services;
 
-namespace GlimmerOfHope.Core.Localization
+namespace GlimmerOfHope.UI.Localization
 {
     [RequireComponent(typeof(TextMeshProUGUI))]
     public class LocalizedText : MonoBehaviour
