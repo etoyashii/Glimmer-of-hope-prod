@@ -1,6 +1,7 @@
 using System.IO;
 using UnityEditor;
 using UnityEngine;
+using GlimmerOfHope.Editor.Common;
 using GlimmerOfHope.Gameplay.Dialogue;
 
 namespace GlimmerOfHope.Editor.Dialogue.Graph
@@ -17,7 +18,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         /// <summary>Finds the layout for a conversation by its stored ConversationId, wherever the asset lives.</summary>
         public static GraphLayoutData FindLayout(string conversationId)
         {
-            foreach (var guid in AssetDatabase.FindAssets("t:GraphLayoutData", SearchRoots))
+            foreach (var guid in AssetSearch.FindInFolders("t:GraphLayoutData", SearchRoots))
             {
                 var layout = AssetDatabase.LoadAssetAtPath<GraphLayoutData>(AssetDatabase.GUIDToAssetPath(guid));
                 if (layout != null && layout.ConversationId == conversationId)
@@ -29,7 +30,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         /// <summary>Finds an existing line by its LineId, wherever the asset lives (avoids creating flat duplicates).</summary>
         public static DialogueLineSO FindLine(string lineId)
         {
-            foreach (var guid in AssetDatabase.FindAssets("t:DialogueLineSO", SearchRoots))
+            foreach (var guid in AssetSearch.FindInFolders("t:DialogueLineSO", SearchRoots))
             {
                 var line = AssetDatabase.LoadAssetAtPath<DialogueLineSO>(AssetDatabase.GUIDToAssetPath(guid));
                 if (line != null && line.LineId == lineId)

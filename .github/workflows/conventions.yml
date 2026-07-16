@@ -1,0 +1,112 @@
+name: Conventions
+
+# Verifie le nommage et le rangement des assets sur les pull requests.
+#
+# Ce job ne lit QUE des noms de fichiers. Il n'ouvre jamais le contenu d'un asset.
+# Deux consequences, toutes les deux voulues :
+#
+#   1. ZERO OCTET LFS TELECHARGE. Le quota LFS de l'organisation est fragile : chaque
+#      octet d'un fichier LFS rapatrie par un runner est facture sur le quota de bande
+#      passante, et un job qui tourne a chaque push le viderait en quelques jours.
+#      `lfs: false` fait que les fichiers suivis par LFS (png, fbx, wav, bank...) sont
+#      poses dans le working tree sous leur forme de POINTEUR : environ 130 octets de
+#      texte, sans le moindre appel au serveur LFS. Ce job n'entame donc pas le quota.
+#      Ne mets JAMAIS `lfs: true` ici : il n'y a rien a y gagner, ce check ne regarde
+#      que des noms.
+#
+#   2. `filter: blob:none` fait un clone partiel : git recupere tout l'historique des
+#      commits et des arbres (necessaire pour calculer le diff face a la branche cible)
+#      mais aucun contenu de fichier de l'historique. C'est ce qui garde le job sous les
+#      30 secondes sur un depot Unity de plusieurs giga-octets.
+#
+# Le check ne regarde que le diff de la pull request, jamais tout le depot. La dette
+# existante est donc gratuite : elle n'est simplement pas relue. Seul ce que la PR
+# ajoute, copie ou renomme est controle.
+
+on:
+  pull_request:
+    branches:
+      - '**'
+
+concurrency:
+  group: conventions-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  conventions:
+    name: Nommage et rangement des assets
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+
+    steps:
+      - name: Recuperer le depot (sans un octet de LFS)
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0        # historique complet : indispensable pour diffter face a la base
+          filter: blob:none     # clone partiel : pas de contenu de fichier de l'historique
+          lfs: false            # aucun objet LFS rapatrie, aucun quota consomme
+
+      - name: Lister les fichiers touches par la pull request
+        id: diff
+        env:
+          BASE: origin/${{ github.base_ref }}
+        run: |
+          set -euo pipefail
+
+          # core.quotepath=false est OBLIGATOIRE.
+          # Par defaut git ne sort pas "T_tree_chêne.png" mais "T_tree_ch\303\252ne.png",
+          # entre guillemets et avec les octets echappes. Les chemins accentues passeraient
+          # alors au travers du controle -- c'est-a-dire exactement sur les fichiers que la
+          # regle des caracteres interdits existe pour attraper. La regle serait videe de
+          # son sens precisement la ou elle sert.
+
+          # Fichiers Ajoutes, Copies ou Renommes par la PR. Les fichiers seulement modifies
+          # ne changent pas de nom : rien a verifier. Les fichiers supprimes non plus.
+          git -c core.quotepath=false diff --name-only --diff-filter=ACR -M \
+            "$BASE...HEAD" > "$RUNNER_TEMP/ajoutes.txt"
+
+          # Renommages et suppressions, pour la seule regle des dossiers sanctuarises
+          # (Resources, StreamingAssets... : Unity les resout par leur chemin exact).
+          git -c core.quotepath=false diff --name-status --diff-filter=RD -M \
+            "$BASE...HEAD" > "$RUNNER_TEMP/deplaces.txt"
+
+          echo "Fichiers ajoutes/renommes par cette PR : $(wc -l < "$RUNNER_TEMP/ajoutes.txt")"
+
+      - name: Verifier les conventions
+        run: |
+          set -euo pipefail
+
+          # python3 est deja present sur le runner : pas de setup-python, pas de pip.
+          # Le script n'utilise que la bibliotheque standard.
+          python3 .glimmer/check-conventions.py \
+            --paths-from "$RUNNER_TEMP/ajoutes.txt" \
+            --moved-from "$RUNNER_TEMP/deplaces.txt" \
+            --format github \
+            | tee "$RUNNER_TEMP/rapport.txt"
+
+          # Les violations sont emises en annotations GitHub : elles s'affichent
+          # directement sur la ligne fautive dans l'onglet "Files changed" de la PR.
+
+      - name: Resume dans la pull request
+        if: always()
+        run: |
+          {
+            echo "## Conventions d'assets"
+            echo ""
+            if grep -q '^::error' "$RUNNER_TEMP/rapport.txt" 2>/dev/null; then
+              echo "Des violations bloquantes ont ete trouvees. Elles sont annotees sur les"
+              echo "fichiers concernes dans l'onglet **Files changed**."
+              echo ""
+              echo "Les regles et la marche a suivre pour chaque cas sont dans"
+              echo '`.glimmer/conventions.json`.'
+              echo ""
+              echo "Pour rejouer le check en local avant de repousser :"
+              echo ""
+              echo '```'
+              echo "python3 .glimmer/check-conventions.py --diff origin/${{ github.base_ref }}"
+              echo '```'
+            else
+              echo "Aucune violation sur les fichiers ajoutes ou renommes par cette PR."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"

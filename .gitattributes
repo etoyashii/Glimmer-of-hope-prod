@@ -12,6 +12,14 @@
 *.anim text eol=lf merge=unityyamlmerge
 *.controller text eol=lf merge=unityyamlmerge
 
+# =============================================================================
+# Scripts d'outillage - fins de ligne imposees
+# Un .sh checkout en CRLF casse sur mac/Linux (bad interpreter)
+# =============================================================================
+*.sh text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+
 # FMOD specific
 Assets/Plugins/FMOD/**/*.bundle text eol=lf
 Assets/Plugins/FMOD/**/Info.plist text eol=lf

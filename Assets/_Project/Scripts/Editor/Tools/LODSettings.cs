@@ -59,7 +59,12 @@ namespace GlimmerOfHope.Editor.Tools
         public const string LOD0_SUFFIX = "_LOD0";
         public const string LOD1_SUFFIX = "_LOD1";
         public const string LOD2_SUFFIX = "_LOD2";
-        public const string GENERATED_FOLDER = "LOD_Generated";
+
+        // Every generated mesh lands here, and nowhere else. The destination of a generated asset must
+        // NEVER derive from the folder of its source: writing next to the source puts the output back
+        // inside the scanned tree, the next pass picks it up as a candidate, and the tool builds LODs
+        // of its own LODs — nesting one folder deeper on each run.
+        public const string GENERATED_ROOT = "Assets/_Project/Art/Models/_Generated/LOD";
 
         public static readonly string[] MASS_KEYWORDS =
         {

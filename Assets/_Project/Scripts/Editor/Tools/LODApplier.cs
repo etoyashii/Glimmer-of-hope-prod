@@ -25,6 +25,9 @@ namespace GlimmerOfHope.Editor.Tools
         private static bool IsApplicable(LODCandidate c)
         {
             if (!c.Enabled || c.Chosen == LODStrategy.Skip) return false;
+            // The window lets the user override Chosen, so a blocked candidate could otherwise be forced
+            // back in by hand. Blocked means the tool cannot act on it at all, whatever the dropdown says.
+            if (c.Blocked) return false;
             if (c.IsSkinned || c.SourceMesh == null) return false;
             return c.IsReadable;
         }

@@ -72,7 +72,7 @@ namespace GlimmerOfHope.Editor.Characters
 
         #region Sprites Path
 
-        public const string SPRITES_PATH = "Assets/_Project/Art/UI/Characters";
+        public const string SPRITES_PATH = "Assets/_Project/Art/Textures/UI/Characters";
 
         #endregion
     }

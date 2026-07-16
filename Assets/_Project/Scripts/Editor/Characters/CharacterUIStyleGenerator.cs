@@ -8,7 +8,7 @@ namespace GlimmerOfHope.Editor.Characters
     {
         #region Constants
 
-        private const string OUTPUT_PATH = "Assets/_Project/Art/UI/Characters";
+        private const string OUTPUT_PATH = "Assets/_Project/Art/Textures/UI/Characters";
         private const int SPRITE_PPU = 100;
 
         #endregion

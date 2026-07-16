@@ -72,9 +72,37 @@ namespace GlimmerOfHope.Editor.Tools
             candidate.IsReadable = mesh.isReadable;
             // A parent LODGroup means this object was already processed; the UI flags it as a rebuild.
             candidate.AlreadyProcessed = renderer.GetComponentInParent<LODGroup>() != null;
+
+            if (IsGeneratedLevel(renderer, mesh))
+            {
+                candidate.Blocked = true;
+                candidate.Reason = "Niveau de LOD déjà généré";
+                candidate.Recommended = LODStrategy.Skip;
+                candidate.Chosen = LODStrategy.Skip;
+                return candidate;
+            }
+
             candidate.Recommended = Recommend(candidate);
             candidate.Chosen = candidate.Recommended;
             return candidate;
+        }
+
+        /// <summary>
+        /// A renderer that a previous pass produced: it either renders one of our generated meshes, or it
+        /// is one of the children LODGroupBuilder created under a LODGroup.
+        ///
+        /// The window re-scans right after applying, so these children come back as fresh candidates. They
+        /// pass the triangle and bounds thresholds, so the tool used to build LODs on top of them — which
+        /// is where the nested LOD_Generated folders and the meshes named "..._LOD2_q20_LOD1_q50" came
+        /// from. A LOD level is never a candidate.
+        /// </summary>
+        private static bool IsGeneratedLevel(Renderer renderer, Mesh mesh)
+        {
+            if (LODMeshGenerator.IsGenerated(mesh))
+                return true;
+
+            var group = renderer.GetComponentInParent<LODGroup>();
+            return group != null && group.gameObject != renderer.gameObject;
         }
 
         // Order matters: the first matching rule wins, so reject cheap cases before the LOD ones.
