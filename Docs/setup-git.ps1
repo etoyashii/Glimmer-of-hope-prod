@@ -1,4 +1,7 @@
+param([string]$UnityPath = '')
+
 $ErrorActionPreference = 'Stop'
+$script:Searched = @()
 
 function Say($msg)  { Write-Host $msg }
 function Ok($msg)   { Write-Host "[OK]        $msg" -ForegroundColor Green }
@@ -41,30 +44,125 @@ function Get-ProjectUnityVersion($root)
     return $line.Matches[0].Groups[1].Value
 }
 
+function From-UnityExe($unityExe)
+{
+    if (-not $unityExe) { return $null }
+    $candidate = Join-Path (Split-Path $unityExe -Parent) 'Data\Tools\UnityYAMLMerge.exe'
+    if (Test-Path $candidate) { return $candidate }
+    return $null
+}
+
+function Get-FromRunningUnity
+{
+    $script:Searched += "Unity en cours d'execution"
+    $p = Get-Process -Name 'Unity' -ErrorAction SilentlyContinue |
+         Where-Object { $_.Path } | Select-Object -First 1
+    if ($p) { return (From-UnityExe $p.Path) }
+    return $null
+}
+
+function Get-FromEditorLog
+{
+    $logs = @(
+        (Join-Path $env:LOCALAPPDATA 'Unity\Editor\Editor.log')
+        (Join-Path $env:LOCALAPPDATA 'Unity\Editor\Editor-prev.log')
+    )
+    foreach ($log in $logs)
+    {
+        $script:Searched += $log
+        if (-not (Test-Path $log)) { continue }
+        $hit = Select-String -Path $log -Pattern '([A-Za-z]:\\[^\r\n"]*?\\Unity\.exe)' -List -ErrorAction SilentlyContinue
+        if ($hit)
+        {
+            $exe = From-UnityExe $hit.Matches[0].Groups[1].Value
+            if ($exe) { return $exe }
+        }
+    }
+    return $null
+}
+
 function Get-HubRoots
 {
-    $roots = @('C:\Program Files\Unity\Hub\Editor')
+    $roots = @()
     $sec = Join-Path $env:APPDATA 'UnityHub\secondaryInstallPath.json'
     if (Test-Path $sec)
     {
         $p = (Get-Content $sec -Raw).Trim().Trim('"')
-        if ($p -and (Test-Path $p)) { $roots += $p }
+        if ($p) { $roots += $p }
     }
-    return $roots | Where-Object { Test-Path $_ }
+    foreach ($d in [System.IO.DriveInfo]::GetDrives())
+    {
+        if ($d.DriveType -ne 'Fixed' -or -not $d.IsReady) { continue }
+        $r = $d.RootDirectory.FullName
+        foreach ($sub in @('Program Files\Unity', 'Program Files (x86)\Unity', 'Unity', 'UnityHub', 'Editors'))
+        {
+            $roots += [System.IO.Path]::Combine($r, $sub)
+        }
+    }
+    return $roots | Select-Object -Unique
 }
 
-function Find-Merger($version)
+function Get-FromHubRoots
 {
     $found = @()
     foreach ($root in (Get-HubRoots))
     {
-        $found += Get-ChildItem -Path $root -Filter 'UnityYAMLMerge.exe' -Recurse -ErrorAction SilentlyContinue |
+        $script:Searched += $root
+        if (-not (Test-Path $root)) { continue }
+        $found += Get-ChildItem -Path $root -Filter 'UnityYAMLMerge.exe' -Recurse -Depth 7 -ErrorAction SilentlyContinue |
                   Select-Object -ExpandProperty FullName
     }
-    if ($found.Count -eq 0)
+    return $found
+}
+
+function Resolve-Given($given)
+{
+    $given = $given.Trim('"').Trim()
+    if (-not (Test-Path $given))
     {
-        Fail "Aucun UnityYAMLMerge.exe trouve. Installe Unity $version depuis Unity Hub, puis relance."
+        Fail "Le chemin que tu m'as donne n'existe pas : $given"
     }
+    if ($given -like '*UnityYAMLMerge.exe') { return $given }
+    if ($given -like '*Unity.exe')
+    {
+        $e = From-UnityExe $given
+        if ($e) { return $e }
+    }
+    foreach ($suffix in @('Data\Tools\UnityYAMLMerge.exe', 'Editor\Data\Tools\UnityYAMLMerge.exe'))
+    {
+        $c = [System.IO.Path]::Combine($given, $suffix)
+        if (Test-Path $c) { return $c }
+    }
+    $deep = Get-ChildItem -Path $given -Filter 'UnityYAMLMerge.exe' -Recurse -Depth 7 -ErrorAction SilentlyContinue |
+            Select-Object -ExpandProperty FullName -First 1
+    if ($deep) { return $deep }
+    Fail "Rien trouve sous le chemin que tu m'as donne : $given"
+}
+
+function Show-SearchedAndFail($version)
+{
+    Say ""
+    Say "  J'ai cherche ici :"
+    foreach ($s in ($script:Searched | Select-Object -Unique)) { Say "    - $s" }
+    Say ""
+    Say "  Si Unity est ailleurs, relance en me donnant le chemin. Exemple :"
+    Say "    setup-git.bat `"D:\Unity\Hub\Editor\$version`""
+    Say ""
+    Say "  Pour trouver ce chemin : Unity Hub > Installs > roue dentee de la version"
+    Say "  $version > Show in Explorer. Copie le chemin de la barre d'adresse."
+    Fail "UnityYAMLMerge.exe introuvable automatiquement."
+}
+
+function Find-Merger($version)
+{
+    $exe = Get-FromRunningUnity
+    if ($exe) { return $exe }
+
+    $exe = Get-FromEditorLog
+    if ($exe) { return $exe }
+
+    $found = @(Get-FromHubRoots)
+    if ($found.Count -eq 0) { Show-SearchedAndFail $version }
 
     $exact = $found | Where-Object { $_ -like "*\$version\*" } | Select-Object -First 1
     if ($exact) { return $exact }
@@ -116,12 +214,11 @@ function Test-StoredValue($expected)
     {
         Fail "Ta config git contient $($lines.Count) drivers en double. Lance : git config --global --unset-all merge.unityyamlmerge.driver puis relance ce script."
     }
-    $actual = $lines[0]
-    if ($actual -ne $expected)
+    if ($lines[0] -ne $expected)
     {
         Say ""
         Say "  Attendu : $expected"
-        Say "  Trouve  : $actual"
+        Say "  Trouve  : $($lines[0])"
         Fail "La valeur enregistree ne correspond pas. Ne t'en sers pas : elle fusionnerait mal."
     }
     Ok "Valeur enregistree correcte (verifiee caractere par caractere)."
@@ -163,7 +260,7 @@ Ok "Depot : $root"
 $version = Get-ProjectUnityVersion $root
 Ok "Version Unity du projet : $version"
 
-$exe = Find-Merger $version
+if ($UnityPath) { $exe = Resolve-Given $UnityPath } else { $exe = Find-Merger $version }
 Test-Exe $exe
 Ok "Chemin : $exe"
 
