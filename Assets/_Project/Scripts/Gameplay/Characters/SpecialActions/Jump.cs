@@ -24,6 +24,7 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Movement _playerMovement;
         [SerializeField] private Animator _animator;
+        [SerializeField] private Slide _slide;
 
         [Header("VFX")]
         [Tooltip("VFX played on a normal jump.")]
@@ -90,9 +91,19 @@ namespace GlimmerOfHope.Gameplay
             if (!_playerMovement.IsGrounded()) return;
 
             PlayJumpVFX(jumpForce);
-
-            _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
-            _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            
+            if (_slide.isSliding)
+            {
+                _rb.linearVelocity = Vector3.zero;
+                _rb.AddForce(_playerMovement.lastHit.normal * jumpForce, ForceMode.Impulse);
+                _slide.isSliding = false;
+                Debug.Log("Jump slide");
+            }
+            else
+            {
+                _rb.linearVelocity = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+                _rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            }
 
             if (_animator != null)
                 _animator.SetTrigger("Jump");
