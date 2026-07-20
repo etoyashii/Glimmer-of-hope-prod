@@ -44,7 +44,7 @@ namespace GlimmerOfHope.Gameplay
         {
             if (Keyboard.current.spaceKey.wasPressedThisFrame) //to jump because button doesnt work
             {
-                _jump.PerformJump(4);
+                _jump.PerformJump(10);
             }
 
             if (Keyboard.current.eKey.wasPressedThisFrame) //to start the link, to do differently with the spell

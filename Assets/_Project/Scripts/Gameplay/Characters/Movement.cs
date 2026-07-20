@@ -135,7 +135,9 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         public bool IsGrounded()
         {
-            _animator.SetBool("IsGrounded", true);
+            if (_animator != null)
+                _animator.SetBool("IsGrounded", true);
+
             return Physics.Raycast(transform.position, Vector3.down, out lastHit, _groundCheckDistance, _groundLayer);
         }
 
@@ -148,7 +150,8 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 _input = Vector2.zero;
                 // Stop horizontal movement but preserve vertical (gravity)
                 _rb.linearVelocity = new Vector3(0f, 0f, 0f);
-                _animator.SetFloat("Speed", 0f);
+                if (_animator != null)
+                    _animator.SetFloat("Speed", 0f);
             }
         }
 
@@ -172,7 +175,10 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             cameraForward.Normalize();
             cameraRight.Normalize();
 
-            if (_movementEnabled) _targetMoveDirection = (cameraRight * _input.x + cameraForward * _input.y).normalized;
+            if (_movementEnabled)
+            {
+                _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x + cameraForward * _input.y), lastHit.normal).normalized;
+            }
             else
             {
                 _targetMoveDirection = Vector3.zero;
@@ -188,25 +194,26 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             }
             else if (!IsGrounded() && !IsSwimming)
             {
-                // Normal air movement preserve vertical velocity
-                _rb.useGravity = true;
+                //Normal air movement preserve vertical velocity
+                //_rb.useGravity = true;
+
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
+                //Debug.Log("In the air : " + _rb.linearVelocity.y);
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
-                _rb.AddForce(Vector3.down * _extraGravity, ForceMode.Acceleration);
 
             }
             else
             {
-                // Normal ground movement nulify gravity 
-                _rb.useGravity = false;
+                //Normal ground movement nulify gravity
+                //_rb.useGravity = false;
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
-                _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
+                _rb.linearVelocity = targetVelocity;
 
             }
 
-
-            _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude);
+            if (_animator != null)
+                _animator.SetFloat("Speed", new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z).magnitude);
 
         }
 
