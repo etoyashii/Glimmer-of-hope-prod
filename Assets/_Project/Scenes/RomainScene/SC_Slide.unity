@@ -6522,11 +6522,12 @@ MonoBehaviour:
   _cooldownTime: 0
   isActive: 1
   _maxDegree: 30
-  _slideSpeed: 10
+  _slideSpeed: 2
   _stopSlidingTimer: 1.5
-  _slideAcceleration: 10
+  _slideAcceleration: 2
   _speedDesactivation: 0.05
-  _impulseStartSlide: 6
+  _slideControlStrength: 0.2
+  _impulseStartSlide: 3
   _slideFriction: 0
   _slideSpeedCurve:
     serializedVersion: 2
@@ -6562,8 +6563,12 @@ MonoBehaviour:
     m_PostInfinity: 2
     m_RotationOrder: 4
   _maxDecelForce: 15
+  _slideBackwardDecel: 0.85
+  _slideForwardBoost: 2
   _movement: {fileID: 1520878049}
   _rb: {fileID: 1520878051}
+  _pm: {fileID: 13400000, guid: a485a997301307e40aba9215aa744116, type: 2}
+  _capsuleColliderPlayer: {fileID: 1520878055}
   isSliding: 0
   lastDirection: {x: 0, y: 0, z: 0}
   _stopTimer: 0
@@ -175761,6 +175766,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 71120111526773492, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_AngularDamping
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 160716798873607432, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_Layer
       value: 12
@@ -176242,6 +176251,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7167162648170055986, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7167162648170055986, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_ExcludeLayers.m_Bits
       value: 0
       objectReference: {fileID: 0}
@@ -176366,6 +176379,11 @@ MonoBehaviour:
 --- !u!54 &1520878051 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 3158832817305414917, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+  m_PrefabInstance: {fileID: 1520878048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!136 &1520878055 stripped
+CapsuleCollider:
+  m_CorrespondingSourceObject: {fileID: 7167162648170055986, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
   m_PrefabInstance: {fileID: 1520878048}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1521524794
