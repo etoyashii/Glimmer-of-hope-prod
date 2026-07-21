@@ -1,4 +1,4 @@
-Shader "Universal Render Pipeline/Terrain/Lit"
+Shader "Universal Render Pipeline/TerrainCustom/Lit"
 {
     Properties
     {
@@ -199,8 +199,8 @@ Shader "Universal Render Pipeline/Terrain/Lit"
             #define SKIP_SHADOWS_LIGHT_INDEX_CHECK 1
             #endif
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitPasses.hlsl"
+            #include "TerrainLitInput.hlsl"
+            #include "TerrainLitPasses.hlsl"
             ENDHLSL
         }
 
@@ -221,8 +221,8 @@ Shader "Universal Render Pipeline/Terrain/Lit"
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitPasses.hlsl"
+            #include "TerrainLitInput.hlsl"
+            #include "TerrainLitPasses.hlsl"
             ENDHLSL
         }
 
@@ -245,7 +245,7 @@ Shader "Universal Render Pipeline/Terrain/Lit"
             #pragma multi_compile_instancing
             #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl"
+            #include "TerrainLitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitDepthNormalsPass.hlsl"
             ENDHLSL
         }
@@ -265,8 +265,8 @@ Shader "Universal Render Pipeline/Terrain/Lit"
             #pragma instancing_options assumeuniformscaling nomatrices nolightprobe nolightmap
 
             #define SCENESELECTIONPASS
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl"
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitPasses.hlsl"
+            #include "TerrainLitInput.hlsl"
+            #include "TerrainLitPasses.hlsl"
             ENDHLSL
         }
 
@@ -288,7 +288,7 @@ Shader "Universal Render Pipeline/Terrain/Lit"
             #define _METALLICSPECGLOSSMAP 1
             #define _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A 1
 
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitInput.hlsl"
+            #include "TerrainLitInput.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/Shaders/Terrain/TerrainLitMetaPass.hlsl"
 
             ENDHLSL

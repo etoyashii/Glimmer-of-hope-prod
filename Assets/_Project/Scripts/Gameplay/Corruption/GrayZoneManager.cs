@@ -1,9 +1,17 @@
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 
 namespace GlimmerOfHope.Gameplay
 {
-
+    /// <summary>
+    /// It manage the gray zones and the mask arrays then apply the propreties into the shaders. 
+    /// if a terrian is ussing the custom mat this script is needed to shit something
+    /// ExecuteAlways : Start/LateUpdate/OnEnable/OnDisable runs in Édition mode (otherwise oupsi doupsi on voit r)
+    /// </summary>
+    [ExecuteAlways]
     public class GrayZoneManager : MonoBehaviour
     {
         static List<GrayZone> zones = new List<GrayZone>();
@@ -15,6 +23,17 @@ namespace GlimmerOfHope.Gameplay
         static readonly int ZonesID = Shader.PropertyToID("_GrayZones");
         static readonly int CountID = Shader.PropertyToID("_GrayZoneCount");
         static readonly int MasksID = Shader.PropertyToID("_GrayZoneMasks");
+
+        void OnEnable()
+        {
+            dirty = true;
+            Shader.SetGlobalTexture(MasksID, maskArray);
+#if UNITY_EDITOR
+            // make it reload
+            AssemblyReloadEvents.beforeAssemblyReload += ReleaseBuffer;
+#endif
+            UpdateBuffer();
+        }
 
         void Start()
         {
@@ -31,13 +50,22 @@ namespace GlimmerOfHope.Gameplay
             }
         }
 
+        void OnDisable()
+        {
+#if UNITY_EDITOR
+            AssemblyReloadEvents.beforeAssemblyReload -= ReleaseBuffer;
+#endif
+            ReleaseBuffer();
+        }
+
+        public static void MarkDirty()
+        {
+            dirty = true;
+        }
+
         void UpdateBuffer()
         {
-            if (zoneBuffer != null)
-            {
-                zoneBuffer.Release();
-                zoneBuffer = null;
-            }
+            ReleaseBuffer();
 
             int count = zones.Count;
             if (count == 0)
@@ -80,8 +108,16 @@ namespace GlimmerOfHope.Gameplay
 
         void OnDestroy()
         {
+            ReleaseBuffer();
+        }
+
+        void ReleaseBuffer()
+        {
             if (zoneBuffer != null)
+            {
                 zoneBuffer.Release();
+                zoneBuffer = null;
+            }
         }
     }
 }

@@ -50,7 +50,6 @@ Shader "Custom/TerrainGrayZone"
             }
 
             #include "./GrayZoneSystem.hlsl"
-
             half4 frag(Varyings IN) : SV_Target
             {
                 half4 color = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, IN.uv);
