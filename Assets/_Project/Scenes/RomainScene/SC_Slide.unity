@@ -6519,10 +6519,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9313c92b80d900e4fa30f7c6a06257be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Slide
+  _cooldownTime: 0
+  isActive: 1
   _maxDegree: 30
   _slideSpeed: 10
   _stopSlidingTimer: 1.5
   _slideAcceleration: 10
+  _speedDesactivation: 0.05
+  _impulseStartSlide: 6
+  _slideFriction: 0
+  _slideSpeedCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: -0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 0.26472676
+      value: 0.36088037
+      inSlope: -1.3833392
+      outSlope: -1.3833392
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  _maxDecelForce: 15
   _movement: {fileID: 1520878049}
   _rb: {fileID: 1520878051}
   isSliding: 0
@@ -175886,6 +175925,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2612396029083631424, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _slide
+      value: 
+      objectReference: {fileID: 79985905}
     - target: {fileID: 2612396029083631424, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: _speed
       value: 1.25

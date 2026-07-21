@@ -24,6 +24,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [Header("Movement")]
         [Range(1.0f, 100.0f)]
         [SerializeField] private float _speed = 20.0f;
+        [SerializeField] private float _slideControlStrength = 0.2f;
 
         [Range(0f, 1f)]
         [Tooltip("How quickly the player reaches full speed (1 = instant, 0 = never).")]
@@ -38,6 +39,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Camera _playerCamera;
         [SerializeField] private Climbing _climbing;
+        [SerializeField] private Slide _slide;
 
         [Header("Ground Check")]
         [SerializeField] private float _groundCheckDistance = 0.2f;
@@ -215,16 +217,32 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             else
             {
                 //Normal ground movement nulify gravity
-                //_rb.useGravity = false;
 
-                Vector3 targetVelocity = _targetMoveDirection * _speed;
-                //_rb.linearVelocity = targetVelocity;
+                if (!_slide.isSliding)
+                {
+                    Vector3 targetVelocity = _targetMoveDirection * _speed;
 
-                //use addforce to allow movement from other script (like slide)
-                Vector3 currentHorizontal = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
-                Vector3 velocityChange = targetVelocity - currentHorizontal;
-                if (_targetMoveDirection != Vector3.zero)
+                    Vector3 currentHorizontal = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+                    Vector3 velocityChange = targetVelocity - currentHorizontal;
+                    if (_targetMoveDirection != Vector3.zero)
+                        _rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    Vector3 slideDir = _rb.transform.forward;
+                    Vector3 currentHorizontalVel = new Vector3(_rb.linearVelocity.x, 0, _rb.linearVelocity.z);
+                    float currentSpeed = currentHorizontalVel.magnitude;
+
+                    // On mélange direction du slide + direction voulue par le joueur
+                    Vector3 blendedDirection = (slideDir + _targetMoveDirection * _slideControlStrength).normalized;
+
+                    // On garde la même vitesse, juste la direction change un peu
+                    Vector3 targetVelocity = blendedDirection * currentSpeed;
+                    Vector3 velocityChange = targetVelocity - currentHorizontalVel;
+
                     _rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                }
+               
 
             }
 
