@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -9,22 +10,14 @@ namespace GlimmerOfHope.Gameplay
     /// all listeners when it changes. All input scripts read from here.
     /// Use SetScheme() to switch between schemes manually.
     /// </summary>
+    
+    [DefaultExecutionOrder(-100)]
     public class InputManager : MonoBehaviour
     {
         #region Singleton
 
         public static InputManager Instance { get; private set; }
 
-        private void Awake()
-        {
-            if (Instance != null && Instance != this)
-            {
-                Destroy(gameObject);
-                return;
-            }
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
 
         #endregion
 
@@ -66,11 +59,19 @@ namespace GlimmerOfHope.Gameplay
 
         #region Unity Lifecycle
 
-        private void Start()
+        private void Awake()
         {
-            // Apply default without notifying (no listeners yet)
-            ApplyScheme(_defaultScheme, silent: true);
+            if (Instance != null && Instance != this)
+            {
+                Destroy(gameObject);
+                return;
+            }
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
+
+            ApplyScheme(DetectInitialScheme(), silent: true);
         }
+
 
         #endregion
 
@@ -106,6 +107,14 @@ namespace GlimmerOfHope.Gameplay
             Debug.Log($"[InputManager] Scheme set to: {scheme}");
         }
 
+        private ControlScheme DetectInitialScheme()
+        {
+#if UNITY_ANDROID || UNITY_IOS
+    return ControlScheme.Mobile;
+#else
+            return Gamepad.all.Count > 0 ? ControlScheme.Gamepad : ControlScheme.KeyboardMouse;
+#endif
+        }
         #endregion
     }
 }
