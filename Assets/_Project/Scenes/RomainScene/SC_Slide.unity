@@ -6502,6 +6502,32 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 79659802}
   m_Mesh: {fileID: -9191414782119997518, guid: 456e1695d56cd4d4d852c7f08d49f4de, type: 3}
+--- !u!1 &79985888 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9036868892351871006, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+  m_PrefabInstance: {fileID: 1520878048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &79985905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 79985888}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9313c92b80d900e4fa30f7c6a06257be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Slide
+  _maxDegree: 30
+  _slideSpeed: 10
+  _stopSlidingTimer: 1.5
+  _slideAcceleration: 10
+  _movement: {fileID: 1520878049}
+  _rb: {fileID: 1520878051}
+  isSliding: 0
+  lastDirection: {x: 0, y: 0, z: 0}
+  _stopTimer: 0
 --- !u!1 &82794303
 GameObject:
   m_ObjectHideFlags: 0
@@ -53012,11 +53038,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510139515}
   m_Mesh: {fileID: -9191414782119997518, guid: 456e1695d56cd4d4d852c7f08d49f4de, type: 3}
---- !u!1 &510419898 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2412934612408166905, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
-  m_PrefabInstance: {fileID: 1520878048}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &510430298
 GameObject:
   m_ObjectHideFlags: 0
@@ -175893,6 +175914,14 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _comboList.Array.data[3]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 79985905}
+    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _comboList.Array.data[3]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GlimmerOfHope.Gameplay.Slide, GlimmerOfHope.Gameplay
+      objectReference: {fileID: 0}
     - target: {fileID: 3042084320906130243, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.35
@@ -175908,7 +175937,7 @@ PrefabInstance:
     - target: {fileID: 3062255407610688202, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: _slide
       value: 
-      objectReference: {fileID: 1520878050}
+      objectReference: {fileID: 79985905}
     - target: {fileID: 3158832817305414917, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_UseGravity
       value: 1
@@ -176276,39 +176305,26 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 882331025}
     m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 2412934612408166905, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 9036868892351871006, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1520878050}
+      addedObject: {fileID: 79985905}
   m_SourcePrefab: {fileID: 100100000, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
 --- !u!114 &1520878049 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 2612396029083631424, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
   m_PrefabInstance: {fileID: 1520878048}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510419898}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 19d939b82729e524e9eff74fa27c34ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.Movement
---- !u!114 &1520878050
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+--- !u!54 &1520878051 stripped
+Rigidbody:
+  m_CorrespondingSourceObject: {fileID: 3158832817305414917, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+  m_PrefabInstance: {fileID: 1520878048}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 510419898}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9313c92b80d900e4fa30f7c6a06257be, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Slide
-  _maxDegree: 30
-  _slideSpeed: 10
-  _stopSlidingTimer: 1.5
-  _movement: {fileID: 1520878049}
-  isSliding: 0
-  lastDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &1521524794
 GameObject:
   m_ObjectHideFlags: 0

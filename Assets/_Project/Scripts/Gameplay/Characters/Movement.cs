@@ -77,6 +77,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         private bool _inAirCurrent = false;
         private Animator _animator;
         private bool _isSwimming = false;
+        private bool _lockCameraY = false;
 
         #endregion
 
@@ -155,6 +156,11 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             }
         }
 
+        public void SetLockCameraY(bool locked)
+        {
+            _lockCameraY = locked;
+        }
+
         // Called by AirCurrent.cs
         public void SetAirCurrent(bool active, Vector3 airCurrentForce = default)
         {
@@ -177,7 +183,10 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
             if (_movementEnabled)
             {
-                _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x + cameraForward * _input.y), lastHit.normal).normalized;
+                if (!_lockCameraY)
+                    _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x + cameraForward * _input.y), lastHit.normal).normalized;
+                else
+                    _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x), lastHit.normal).normalized;
             }
             else
             {
@@ -207,8 +216,15 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             {
                 //Normal ground movement nulify gravity
                 //_rb.useGravity = false;
+
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
-                _rb.linearVelocity = targetVelocity;
+                //_rb.linearVelocity = targetVelocity;
+
+                //use addforce to allow movement from other script (like slide)
+                Vector3 currentHorizontal = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+                Vector3 velocityChange = targetVelocity - currentHorizontal;
+                if (_targetMoveDirection != Vector3.zero)
+                    _rb.AddForce(velocityChange, ForceMode.VelocityChange);
 
             }
 

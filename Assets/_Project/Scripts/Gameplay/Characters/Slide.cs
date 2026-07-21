@@ -19,6 +19,7 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private float _stopSlidingTimer = 0.5f;
         [SerializeField] private float _slideAcceleration = 10f;
         [SerializeField] private Movement _movement;
+        [SerializeField] private Rigidbody _rb;
 
         #endregion
 
@@ -31,18 +32,11 @@ namespace GlimmerOfHope.Gameplay
 
         #region Private Properties
 
-        private Rigidbody _rb;
-        private float _stopTimer;
-        private float _currentSlideSpeed = 0f;
+        [SerializeField]  private float _stopTimer;
 
         #endregion
 
         #region Unity lifecycle
-
-        private void Start()
-        {
-            _rb = GetComponent<Rigidbody>();
-        }
 
         // Update is called once per frame
         void Update()
@@ -54,7 +48,7 @@ namespace GlimmerOfHope.Gameplay
                 if (isSliding) return;
 
                 isSliding = true;
-                _currentSlideSpeed = 0f;
+                _movement.SetLockCameraY(true);
 
                 _stopTimer = _stopSlidingTimer;
             }
@@ -65,6 +59,7 @@ namespace GlimmerOfHope.Gameplay
                 if (_stopTimer <= 0f && isSliding)
                 {
                     isSliding = false;
+                    _movement.SetLockCameraY(false);
                 }
             }
         }
@@ -74,10 +69,12 @@ namespace GlimmerOfHope.Gameplay
             if (!isSliding) return;
 
             lastDirection = Vector3.ProjectOnPlane(Vector3.down, _movement.lastHit.normal).normalized;
+            Vector3 targetVelocity = lastDirection * _slideSpeed;
 
-            _currentSlideSpeed = Mathf.MoveTowards(_currentSlideSpeed, _slideSpeed, _slideAcceleration * Time.fixedDeltaTime);
+            Vector3 velocityDiff = targetVelocity - _rb.linearVelocity;
+            Vector3 accel = Vector3.ClampMagnitude(velocityDiff / Time.fixedDeltaTime, _slideAcceleration);
 
-            _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, lastDirection * _currentSlideSpeed, _slideAcceleration * Time.fixedDeltaTime);
+            _rb.AddForce(accel, ForceMode.Acceleration);
         }
 
         #endregion
