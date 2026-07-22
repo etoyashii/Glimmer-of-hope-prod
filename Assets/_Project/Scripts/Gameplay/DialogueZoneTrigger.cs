@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Rendering;
 
-namespace GlimmerOfHope.Gameplay.Dialogue
+namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
     /// Triggers a dialogue event when the player enters the sphere collider.

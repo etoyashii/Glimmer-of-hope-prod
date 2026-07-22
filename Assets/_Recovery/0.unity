@@ -8396,6 +8396,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 4
+  Sides: 4
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.2
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 583434939}
 --- !u!23 &106852091
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -8465,6 +8517,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 6
+  _distanceBetweenPoints: 1.2
+  _initialDirection: {x: 0, y: 0, z: -1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.122
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 66.2
+  _branchAngleVariance: 19.6
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.8
+  _noiseForce: 0.94
+  _noiseFrequency: 3.07
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.258
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &106852094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14580,6 +14656,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 30
+  Sides: 2
+  BaseRadius: 2
+  TipRadius: 3
+  TaperCurve:
+    m_Curve:
+    - time: 0.0041656494
+      value: 0.9928589
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1.0916748
+      value: -0.021427155
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 315736298}
 --- !u!23 &160453272
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15139,6 +15267,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 5
+  TipRadius: 0.5
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 2031785318}
 --- !u!23 &167300493
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -15208,6 +15388,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 6
+  _initialDirection: {x: 0.2, y: 0, z: 1}
+  _subBranchCount: 2
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 31.9
+  _branchAngleVariance: 17.5
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.493
+  _maxSlopeDeg: 20
+  _noiseForce: 0.555
+  _noiseFrequency: 4.23
+  _twistDegreesPerStep: 8.8
+  _gravityInfluence: 0.039
+  _lengthMultiplierPerDepth: 1
+  _pointCountMultiplierPerDepth: 0.546
+  _seed: 28
+  _autoRegenerate: 0
+  _splineTension: 0.22
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &167300496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29860,6 +30064,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 3
+  Sides: 4
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 255343711}
 --- !u!23 &295702757
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -29929,6 +30185,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 6
+  _distanceBetweenPoints: 1.2
+  _initialDirection: {x: 1, y: 0, z: -1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.122
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 89.2
+  _branchAngleVariance: 28.2
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.8
+  _noiseForce: 0.94
+  _noiseFrequency: 3.36
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.258
+  _lengthMultiplierPerDepth: 0.51
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &295702760
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46495,7 +46775,7 @@ Transform:
   m_GameObject: {fileID: 450048041}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2457.411, y: 348.272, z: 5130.044}
+  m_LocalPosition: {x: 2457.306, y: 348.272, z: 5131.032}
   m_LocalScale: {x: 1.22, y: 1.22, z: 1.22}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -50591,6 +50871,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 82985501}
 --- !u!23 &509794796
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -53437,6 +53769,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 30
+  Sides: 2
+  BaseRadius: 2
+  TipRadius: 2
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 739699076}
 --- !u!23 &539889567
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -59215,6 +59599,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 2
+  Sides: 4
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1871502460}
 --- !u!23 &596090916
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -59284,6 +59720,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 5
+  _distanceBetweenPoints: 1
+  _initialDirection: {x: 0, y: 0, z: 1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 35
+  _branchAngleVariance: 10
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 20
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.08
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &596090919
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74725,7 +75185,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 2147483647
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &742786714
 Transform:
   m_ObjectHideFlags: 0
@@ -80712,6 +81172,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 50
+  Sides: 6
+  BaseRadius: 1.5
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 96691322}
 --- !u!23 &803664658
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -80781,6 +81293,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &803664661
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -84972,6 +85508,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 16
+  BaseRadius: 2
+  TipRadius: 2
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 253621707}
 --- !u!23 &810260423
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -86342,6 +86930,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 120
+  Sides: 8
+  BaseRadius: 2
+  TipRadius: 1.5
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1270545915}
 --- !u!23 &823702080
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -86411,6 +87051,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &823702083
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -87118,6 +87782,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 2
+  Sides: 4
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 953904634}
 --- !u!23 &826257173
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -87187,6 +87903,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 5
+  _distanceBetweenPoints: 0.75
+  _initialDirection: {x: 0, y: 1, z: 1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 25.4
+  _branchAngleVariance: 6.8
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 29.2
+  _noiseForce: 0.65
+  _noiseFrequency: 1.8
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.146
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &826257176
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -90704,6 +91444,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 120
+  Sides: 6
+  BaseRadius: 1.5
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1249284255}
 --- !u!23 &844695943
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -90773,6 +91565,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &844695946
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -91567,6 +92383,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 82985501}
 --- !u!23 &850603802
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -99689,6 +100557,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 30
+  Sides: 2
+  BaseRadius: 3
+  TipRadius: 3
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1454581128}
 --- !u!114 &946071520
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -99701,6 +100621,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 30
+  Sides: 2
+  BaseRadius: 2
+  TipRadius: 2
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 0}
 --- !u!23 &946071521
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -111959,6 +112931,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 976670193}
 --- !u!23 &1076447822
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -112028,6 +113052,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 6
+  _distanceBetweenPoints: 1
+  _initialDirection: {x: 0, y: 1, z: 1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 35
+  _branchAngleVariance: 10
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 20
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.016
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1076447825
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115672,6 +116720,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 82985501}
 --- !u!23 &1081557591
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -116046,6 +117146,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 120
+  Sides: 6
+  BaseRadius: 1.5
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1043275697}
 --- !u!23 &1084460373
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -116115,6 +117267,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1084460376
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -117602,6 +118778,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 20
+  Sides: 2
+  BaseRadius: 1
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 673049983}
 --- !u!23 &1094037869
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -120738,6 +121966,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 120
+  Sides: 20
+  BaseRadius: 1.7
+  TipRadius: 1.5
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1132738083}
 --- !u!23 &1129783783
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -120807,6 +122087,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1129783786
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -131384,6 +132688,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 5
+  TipRadius: 0.5
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1585519204}
 --- !u!23 &1235767843
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -131453,6 +132809,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 6
+  _initialDirection: {x: 0, y: 0, z: 1}
+  _subBranchCount: 2
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 47.8
+  _branchAngleVariance: 28
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.493
+  _maxSlopeDeg: 20
+  _noiseForce: 0.242
+  _noiseFrequency: 2.92
+  _twistDegreesPerStep: 21.4
+  _gravityInfluence: 0.086
+  _lengthMultiplierPerDepth: 1
+  _pointCountMultiplierPerDepth: 0.546
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.22
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1235767846
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -145878,6 +147258,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 2
+  BaseRadius: 1
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 338281531}
 --- !u!23 &1363338710
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -151345,6 +152777,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 0.1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1835284678}
 --- !u!23 &1415688464
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -151414,6 +152898,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 8
+  _distanceBetweenPoints: 5
+  _initialDirection: {x: 0, y: 1, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.286
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 59.1
+  _branchAngleVariance: 30
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 30.6
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1415688467
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -153516,6 +155024,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 120
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1173498397}
 --- !u!23 &1425933016
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -153585,6 +155145,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1425933019
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -162652,6 +164236,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 2
+  Sides: 4
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 953904634}
 --- !u!23 &1489851607
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -162721,6 +164357,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 5
+  _distanceBetweenPoints: 0.75
+  _initialDirection: {x: 0, y: 1, z: 1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 25.4
+  _branchAngleVariance: 6.8
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 29.2
+  _noiseForce: 0.65
+  _noiseFrequency: 1.8
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.146
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1489851610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -165781,6 +167441,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 200
+  Sides: 6
+  BaseRadius: 1.5
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 96691322}
 --- !u!23 &1498856226
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -165850,6 +167562,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1498856229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -191890,6 +193626,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 14
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 1
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 82985501}
 --- !u!23 &1768684584
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -199098,6 +200886,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 120
+  Sides: 6
+  BaseRadius: 1
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 978101942}
 --- !u!23 &1849346993
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -199167,6 +201007,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 12
+  _distanceBetweenPoints: 2
+  _initialDirection: {x: 0, y: 0, z: 0}
+  _subBranchCount: 3
+  _branchSplitStart: 0.73
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 46.9
+  _branchAngleVariance: 20.9
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 43.1
+  _noiseForce: 0.4
+  _noiseFrequency: 1.2
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0
+  _lengthMultiplierPerDepth: 0.628
+  _pointCountMultiplierPerDepth: 0.513
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1849346996
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -207345,6 +209209,58 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7688051598d61d54dbf85be70f7e0253, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BranchMeshBuilder
+  Segments: 2
+  Sides: 4
+  BaseRadius: 0.18
+  TipRadius: 0.012
+  TaperCurve:
+    m_Curve:
+    - time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  GrowCurve:
+    m_Curve:
+    - time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 1
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - time: 1
+      value: 1
+      inSlope: 1
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  RadiusVariance: 0.15
+  RandomSeed: 42
+  JunctionSphereScale: 1.1
+  JunctionFlareWidth: 0.05
+  GrowProgress: 1
+  BakedMesh: {fileID: 1087418748}
 --- !u!23 &1913200672
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -207414,6 +209330,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64ca498c9008ae045a3d172f4dfba333, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProceduralBranchSplines
+  _pointsPerBranch: 5
+  _distanceBetweenPoints: 1
+  _initialDirection: {x: 0, y: 1, z: 1}
+  _subBranchCount: 3
+  _branchSplitStart: 0.5
+  _reduceCountMin: 0
+  _reduceCountMax: 1
+  _branchAngleSpread: 25.4
+  _branchAngleVariance: 6.8
+  _recursionDepth: 2
+  _maxVerticalAngle: 0.2
+  _maxSlopeDeg: 29.2
+  _noiseForce: 0.65
+  _noiseFrequency: 1.8
+  _twistDegreesPerStep: 15
+  _gravityInfluence: 0.146
+  _lengthMultiplierPerDepth: 0.65
+  _pointCountMultiplierPerDepth: 0.5
+  _seed: 42
+  _autoRegenerate: 0
+  _splineTension: 0.4
+  _smooth: 0
+  _container: {fileID: 0}
+  _nextId: 0
 --- !u!114 &1913200675
 MonoBehaviour:
   m_ObjectHideFlags: 0

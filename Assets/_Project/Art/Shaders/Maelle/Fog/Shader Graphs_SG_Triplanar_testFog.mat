@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: M_Thorn
+  m_Name: Shader Graphs_SG_Triplanar_testFog
   m_Shader: {fileID: -6465566751694194690, guid: 2e7ea9a67a948f141bbf500dff3f8a9f, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -25,11 +25,11 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _MainTexture:
-        m_Texture: {fileID: 2800000, guid: 6edea9767c6bf7345b48e0f0fef2388e, type: 3}
+        m_Texture: {fileID: 2800000, guid: 93566bbb4ebdada44b6eea2de601e6fc, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _NormalMap:
-        m_Texture: {fileID: 2800000, guid: 4438193a972b1a74ca8cc2ebf241c54d, type: 3}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -46,21 +46,20 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _AO: 0.5
+    - _AO: 0
     - _Blend: 10
     - _Metallic: 0
-    - _NMStrength: 0.283
+    - _NMStrength: 0
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Smoothness: 0
-    - _Tile: 0.36
-    - _TileMT: 2
-    - _TileNM: 2
+    - _TileMT: 0
+    - _TileNM: 0
     - _XRMotionVectorsPass: 1
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1
---- !u!114 &6341007282640886218
+--- !u!114 &2640399023278578035
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}

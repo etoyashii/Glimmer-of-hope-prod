@@ -12,6 +12,8 @@ namespace GlimmerOfHope.Gameplay
         public Vector2 size = new Vector2(10, 10);
         [Range(0, 1)]
         public float threshold = 0.5f;
+        [Range(0.1f, 2f)]
+        public float contrast = 0.5f;
         public int maskIndex;
 
         private void OnEnable()
@@ -40,26 +42,26 @@ namespace GlimmerOfHope.Gameplay
             }
         }
 
-    // pour debug si probleme de taille
-    /*    private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.cyan;
-            Vector3 center = transform.position;
-            Vector3 extents = new Vector3(size.x, 0.1f, size.y);
-            Matrix4x4 old = Gizmos.matrix;
-            Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
-            Gizmos.DrawWireCube(Vector3.zero, extents);
-            Gizmos.matrix = old;
-
-            if (transform.lossyScale != Vector3.one)
+        // pour debug si probleme de taille
+        /*    private void OnDrawGizmosSelected()
             {
-                Debug.LogWarning(
-                    $"[GrayZone] '{name}' a un scale de {transform.lossyScale} au lieu de (1,1,1). " +
-                    "Le scale fausse le calcul de position locale dans le shader (la zone peut couvrir tout le terrain). " +
-                    "Utilise le champ 'size' pour dimensionner la zone, pas le Transform.",
-                    this);
-            }
-        }*/
+                Gizmos.color = Color.cyan;
+                Vector3 center = transform.position;
+                Vector3 extents = new Vector3(size.x, 0.1f, size.y);
+                Matrix4x4 old = Gizmos.matrix;
+                Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
+                Gizmos.DrawWireCube(Vector3.zero, extents);
+                Gizmos.matrix = old;
+
+                if (transform.lossyScale != Vector3.one)
+                {
+                    Debug.LogWarning(
+                        $"[GrayZone] '{name}' a un scale de {transform.lossyScale} au lieu de (1,1,1). " +
+                        "Le scale fausse le calcul de position locale dans le shader (la zone peut couvrir tout le terrain). " +
+                        "Utilise le champ 'size' pour dimensionner la zone, pas le Transform.",
+                        this);
+                }
+            }*/
 #endif
 
         public GrayZoneData GetData()
@@ -68,6 +70,7 @@ namespace GlimmerOfHope.Gameplay
             data.worldToLocal = transform.worldToLocalMatrix;
             data.size = size;
             data.threshold = threshold;
+            data.contrast = contrast;
             data.maskIndex = maskIndex;
             return data;
         }

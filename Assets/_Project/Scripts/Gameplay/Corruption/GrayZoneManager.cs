@@ -81,7 +81,7 @@ namespace GlimmerOfHope.Gameplay
                 data[i] = zones[i].GetData();
             }
 
-            int stride = sizeof(float) * 16 + sizeof(float) * 2 + sizeof(float) + sizeof(int);
+            int stride = System.Runtime.InteropServices.Marshal.SizeOf(typeof(GrayZoneData));
             zoneBuffer = new ComputeBuffer(count, stride);
             zoneBuffer.SetData(data);
 

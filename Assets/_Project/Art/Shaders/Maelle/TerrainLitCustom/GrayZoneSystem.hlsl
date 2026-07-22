@@ -1,4 +1,4 @@
-#ifndef GRAY_ZONE_SYSTEM_INCLUDED
+﻿#ifndef GRAY_ZONE_SYSTEM_INCLUDED
 #define GRAY_ZONE_SYSTEM_INCLUDED
 
 struct GrayZoneData
@@ -6,6 +6,7 @@ struct GrayZoneData
     float4x4 worldToLocal;
     float2 size;
     float threshold;
+    float contrast;
     int maskIndex;
 };
 
@@ -17,14 +18,12 @@ SAMPLER(sampler_GrayZoneMasks);
 
 float CheckSingleZone(float3 worldPosition, GrayZoneData zone)
 {
-    // world to local
     float3 localPosition = mul(zone.worldToLocal, float4(worldPosition, 1)).xyz;
 
     float2 uv;
     uv.x = localPosition.x / zone.size.x + 0.5;
     uv.y = localPosition.z / zone.size.y + 0.5;
 
-    // check inside size
     if (uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1)
     {
         return 0;
@@ -37,7 +36,10 @@ float CheckSingleZone(float3 worldPosition, GrayZoneData zone)
         zone.maskIndex
     ).r;
 
-    return step(zone.threshold, mask);
+    float contrasted = saturate(mask);
+    contrasted = pow(contrasted, (float) zone.contrast);
+
+    return contrasted;
 }
 
 float GetGrayMask(float3 positionWS)

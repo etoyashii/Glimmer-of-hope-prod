@@ -2,6 +2,8 @@ Shader "Universal Render Pipeline/TerrainCustom/Lit"
 {
     Properties
     {
+    
+
         [HideInInspector] [ToggleUI] _EnableHeightBlend("EnableHeightBlend", Float) = 0.0
         _HeightTransition("Height Transition", Range(0, 1.0)) = 0.0
         // Layer count is passed down to guide height-blend enable/disable, due

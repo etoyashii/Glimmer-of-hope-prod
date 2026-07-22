@@ -9,6 +9,7 @@ namespace GlimmerOfHope.Gameplay
         public Matrix4x4 worldToLocal;
         public Vector2 size;
         public float threshold;
+        public float contrast;
         public int maskIndex;
     }
 
