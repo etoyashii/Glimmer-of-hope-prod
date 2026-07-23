@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
@@ -16,6 +19,17 @@ namespace GlimmerOfHope.Gameplay
         public float contrast = 0.5f;
         public int maskIndex;
 
+        [Header("Repeinte")]
+        private Vector2 paintOrigin;
+        private float paintRadius;
+
+        public event Action<Vector3, float> OnPaintStep;
+        public event Action<Vector3> OnPaintComplete;
+
+        [SerializeField]
+        private Material sharedMat;
+        private float defaultFade = 50;
+
         private void OnEnable()
         {
             GrayZoneManager.Register(this);
@@ -32,7 +46,7 @@ namespace GlimmerOfHope.Gameplay
         }
 
 #if UNITY_EDITOR
-        // ca bouge quand ca bouge
+        // update editor
         private void Update()
         {
             if (!Application.isPlaying && transform.hasChanged)
@@ -42,26 +56,6 @@ namespace GlimmerOfHope.Gameplay
             }
         }
 
-        // pour debug si probleme de taille
-        /*    private void OnDrawGizmosSelected()
-            {
-                Gizmos.color = Color.cyan;
-                Vector3 center = transform.position;
-                Vector3 extents = new Vector3(size.x, 0.1f, size.y);
-                Matrix4x4 old = Gizmos.matrix;
-                Gizmos.matrix = Matrix4x4.TRS(center, transform.rotation, Vector3.one);
-                Gizmos.DrawWireCube(Vector3.zero, extents);
-                Gizmos.matrix = old;
-
-                if (transform.lossyScale != Vector3.one)
-                {
-                    Debug.LogWarning(
-                        $"[GrayZone] '{name}' a un scale de {transform.lossyScale} au lieu de (1,1,1). " +
-                        "Le scale fausse le calcul de position locale dans le shader (la zone peut couvrir tout le terrain). " +
-                        "Utilise le champ 'size' pour dimensionner la zone, pas le Transform.",
-                        this);
-                }
-            }*/
 #endif
 
         public GrayZoneData GetData()
@@ -72,7 +66,43 @@ namespace GlimmerOfHope.Gameplay
             data.threshold = threshold;
             data.contrast = contrast;
             data.maskIndex = maskIndex;
+            data.paintOrigin = paintOrigin;
+            data.paintRadius = paintRadius;
             return data;
+        }
+
+        //animation repaint
+        public async Task PaintFromPoint(Vector3 worldPoint, float targetRadius, float duration = 1f)
+        {
+
+            Destroy(this.transform.GetChild(0).gameObject);
+            StartCoroutine(PaintRoutine(worldPoint, targetRadius, duration));
+        }
+
+        private IEnumerator PaintRoutine(Vector3 worldPoint, float targetRadius, float duration)
+        {
+            Vector3 local = transform.InverseTransformPoint(worldPoint);
+            paintOrigin = new Vector2(local.x, local.z);
+
+            float t = 0f;
+            while (t < duration)
+            {
+                t += Time.deltaTime;
+                float progress = duration <= 0f ? 1f : Mathf.Clamp01(t / duration);
+                paintRadius = Mathf.Lerp(0f, targetRadius, progress);
+
+                GrayZoneManager.MarkDirty();
+                OnPaintStep?.Invoke(worldPoint, paintRadius);
+                sharedMat.SetFloat("_TopFadeAmount", Mathf.Lerp(defaultFade, 0f, progress));
+
+                yield return null;
+            }
+
+            paintRadius = targetRadius;
+            GrayZoneManager.MarkDirty();
+            OnPaintComplete?.Invoke(worldPoint);
+            sharedMat.SetFloat("_TopFadeAmount", 50);
+            Destroy(this.gameObject);
         }
     }
 }

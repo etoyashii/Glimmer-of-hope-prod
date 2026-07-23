@@ -8,6 +8,8 @@ struct GrayZoneData
     float threshold;
     float contrast;
     int maskIndex;
+    float2 paintOrigin;
+    float paintRadius;
 };
 
 StructuredBuffer<GrayZoneData> _GrayZones;
@@ -38,6 +40,14 @@ float CheckSingleZone(float3 worldPosition, GrayZoneData zone)
 
     float contrasted = saturate(mask);
     contrasted = pow(contrasted, (float) zone.contrast);
+
+    if (zone.paintRadius > 0)
+    {
+        float distToPaint = distance(localPosition.xz, zone.paintOrigin);
+        float paintEdge = max(zone.paintRadius * 0.15, 0.001);
+        float painted = 1.0 - smoothstep(zone.paintRadius - paintEdge, zone.paintRadius, distToPaint);
+        contrasted *= (1.0 - painted);
+    }
 
     return contrasted;
 }

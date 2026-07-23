@@ -7,9 +7,11 @@ namespace GlimmerOfHope.Gameplay
     {
         private BoxCollider box;
 
+        private GrayZone gz;
         private void Awake()
         {
             box = GetComponent<BoxCollider>();
+            gz = GetComponent<GrayZone>();
         }
 
         private void OnTriggerStay(Collider other)
@@ -34,7 +36,6 @@ namespace GlimmerOfHope.Gameplay
                     float intensity = 1f - Mathf.Clamp01(distance);
 
                     intensity = Mathf.Lerp(0.2f, 1f, intensity);
-                    Debug.Log(intensity);
                     effects.SetCorruptionEffect(intensity);
                 }
                 else
@@ -55,6 +56,8 @@ namespace GlimmerOfHope.Gameplay
                 if (other.gameObject.TryGetComponent(out PostProcessEffects effects))
                 {
                     effects.SetCorruptionEffect(0f);
+                    gz.PaintFromPoint(other.transform.position, targetRadius: 4f, duration: 3f);
+
                 }
                 else
                 {

@@ -11,6 +11,8 @@ namespace GlimmerOfHope.Gameplay
         public float threshold;
         public float contrast;
         public int maskIndex;
+        public Vector2 paintOrigin;
+        public float paintRadius;
     }
 
     public interface IGrayZoneReceiver

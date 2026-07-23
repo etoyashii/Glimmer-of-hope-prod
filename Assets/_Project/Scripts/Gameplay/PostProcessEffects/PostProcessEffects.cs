@@ -59,7 +59,7 @@ namespace GlimmerOfHope.Gameplay
 
                 float eased = Mathf.SmoothStep(0f, 1f, intensity);
 
-                cineBars.barSize.value = Mathf.Lerp(0f, 0.4f, eased);
+                cineBars.barSize.value = Mathf.Lerp(0f, 0.05f, eased);
 
                 vignette.intensity.value = Mathf.Lerp(0f, 0.6f, eased);
 
