@@ -10,7 +10,7 @@ namespace GlimmerOfHope.Gameplay
     /// all listeners when it changes. All input scripts read from here.
     /// Use SetScheme() to switch between schemes manually.
     /// </summary>
-    
+
     [DefaultExecutionOrder(-100)]
     public class InputManager : MonoBehaviour
     {
@@ -42,9 +42,12 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("All mobile-only UI root GameObjects to show/hide on scheme change.")]
         [SerializeField] private GameObject[] _mobileUIRoots;
 
+        [SerializeField] private InputActionReference MenuInput;
+
         [Header("Events")]
         public UnityEvent<ControlScheme> OnSchemeChanged;
 
+        public UnityEvent OpenMenu;
         #endregion
 
         #region Public Properties
@@ -72,6 +75,17 @@ namespace GlimmerOfHope.Gameplay
             ApplyScheme(DetectInitialScheme(), silent: true);
         }
 
+        private void OnEnable()
+        {
+            if (MenuInput != null)
+                MenuInput.action.performed += OnMenuInputPressed;
+        }
+
+        private void OnDisable()
+        {
+            if (MenuInput != null)
+                MenuInput.action.performed -= OnMenuInputPressed;
+        }
 
         #endregion
 
@@ -89,6 +103,14 @@ namespace GlimmerOfHope.Gameplay
         public void SetSchemeKeyboardMouse() => SetScheme(ControlScheme.KeyboardMouse);
         public void SetSchemeGamepad() => SetScheme(ControlScheme.Gamepad);
 
+        public void QuitApp()
+        {
+#if UNITY_EDITOR
+            UnityEditor.EditorApplication.isPlaying = false;
+#else
+    Application.Quit();
+#endif
+        }
         #endregion
 
         #region Private Methods
@@ -101,10 +123,40 @@ namespace GlimmerOfHope.Gameplay
             foreach (GameObject root in _mobileUIRoots)
                 if (root != null) root.SetActive(showMobileUI);
 
+            ApplyMenuBindingMask(scheme);
+
             if (!silent)
                 OnSchemeChanged?.Invoke(scheme);
 
             Debug.Log($"[InputManager] Scheme set to: {scheme}");
+        }
+
+        /// <summary>
+        /// On mobile the menu action is disabled, the UI hamburger button calls
+        /// OpenMenu directly. On other schemes only the relevant bindings are
+        /// active, same masking pattern as Jump and Movement.
+        /// </summary>
+        private void ApplyMenuBindingMask(ControlScheme scheme)
+        {
+            if (MenuInput == null) return;
+
+            MenuInput.action.bindingMask = scheme switch
+            {
+                ControlScheme.Mobile => null,
+                ControlScheme.KeyboardMouse => InputBinding.MaskByGroup("Keyboard/Mouse"),
+                ControlScheme.Gamepad => InputBinding.MaskByGroup("Gamepad"),
+                _ => null
+            };
+
+            if (scheme == ControlScheme.Mobile)
+                MenuInput.action.Disable();
+            else
+                MenuInput.action.Enable();
+        }
+
+        private void OnMenuInputPressed(InputAction.CallbackContext ctx)
+        {
+            OpenMenu?.Invoke();
         }
 
         private ControlScheme DetectInitialScheme()
