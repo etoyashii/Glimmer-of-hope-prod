@@ -24,6 +24,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [Header("Movement")]
         [Range(1.0f, 100.0f)]
         [SerializeField] private float _speed = 20.0f;
+        
 
         [Range(0f, 1f)]
         [Tooltip("How quickly the player reaches full speed (1 = instant, 0 = never).")]
@@ -38,6 +39,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Camera _playerCamera;
         [SerializeField] private Climbing _climbing;
+        [SerializeField] private Slide _slide;
 
         [Header("Ground Check")]
         [SerializeField] private float _groundCheckDistance = 0.2f;
@@ -70,13 +72,14 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         #region Private Fields
 
         private Vector2 _input;
-        private Vector3 _targetMoveDirection;
+        public Vector3 _targetMoveDirection;
         private bool _movementEnabled = true;
 
         private Vector3 _airCurrentForce = Vector3.zero;
         private bool _inAirCurrent = false;
         private Animator _animator;
         private bool _isSwimming = false;
+        private bool _lockCameraY = false;
 
         #endregion
 
@@ -155,11 +158,21 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             }
         }
 
+        public void SetLockCameraY(bool locked)
+        {
+            _lockCameraY = locked;
+        }
+
         // Called by AirCurrent.cs
         public void SetAirCurrent(bool active, Vector3 airCurrentForce = default)
         {
             _inAirCurrent = active;
             _airCurrentForce = active ? airCurrentForce : Vector3.zero;
+        }
+
+        public Vector2 GetInput()
+        {
+            return _input;
         }
 
         #endregion
@@ -177,7 +190,10 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
             if (_movementEnabled)
             {
-                _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x + cameraForward * _input.y), lastHit.normal).normalized;
+                if (!_lockCameraY)
+                    _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x + cameraForward * _input.y), lastHit.normal).normalized;
+                else
+                    _targetMoveDirection = Vector3.ProjectOnPlane((cameraRight * _input.x), lastHit.normal).normalized;
             }
             else
             {
@@ -195,20 +211,24 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             else if (!IsGrounded() && !IsSwimming)
             {
                 //Normal air movement preserve vertical velocity
-                //_rb.useGravity = true;
 
                 Vector3 targetVelocity = _targetMoveDirection * _speed;
                 targetVelocity.y = _rb.linearVelocity.y;
-                //Debug.Log("In the air : " + _rb.linearVelocity.y);
                 _rb.linearVelocity = Vector3.Lerp(_rb.linearVelocity, targetVelocity, _acceleration);
 
             }
             else
             {
                 //Normal ground movement nulify gravity
-                //_rb.useGravity = false;
-                Vector3 targetVelocity = _targetMoveDirection * _speed;
-                _rb.linearVelocity = targetVelocity;
+                if (!_slide.IsSliding())
+                {
+                    Vector3 targetVelocity = _targetMoveDirection * _speed;
+
+                    Vector3 currentHorizontal = new Vector3(_rb.linearVelocity.x, 0f, _rb.linearVelocity.z);
+                    Vector3 velocityChange = targetVelocity - currentHorizontal;
+                    if (_targetMoveDirection != Vector3.zero)
+                        _rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                }              
 
             }
 

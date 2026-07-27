@@ -87,12 +87,11 @@ namespace GlimmerOfHope.Gameplay
 
             PlayJumpVFX(jumpForce);
             
-            if (_slide.isSliding)
+            if (_slide.IsSliding())
             {
                 _rb.linearVelocity = Vector3.zero;
                 _rb.AddForce(_playerMovement.lastHit.normal * jumpForce, ForceMode.Impulse);
-                _slide.isSliding = false;
-                Debug.Log("Jump slide");
+                _slide.StopSliding();
             }
             else
             {
