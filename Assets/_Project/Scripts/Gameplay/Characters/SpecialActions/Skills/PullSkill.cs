@@ -94,6 +94,14 @@ namespace GlimmerOfHope.Gameplay
             {
                 if (!col.CompareTag(PUSHABLE_TAG)) continue;
 
+                // Let a scripted reaction take over instead of a raw physics push
+                WindReactive reactive = col.GetComponent<WindReactive>();
+                if (reactive != null && reactive.ReactsToPull)
+                {
+                    reactive.NotifyPush();
+                    continue;
+                }
+
                 Rigidbody rb = col.attachedRigidbody;
                 if (rb == null || rb.isKinematic) continue;
 
