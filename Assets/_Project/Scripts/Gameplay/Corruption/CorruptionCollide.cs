@@ -56,7 +56,7 @@ namespace GlimmerOfHope.Gameplay
                 if (other.gameObject.TryGetComponent(out PostProcessEffects effects))
                 {
                     effects.SetCorruptionEffect(0f);
-                    gz.PaintFromPoint(other.transform.position, targetRadius: 4f, duration: 3f);
+                    gz.PaintFromPoint(other.transform.position, targetRadius: 4f, duration: 6f);
 
                 }
                 else
