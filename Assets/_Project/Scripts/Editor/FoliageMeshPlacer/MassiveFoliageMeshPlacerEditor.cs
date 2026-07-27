@@ -131,6 +131,9 @@ namespace GlimmerOfHope.Editor
                 EditorGUILayout.LabelField(label, EditorStyles.boldLabel);
 
                 EditorGUILayout.PropertyField(prefabProp, new GUIContent("Prefab"));
+                EditorGUILayout.Space(50);
+
+
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fillType"), new GUIContent("Type de remplissage"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("density"), new GUIContent("Densité"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fallOff"), new GUIContent("Seuil alpha"));

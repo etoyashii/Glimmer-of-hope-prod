@@ -1,14 +1,15 @@
-using UnityEngine;
+using GlimmerOfHope.Core;
 using System.Collections.Generic;
+using UnityEngine;
 using static GlimmerOfHope.Gameplay.MassiveFoliageMeshPlacer;
-
 namespace GlimmerOfHope.Gameplay
 {
-
+     
     [System.Serializable]
     public class FoliagePrefabEntry
     {
         #region public Properties
+        [PreviewPrefab(width = 60, height = 60)]
         public GameObject prefab;
 
         [Range(1, MassiveFoliageMeshPlacer.MAX_AMOUNT)]
