@@ -119,6 +119,11 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &34380908 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4373617817100708004, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+  m_PrefabInstance: {fileID: 2003165493}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &547063027
 GameObject:
   m_ObjectHideFlags: 0
@@ -249,13 +254,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 577a18605718f354f8fd4cb855da3c9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Spring
-  anchor: {fileID: 2018094641}
-  minDistance: 3
-  maxDistance: 10
-  springStrength: 1
-  distance: 0
+  _anchor: {fileID: 0}
+  _minDistance: 0
+  _maxDistance: 0
+  _springStrength: 1
   isActive: 0
   currentPullForce: 0
+--- !u!114 &855308307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 855308292}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9313c92b80d900e4fa30f7c6a06257be, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Slide
+  _maxDegree: 30
+  _slideSpeed: 1
+  _stopSlidingTimer: 0.5
+  _movement: {fileID: 855308295}
+  isSliding: 0
+  lastDirection: {x: 0, y: 0, z: 0}
 --- !u!1 &880482896
 GameObject:
   m_ObjectHideFlags: 0
@@ -388,7 +410,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4556578307349584232, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
   m_PrefabInstance: {fileID: 2003165493}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 34380908}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a52fb83d93cd28a4bac92ba0e0de6c87, type: 3}
@@ -399,12 +421,32 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4261435596194368049, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
   m_PrefabInstance: {fileID: 2003165493}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 34380908}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3fda540e41c271c4a84c84764951bdf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Jump
+--- !u!114 &909796410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 34380908}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fda540e41c271c4a84c84764951bdf1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Jump
+  _rb: {fileID: 855308296}
+  _playerMovement: {fileID: 855308295}
+  _animator: {fileID: 0}
+  _slide: {fileID: 855308307}
+  _jumpVFX: {fileID: 0}
+  _impulseVFX: {fileID: 0}
+  _jumpImpulseLimit: 0
+  _jumpAction: {fileID: 0}
 --- !u!1001 &1666978799
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -551,6 +593,14 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 909796389}
     - target: {fileID: 2837012463356123785, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837012463356123785, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      propertyPath: _extraGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2837012463356123785, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: _groundLayer.m_Bits
       value: 512
       objectReference: {fileID: 0}
@@ -558,10 +608,18 @@ PrefabInstance:
       propertyPath: _groundCheckDistance
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 4037069205078407984, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 3.9
+      objectReference: {fileID: 0}
     - target: {fileID: 4261435596194368049, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: _rb
       value: 
       objectReference: {fileID: 855308296}
+    - target: {fileID: 4261435596194368049, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      propertyPath: _slide
+      value: 
+      objectReference: {fileID: 855308307}
     - target: {fileID: 4641229236118914750, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: _rb
       value: 
@@ -616,15 +674,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6780819114008515721, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 6780819114008515721, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.72229
+      value: -5.7223015
       objectReference: {fileID: 0}
     - target: {fileID: 6809162284752552651, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 3.9
       objectReference: {fileID: 0}
     - target: {fileID: 6809162284752552651, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -632,7 +690,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6809162284752552651, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.72229
+      value: -5.7223015
       objectReference: {fileID: 0}
     - target: {fileID: 7389841703856884403, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       propertyPath: m_Name
@@ -645,6 +703,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8474844754600564271, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
       insertIndex: -1
       addedObject: {fileID: 855308301}
+    - targetCorrespondingSourceObject: {fileID: 8474844754600564271, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 855308307}
+    - targetCorrespondingSourceObject: {fileID: 4373617817100708004, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 909796410}
   m_SourcePrefab: {fileID: 100100000, guid: c5fdc567069b1774d95f4f48c1fdbbbc, type: 3}
 --- !u!1 &2018094636
 GameObject:
@@ -679,13 +743,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.CatapultRod
   _player: {fileID: 855308292}
-  jump: {fileID: 909796395}
-  movement: {fileID: 855308295}
-  startTensionDistance: 3
-  maxDistance: 10
-  targetedYOffset: 15
-  acceleration: 1
-  isAttached: 0
+  _jump: {fileID: 909796395}
+  _movement: {fileID: 855308295}
+  _startTensionDistance: 3
+  _maxDistance: 10
+  _targetedYOffset: 5
+  _acceleration: 1
+  _isAttached: 0
 --- !u!23 &2018094639
 MeshRenderer:
   m_ObjectHideFlags: 0
