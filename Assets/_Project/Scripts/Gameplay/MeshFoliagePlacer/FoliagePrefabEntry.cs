@@ -2,6 +2,8 @@ using GlimmerOfHope.Core;
 using System.Collections.Generic;
 using UnityEngine;
 using static GlimmerOfHope.Gameplay.MassiveFoliageMeshPlacer;
+using static GlimmerOfHope.Gameplay.FoliagePlacementAlgorithm;
+
 namespace GlimmerOfHope.Gameplay
 {
      
@@ -13,7 +15,7 @@ namespace GlimmerOfHope.Gameplay
         [PreviewPrefab(width = 60, height = 60)]
         public GameObject prefab; // The prefab reference of the foliage
         
-        [Range(1, MassiveFoliageMeshPlacer.MAX_AMOUNT)]
+        [Range(1, FoliagePlacementAlgorithm.MAX_AMOUNT)]
         [Tooltip("Controls the spawn probability of this prefab when it is chosen on a valid cell.")]
         public int density = 50; // The level of density you want for this prefab in the layer
         

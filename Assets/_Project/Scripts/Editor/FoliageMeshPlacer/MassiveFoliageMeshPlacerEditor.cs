@@ -3,20 +3,26 @@ using UnityEngine;
 using GlimmerOfHope.Gameplay;
 namespace GlimmerOfHope.Editor
 {
-
-
+    /// <summary>
+    /// Custom inspector for "MassiveFoliageMeshPlacer"
+    /// It draws the terrain texture layer with its density/placement settings and its list of foliage prefab entries
+    /// </summary>
     [CustomEditor(typeof(MassiveFoliageMeshPlacer))]
     public class MassiveFoliageMeshPlacerEditor : UnityEditor.Editor
     {
         #region Private Fields
+        // SerializedProperty handles for the placer's fields,
         private SerializedProperty terrainProp;
         private SerializedProperty terrainLayersProp;
         private SerializedProperty eraseModificationProp;
         private SerializedProperty collisionCheckLayersProp;
+
+        // One state per terrain layer, kept in sync with terrainLayersProp.arraySize.
         private bool[] layerFoldouts;
         #endregion
 
         #region Unity LifeCycle
+        // Resolves the SerializedProperty references used throughout the inspector.
         private void OnEnable()
         {
             terrainProp = serializedObject.FindProperty("terrain");
@@ -25,6 +31,7 @@ namespace GlimmerOfHope.Editor
             collisionCheckLayersProp = serializedObject.FindProperty("collisionCheckLayers");
         }
 
+        // Draws the whole custom inspector: global settings
         public override void OnInspectorGUI()
         {
             serializedObject.Update();
@@ -37,11 +44,13 @@ namespace GlimmerOfHope.Editor
             EditorGUILayout.PropertyField(collisionCheckLayersProp, new GUIContent("Layers de collision testés"));
             EditorGUILayout.Space();
 
+            // Resize the foldout state array if the number of terrain layers changed
             if (layerFoldouts == null || layerFoldouts.Length != terrainLayersProp.arraySize)
                 layerFoldouts = new bool[terrainLayersProp.arraySize];
 
             EditorGUILayout.LabelField("Layers de texture du terrain", EditorStyles.boldLabel);
 
+            // One collapsible "box" per terrain layer.
             for (int i = 0; i < terrainLayersProp.arraySize; i++)
             {
                 SerializedProperty layerProp = terrainLayersProp.GetArrayElementAtIndex(i);
@@ -62,6 +71,7 @@ namespace GlimmerOfHope.Editor
                 {
                     EditorGUI.indentLevel++;
 
+                    // Per-layer placement settings.
                     EditorGUILayout.PropertyField(densityMultProp, new GUIContent("Multiplicateur de densité (layer)"));
                     EditorGUILayout.PropertyField(resolutionProp, new GUIContent("Résolution de la grille de placement"));
 
@@ -72,11 +82,14 @@ namespace GlimmerOfHope.Editor
                     EditorGUILayout.PropertyField(alphaDensity, new GUIContent("AlphaDensity"));
                     EditorGUILayout.Space();
 
+                    // List of foliage prefab entries configured for this layer.
                     EditorGUILayout.LabelField($"Prefabs de foliage ({foliageProp.arraySize})", EditorStyles.miniBoldLabel);
                     DrawFoliageList(foliageProp);
 
                     EditorGUILayout.Space();
                     EditorGUILayout.BeginHorizontal();
+                    // apply pending edits first so the placer reads up-to-date values,
+                    // then record an undo snapshot of the whole hierarchy before mutating it.
                     if (GUILayout.Button("Générer ce layer"))
                     {
                         serializedObject.ApplyModifiedProperties();
@@ -103,6 +116,7 @@ namespace GlimmerOfHope.Editor
             EditorGUILayout.Space();
             EditorGUILayout.LabelField("Actions globales", EditorStyles.boldLabel);
 
+            // Global generate/clean buttons, acting on every layer at once (layerIndex -1 in CleanFoliageMeshes).
             EditorGUILayout.BeginHorizontal();
             if (GUILayout.Button("Générer tout le foliage"))
             {
@@ -121,8 +135,12 @@ namespace GlimmerOfHope.Editor
         #endregion
 
         #region Private Methods
+        /// <summary>
+        /// Draws the editable list of foliage prefab entries for one terrain layer
+        /// </summary>
         private void DrawFoliageList(SerializedProperty foliageProp)
         {
+            // deleting mid-loop would shift indices and break iteration,so we just remember which index to remove and do it after the loop.
             int removeIndex = -1;
 
             for (int j = 0; j < foliageProp.arraySize; j++)
@@ -133,6 +151,7 @@ namespace GlimmerOfHope.Editor
 
                 EditorGUILayout.BeginVertical("helpbox");
 
+                // Header uses the assigned prefab's name once one is set, otherwise a placeholder.
                 string label = prefabProp.objectReferenceValue != null
                     ? prefabProp.objectReferenceValue.name
                     : $"Emplacement Prefab {j}";
@@ -143,7 +162,7 @@ namespace GlimmerOfHope.Editor
                 EditorGUILayout.PropertyField(AlignToNormal, new GUIContent("AlignToNormal"));
                 EditorGUILayout.Space(5);
 
-
+                // per-prefab spawn rules (fill type, density, alpha threshold, scale/rotation, collision radius).
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fillType"), new GUIContent("Type de remplissage"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("density"), new GUIContent("Densité"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fallOff"), new GUIContent("Seuil alpha"));
@@ -151,6 +170,7 @@ namespace GlimmerOfHope.Editor
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("randomRotationY"), new GUIContent("Rotation Y aléatoire"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("collisionCheckRadius"), new GUIContent("Rayon collision (fallback)"));
 
+                // Slope range drawn as a min-max slider (0-90°) rather than two raw float fields.
                 EditorGUILayout.Space(2);
                 EditorGUILayout.LabelField("Pente autorisée", EditorStyles.miniLabel);
                 SerializedProperty minSlopeProp = entry.FindPropertyRelative("minSlope");
@@ -170,6 +190,7 @@ namespace GlimmerOfHope.Editor
             if (removeIndex >= 0)
                 foliageProp.DeleteArrayElementAtIndex(removeIndex);
 
+            // Appends a new entry with sensible default values so the user doesn't start from empty/zeroed fields.
             if (GUILayout.Button("+ Ajouter un Prefab de foliage"))
             {
                 foliageProp.InsertArrayElementAtIndex(foliageProp.arraySize);
