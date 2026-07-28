@@ -167,7 +167,7 @@ namespace GlimmerOfHope.Editor
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("density"), new GUIContent("Densité"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fallOff"), new GUIContent("Seuil alpha"));
                
-                // Scale range drawn as a min-max slider (0-3) rather than a raw Vector2 field.
+                // Scale range drawn as a min-max slider (0-10) rather than a raw Vector2 field.
                 EditorGUILayout.Space(2);
                 EditorGUILayout.LabelField("Échelle (Scale)", EditorStyles.miniLabel);
                 SerializedProperty scaleRangeProp = entry.FindPropertyRelative("uniformScaleRange");
