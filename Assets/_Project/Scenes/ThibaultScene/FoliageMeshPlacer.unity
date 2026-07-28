@@ -156,7 +156,7 @@ MonoBehaviour:
     minHeight: 150
     maxHeight: 100
   - layer: {fileID: 8574412962073106934, guid: f376cc6f0fa1dfd458886c7ec3554b57, type: 2}
-    minHeight: 100
+    minHeight: 150
     maxHeight: 400
   - layer: {fileID: 8574412962073106934, guid: 01bc23e52f3fe4a4395e46bc30c15886, type: 2}
     minHeight: 400
@@ -255,37 +255,54 @@ MonoBehaviour:
     DensityMultiplier: 1
     placementResolution: 128
     FoliagePrefabs: []
+    SideSize: 0.05
+    AlphaDensity: 0
   - name: NewLayer
+    DensityMultiplier: 1.69
+    placementResolution: 242
+    FoliagePrefabs:
+    - prefab: {fileID: 3481381258590766037, guid: f61e5af93a454ef4c9189da0d2c930c7, type: 3}
+      density: 36
+      fallOff: 0
+      fillType: 0
+      uniformScaleRange: {x: 0.19, y: 0.61}
+      randomRotationY: 1
+      collisionCheckRadius: 0
+      minSlope: 0
+      maxSlope: 90
+      AlignToNormal: 1
+    - prefab: {fileID: 5175616762216453271, guid: 43cafb8fc93c3a244a6bd9cfdc13dd20, type: 3}
+      density: 1000
+      fallOff: 0
+      fillType: 1
+      uniformScaleRange: {x: 416.89, y: 1358.2}
+      randomRotationY: 1
+      collisionCheckRadius: -3.9
+      minSlope: 0
+      maxSlope: 90
+      AlignToNormal: 1
+    SideSize: 0.01
+    AlphaDensity: 1
+  - name: Layer 2
     DensityMultiplier: 1
-    placementResolution: 1024
+    placementResolution: 126
     FoliagePrefabs:
     - prefab: {fileID: 3481381258590766037, guid: f61e5af93a454ef4c9189da0d2c930c7, type: 3}
       density: 50
-      fallOff: 0.8
+      fallOff: 0.001
       fillType: 0
-      uniformScaleRange: {x: 0.85, y: 1.15}
+      uniformScaleRange: {x: 0.38, y: 0.34}
       randomRotationY: 1
       collisionCheckRadius: 0.5
       minSlope: 0
-      maxSlope: 24
-    - prefab: {fileID: 5175616762216453271, guid: 43cafb8fc93c3a244a6bd9cfdc13dd20, type: 3}
-      density: 500
-      fallOff: 0.8
-      fillType: 1
-      uniformScaleRange: {x: 362.1, y: 580.46}
-      randomRotationY: 1
-      collisionCheckRadius: 0.5
-      minSlope: 0
-      maxSlope: 90
-  - name: Layer 2
-    DensityMultiplier: 1
-    placementResolution: 128
-    FoliagePrefabs: []
+      maxSlope: 46.285713
+      AlignToNormal: 1
+    SideSize: 0.05
+    AlphaDensity: 1
   EraseModification: 1
   collisionCheckLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  alignToTerrainNormal: 1
 --- !u!1 &320889589
 GameObject:
   m_ObjectHideFlags: 0

@@ -4,6 +4,7 @@ using GlimmerOfHope.Gameplay;
 namespace GlimmerOfHope.Editor
 {
 
+
     [CustomEditor(typeof(MassiveFoliageMeshPlacer))]
     public class MassiveFoliageMeshPlacerEditor : UnityEditor.Editor
     {
@@ -12,7 +13,6 @@ namespace GlimmerOfHope.Editor
         private SerializedProperty terrainLayersProp;
         private SerializedProperty eraseModificationProp;
         private SerializedProperty collisionCheckLayersProp;
-        private SerializedProperty alignToTerrainNormalProp;
         private bool[] layerFoldouts;
         #endregion
 
@@ -23,7 +23,6 @@ namespace GlimmerOfHope.Editor
             terrainLayersProp = serializedObject.FindProperty("TerrainLayers");
             eraseModificationProp = serializedObject.FindProperty("EraseModification");
             collisionCheckLayersProp = serializedObject.FindProperty("collisionCheckLayers");
-            alignToTerrainNormalProp = serializedObject.FindProperty("alignToTerrainNormal");
         }
 
         public override void OnInspectorGUI()
@@ -36,7 +35,6 @@ namespace GlimmerOfHope.Editor
 
             EditorGUILayout.PropertyField(eraseModificationProp, new GUIContent("Effacer avant de générer"));
             EditorGUILayout.PropertyField(collisionCheckLayersProp, new GUIContent("Layers de collision testés"));
-            EditorGUILayout.PropertyField(alignToTerrainNormalProp, new GUIContent("Aligner sur la normale du terrain"));
             EditorGUILayout.Space();
 
             if (layerFoldouts == null || layerFoldouts.Length != terrainLayersProp.arraySize)
@@ -50,6 +48,9 @@ namespace GlimmerOfHope.Editor
                 SerializedProperty nameProp = layerProp.FindPropertyRelative("name");
                 SerializedProperty densityMultProp = layerProp.FindPropertyRelative("DensityMultiplier");
                 SerializedProperty resolutionProp = layerProp.FindPropertyRelative("placementResolution");
+                SerializedProperty SideSize = layerProp.FindPropertyRelative("SideSize");
+                SerializedProperty alphaDensity = layerProp.FindPropertyRelative("AlphaDensity");
+
                 SerializedProperty foliageProp = layerProp.FindPropertyRelative("FoliagePrefabs");
 
                 EditorGUILayout.BeginVertical("box");
@@ -65,6 +66,12 @@ namespace GlimmerOfHope.Editor
                     EditorGUILayout.PropertyField(resolutionProp, new GUIContent("Résolution de la grille de placement"));
 
                     EditorGUILayout.Space();
+                    EditorGUILayout.PropertyField(SideSize, new GUIContent("SideSize"));
+                    EditorGUILayout.Space();
+
+                    EditorGUILayout.PropertyField(alphaDensity, new GUIContent("AlphaDensity"));
+                    EditorGUILayout.Space();
+
                     EditorGUILayout.LabelField($"Prefabs de foliage ({foliageProp.arraySize})", EditorStyles.miniBoldLabel);
                     DrawFoliageList(foliageProp);
 
@@ -122,6 +129,7 @@ namespace GlimmerOfHope.Editor
             {
                 SerializedProperty entry = foliageProp.GetArrayElementAtIndex(j);
                 SerializedProperty prefabProp = entry.FindPropertyRelative("prefab");
+                SerializedProperty AlignToNormal = entry.FindPropertyRelative("AlignToNormal");
 
                 EditorGUILayout.BeginVertical("helpbox");
 
@@ -132,6 +140,8 @@ namespace GlimmerOfHope.Editor
 
                 EditorGUILayout.PropertyField(prefabProp, new GUIContent("Prefab"));
                 EditorGUILayout.Space(50);
+                EditorGUILayout.PropertyField(AlignToNormal, new GUIContent("AlignToNormal"));
+                EditorGUILayout.Space(5);
 
 
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fillType"), new GUIContent("Type de remplissage"));
