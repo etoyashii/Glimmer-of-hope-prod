@@ -166,13 +166,24 @@ namespace GlimmerOfHope.Editor
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fillType"), new GUIContent("Type de remplissage"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("density"), new GUIContent("Densité"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("fallOff"), new GUIContent("Seuil alpha"));
-                EditorGUILayout.PropertyField(entry.FindPropertyRelative("uniformScaleRange"), new GUIContent("Plage d'échelle"));
+               
+                // Scale range drawn as a min-max slider (0-3) rather than a raw Vector2 field.
+                EditorGUILayout.Space(2);
+                EditorGUILayout.LabelField("Échelle (Scale)", EditorStyles.miniLabel);
+                SerializedProperty scaleRangeProp = entry.FindPropertyRelative("uniformScaleRange");
+                Vector2 scaleRange = scaleRangeProp.vector2Value;
+                float minScale = scaleRange.x;
+                float maxScale = scaleRange.y;
+                EditorGUILayout.MinMaxSlider(new GUIContent($"{minScale:0.00} - {maxScale:0.00}"), ref minScale, ref maxScale, 0f, 10f);
+                scaleRangeProp.vector2Value = new Vector2(minScale, maxScale);
+                
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("randomRotationY"), new GUIContent("Rotation Y aléatoire"));
                 EditorGUILayout.PropertyField(entry.FindPropertyRelative("collisionCheckRadius"), new GUIContent("Rayon collision (fallback)"));
 
                 // Slope range drawn as a min-max slider (0-90°) rather than two raw float fields.
                 EditorGUILayout.Space(2);
                 EditorGUILayout.LabelField("Pente autorisée", EditorStyles.miniLabel);
+
                 SerializedProperty minSlopeProp = entry.FindPropertyRelative("minSlope");
                 SerializedProperty maxSlopeProp = entry.FindPropertyRelative("maxSlope");
                 float minSlope = minSlopeProp.floatValue;
