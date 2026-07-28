@@ -11,11 +11,6 @@ namespace GlimmerOfHope.Gameplay
     /// On Keyboard/Mouse and Gamepad: jump is triggered by the Jump InputAction
     /// (Space for keyboard, Button South for gamepad).
     /// </summary>
-    #region Dependancies
-
-    [RequireComponent(typeof(Rigidbody))]
-
-    #endregion
     public class Jump : MonoBehaviour
     {
         #region Serialized Fields
@@ -92,12 +87,11 @@ namespace GlimmerOfHope.Gameplay
 
             PlayJumpVFX(jumpForce);
             
-            if (_slide.isSliding)
+            if (_slide.IsSliding())
             {
                 _rb.linearVelocity = Vector3.zero;
                 _rb.AddForce(_playerMovement.lastHit.normal * jumpForce, ForceMode.Impulse);
-                _slide.isSliding = false;
-                Debug.Log("Jump slide");
+                _slide.StopSliding();
             }
             else
             {

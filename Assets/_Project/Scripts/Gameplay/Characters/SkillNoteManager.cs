@@ -16,6 +16,9 @@ namespace GlimmerOfHope.Gameplay
     /// </summary>
     public class Combo
     {
+        [Tooltip("Skill this combo unlocks and launches. Set explicitly instead of relying on list order matching the SkillType enum.")]
+        public SkillManager.SkillType _skillType;
+
         public List<int> _combo;
         public UnityEvent _useSkill;
     }
@@ -24,7 +27,7 @@ namespace GlimmerOfHope.Gameplay
     /// Checks player input for skill combos. There is a maximum delay between inputs
     /// before the combo is reset.
     /// On mobile: ActivateNote() is called directly from UI buttons.
-    /// On Keyboard/Mouse: A = note 0, E = note 1, R = note 2.
+    /// On Keyboard/Mouse: 1 = note 0, 2 = note 1, 3 = note 2.
     /// On Gamepad: Button East = note 0, Button North = note 1, Button West = note 2.
     /// </summary>
     public class SkillNoteManager : MonoBehaviour
@@ -123,7 +126,10 @@ namespace GlimmerOfHope.Gameplay
 
         public void ShowCombo(int index)
         {
-            StartCoroutine(RevealCombo(0.4f, 0.2f, index));
+            int comboIndex = _comboList.FindIndex(c => (int)c._skillType == index);
+            if (comboIndex == -1) return;
+
+            StartCoroutine(RevealCombo(0.4f, 0.2f, comboIndex));
         }
 
         #endregion
@@ -208,8 +214,11 @@ namespace GlimmerOfHope.Gameplay
 
                 if (_validCheck == _currentInputNumber && _currentInputNumber == _comboList[i]._combo.Count)
                 {
-                    if (_skillLearningManager.IsSkillUnlocked(i))
+                    if (_skillLearningManager.IsSkillUnlocked((int)_comboList[i]._skillType))
                         _comboList[i]._useSkill?.Invoke();
+                    else
+                        Debug.Log($"[SkillNoteManager] Combo matched for {_comboList[i]._skillType} but it is not unlocked yet.");
+
                     break;
                 }
             }
