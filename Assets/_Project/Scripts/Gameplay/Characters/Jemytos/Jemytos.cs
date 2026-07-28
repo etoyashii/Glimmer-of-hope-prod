@@ -6,6 +6,8 @@ namespace GlimmerOfHope.Gameplay
 {
     public class Jemytos : MonoBehaviour
     {
+        #region Serialize Field
+
         [SerializeField] private float _lifeTime = 20f;
         [SerializeField] private float _moveSpeed = 1f;
         [SerializeField] private float _edgeCheckDistance = 1.5f;
@@ -13,9 +15,23 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private float _maxGapSpeed = 0.01f;
         [SerializeField] private float _lateralOffset = 1f;
 
+        #endregion
+
+        #region Private Prperties
+
         private float _cooldownCheckGap = 1f;
 
         private NavMeshAgent _navMeshAgent;
+
+        #endregion
+
+        #region Public Properties
+
+        public Portal portal;
+
+        #endregion
+
+        #region Unity Lifecycle
 
         private void Awake()
         {
@@ -29,17 +45,14 @@ namespace GlimmerOfHope.Gameplay
 
             Vector3 offset = transform.forward * Time.deltaTime;
 
-            //check if arrive to the limit of the navmesh
             Vector3 desiredPos = transform.position + offset;
 
             _navMeshAgent.Move(offset);
 
-            // nextPosition = position réelle après clamp sur le NavMesh
             float gap = Vector3.Distance(_navMeshAgent.nextPosition, desiredPos);
 
-            if (gap > _maxGapSpeed && _cooldownCheckGap <= 0f) // tolérance à ajuster
+            if (gap > _maxGapSpeed && _cooldownCheckGap <= 0f)
             {
-                Debug.Log("Bloqué par le bord du NavMesh : " + gap + "   max : " + _maxGapSpeed);
                 Destroy(gameObject);
             }
 
@@ -56,6 +69,7 @@ namespace GlimmerOfHope.Gameplay
         {
             if (collision.gameObject.CompareTag("Finish"))
             {
+                portal.FinishJemytos();
                 Destroy(gameObject);
                 return;
             }
@@ -80,11 +94,9 @@ namespace GlimmerOfHope.Gameplay
                 forcedDir.y = 0f;
                 forcedDir.Normalize();
 
-                // Direction latérale : perpendiculaire à la normale dans le plan horizontal,
-                // orientée par le même "sign" que la rotation
                 Vector3 lateralDir = Vector3.Cross(Vector3.up, normal).normalized * sign;
 
-                float normalOffset = 0.1f;   // éloignement du mur
+                float normalOffset = 0.1f;
 
                 Vector3 newPosition = transform.position
                     + normal * normalOffset
@@ -102,5 +114,7 @@ namespace GlimmerOfHope.Gameplay
             }
 
         }
+
+        #endregion
     }
 }
