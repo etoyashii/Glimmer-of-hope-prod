@@ -87,8 +87,8 @@ namespace GlimmerOfHope.Gameplay
             // Play the VFX
             if (_pushVFX != null)
             {
-/*                _pushVFX.transform.position = _playerTransform.position;
-                _pushVFX.transform.rotation = Quaternion.LookRotation(forward);*/
+                /*                _pushVFX.transform.position = _playerTransform.position;
+                                _pushVFX.transform.rotation = Quaternion.LookRotation(forward);*/
                 _pushVFX.Play();
             }
 
@@ -96,6 +96,14 @@ namespace GlimmerOfHope.Gameplay
             foreach (Collider col in hits)
             {
                 if (!col.CompareTag(PUSHABLE_TAG)) continue;
+
+                // Let a scripted reaction take over instead of a raw physics push
+                WindReactive reactive = col.GetComponent<WindReactive>();
+                if (reactive != null && reactive.ReactsToPush)
+                {
+                    reactive.NotifyPush();
+                    continue;
+                }
 
                 Rigidbody rb = col.attachedRigidbody;
                 if (rb == null || rb.isKinematic) continue;
@@ -139,7 +147,7 @@ namespace GlimmerOfHope.Gameplay
             // Par exemple, pour visualiser un OverlapCapsule centré sur un objet
             // avec une direction selon l'axe Y local
             OverlapCapsuleGizmo.DrawCapsuleGizmo(
-                center: _playerTransform.position + (_playerTransform.forward * _pushLength/2) ,
+                center: _playerTransform.position + (_playerTransform.forward * _pushLength / 2),
                 direction: _playerTransform.forward,
                 radius: _pushRadius,
                 height: _pushLength,
