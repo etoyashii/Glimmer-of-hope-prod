@@ -34,6 +34,13 @@ namespace GlimmerOfHope.Editor
         [Range(0.01f, 0.3f)]
         public float JunctionFlareWidth = 0.05f;
 
+        [Header("Face plate (marchable)")]
+        [Tooltip("Si activé, une facette plane horizontale (alignée sur le monde, pas sur le twist du spline) est créée sur le dessus de chaque branche, pour pouvoir marcher dessus.")]
+        public bool FlattenTop = true;
+        [Tooltip("Demi-angle (en degrés) de la facette plate au sommet de la branche. 0 = pas de facette (cylindre normal). Plus grand = facette plus large.")]
+        [Range(0f, 80f)]
+        public float FlatTopAngle = 30f;
+
         [Range(0f, 1f)]
         public float GrowProgress = 1f;
 
@@ -165,6 +172,9 @@ namespace GlimmerOfHope.Editor
         {
             int segsVisible = Mathf.Max(1, Mathf.RoundToInt(Segments * GrowProgress));
 
+            float flatHalfAngleRad = FlattenTop ? math.radians(FlatTopAngle) : 0f;
+            float3 worldUp = new float3(0f, 1f, 0f);
+
             for (int s = 0; s <= segsVisible; s++)
             {
                 float tFull = (float)s / segsVisible;
@@ -181,6 +191,9 @@ namespace GlimmerOfHope.Editor
                 }
                 radius *= (1f + flare);
 
+                // On garde le "up" natif du spline pour construire le repère de l'anneau :
+                // c'est ce qui assure la continuité de phase (donc des jonctions propres)
+                // entre une branche parente et ses enfants.
                 spline.Evaluate(tFull, out float3 pos, out float3 tangent, out float3 up);
 
                 if (math.lengthsq(tangent) < 1e-6f) tangent = math.forward();
@@ -193,10 +206,34 @@ namespace GlimmerOfHope.Editor
                 float3 right = math.normalize(math.cross(tangent, safeUp));
                 float3 trueUp = math.cross(right, tangent);
 
+                // Axes indépendants, alignés sur le monde, utilisés UNIQUEMENT pour décider
+                // quels vertices flatten et dans quelle direction. Ils ne remplacent pas
+                // right/trueUp ci-dessus : la phase du cercle (et donc l'alignement aux
+                // jonctions) reste intacte, seule une petite zone proche du "vrai" haut
+                // est corrigée.
+                float3 uAxis = worldUp - tangent * math.dot(worldUp, tangent);
+                float uLen = math.length(uAxis);
+                bool hasWorldFlattenAxis = uLen > 1e-4f;
+                if (hasWorldFlattenAxis) uAxis /= uLen; else uAxis = trueUp;
+                float3 wAxis = math.normalize(math.cross(tangent, uAxis));
+
                 for (int v = 0; v <= Sides; v++)
                 {
                     float angle = (float)v / Sides * math.PI * 2f;
                     float3 offset = (math.cos(angle) * right + math.sin(angle) * trueUp) * radius;
+
+                    if (flatHalfAngleRad > 0f && radius > 1e-6f)
+                    {
+                        float h = math.dot(offset, uAxis);
+                        float angFromTopWorld = math.acos(math.clamp(h / radius, -1f, 1f));
+                        if (angFromTopWorld <= flatHalfAngleRad)
+                        {
+                            float s1 = math.dot(offset, wAxis);
+                            float newH = radius * math.cos(flatHalfAngleRad);
+                            offset = wAxis * s1 + uAxis * newH;
+                        }
+                    }
+
                     verts.Add((Vector3)(pos + offset));
                     uvs.Add(new Vector2((float)v / Sides, tFull));
                 }
