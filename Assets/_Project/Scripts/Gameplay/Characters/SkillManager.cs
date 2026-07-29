@@ -51,12 +51,14 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         #region Public Methods
 
-        public void UnlockSkill(int skillType)
+        public void UnlockSkill(SkillType skillType)
         {
-            if (IsSkillUnlocked(skillType)) return;
+            int index = (int)skillType;
 
-            _learningSkillList[skillType]._isUnlocked = true;
-            _skillTypeUnlocked?.Invoke(skillType);
+            if (IsSkillUnlocked(index)) return;
+
+            _learningSkillList[index]._isUnlocked = true;
+            _skillTypeUnlocked?.Invoke(index);
         }
 
         #endregion

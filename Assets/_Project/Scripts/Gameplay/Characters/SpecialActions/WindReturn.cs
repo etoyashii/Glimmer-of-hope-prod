@@ -6,10 +6,6 @@ using UnityEngineInternal;
 
 namespace GlimmerOfHope.Gameplay
 {
-    #region Dependencies
-
-
-    #endregion
 
     /// <summary>
     /// Script use when the player trigger a fall zone to return on a plateform
@@ -121,7 +117,7 @@ namespace GlimmerOfHope.Gameplay
                 yield return null;
             }
 
-            //transform.position = _lastSafePos ;
+            transform.position = _lastSafePos ;
             _movement.enabled = true;
             _savePosCooldown = savePosDelay;
             _isReturning = false;
