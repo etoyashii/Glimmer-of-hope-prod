@@ -134,7 +134,7 @@ namespace GlimmerOfHope.Gameplay
             // Instantiate while keeping a live prefab connection
             GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(entry.prefab, parent);
             instance.transform.SetPositionAndRotation(worldPos, rot);
-            instance.transform.localScale = Vector3.one * scale;
+            instance.transform.localScale *=  scale;
 
             // Discard the instance if it overlaps another object 
             if (IsColliding(instance, entry.collisionCheckRadius, worldPos))

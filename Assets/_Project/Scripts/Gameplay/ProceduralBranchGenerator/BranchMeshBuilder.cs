@@ -191,6 +191,17 @@ namespace GlimmerOfHope.Editor
                 }
                 radius *= (1f + flare);
 
+                // Le flare de jonction sert à cacher le raccord imparfait avec les branches
+                // enfants (elles ne partagent pas de vertices avec le parent) : il a besoin
+                // du rayon plein, en boule, dans toutes les directions. Si on aplatit
+                // pile à cet endroit, on réduit le rayon côté "haut" et le trou réapparaît.
+                // On fait donc disparaître progressivement l'aplatissement là où le flare
+                // est fort, et on le laisse plein loin de toute jonction.
+                float flareNorm = (JunctionSphereScale - 1f) > 1e-5f
+                    ? Mathf.Clamp01(flare / (JunctionSphereScale - 1f))
+                    : 0f;
+                float localFlatHalfAngleRad = flatHalfAngleRad * (1f - flareNorm);
+
                 // On garde le "up" natif du spline pour construire le repère de l'anneau :
                 // c'est ce qui assure la continuité de phase (donc des jonctions propres)
                 // entre une branche parente et ses enfants.
@@ -222,14 +233,14 @@ namespace GlimmerOfHope.Editor
                     float angle = (float)v / Sides * math.PI * 2f;
                     float3 offset = (math.cos(angle) * right + math.sin(angle) * trueUp) * radius;
 
-                    if (flatHalfAngleRad > 0f && radius > 1e-6f)
+                    if (localFlatHalfAngleRad > 0f && radius > 1e-6f)
                     {
                         float h = math.dot(offset, uAxis);
                         float angFromTopWorld = math.acos(math.clamp(h / radius, -1f, 1f));
-                        if (angFromTopWorld <= flatHalfAngleRad)
+                        if (angFromTopWorld <= localFlatHalfAngleRad)
                         {
                             float s1 = math.dot(offset, wAxis);
-                            float newH = radius * math.cos(flatHalfAngleRad);
+                            float newH = radius * math.cos(localFlatHalfAngleRad);
                             offset = wAxis * s1 + uAxis * newH;
                         }
                     }
