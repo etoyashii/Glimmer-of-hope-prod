@@ -1,6 +1,8 @@
 using GlimmerOfHope.Core;
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+
 using static GlimmerOfHope.Gameplay.MassiveFoliageMeshPlacer;
 using static GlimmerOfHope.Gameplay.FoliagePlacementAlgorithm;
 
@@ -46,3 +48,4 @@ namespace GlimmerOfHope.Gameplay
         #endregion
     }
 }
+#endif

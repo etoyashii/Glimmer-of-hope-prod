@@ -207,5 +207,5 @@ namespace GlimmerOfHope.Editor
             }
         }
     }
-#endif
 }
+#endif

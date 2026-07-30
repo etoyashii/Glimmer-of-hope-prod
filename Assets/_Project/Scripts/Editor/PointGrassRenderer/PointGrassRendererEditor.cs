@@ -17,6 +17,7 @@ namespace MicahW.PointGrass {
             prop_bladeType, prop_multiMesh, prop_multiMat, prop_grassBladeMesh, prop_material,
             prop_shadowMode, prop_renderLayer,
             prop_pointCount, prop_multiplyByArea, prop_pointLODFactor,
+            prop_maxRenderDistance, prop_fadeStartDistance,
             prop_randomiseSeed, prop_seed,
             prop_overwriteNormalDirection, prop_forcedNormal,
             prop_useDensity, prop_densityCutoff,
@@ -46,6 +47,8 @@ namespace MicahW.PointGrass {
             prop_pointCount = serializedObject.FindProperty("pointCount");
             prop_multiplyByArea = serializedObject.FindProperty("multiplyByArea");
             prop_pointLODFactor = serializedObject.FindProperty("pointLODFactor");
+            prop_maxRenderDistance = serializedObject.FindProperty("maxRenderDistance");  
+            prop_fadeStartDistance = serializedObject.FindProperty("fadeStartDistance");  
             // Random seed
             prop_randomiseSeed = serializedObject.FindProperty("randomiseSeed");
             prop_seed = serializedObject.FindProperty("seed");
@@ -252,6 +255,9 @@ namespace MicahW.PointGrass {
             EditorGUI.indentLevel--;
             EditorGUILayout.PropertyField(prop_pointLODFactor, MakeLabel("Point LOD Factor", "How many of the generated points should be drawn\n\n(WIP) Temporarily added to test the viability of LODs"));
 
+            // --- Distance LOD (ajout) ---
+            EditorGUILayout.PropertyField(prop_fadeStartDistance, MakeLabel("Fade Start Distance", "Distance à laquelle la densité commence à diminuer"));
+            EditorGUILayout.PropertyField(prop_maxRenderDistance, MakeLabel("Max Render Distance", "Distance au-delà de laquelle le chunk n'est plus dessiné du tout"));
             // --- Seed ---
             EditorGUILayout.PropertyField(prop_randomiseSeed, MakeLabel("Randomise Seed", "Whether we should use a random seed when distributing points"));
             if (!prop_randomiseSeed.boolValue) {

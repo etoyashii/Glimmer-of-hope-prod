@@ -40,6 +40,10 @@ namespace MicahW.PointGrass {
         public bool multiplyByArea = false;
         [Range(0f, 1f)] public float pointLODFactor = 1f;
 
+        [Header("Mobile LOD")]
+        public float maxRenderDistance = 60f;
+        public float fadeStartDistance = 40f;
+
         public bool randomiseSeed = true;
         public int seed = 0;
 
@@ -498,18 +502,29 @@ namespace MicahW.PointGrass {
         /// <param name="mesh">The mesh to be drawn for each <c>MeshPoint</c></param>
         /// <param name="mat">The material used for rendering</param>
         /// <param name="bounds">The bounding box</param>
-        private void DrawGrassBuffer(ComputeBuffer buffer, ref MaterialPropertyBlock block, Mesh mesh, Material mat, Bounds bounds) {
+        private void DrawGrassBuffer(ComputeBuffer buffer, ref MaterialPropertyBlock block, Mesh mesh, Material mat, Bounds bounds)
+        {
             if (buffer == null || !buffer.IsValid()) { return; }
-            int count = Mathf.CeilToInt(buffer.count * pointLODFactor);
-            // If the mesh isn't null, the material isn't null, and the material property block isn't null, the point count is greater than 0, draw the buffer
-            if (mesh != null && mat != null && block != null && count > 0) {
-                // Apply the offset to the bounding box
-                bounds = AddBoundsExtrusion(bounds);
-                UpdateMaterialPropertyBlock(ref block, transform);
-                // Draw the grass, using the generated MaterialPropertyBlock to supply buffer data
-                Graphics.DrawMeshInstancedProcedural(mesh, 0, mat, bounds, count, block, shadowMode, true, renderLayer.LayerIndex, null);
+
+            float effectiveLOD = pointLODFactor; // valeur locale, ne touche pas au champ original
+
+            Camera cam = Camera.main;
+            if (cam != null)
+            {
+                float dist = Vector3.Distance(cam.transform.position, bounds.center);
+                if (dist > maxRenderDistance) { return; }
+
+                float distFactor = 1f - Mathf.Clamp01((dist - fadeStartDistance) / (maxRenderDistance - fadeStartDistance));
+                effectiveLOD = Mathf.Min(pointLODFactor, distFactor);
             }
 
+            int count = Mathf.CeilToInt(buffer.count * effectiveLOD);
+            if (mesh != null && mat != null && block != null && count > 0)
+            {
+                bounds = AddBoundsExtrusion(bounds);
+                UpdateMaterialPropertyBlock(ref block, transform);
+                Graphics.DrawMeshInstancedProcedural(mesh, 0, mat, bounds, count, block, shadowMode, true, renderLayer.LayerIndex, null);
+            }
         }
         /// <summary> Creates a <c>MaterialPropertyBlock</c> used with rendering the grass meshes </summary>
         /// <param name="pointBuffer">The compute buffer supplied to the material property block</param>
