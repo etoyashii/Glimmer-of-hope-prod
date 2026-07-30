@@ -52192,7 +52192,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::MicahW.PointGrass.PointGrassDisplacer
   localPosition: {x: 0, y: 0, z: 0}
-  radius: 0.5
+  radius: 0.25
   strength: 1
 --- !u!1 &511551976
 GameObject:
@@ -134009,21 +134009,27 @@ MonoBehaviour:
   multipleMeshes: 1
   grassBladeMesh: {fileID: -7426583211642308163, guid: 002bf449675252849a29782b177a97f2, type: 3}
   grassBladeMeshes:
-  - {fileID: -7426583211642308163, guid: 002bf449675252849a29782b177a97f2, type: 3}
+  - {fileID: -2432090755550338912, guid: bad2a411b41425d48bb100f54b67c770, type: 3}
+  - {fileID: -2432090755550338912, guid: bad2a411b41425d48bb100f54b67c770, type: 3}
+  - {fileID: -2432090755550338912, guid: bad2a411b41425d48bb100f54b67c770, type: 3}
   meshDensityValues:
+  - 1
+  - 1
   - 1
   multipleMaterials: 1
   material: {fileID: 2100000, guid: a6800ec55fd981a458a652a6c9eb55c1, type: 2}
   materials:
-  - {fileID: 2100000, guid: a6800ec55fd981a458a652a6c9eb55c1, type: 2}
+  - {fileID: 2100000, guid: 84776088af175024c9aa1e0789e10494, type: 2}
+  - {fileID: 2100000, guid: 84776088af175024c9aa1e0789e10494, type: 2}
+  - {fileID: 2100000, guid: 84776088af175024c9aa1e0789e10494, type: 2}
   shadowMode: 0
   renderLayer:
     m_LayerIndex: 9
-  pointCount: 800
+  pointCount: 600
   multiplyByArea: 0
   pointLODFactor: 1
-  maxRenderDistance: 15
-  fadeStartDistance: 10
+  maxRenderDistance: 10
+  fadeStartDistance: 5
   randomiseSeed: 1
   seed: 0
   overwriteNormalDirection: 0
