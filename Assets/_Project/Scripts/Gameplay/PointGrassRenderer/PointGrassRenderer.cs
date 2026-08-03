@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 using UnityEngine;
 
-namespace GlimmerOfHope.Gameplay {
+namespace GlimmerOfHope.Gameplay
+{
     using static DistributePointsAlongMesh;
     using static PointGrassCommon;
 
     [ExecuteAlways]
-    public class PointGrassRenderer : MonoBehaviour {
+    public class PointGrassRenderer : MonoBehaviour
+    {
         [Header("Distribution Parameters")]
         public DistributionSource distSource = DistributionSource.Mesh;
         public Mesh baseMesh = default;
@@ -74,12 +76,14 @@ namespace GlimmerOfHope.Gameplay {
 
 
 #if UNITY_EDITOR
-        private void OnDrawGizmosSelected() {
+        private void OnDrawGizmosSelected()
+        {
             Bounds renderBounds = AddBoundsExtrusion(TransformBounds(GetLocalBounds()));
             Gizmos.color = Color.white;
             Gizmos.DrawWireCube(renderBounds.center, renderBounds.size);
 
-            if (distSource == DistributionSource.Mesh && baseMesh != null) {
+            if (distSource == DistributionSource.Mesh && baseMesh != null)
+            {
                 Gizmos.color = Color.cyan;
                 Gizmos.matrix = transform.localToWorldMatrix;
                 Gizmos.DrawWireMesh(baseMesh);
@@ -87,7 +91,8 @@ namespace GlimmerOfHope.Gameplay {
                 Gizmos.matrix = Matrix4x4.identity;
             }
 
-            if (distSource == DistributionSource.TerrainData && terrain != null) {
+            if (distSource == DistributionSource.TerrainData && terrain != null)
+            {
                 Gizmos.color = new Color(0f, 1f, 1f, 0.5f);
                 Gizmos.matrix = transform.localToWorldMatrix;
 
@@ -97,9 +102,11 @@ namespace GlimmerOfHope.Gameplay {
                 for (int y = 1; y < chunkCount.y; y++) { Gizmos.DrawLine(new Vector3(0f, size.y * 0.25f, (float)y / chunkCount.y * size.z), new Vector3(size.x, size.y * 0.25f, (float)y / chunkCount.y * size.z)); }
                 Gizmos.matrix = Matrix4x4.identity;
 
-                if (boundingBoxes != null) {
+                if (boundingBoxes != null)
+                {
                     Gizmos.color = new Color(0.5f, 1f, 1f, 1f);
-                    for (int i = 0; i < boundingBoxes.Length; i++) {
+                    for (int i = 0; i < boundingBoxes.Length; i++)
+                    {
                         Bounds bound = AddBoundsExtrusion(TransformBounds(boundingBoxes[i]));
                         Gizmos.DrawWireCube(bound.center, bound.size);
                     }
@@ -107,28 +114,34 @@ namespace GlimmerOfHope.Gameplay {
             }
         }
 
-        private void OnValidate() {
-            if (UsingMultipleMeshes && grassBladeMeshes != null) {
+        private void OnValidate()
+        {
+            if (UsingMultipleMeshes && grassBladeMeshes != null)
+            {
                 // Get the number of grass blade meshes
                 int grassMeshCount = grassBladeMeshes.Length;
                 // Update the density array to match the length of the grass blade array
-                if (meshDensityValues == null) {
+                if (meshDensityValues == null)
+                {
                     meshDensityValues = new float[grassMeshCount];
                     for (int i = 0; i < grassMeshCount; i++) { meshDensityValues[i] = 1f; }
                 }
-                else if (meshDensityValues.Length != grassMeshCount) {
+                else if (meshDensityValues.Length != grassMeshCount)
+                {
                     System.Array.Resize(ref meshDensityValues, grassMeshCount);
                 }
                 // Update the materials array to match the length of the grass blade array
                 if (materials == null) { materials = new Material[grassMeshCount]; }
-                else if (multipleMaterials && materials.Length != grassMeshCount) {
+                else if (multipleMaterials && materials.Length != grassMeshCount)
+                {
                     System.Array.Resize(ref materials, grassMeshCount);
                 }
             }
         }
 #endif
 
-        private void Reset() {
+        private void Reset()
+        {
             ClearBuffers();
 
             bladeType = BladeType.Flat;
@@ -162,7 +175,8 @@ namespace GlimmerOfHope.Gameplay {
             projectMask = ~0;
         }
 
-        private void OnEnable() {
+        private void OnEnable()
+        {
             // If the compatibility check fails, return to prevent further execution
             if (!CompatibilityCheck()) return;
             // Find the property IDs if they haven't been found yet
@@ -179,9 +193,11 @@ namespace GlimmerOfHope.Gameplay {
 
         /// <summary>Checks if the system supports the necessary features used by the point grass</summary>
         /// <returns><c>bool</c> - Equals <c>true</c> if the system supports all the required features</returns>
-        private bool CompatibilityCheck() {
+        private bool CompatibilityCheck()
+        {
             // Helper function with preprocessor directives to disable/destroy this component
-            void Disable() {
+            void Disable()
+            {
 #if UNITY_EDITOR
                 enabled = false;
 #else
@@ -190,13 +206,15 @@ namespace GlimmerOfHope.Gameplay {
             }
 
             // If the system doesn't support instancing, write to the console and destroy this component
-            if (!SystemInfo.supportsInstancing) {
+            if (!SystemInfo.supportsInstancing)
+            {
                 Debug.LogError($"This system doesn't support instanced draw calls. \"{gameObject.name}\" is unable to render its point grass");
                 Disable();
                 return false;
             }
             // If the system's shader level is too low, write to the console and destroy this component
-            else if (SystemInfo.graphicsShaderLevel < 45) {
+            else if (SystemInfo.graphicsShaderLevel < 45)
+            {
                 Debug.LogError($"This system doesn't support shader model 4.5. Compute buffers are unsupported in the point grass shaders");
                 Disable();
                 return false;
@@ -206,14 +224,16 @@ namespace GlimmerOfHope.Gameplay {
         }
 
         /// <summary>Clears any existing buffers and builds new ones</summary>
-        public void BuildPoints() {
+        public void BuildPoints()
+        {
             // Clear Buffers
             ClearBuffers();
             // Get the seed
             int seed = randomiseSeed ? Random.Range(int.MinValue, int.MaxValue) : this.seed;
             // Create the overwrite normal value
             Vector3? overwriteNormal = null;
-            if (overwriteNormalDirection) {
+            if (overwriteNormalDirection)
+            {
                 // Normalize the forced normal
                 forcedNormal = forcedNormal.normalized;
                 overwriteNormal = transform.InverseTransformDirection(forcedNormal);
@@ -224,7 +244,8 @@ namespace GlimmerOfHope.Gameplay {
         }
         /// <summary>Builds the point buffers using mesh data</summary>
         /// <param name="seed">The random/preset seed</param>
-        private void BuildPoints_Mesh(int seed, Vector3? overwriteNormal) {
+        private void BuildPoints_Mesh(int seed, Vector3? overwriteNormal)
+        {
             // If we cannot get the mesh data, return to prevent further execution
             if (!GetMeshData(out MeshData mesh)) { return; }
             // Project the mesh
@@ -238,7 +259,8 @@ namespace GlimmerOfHope.Gameplay {
         }
         /// <summary>Builds the point buffers using terrain data</summary>
         /// <param name="seed">The random/preset seed</param>
-        private void BuildPoints_Terrain(int seed, Vector3? overwriteNormal) {
+        private void BuildPoints_Terrain(int seed, Vector3? overwriteNormal)
+        {
             // Lists that will be converted to arrays after building the points
             List<ComputeBuffer> bufferList = new List<ComputeBuffer>();
             List<MaterialPropertyBlock> blockList = new List<MaterialPropertyBlock>();
@@ -249,8 +271,10 @@ namespace GlimmerOfHope.Gameplay {
             chunkSize.z /= chunkCount.y;
             // Cache the terrain data for the terrain generation
             CacheTerrainData(terrain, terrainLayers);
-            for (int x = 0; x < chunkCount.x; x++) {
-                for (int y = 0; y < chunkCount.y; y++) {
+            for (int x = 0; x < chunkCount.x; x++)
+            {
+                for (int y = 0; y < chunkCount.y; y++)
+                {
                     // Get the mesh data for this chunk
                     bool validMesh = GetTerrainMeshData(out MeshData data, new Vector2Int(x, y));
                     if (!validMesh) { continue; }
@@ -261,7 +285,8 @@ namespace GlimmerOfHope.Gameplay {
                     if (points == null || points.Length == 0) { continue; }
 
                     // Create buffers from the computed points
-                    if (UsingMultipleMeshes) {
+                    if (UsingMultipleMeshes)
+                    {
                         // We're using multiple meshes, so we need to split the buffers into separate parts
                         CreateBuffersFromPoints_Multi(points, out ComputeBuffer[] buffers, out MaterialPropertyBlock[] blocks);
                         // If the buffers are null, then there was an error when splitting the buffers
@@ -269,7 +294,8 @@ namespace GlimmerOfHope.Gameplay {
                         bufferList.AddRange(buffers);
                         blockList.AddRange(blocks);
                     }
-                    else {
+                    else
+                    {
                         // Create a single buffer
                         CreateBufferFromPoints(points, out ComputeBuffer buffer, out MaterialPropertyBlock block);
                         bufferList.Add(buffer);
@@ -282,7 +308,8 @@ namespace GlimmerOfHope.Gameplay {
                 }
             }
             // Store the lists into arrays
-            if (bufferList.Count > 0) {
+            if (bufferList.Count > 0)
+            {
                 pointBuffers = bufferList.ToArray();
                 materialBlocks = blockList.ToArray();
                 boundingBoxes = boundsList.ToArray();
@@ -291,14 +318,17 @@ namespace GlimmerOfHope.Gameplay {
         /// <summary>Retrieves/creates mesh data based on the renderer's parameters</summary>
         /// <param name="meshData">The output mesh data</param>
         /// <returns><c>bool</c> - Equals true if the output mesh data is valid</returns>
-        private bool GetMeshData(out MeshData meshData) {
+        private bool GetMeshData(out MeshData meshData)
+        {
             meshData = MeshData.Empty;
-            switch (distSource) {
+            switch (distSource)
+            {
                 case DistributionSource.Mesh:
                     if (baseMesh == null) { goto case DistributionSource.MeshFilter; }
                     // Convert the mesh's colours into Vector2s
                     Vector2[] meshAttributes = new Vector2[baseMesh.vertexCount];
-                    if (baseMesh.colors != null && baseMesh.colors.Length == baseMesh.vertexCount && (useDensity || useLength)) {
+                    if (baseMesh.colors != null && baseMesh.colors.Length == baseMesh.vertexCount && (useDensity || useLength))
+                    {
                         for (int i = 0; i < meshAttributes.Length; i++) { meshAttributes[i] = new Vector2(baseMesh.colors[i].r, baseMesh.colors[i].g); }
                     }
                     else { for (int i = 0; i < meshAttributes.Length; i++) { meshAttributes[i] = Vector2.one; } }
@@ -308,12 +338,15 @@ namespace GlimmerOfHope.Gameplay {
 
                 case DistributionSource.MeshFilter:
                     filter = GetComponent<MeshFilter>();
-                    if (filter != null) {
+                    if (filter != null)
+                    {
                         baseMesh = filter.sharedMesh;
-                        if (baseMesh != null) {
+                        if (baseMesh != null)
+                        {
                             // Convert the mesh's colours into Vector2s
                             Vector2[] filterAttributes = new Vector2[baseMesh.vertexCount];
-                            if (baseMesh.colors != null && baseMesh.colors.Length == baseMesh.vertexCount && (useDensity || useLength)) {
+                            if (baseMesh.colors != null && baseMesh.colors.Length == baseMesh.vertexCount && (useDensity || useLength))
+                            {
                                 for (int i = 0; i < filterAttributes.Length; i++) { filterAttributes[i] = new Vector2(baseMesh.colors[i].r, baseMesh.colors[i].g); }
                             }
                             else { for (int i = 0; i < filterAttributes.Length; i++) { filterAttributes[i] = Vector2.one; } }
@@ -329,7 +362,8 @@ namespace GlimmerOfHope.Gameplay {
                     return GetTerrainMeshData(out meshData, Vector2Int.zero);
 
                 case DistributionSource.SceneFilters:
-                    if (sceneFilters != null && sceneFilters.Length > 0) {
+                    if (sceneFilters != null && sceneFilters.Length > 0)
+                    {
                         meshData = CreateMeshFromFilters(transform, sceneFilters);
                         if (meshData.verts.Length > 0) { return true; }
                     }
@@ -342,10 +376,12 @@ namespace GlimmerOfHope.Gameplay {
         /// <param name="meshData">The output mesh data</param>
         /// <param name="chunkCoord">The coordinate of the chunk</param>
         /// <returns><c>bool</c> - Equals <c>true</c> if the mesh was successfully generated</returns>
-        private bool GetTerrainMeshData(out MeshData meshData, Vector2Int chunkCoord) {
+        private bool GetTerrainMeshData(out MeshData meshData, Vector2Int chunkCoord)
+        {
             meshData = MeshData.Empty;
 
-            if (terrain != null && terrainLayers != null) {
+            if (terrain != null && terrainLayers != null)
+            {
                 int terrainSize = terrain.heightmapResolution;
                 int startX = Mathf.FloorToInt((float)terrainSize * chunkCoord.x / chunkCount.x);
                 int startY = Mathf.FloorToInt((float)terrainSize * chunkCoord.y / chunkCount.y);
@@ -360,17 +396,20 @@ namespace GlimmerOfHope.Gameplay {
 
             return false;
         }
-        
+
         /// <summary>Creates the renderer's buffers from an array of type <c>MeshPoint</c></summary>
         /// <param name="points">The array of points used to create the buffers</param>
-        private void CreateBuffers(MeshPoint[] points) {
+        private void CreateBuffers(MeshPoint[] points)
+        {
             if (UsingMultipleMeshes) { CreateBuffersFromPoints_Multi(points, out pointBuffers, out materialBlocks); }
             else { CreateBufferFromPoints(points, out pointBuffer, out materialBlock); }
         }
         /// <summary>Clears all the buffers and arrays from the renderer</summary>
-        private void ClearBuffers() {
+        private void ClearBuffers()
+        {
             if (pointBuffer != null) { pointBuffer.Release(); }
-            if (pointBuffers != null) {
+            if (pointBuffers != null)
+            {
                 for (int i = 0; i < pointBuffers.Length; i++) { pointBuffers[i].Release(); }
                 pointBuffers = null;
             }
@@ -381,7 +420,8 @@ namespace GlimmerOfHope.Gameplay {
         /// <param name="points">The array of points</param>
         /// <param name="buffers">The output compute buffer</param>
         /// <param name="blocks">The output material property block</param>
-        private void CreateBufferFromPoints(MeshPoint[] points, out ComputeBuffer buffer, out MaterialPropertyBlock block) {
+        private void CreateBufferFromPoints(MeshPoint[] points, out ComputeBuffer buffer, out MaterialPropertyBlock block)
+        {
             // Check if the points array is valid
             if (points == null || points.Length == 0) { buffer = null; block = null; return; }
             // Create a new compute buffer
@@ -395,7 +435,8 @@ namespace GlimmerOfHope.Gameplay {
         /// <param name="points">The array of points</param>
         /// <param name="buffers">The output compute buffers</param>
         /// <param name="blocks">The output material property blocks</param>
-        private void CreateBuffersFromPoints_Multi(MeshPoint[] points, out ComputeBuffer[] buffers, out MaterialPropertyBlock[] blocks) {
+        private void CreateBuffersFromPoints_Multi(MeshPoint[] points, out ComputeBuffer[] buffers, out MaterialPropertyBlock[] blocks)
+        {
             // Check if the points array is valid
             if (points == null || points.Length == 0) { buffers = null; blocks = null; return; }
             // Local copies of the array lengths for readability
@@ -403,12 +444,14 @@ namespace GlimmerOfHope.Gameplay {
             int meshCount = grassBladeMeshes.Length;
 
             if (pointCount < meshCount) { buffers = null; blocks = null; } // Since some buffers would have a size of 0, return nothing to prevent errors
-            else {
+            else
+            {
                 // Normalize the density values of each mesh by dividing it by the sum
                 float sum = 0f;
                 float[] densities = new float[meshCount];
                 for (int i = 0; i < meshCount; i++) { sum += meshDensityValues[i]; }
-                if (sum <= 0) { // Sum is zero. Default to (1f / meshCount) to prevent divide by zero errors
+                if (sum <= 0)
+                { // Sum is zero. Default to (1f / meshCount) to prevent divide by zero errors
                     float val = 1f / meshCount;
                     for (int i = 0; i < meshCount; i++) { densities[i] = val; }
                 }
@@ -420,7 +463,8 @@ namespace GlimmerOfHope.Gameplay {
 
                 // Fill the buffers
                 int dataPointer = 0;
-                for (int i = 0; i < meshCount; i++) {
+                for (int i = 0; i < meshCount; i++)
+                {
                     int targetCount = Mathf.RoundToInt(pointCount * densities[i]); // The target size of the buffer
                     int remainingPoints = pointCount - dataPointer; // The remaining number of points
                     int remainingBuffers = (meshCount - i) - 1; // The number of remaining buffers (excluding the buffer we're creating)
@@ -436,23 +480,29 @@ namespace GlimmerOfHope.Gameplay {
                 }
             }
         }
-        
+
         /// <summary>Draws the grass</summary>
-        private void DrawGrass() {
+        private void DrawGrass()
+        {
             // If there's no buffers to draw, return
             if (pointBuffer == null && pointBuffers == null) { return; }
 
             Mesh mesh = GetGrassMesh();
             Material mat = material;
-            Bounds finalBounds = TransformBounds(GetLocalBounds());
 
             bool hasPointBuffers = pointBuffers != null && pointBuffers.Length > 0;
             bool useMultipleMeshes = UsingMultipleMeshes && grassBladeMeshes != null && hasPointBuffers;
             bool useMultipleMats = multipleMaterials && materials != null && hasPointBuffers;
 
+            // Camera.main est mis en cache une seule fois par frame ici, au lieu d'être relu
+            // dans DrawGrassBuffer() à chaque chunk/buffer dessiné.
+            Camera cam = Camera.main;
+
             // If there are multiple bounding boxes
-            if (boundingBoxes != null && boundingBoxes.Length > 0) {
-                if (hasPointBuffers) {
+            if (boundingBoxes != null && boundingBoxes.Length > 0)
+            {
+                if (hasPointBuffers)
+                {
                     // The number of compute buffers drawn for each bounding box
                     int buffersPerBounds = pointBuffers.Length / boundingBoxes.Length;
                     // Update the booleans for multiple meshes and materials
@@ -460,41 +510,48 @@ namespace GlimmerOfHope.Gameplay {
                     useMultipleMats &= materials.Length >= buffersPerBounds;
 
                     // For each chunk
-                    for (int i = 0; i < boundingBoxes.Length; i++) {
-                        finalBounds = TransformBounds(boundingBoxes[i]);
+                    for (int i = 0; i < boundingBoxes.Length; i++)
+                    {
+                        Bounds finalBounds = TransformBounds(boundingBoxes[i]);
                         // For each buffer in the chunk
-                        for (int j = 0; j < buffersPerBounds; j++) {
+                        for (int j = 0; j < buffersPerBounds; j++)
+                        {
                             int index = i * buffersPerBounds + j;
                             // If we're using multiple meshes, update the drawn mesh
-                            if (useMultipleMeshes) {
+                            if (useMultipleMeshes)
+                            {
                                 mesh = grassBladeMeshes[j];
                                 // If we're using multiple materials, update the material
                                 if (useMultipleMats) { mat = materials[j]; }
                             }
-                            DrawGrassBuffer(pointBuffers[index], ref materialBlocks[index], mesh, mat, finalBounds);
+                            DrawGrassBuffer(pointBuffers[index], ref materialBlocks[index], mesh, mat, finalBounds, cam);
                         }
                     }
                 }
                 // Backup for scene filters
-                else { DrawGrassBuffer(pointBuffer, ref materialBlock, mesh, mat, TransformBounds(boundingBoxes[0])); }
+                else { DrawGrassBuffer(pointBuffer, ref materialBlock, mesh, mat, TransformBounds(boundingBoxes[0]), cam); }
             }
             // If we have multiple point buffers
-            else if (hasPointBuffers) {
+            else if (hasPointBuffers)
+            {
+                Bounds finalBounds = TransformBounds(GetLocalBounds());
                 // Update the booleans for multiple meshes and materials
                 useMultipleMeshes &= grassBladeMeshes.Length >= pointBuffers.Length;
                 useMultipleMats &= materials.Length >= pointBuffers.Length;
                 // For each buffer
-                for (int i = 0; i < pointBuffers.Length; i++) {
-                    if (useMultipleMeshes) {
+                for (int i = 0; i < pointBuffers.Length; i++)
+                {
+                    if (useMultipleMeshes)
+                    {
                         mesh = grassBladeMeshes[i];
                         if (useMultipleMats) { mat = materials[i]; }
                     }
-                    DrawGrassBuffer(pointBuffers[i], ref materialBlocks[i], mesh, mat, finalBounds);
+                    DrawGrassBuffer(pointBuffers[i], ref materialBlocks[i], mesh, mat, finalBounds, cam);
                 }
             }
             // If we only have the one point buffer
-            else { DrawGrassBuffer(pointBuffer, ref materialBlock, mesh, mat, finalBounds); }
-            
+            else { DrawGrassBuffer(pointBuffer, ref materialBlock, mesh, mat, TransformBounds(GetLocalBounds()), cam); }
+
         }
         /// <summary>Draws a single grass buffer</summary>
         /// <param name="buffer">The buffer of type <c>MeshPoint</c> used for drawing</param>
@@ -502,13 +559,13 @@ namespace GlimmerOfHope.Gameplay {
         /// <param name="mesh">The mesh to be drawn for each <c>MeshPoint</c></param>
         /// <param name="mat">The material used for rendering</param>
         /// <param name="bounds">The bounding box</param>
-        private void DrawGrassBuffer(ComputeBuffer buffer, ref MaterialPropertyBlock block, Mesh mesh, Material mat, Bounds bounds)
+        /// <param name="cam">The reference camera, resolved once per frame in DrawGrass() rather than per buffer</param>
+        private void DrawGrassBuffer(ComputeBuffer buffer, ref MaterialPropertyBlock block, Mesh mesh, Material mat, Bounds bounds, Camera cam)
         {
             if (buffer == null || !buffer.IsValid()) { return; }
 
             float effectiveLOD = pointLODFactor; // valeur locale, ne touche pas au champ original
 
-            Camera cam = Camera.main;
             if (cam != null)
             {
                 float dist = Vector3.Distance(cam.transform.position, bounds.center);
@@ -529,7 +586,8 @@ namespace GlimmerOfHope.Gameplay {
         /// <summary> Creates a <c>MaterialPropertyBlock</c> used with rendering the grass meshes </summary>
         /// <param name="pointBuffer">The compute buffer supplied to the material property block</param>
         /// <returns><c>MaterialPropertyBlock</c> - A new material property block with the supplied compute buffer</returns>
-        private MaterialPropertyBlock CreateMaterialPropertyBlock(ComputeBuffer pointBuffer) {
+        private MaterialPropertyBlock CreateMaterialPropertyBlock(ComputeBuffer pointBuffer)
+        {
             MaterialPropertyBlock block = new MaterialPropertyBlock();
             // Set mesh point buffer
             block.SetBuffer(ID_PointBuff, pointBuffer);
@@ -541,18 +599,23 @@ namespace GlimmerOfHope.Gameplay {
 
         /// <summary>Retrieves a blade mesh depending on the renderer's blade type</summary>
         /// <returns><c>Mesh</c> - The blade mesh</returns>
-        private Mesh GetGrassMesh() {
-            switch (bladeType) {
-                case BladeType.Flat:        return grassMeshFlat;
+        private Mesh GetGrassMesh()
+        {
+            switch (bladeType)
+            {
+                case BladeType.Flat: return grassMeshFlat;
                 case BladeType.Cylindrical: return grassMeshCyl;
-                case BladeType.Mesh:        return grassBladeMesh;
-                default:                    throw new System.ArgumentException(message: "Invalid enum value");
-            };
+                case BladeType.Mesh: return grassBladeMesh;
+                default: throw new System.ArgumentException(message: "Invalid enum value");
+            }
+            ;
         }
         /// <summary>Gets the local bounding box based on the distribution source and renderer state</summary>
         /// <returns><c>Bounds</c> - The bounding box in local space</returns>
-        public Bounds GetLocalBounds() {
-            switch (distSource) {
+        public Bounds GetLocalBounds()
+        {
+            switch (distSource)
+            {
                 case DistributionSource.Mesh:
                     return boundingBox;
 
@@ -573,34 +636,33 @@ namespace GlimmerOfHope.Gameplay {
         /// <summary>Transforms the bounding box based on the bounding box's corners</summary>
         /// <param name="localBounds">The bounding box in local space</param>
         /// <returns><c>Bounds</c> - The bounding box transformed from the renderer's local space to world space</returns>
-        private Bounds TransformBounds(Bounds localBounds) {
+        private Bounds TransformBounds(Bounds localBounds)
+        {
             // Get the min and max points
             Vector3 min = localBounds.min;
             Vector3 max = localBounds.max;
-            // Get all the corner points
-            Vector3[] points = new Vector3[] {
-                min, max,
 
-                new Vector3(max.x, min.y, min.z),
-                new Vector3(min.x, max.y, min.z),
-                new Vector3(min.x, min.y, max.z),
+            // Transforme et encapsule chaque coin directement, sans passer par un tableau
+            // intermédiaire (l'ancien code allouait un Vector3[8] à CHAQUE appel, et cette
+            // méthode tourne potentiellement plusieurs fois par frame, par chunk de terrain
+            // et par PointGrassRenderer — c'était la source principale des pics de GC).
+            // Résultat mathématiquement identique à la version précédente.
+            Bounds result = new Bounds(transform.TransformPoint(min), Vector3.zero);
+            result.Encapsulate(transform.TransformPoint(max));
+            result.Encapsulate(transform.TransformPoint(new Vector3(max.x, min.y, min.z)));
+            result.Encapsulate(transform.TransformPoint(new Vector3(min.x, max.y, min.z)));
+            result.Encapsulate(transform.TransformPoint(new Vector3(min.x, min.y, max.z)));
+            result.Encapsulate(transform.TransformPoint(new Vector3(min.x, max.y, max.z)));
+            result.Encapsulate(transform.TransformPoint(new Vector3(max.x, min.y, max.z)));
+            result.Encapsulate(transform.TransformPoint(new Vector3(max.x, max.y, min.z)));
 
-                new Vector3(min.x, max.y, max.z),
-                new Vector3(max.x, min.y, max.z),
-                new Vector3(max.x, max.y, min.z),
-            };
-            // Transform all the points
-            for (int i = 0; i < points.Length; i++) { points[i] = transform.TransformPoint(points[i]); }
-            // Create the new bounds
-            localBounds = new Bounds(points[0], Vector3.zero);
-            for (int i = 1; i < points.Length; i++) { localBounds.Encapsulate(points[i]); }
-            // Return the bounding box
-            return localBounds;
+            return result;
         }
         /// <summary>Applys <c>boundingBoxOffset</c> to the input bounding box</summary>
         /// <param name="worldSpaceBounds">The input bounding box</param>
         /// <returns><c>Bounds</c> - The extruded bounding box</returns>
-        private Bounds AddBoundsExtrusion(Bounds worldSpaceBounds) {
+        private Bounds AddBoundsExtrusion(Bounds worldSpaceBounds)
+        {
             worldSpaceBounds.center += boundingBoxOffset.center;
             worldSpaceBounds.size += boundingBoxOffset.size;
             return worldSpaceBounds;
@@ -609,39 +671,46 @@ namespace GlimmerOfHope.Gameplay {
 
         // TODO : Point Grass Renderer - Double-check these set functions
         #region Parameter Update Methods
-        public void SetDistributionSource(Mesh mesh) {
+        public void SetDistributionSource(Mesh mesh)
+        {
             if (mesh == null) { Debug.LogError($"An attempt was made to set the distribution source on \"{gameObject.name}\" to null. Make sure the input distribution source is not null"); return; }
             distSource = DistributionSource.Mesh; baseMesh = mesh; // Set the distribution source and base mesh
         }
-        public void SetDistributionSource(MeshFilter filter) {
+        public void SetDistributionSource(MeshFilter filter)
+        {
             if (filter == null) { Debug.LogError($"An attempt was made to set the distribution source on \"{gameObject.name}\" to null. Make sure the input distribution source is not null"); return; }
 
             if (filter.gameObject == gameObject) { distSource = DistributionSource.MeshFilter; } // If the filter is on this object, then we just need to set the distribution source (since the MeshFilter distribution source doesn't keep a reference to the filter)
             else { SetDistributionSource(new MeshFilter[] { filter }); } // Since the filter isn't on this object, we need to use the scene filters distribution source
         }
-        public void SetDistributionSource(TerrainData terrain) {
+        public void SetDistributionSource(TerrainData terrain)
+        {
             if (terrain == null) { Debug.LogError($"An attempt was made to set the distribution source on \"{gameObject.name}\" to null. Make sure the input distribution source is not null"); return; }
             distSource = DistributionSource.TerrainData; this.terrain = terrain; // Set the distribution source and terrain data
         }
-        public void SetDistributionSource(MeshFilter[] sceneFilters) {
+        public void SetDistributionSource(MeshFilter[] sceneFilters)
+        {
             if (sceneFilters == null) { Debug.LogError($"An attempt was made to set the distribution source on \"{gameObject.name}\" to null. Make sure the input distribution source is not null"); return; }
             distSource = DistributionSource.SceneFilters; this.sceneFilters = sceneFilters; // Set the distribution source and scene filter references
         }
 
         public void SetBladeType(BladeType type) { bladeType = type; }
-        public void SetBladeMesh(Mesh mesh) {
+        public void SetBladeMesh(Mesh mesh)
+        {
             if (mesh == null) { Debug.LogError($"An attempt was made to set the blade mesh on \"{gameObject.name}\" to null or an empty array. Make sure the input blade mesh is not null"); return; }
             // Set the blade mesh. And make sure multiple meshes is disabled
             SetBladeType(BladeType.Mesh);
             grassBladeMesh = mesh;
             multipleMeshes = false;
         }
-        public void SetBladeMesh(Mesh[] meshes, float[] meshDensityValues = null, Material[] materials = null) {
+        public void SetBladeMesh(Mesh[] meshes, float[] meshDensityValues = null, Material[] materials = null)
+        {
             // Check if the meshes are valid
             if (meshes == null || meshes.Length == 0) { Debug.LogError($"An attempt was made to set the blade meshes on \"{gameObject.name}\" to null or an empty array. Make sure the input blade meshes are not null"); return; }
 
             if (meshes.Length == 1) { SetBladeMesh(meshes[0]); } // If there's only one mesh in the array, use the normal mesh blade mode instead
-            else {
+            else
+            {
                 // Set the blade type, meshes and enable multiple meshes
                 SetBladeType(BladeType.Mesh);
                 grassBladeMeshes = meshes;
@@ -653,23 +722,27 @@ namespace GlimmerOfHope.Gameplay {
                 if (materials != null && materials.Length > 0) { SetMaterials(materials); }
             }
         }
-        public void SetBladeDensities(float[] densities) {
+        public void SetBladeDensities(float[] densities)
+        {
             if (densities == null || densities.Length == 0) { Debug.LogError($"An attempt was made to set the blade densities on \"{gameObject.name}\" to null or an empty array. Make sure the input blade densities are not null"); return; }
 
             if (densities.Length != grassBladeMeshes.Length) { System.Array.Resize(ref densities, grassBladeMeshes.Length); }
             meshDensityValues = densities;
         }
-        public void SetMaterial(Material mat) {
+        public void SetMaterial(Material mat)
+        {
             if (mat == null) { Debug.LogError($"An attempt was made to set the blade material on \"{gameObject.name}\" to null or an empty array. Make sure the input blade material is not null"); return; }
 
             multipleMaterials = false;
             material = mat;
         }
-        public void SetMaterials(Material[] materials) {
+        public void SetMaterials(Material[] materials)
+        {
             if (materials == null || materials.Length == 0) { Debug.LogError($"An attempt was made to set the blade materials on \"{gameObject.name}\" to null or an empty array. Make sure the input blade materials are not null"); return; }
 
             if (materials.Length == 1) { SetMaterial(materials[0]); }
-            else {
+            else
+            {
                 multipleMaterials = true;
                 if (materials.Length != grassBladeMeshes.Length) { System.Array.Resize(ref materials, grassBladeMeshes.Length); }
                 this.materials = materials;
@@ -681,7 +754,8 @@ namespace GlimmerOfHope.Gameplay {
         public void SetRenderLayer(int layer) { renderLayer.Set(layer); }
         public void SetRenderLayer(SingleLayer layer) { renderLayer = layer; }
 
-        public void SetPointCount(float count, bool multiplyByArea = false) {
+        public void SetPointCount(float count, bool multiplyByArea = false)
+        {
             pointCount = count;
             this.multiplyByArea = multiplyByArea;
         }
@@ -690,22 +764,26 @@ namespace GlimmerOfHope.Gameplay {
         public void SetSeed(int seed) { randomiseSeed = false; this.seed = seed; }
         public void SetSeed(bool randomise) { randomiseSeed = randomise; }
 
-        public void SetOverwriteNormal(Vector3 normal) {
+        public void SetOverwriteNormal(Vector3 normal)
+        {
             overwriteNormalDirection = true;
             forcedNormal = normal.normalized;
         }
         public void SetOverwriteNormal(bool enabled) { overwriteNormalDirection = enabled; }
 
-        public void SetDensity(bool enabled, float cutoff = 0.5f) {
+        public void SetDensity(bool enabled, float cutoff = 0.5f)
+        {
             useDensity = enabled;
             densityCutoff = cutoff;
         }
-        public void SetLength(bool enabled, float rangeMin = 0.25f, float rangeMax = 1f) {
+        public void SetLength(bool enabled, float rangeMin = 0.25f, float rangeMax = 1f)
+        {
             useLength = enabled;
             lengthMapping = new Vector2(rangeMin, rangeMax);
         }
 
-        public void SetProjection(ProjectionType type, LayerMask mask) {
+        public void SetProjection(ProjectionType type, LayerMask mask)
+        {
             projectType = type;
             projectMask = mask;
         }
@@ -716,9 +794,12 @@ namespace GlimmerOfHope.Gameplay {
 
         /// <summary>Gets debug info about the renderer (Point count, buffer sizes, etc.)</summary>
         /// <returns><c>DebugInformation</c> - The debug information</returns>
-        public DebugInformation GetDebugInfo() {
-            if (!enabled) {
-                return new DebugInformation() {
+        public DebugInformation GetDebugInfo()
+        {
+            if (!enabled)
+            {
+                return new DebugInformation()
+                {
                     totalPointCount = 0,
                     usingMultipleBuffers = false,
                     bufferCount = 0,
@@ -729,11 +810,14 @@ namespace GlimmerOfHope.Gameplay {
 
             DebugInformation info = new DebugInformation();
             info.usingMultipleBuffers = pointBuffers != null;
-            if (info.usingMultipleBuffers) {
+            if (info.usingMultipleBuffers)
+            {
                 int smallest = int.MaxValue;
                 int largest = int.MinValue;
-                for (int i = 0; i < pointBuffers.Length; i++) {
-                    if (pointBuffers[i] != null && pointBuffers[i].IsValid()) {
+                for (int i = 0; i < pointBuffers.Length; i++)
+                {
+                    if (pointBuffers[i] != null && pointBuffers[i].IsValid())
+                    {
                         int count = pointBuffers[i].count;
                         info.totalPointCount += pointBuffers[i].count;
                         if (count < smallest) { smallest = count; }
@@ -744,7 +828,8 @@ namespace GlimmerOfHope.Gameplay {
                 info.smallestBuffer = smallest;
                 info.largestBuffer = largest;
             }
-            else if (pointBuffer != null && pointBuffer.IsValid()) {
+            else if (pointBuffer != null && pointBuffer.IsValid())
+            {
                 info.totalPointCount = pointBuffer.count;
                 info.bufferCount = 1;
                 info.smallestBuffer = info.totalPointCount;
@@ -754,7 +839,8 @@ namespace GlimmerOfHope.Gameplay {
             return info;
         }
         /// <summary>A struct used for containing debug information about point grass renderers</summary>
-        public struct DebugInformation {
+        public struct DebugInformation
+        {
             public int totalPointCount;
             public bool usingMultipleBuffers;
             public int bufferCount;
