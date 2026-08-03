@@ -6,7 +6,8 @@ using UnityEngine;
 using UnityEditor;
 #endif
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Gameplay
+{
     [ExecuteAlways]
     public class PointGrassWind : MonoBehaviour {
         [Tooltip("The scale of the sampled noise")] public float windScale;

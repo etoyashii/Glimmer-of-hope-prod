@@ -4,7 +4,8 @@ using System.Linq;
 
 using UnityEngine;
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Gameplay
+{
     using static PointGrassCommon;
 
     public class PointGrassDisplacementManager : MonoBehaviour {

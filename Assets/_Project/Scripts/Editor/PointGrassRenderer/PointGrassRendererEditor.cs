@@ -3,12 +3,14 @@ using System.Collections.Generic;
 
 using UnityEngine;
 using UnityEditor;
+using GlimmerOfHope.Gameplay;
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Editor {
     using static PointGrassCommon;
 
     [CustomEditor(typeof(PointGrassRenderer))]
-    public class PointGrassRendererEditor : Editor {
+    public class PointGrassRendererEditor : UnityEditor.Editor
+    {
         PointGrassRenderer renderer;
 
         private bool showMultipleMeshes;

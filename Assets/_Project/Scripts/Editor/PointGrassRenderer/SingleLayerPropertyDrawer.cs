@@ -1,7 +1,8 @@
 using UnityEditor;
 using UnityEngine;
+using GlimmerOfHope.Gameplay;
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Editor{
     [CustomPropertyDrawer(typeof(SingleLayer))]
     public class SingleLayerPropertyDrawer : PropertyDrawer {
         public override void OnGUI(Rect _position, SerializedProperty _property, GUIContent _label) {

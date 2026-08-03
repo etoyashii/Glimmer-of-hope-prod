@@ -1,6 +1,7 @@
 using UnityEngine;
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Gameplay
+{
     [System.Serializable]
     public struct SingleLayer {
         [SerializeField]

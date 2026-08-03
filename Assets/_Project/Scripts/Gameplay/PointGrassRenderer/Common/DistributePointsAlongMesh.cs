@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Gameplay{
     using static PointGrassCommon;
 
     public static class DistributePointsAlongMesh {

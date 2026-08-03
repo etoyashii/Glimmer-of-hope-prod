@@ -7,7 +7,7 @@ using UnityEngine;
 
 
 
-namespace MicahW.PointGrass {
+namespace GlimmerOfHope.Gameplay{
     public static class PointGrassCommon {
         // Grass meshes
         public static Mesh grassMeshFlat;
