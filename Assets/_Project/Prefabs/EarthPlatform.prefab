@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 749097054289785598}
   - component: {fileID: 4093696527459577170}
   - component: {fileID: 5305698358531000131}
-  m_Layer: 8
+  m_Layer: 10
   m_Name: EarthPlatform
-  m_TagString: WindPushable
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -29,8 +29,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -11.36, y: 3.95, z: 21.32}
-  m_LocalScale: {x: 2.7844915, y: 0.9211216, z: 2.9275918}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 1, y: 0.33080423, z: 1.0513918}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -62,10 +62,12 @@ MeshRenderer:
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
   m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 758b24a6fd72a404cace8a653cc4dc12, type: 2}
+  - {fileID: 2100000, guid: fb09d710b67a7d145b0f5823d3551dbd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -83,9 +85,11 @@ MeshRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+  m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
 --- !u!65 &5305698358531000131
 BoxCollider:
