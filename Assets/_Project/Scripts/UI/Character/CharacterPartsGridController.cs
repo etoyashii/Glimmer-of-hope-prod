@@ -101,7 +101,6 @@ namespace GlimmerOfHope.UI.Widgets
         private void OnPartClicked(string categoryId, string partId)
         {
             _controller.SelectPart(categoryId, partId);
-            _onPartChanged?.Raise(categoryId);
 
             foreach (var view in _spawnedViews)
                 view.SetSelected(view.PartId == partId);

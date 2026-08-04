@@ -1,6 +1,7 @@
-using GlimmerOfHope.Core.Events;
-using GlimmerOfHope.Core.Services;
 using System.Collections.Generic;
+using GlimmerOfHope.Core.Events;
+using GlimmerOfHope.Core.Save;
+using GlimmerOfHope.Core.Services;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.Characters
@@ -8,23 +9,19 @@ namespace GlimmerOfHope.Gameplay.Characters
     public class CharacterCreatorController : IService
     {
         #region Private Fields
-        private CharacterRegistrySO _registry;
-        private CharacterDataSO _currentData;
-
+        private readonly CharacterRegistrySO _registry;
+        private readonly StringEventChannel _onPartChanged;
         private readonly Dictionary<string, string> _currentSelections = new();
-
-        private StringEventChannel _onPartChanged;
         #endregion
 
         #region Public Properties
         public CharacterRegistrySO Registry => _registry;
-        public CharacterDataSO CurrentData => _currentData;
         #endregion
 
         #region Constructor
         public CharacterCreatorController(CharacterRegistrySO registry, StringEventChannel onPartChanged)
         {
-            _registry = registry;
+            _registry      = registry;
             _onPartChanged = onPartChanged;
         }
         #endregion
@@ -33,7 +30,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         public void Initialize()
         {
             ResetToDefaults();
-            Debug.Log("[CharacterCreatorController] Initialisé.");
+            LoadSavedSelections();
+            Debug.Log("[CharacterCreatorController] Initialise.");
         }
 
         public void Shutdown()
@@ -44,69 +42,84 @@ namespace GlimmerOfHope.Gameplay.Characters
         #endregion
 
         #region Public Methods
-        public void SelectPart(string categoryID, string partID)
+        public void SelectPart(string categoryId, string partId)
         {
-            if (_registry.GetCategoryById(categoryID) == null)
+            if (_registry.GetCategoryById(categoryId) == null)
             {
-                Debug.LogWarning($"[CharacterCreatorController] Catégorie inconnue : '{categoryID}'.");
+                Debug.LogWarning($"[CharacterCreatorController] Categorie inconnue : '{categoryId}'.");
                 return;
             }
 
-            _currentSelections[categoryID] = partID;
-            _onPartChanged?.Raise(categoryID);
+            _currentSelections[categoryId] = partId;
+            _onPartChanged?.Raise(categoryId);
         }
-        public CharacterPartSO GetSelectedPart(string categoryID)
+
+        public CharacterPartSO GetSelectedPart(string categoryId)
         {
-            if (!_currentSelections.TryGetValue(categoryID, out var partID))
+            if (!_currentSelections.TryGetValue(categoryId, out var partId))
                 return null;
 
-            return _registry.GetPartById(categoryID, partID);
+            return _registry.GetPartById(categoryId, partId);
         }
+
         public void ResetToDefaults()
         {
             _currentSelections.Clear();
 
             foreach (var category in _registry.Categories)
             {
-                if (category == null || category.Parts.Count == 0)
-                    continue;
+                if (category == null || category.Parts.Count == 0) continue;
 
-                _currentSelections[category.CategoryID] = category.Parts[0].PartID;
+                CharacterPartSO first = null;
+                CharacterPartSO firstSkinnedMesh = null;
+
+                foreach (var part in category.Parts)
+                {
+                    if (part == null) continue;
+                    if (first == null) first = part;
+                    if (firstSkinnedMesh == null && part.PartType == CharacterPartType.SkinnedMesh)
+                        firstSkinnedMesh = part;
+                }
+
+                var defaultPart = firstSkinnedMesh ?? first;
+                if (defaultPart != null)
+                    _currentSelections[category.CategoryID] = defaultPart.PartID;
             }
         }
-        public void LoadFromData(CharacterDataSO data)
+
+        public void SaveCurrentSelections()
         {
-            if (data == null)
+            var saveManager = ServiceLocator.Get<SaveManager>();
+            if (saveManager == null)
             {
-                Debug.LogWarning("[CharacterCreatorController] LoadFromData : data est null.");
+                Debug.LogWarning("[CharacterCreatorController] SaveManager introuvable, selection non sauvegardee.");
                 return;
             }
 
-            _currentData = data;
-            _currentSelections.Clear();
-
-            foreach (var category in _registry.Categories)
-            {
-                var partID = data.GetSelectedPartId(category.CategoryID);
-
-                if (!string.IsNullOrEmpty(partID))
-                    _currentSelections[category.CategoryID] = partID;
-            }
-        }
-        public void SaveToData(CharacterDataSO target)
-        {
-            if (target == null)
-            {
-                Debug.LogWarning("[CharacterCreatorController] SaveToData : target est null.");
-                return;
-            }
-
-            target.Clear();
-
+            var list = saveManager.CurrentSave.progression.characterSelections;
+            list.Clear();
             foreach (var kvp in _currentSelections)
-                target.SetSelectedPart(kvp.Key, kvp.Value);
-        }
+                list.Add(new CharacterSaveEntry { categoryId = kvp.Key, partId = kvp.Value });
 
+            saveManager.Save();
+        }
+        #endregion
+
+        #region Private Methods
+        private void LoadSavedSelections()
+        {
+            var saveManager = ServiceLocator.Get<SaveManager>();
+            if (saveManager == null) return;
+
+            var saved = saveManager.CurrentSave?.progression?.characterSelections;
+            if (saved == null || saved.Count == 0) return;
+
+            foreach (var entry in saved)
+            {
+                if (!string.IsNullOrEmpty(entry.categoryId) && !string.IsNullOrEmpty(entry.partId))
+                    _currentSelections[entry.categoryId] = entry.partId;
+            }
+        }
         #endregion
     }
 }
