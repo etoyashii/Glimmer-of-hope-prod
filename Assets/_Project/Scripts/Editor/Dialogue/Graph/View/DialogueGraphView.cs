@@ -18,6 +18,13 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
         #endregion
 
+        #region Events
+
+        public event System.Action<DialogueLineNode> LineNodeCreated;
+        public event System.Action<DialogueLineNode> LineNodeChanged;
+
+        #endregion
+
         #region Properties
 
         public ConversationSO CurrentConversation => _currentConversation;
@@ -70,6 +77,12 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             RefreshAllNodeTexts();
         }
 
+        public void AddLineNode(DialogueLineNode node)
+        {
+            node.ContentChanged += OnLineNodeContentChanged;
+            AddElement(node);
+        }
+
         public Edge CreateEdge(Port output, Port input)
         {
             var edge = new Edge { output = output, input = input };
@@ -81,12 +94,34 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
         public DialogueLineNode AddNewLineNode(Vector2 position)
         {
-            int nextIndex = GetLineNodes().Count + 1;
-            var convId = _currentConversation != null ? _currentConversation.ConversationId : "conv";
-            var lineId = NodeFactory.GenerateLineId(convId, nextIndex);
+            if (_currentConversation == null)
+            {
+                EditorUtility.DisplayDialog(
+                    "Aucune conversation",
+                    "Chargez une conversation avant d'ajouter une ligne.",
+                    "OK");
+                return null;
+            }
 
-            var node = NodeFactory.CreateEmpty(lineId, position);
-            AddElement(node);
+            var usedIds = new HashSet<string>();
+            foreach (var existing in GetLineNodes())
+                usedIds.Add(existing.LineId);
+
+            var lineId = DialogueLineAssetFactory.GenerateUniqueLineId(
+                _currentConversation.ConversationId, usedIds);
+
+            var lineSO = DialogueLineAssetFactory.Create(_currentConversation, lineId, usedIds.Count + 1);
+            if (lineSO == null)
+                return null;
+
+            var node = NodeFactory.CreateFromSO(lineSO, new Dictionary<string, string>());
+            node.SetPosition(new Rect(position, Vector2.zero));
+            AddLineNode(node);
+
+            ClearSelection();
+            AddToSelection(node);
+            LineNodeCreated?.Invoke(node);
+
             return node;
         }
 
@@ -168,6 +203,11 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             }
         }
 
+        private void OnLineNodeContentChanged(DialogueLineNode node)
+        {
+            LineNodeChanged?.Invoke(node);
+        }
+
         private void AddGridBackground()
         {
             var grid = new GridBackground();
@@ -183,7 +223,40 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                     edge.AddToClassList("dialogue-edge");
             }
 
+            if (change.elementsToRemove != null)
+                DeleteUnsavedLineAssets(change.elementsToRemove);
+
             return change;
+        }
+
+        private void DeleteUnsavedLineAssets(List<GraphElement> elements)
+        {
+            foreach (var element in elements)
+            {
+                if (element is not DialogueLineNode node || node.LineSO == null)
+                    continue;
+
+                if (IsReferencedByConversation(node.LineSO))
+                    continue;
+
+                var path = AssetDatabase.GetAssetPath(node.LineSO);
+                if (!string.IsNullOrEmpty(path))
+                    AssetDatabase.DeleteAsset(path);
+            }
+        }
+
+        private bool IsReferencedByConversation(DialogueLineSO lineSO)
+        {
+            if (_currentConversation == null || _currentConversation.AllLines == null)
+                return false;
+
+            foreach (var line in _currentConversation.AllLines)
+            {
+                if (line == lineSO)
+                    return true;
+            }
+
+            return false;
         }
 
         private void RefreshAllNodeTexts()

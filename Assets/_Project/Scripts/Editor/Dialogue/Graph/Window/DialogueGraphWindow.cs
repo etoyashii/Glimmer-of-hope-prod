@@ -78,6 +78,12 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         {
             EditorApplication.update -= OnEditorUpdate;
 
+            if (_graphView != null)
+            {
+                _graphView.LineNodeCreated -= OnLineNodeCreated;
+                _graphView.LineNodeChanged -= OnLineNodeChanged;
+            }
+
             if (_searchWindow != null)
                 DestroyImmediate(_searchWindow);
         }
@@ -163,7 +169,21 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                 return change;
             };
 
+            _graphView.LineNodeCreated += OnLineNodeCreated;
+            _graphView.LineNodeChanged += OnLineNodeChanged;
+
             RegisterSelectionCallback();
+        }
+
+        private void OnLineNodeCreated(DialogueLineNode node)
+        {
+            _inspectorPanel.InspectNode(node);
+            UpdateStatusBar();
+        }
+
+        private void OnLineNodeChanged(DialogueLineNode node)
+        {
+            _inspectorPanel.RefreshIfInspecting(node);
         }
 
         private void RegisterSelectionCallback()

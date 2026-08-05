@@ -24,7 +24,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         private LocalizationFieldGroup _textFields;
         private ActionListDrawer _startActions;
         private ActionListDrawer _endActions;
-        private VisualElement _choicesLocContainer;
+        private ChoiceLocalizationSection _choicesSection;
         private VisualElement _contentContainer;
         private Label _emptyLabel;
 
@@ -67,12 +67,28 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             PopulateFields();
         }
 
+        public void RefreshIfInspecting(DialogueLineNode node)
+        {
+            if (_selectedNode != node || node == null || node.LineSO == null)
+                return;
+
+            if (_choicesSection.NeedsRebuild(node))
+            {
+                InspectNode(node);
+                return;
+            }
+
+            _textFields.SetTexts(node.LocalizedTexts);
+            _choicesSection.RefreshTexts();
+        }
+
         public void ClearInspector()
         {
             _selectedNode = null;
             _serializedLine = null;
             _startActions.Unbind();
             _endActions.Unbind();
+            _choicesSection.Populate(null);
             ShowEmpty();
         }
 
@@ -152,8 +168,8 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
             scroll.Add(CreateSeparator());
             scroll.Add(CreateSection("Choix — Localisation"));
-            _choicesLocContainer = new VisualElement();
-            scroll.Add(_choicesLocContainer);
+            _choicesSection = new ChoiceLocalizationSection(_graphView);
+            scroll.Add(_choicesSection);
 
             _contentContainer.Add(scroll);
             Add(_contentContainer);
@@ -179,39 +195,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             _textFields.SetTexts(_selectedNode.LocalizedTexts);
             _startActions.Bind(_serializedLine);
             _endActions.Bind(_serializedLine);
-            PopulateChoicesLoc();
-        }
-
-        private void PopulateChoicesLoc()
-        {
-            _choicesLocContainer.Clear();
-
-            if (_selectedNode?.Choices == null || _selectedNode.LineSO == null)
-                return;
-
-            var choices = _selectedNode.LineSO.Choices;
-            if (choices == null || choices.Length == 0)
-            {
-                _choicesLocContainer.Add(new Label("Aucun choix") { style = { color = new Color(0.5f, 0.5f, 0.5f) } });
-                return;
-            }
-
-            for (int i = 0; i < choices.Length; i++)
-            {
-                int idx = i;
-                var group = new LocalizationFieldGroup($"Choix {i + 1}", (lang, text) =>
-                {
-                    _selectedNode.Choices.SetChoiceText(idx, lang, text);
-                    _selectedNode.UpdateVisuals(_graphView.ActiveLanguage);
-                });
-
-                var texts = new Dictionary<string, string>();
-                foreach (var lang in DialogueCSVFormat.LANGUAGES)
-                    texts[lang] = _selectedNode.Choices.GetChoiceText(idx, lang);
-
-                group.SetTexts(texts);
-                _choicesLocContainer.Add(group);
-            }
+            _choicesSection.Populate(_selectedNode);
         }
 
         #endregion

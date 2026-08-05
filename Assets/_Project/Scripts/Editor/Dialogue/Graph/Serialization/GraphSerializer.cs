@@ -75,7 +75,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
                 var texts = LocalizationBridge.GetTextsForLine(lineSO.LineId, allLangData);
                 var node = NodeFactory.CreateFromSO(lineSO, texts, allLangData);
-                _graphView.AddElement(node);
+                _graphView.AddLineNode(node);
                 nodeMap[lineSO.LineId] = node;
             }
 

@@ -44,14 +44,6 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             return node;
         }
 
-        public static DialogueLineNode CreateEmpty(string lineId, Vector2 position)
-        {
-            var node = new DialogueLineNode();
-            node.InitializeEmpty(lineId);
-            node.SetPosition(new Rect(position, Vector2.zero));
-            return node;
-        }
-
         public static string GenerateLineId(string conversationId, int index)
         {
             return $"{conversationId}_{index:D2}";

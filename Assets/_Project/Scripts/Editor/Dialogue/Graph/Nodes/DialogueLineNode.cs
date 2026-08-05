@@ -31,6 +31,12 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
         #endregion
 
+        #region Events
+
+        public event System.Action<DialogueLineNode> ContentChanged;
+
+        #endregion
+
         #region Properties
 
         public DialogueLineSO LineSO => _lineSO;
@@ -63,20 +69,6 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             _choiceManager.RebuildUI("fr");
 
             RebuildConditionPorts();
-            UpdateVisuals("fr");
-            RefreshExpandedState();
-            RefreshPorts();
-        }
-
-        public void InitializeEmpty(string lineId)
-        {
-            _lineSO = null;
-            _lineId = lineId;
-            _localizedTexts = new Dictionary<string, string>();
-
-            AddToClassList("dialogue-line-node");
-            SetupPorts();
-            BuildBody();
             UpdateVisuals("fr");
             RefreshExpandedState();
             RefreshPorts();
@@ -120,6 +112,11 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             }
 
             RefreshPorts();
+        }
+
+        public void RaiseContentChanged()
+        {
+            ContentChanged?.Invoke(this);
         }
 
         public void LinkSO(DialogueLineSO so)
@@ -182,9 +179,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             _choiceContainer.AddToClassList("dialogue-line-node__choices");
             extensionContainer.Add(_choiceContainer);
 
-            _choiceManager = new ChoiceManager(this, _choicePorts, _choiceContainer, lang =>
-            {
-            });
+            _choiceManager = new ChoiceManager(this, _choicePorts, _choiceContainer);
 
             _conditionContainer = new VisualElement();
             _conditionContainer.AddToClassList("dialogue-line-node__conditions");
@@ -220,6 +215,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         private void OnTextFieldChanged(ChangeEvent<string> evt)
         {
             SetLocalizedText(_activeLanguage, evt.newValue);
+            RaiseContentChanged();
         }
 
         private void UpdateTimingLabel()
@@ -242,8 +238,9 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         {
             foreach (var port in ports)
             {
-                foreach (var edge in port.connections)
-                    edge.RemoveFromHierarchy();
+                foreach (var edge in new List<Edge>(port.connections))
+                    PortEdgeUtility.Disconnect(edge);
+
                 container.Remove(port);
             }
             ports.Clear();

@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEditor.Experimental.GraphView;
@@ -15,31 +14,20 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         private readonly DialogueLineNode _node;
         private readonly List<Port> _ports;
         private readonly VisualElement _container;
-        private readonly Dictionary<int, Dictionary<string, string>> _choiceTexts = new();
-        private readonly Dictionary<int, TextField> _choiceFields = new();
-        private Action<string> _onChanged;
-        private string _activeLanguage = "fr";
-
-        #endregion
-
-        #region Properties
-
-        public IReadOnlyDictionary<int, Dictionary<string, string>> ChoiceTexts => _choiceTexts;
+        private readonly List<ChoiceRow> _rows = new();
+        private readonly ChoiceTextStore _texts = new();
+        private Button _addButton;
+        private string _activeLanguage = DialogueCSVFormat.DEFAULT_LANGUAGE;
 
         #endregion
 
         #region Constructor
 
-        public ChoiceManager(
-            DialogueLineNode node,
-            List<Port> ports,
-            VisualElement container,
-            Action<string> onChanged)
+        public ChoiceManager(DialogueLineNode node, List<Port> ports, VisualElement container)
         {
             _node = node;
             _ports = ports;
             _container = container;
-            _onChanged = onChanged;
         }
 
         #endregion
@@ -50,45 +38,18 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             DialogueLineSO lineSO,
             Dictionary<string, Dictionary<string, string>> allLangData)
         {
-            _choiceTexts.Clear();
-
-            if (lineSO == null || !lineSO.HasChoices)
-                return;
-
-            for (int i = 0; i < lineSO.Choices.Length; i++)
-            {
-                var texts = new Dictionary<string, string>();
-                var key = LocalizationBridge.GetChoiceKey(lineSO.LineId, i);
-
-                foreach (var lang in DialogueCSVFormat.LANGUAGES)
-                {
-                    if (allLangData != null &&
-                        allLangData.TryGetValue(lang, out var langData) &&
-                        langData.TryGetValue(key, out var text))
-                    {
-                        texts[lang] = text;
-                    }
-                    else
-                    {
-                        texts[lang] = lineSO.Choices[i].choiceText;
-                    }
-                }
-
-                _choiceTexts[i] = texts;
-            }
+            _texts.Load(lineSO, allLangData);
         }
 
         public void RebuildUI(string language)
         {
             _activeLanguage = language;
-            ClearPorts();
-            _choiceFields.Clear();
-            _container.Clear();
+            ClearRows();
 
             if (_node.LineSO != null && _node.LineSO.HasChoices)
             {
                 for (int i = 0; i < _node.LineSO.Choices.Length; i++)
-                    BuildChoiceRow(i, language);
+                    BuildChoiceRow(i);
             }
 
             BuildAddButton();
@@ -99,8 +60,8 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         {
             _activeLanguage = language;
 
-            foreach (var kvp in _choiceFields)
-                kvp.Value.SetValueWithoutNotify(GetChoiceText(kvp.Key, language));
+            foreach (var row in _rows)
+                row.Field.SetValueWithoutNotify(_texts.Get(row.Index, language));
         }
 
         public void AddChoice()
@@ -111,21 +72,16 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             var so = new SerializedObject(lineSO);
             var choicesProp = so.FindProperty("_choices");
             choicesProp.arraySize++;
-
-            var newChoice = choicesProp.GetArrayElementAtIndex(choicesProp.arraySize - 1);
-            newChoice.FindPropertyRelative("choiceText").stringValue = "";
-            newChoice.FindPropertyRelative("conditionFlag").stringValue = "";
-            newChoice.FindPropertyRelative("setFlag").stringValue = "";
-            newChoice.FindPropertyRelative("targetLine").objectReferenceValue = null;
+            ResetChoice(choicesProp.GetArrayElementAtIndex(choicesProp.arraySize - 1));
             so.ApplyModifiedProperties();
 
-            int idx = choicesProp.arraySize - 1;
-            _choiceTexts[idx] = new Dictionary<string, string>
-            {
-                { "fr", "" }, { "en", "" }, { "es", "" }
-            };
+            int index = choicesProp.arraySize - 1;
+            _texts.AddEmpty(index);
 
-            RebuildUI(_activeLanguage);
+            BuildChoiceRow(index);
+            MoveAddButtonToEnd();
+            _node.RefreshPorts();
+            _node.RaiseContentChanged();
         }
 
         public void RemoveChoice(int index)
@@ -136,140 +92,146 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             var so = new SerializedObject(lineSO);
             var choicesProp = so.FindProperty("_choices");
 
-            if (index >= choicesProp.arraySize) return;
+            if (index < 0 || index >= choicesProp.arraySize) return;
 
             choicesProp.DeleteArrayElementAtIndex(index);
             so.ApplyModifiedProperties();
 
-            RebuildChoiceTextsAfterRemove(index);
-            RebuildUI(_activeLanguage);
+            RemoveRow(index);
+            _texts.ShiftAfterRemove(index);
+            _node.RefreshPorts();
+            _node.RaiseContentChanged();
         }
 
         public void SetChoiceText(int index, string language, string text)
         {
-            if (!_choiceTexts.ContainsKey(index))
-                _choiceTexts[index] = new Dictionary<string, string>();
-
-            _choiceTexts[index][language] = text;
-
-            if (_node.LineSO != null)
-                UpdateChoiceFallbackText(index, text, language);
+            _texts.Set(_node.LineSO, index, language, text);
         }
 
         public string GetChoiceText(int index, string language)
         {
-            if (_choiceTexts.TryGetValue(index, out var texts) &&
-                texts.TryGetValue(language, out var text))
-                return text;
-
-            return "";
+            return _texts.Get(index, language);
         }
 
         public void CollectLocalizationData(
             string lineId,
             Dictionary<string, Dictionary<string, string>> dataPerLang)
         {
-            foreach (var kvp in _choiceTexts)
-            {
-                var key = LocalizationBridge.GetChoiceKey(lineId, kvp.Key);
-
-                foreach (var lang in DialogueCSVFormat.LANGUAGES)
-                {
-                    if (kvp.Value.TryGetValue(lang, out var text) && !string.IsNullOrEmpty(text))
-                        dataPerLang[lang][key] = text;
-                }
-            }
+            _texts.Collect(lineId, dataPerLang);
         }
 
         #endregion
 
-        #region Private Methods
+        #region Private Methods — Rows
 
-        private void BuildChoiceRow(int index, string language)
+        private void BuildChoiceRow(int index)
         {
-            var row = new VisualElement();
-            row.style.flexDirection = FlexDirection.Row;
-            row.style.alignItems = Align.Center;
-            row.style.marginBottom = 2;
+            var row = new ChoiceRow { Index = index };
 
-            var textField = new TextField();
-            textField.value = GetChoiceText(index, language);
-            textField.style.flexGrow = 1;
-            textField.style.minWidth = 120;
-            textField.multiline = false;
+            row.Root = new VisualElement();
+            row.Root.style.flexDirection = FlexDirection.Row;
+            row.Root.style.alignItems = Align.Center;
+            row.Root.style.marginBottom = 2;
 
-            int capturedIndex = index;
-            string capturedLang = language;
-            textField.RegisterValueChangedCallback(evt =>
+            row.Field = BuildChoiceField(row);
+            row.Root.Add(row.Field);
+
+            row.Port = DialoguePortFactory.CreateChoiceOutput(_node, "", index);
+            row.Root.Add(row.Port);
+            row.Root.Add(BuildRemoveButton(row));
+
+            _rows.Add(row);
+            _ports.Add(row.Port);
+            _container.Add(row.Root);
+        }
+
+        private TextField BuildChoiceField(ChoiceRow row)
+        {
+            var field = new TextField();
+            field.value = _texts.Get(row.Index, _activeLanguage);
+            field.style.flexGrow = 1;
+            field.style.minWidth = 120;
+            field.multiline = false;
+            field.RegisterValueChangedCallback(evt =>
             {
-                SetChoiceText(capturedIndex, capturedLang, evt.newValue);
-                _onChanged?.Invoke(capturedLang);
+                SetChoiceText(row.Index, _activeLanguage, evt.newValue);
+                _node.RaiseContentChanged();
             });
-            row.Add(textField);
-            _choiceFields[index] = textField;
 
-            var port = DialoguePortFactory.CreateChoiceOutput(_node, "", index);
-            _ports.Add(port);
-            row.Add(port);
+            return field;
+        }
 
-            var removeBtn = new Button(() => RemoveChoice(capturedIndex)) { text = "X" };
-            removeBtn.style.width = 20;
-            removeBtn.style.height = 18;
-            removeBtn.style.color = new Color(1f, 0.4f, 0.4f);
-            removeBtn.style.fontSize = 10;
-            row.Add(removeBtn);
+        private Button BuildRemoveButton(ChoiceRow row)
+        {
+            var button = new Button(() => RemoveChoice(row.Index)) { text = "X" };
+            button.style.width = 20;
+            button.style.height = 18;
+            button.style.color = new Color(1f, 0.4f, 0.4f);
+            button.style.fontSize = 10;
 
-            _container.Add(row);
+            return button;
+        }
+
+        private void RemoveRow(int index)
+        {
+            if (index < 0 || index >= _rows.Count) return;
+
+            var row = _rows[index];
+
+            foreach (var edge in new List<Edge>(row.Port.connections))
+                PortEdgeUtility.Disconnect(edge);
+
+            _ports.Remove(row.Port);
+            _rows.RemoveAt(index);
+            row.Root.RemoveFromHierarchy();
+
+            for (int i = index; i < _rows.Count; i++)
+                _rows[i].SetIndex(i);
+        }
+
+        private void ClearRows()
+        {
+            foreach (var row in _rows)
+            {
+                foreach (var edge in new List<Edge>(row.Port.connections))
+                    PortEdgeUtility.Disconnect(edge);
+            }
+
+            _ports.Clear();
+            _rows.Clear();
+            _container.Clear();
+            _addButton = null;
         }
 
         private void BuildAddButton()
         {
-            var addBtn = new Button(AddChoice) { text = "+ Choix" };
-            addBtn.style.marginTop = 4;
-            addBtn.style.alignSelf = Align.FlexStart;
-            addBtn.style.backgroundColor = new Color(0.2f, 0.35f, 0.5f);
-            addBtn.style.height = 20;
-            addBtn.style.fontSize = 10;
-            _container.Add(addBtn);
+            _addButton = new Button(AddChoice) { text = "+ Choix" };
+            _addButton.style.marginTop = 4;
+            _addButton.style.alignSelf = Align.FlexStart;
+            _addButton.style.backgroundColor = new Color(0.2f, 0.35f, 0.5f);
+            _addButton.style.height = 20;
+            _addButton.style.fontSize = 10;
+            _container.Add(_addButton);
         }
 
-        private void ClearPorts()
+        private void MoveAddButtonToEnd()
         {
-            foreach (var port in _ports)
+            if (_addButton == null)
             {
-                foreach (var edge in new List<Edge>(port.connections))
-                    edge.RemoveFromHierarchy();
+                BuildAddButton();
+                return;
             }
-            _ports.Clear();
+
+            _addButton.RemoveFromHierarchy();
+            _container.Add(_addButton);
         }
 
-        private void RebuildChoiceTextsAfterRemove(int removedIndex)
+        private static void ResetChoice(SerializedProperty choice)
         {
-            var newTexts = new Dictionary<int, Dictionary<string, string>>();
-            foreach (var kvp in _choiceTexts)
-            {
-                if (kvp.Key < removedIndex)
-                    newTexts[kvp.Key] = kvp.Value;
-                else if (kvp.Key > removedIndex)
-                    newTexts[kvp.Key - 1] = kvp.Value;
-            }
-            _choiceTexts.Clear();
-            foreach (var kvp in newTexts)
-                _choiceTexts[kvp.Key] = kvp.Value;
-        }
-
-        private void UpdateChoiceFallbackText(int index, string text, string language)
-        {
-            if (language != "fr") return;
-
-            var so = new SerializedObject(_node.LineSO);
-            var choices = so.FindProperty("_choices");
-            if (index < choices.arraySize)
-            {
-                choices.GetArrayElementAtIndex(index)
-                    .FindPropertyRelative("choiceText").stringValue = text;
-                so.ApplyModifiedProperties();
-            }
+            choice.FindPropertyRelative("choiceText").stringValue = "";
+            choice.FindPropertyRelative("conditionFlag").stringValue = "";
+            choice.FindPropertyRelative("setFlag").stringValue = "";
+            choice.FindPropertyRelative("targetLine").objectReferenceValue = null;
         }
 
         #endregion

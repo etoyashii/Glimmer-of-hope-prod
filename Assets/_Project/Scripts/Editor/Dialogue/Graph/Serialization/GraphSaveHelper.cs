@@ -98,16 +98,19 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
         private void SaveLineAssets(List<DialogueLineNode> lineNodes, ConversationSO conversation)
         {
-            foreach (var node in lineNodes)
+            for (int i = 0; i < lineNodes.Count; i++)
             {
+                var node = lineNodes[i];
+
                 if (node.LineSO == null)
-                    CreateNewLineSO(node, conversation);
-                else
+                    CreateNewLineSO(node, conversation, i + 1);
+
+                if (node.LineSO != null)
                     UpdateLineSO(node);
             }
         }
 
-        private void CreateNewLineSO(DialogueLineNode node, ConversationSO conversation)
+        private void CreateNewLineSO(DialogueLineNode node, ConversationSO conversation, int sequenceOrder)
         {
             // Reuse an existing line with this id wherever it lives, instead of creating a flat duplicate.
             var existing = DialogueAssetLocator.FindLine(node.LineId);
@@ -117,15 +120,9 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                 return;
             }
 
-            var folder = DialogueAssetLocator.LinesFolderFor(conversation);
-            var lineSO = ScriptableObject.CreateInstance<DialogueLineSO>();
-            AssetDatabase.CreateAsset(lineSO, $"{folder}/{node.LineId}.asset");
-
-            SetPrivateField(lineSO, "_lineId", node.LineId);
-            SetPrivateField(lineSO, "_conversationId", conversation.ConversationId);
-            EditorUtility.SetDirty(lineSO);
-
-            node.LinkSO(lineSO);
+            var lineSO = DialogueLineAssetFactory.Create(conversation, node.LineId, sequenceOrder);
+            if (lineSO != null)
+                node.LinkSO(lineSO);
         }
 
         private void UpdateLineSO(DialogueLineNode node)
@@ -248,14 +245,6 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
             var edge = outputPort.connections.FirstOrDefault();
             return edge?.input?.node as DialogueLineNode;
-        }
-
-        private void SetPrivateField<T>(object obj, string fieldName, T value)
-        {
-            var field = obj.GetType().GetField(
-                fieldName,
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
-            field?.SetValue(obj, value);
         }
 
         #endregion
