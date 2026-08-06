@@ -35,5 +35,20 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         public bool HasRequiredFlags => _requiredFlags != null && _requiredFlags.Length > 0;
 
         #endregion
+
+        #region Unity Lifecycle
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (string.IsNullOrWhiteSpace(_conversationId))
+                _conversationId = name;
+
+            if (string.IsNullOrWhiteSpace(_displayName))
+                _displayName = name;
+        }
+#endif
+
+        #endregion
     }
 }

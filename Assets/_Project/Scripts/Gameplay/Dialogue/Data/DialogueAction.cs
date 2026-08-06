@@ -19,6 +19,12 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         public DialogueLineSO targetLine;
         public string conditionFlag;
         public string setFlag;
+
+        public bool IsEmpty =>
+            string.IsNullOrWhiteSpace(choiceText) &&
+            targetLine == null &&
+            string.IsNullOrWhiteSpace(conditionFlag) &&
+            string.IsNullOrWhiteSpace(setFlag);
     }
 
     [Serializable]

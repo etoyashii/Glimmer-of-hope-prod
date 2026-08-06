@@ -63,6 +63,13 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
 
             if (!startNode.OutputPort.connected)
                 result.Errors.Add("Le noeud START n'est connecte a aucune ligne");
+
+            if (string.IsNullOrWhiteSpace(startNode.ConversationId))
+            {
+                result.Errors.Add(
+                    "La conversation n'a pas d'ID. Renseignez ConversationId sur l'asset " +
+                    "avant de sauvegarder, sinon les textes ne seront pas ecrits.");
+            }
         }
 
         private void ValidateLineNodes(ValidationResult result)
@@ -118,9 +125,28 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
         {
             for (int i = 0; i < node.ChoicePorts.Count; i++)
             {
-                if (!node.ChoicePorts[i].connected)
+                if (node.ChoicePorts[i].connected)
+                    continue;
+
+                if (IsChoiceEmpty(node, i))
+                    result.Warnings.Add($"[{node.LineId}] Choix {i + 1} vide et non connecte (ignore en jeu)");
+                else
                     result.Errors.Add($"[{node.LineId}] Choix {i + 1} non connecte");
             }
+        }
+
+        private bool IsChoiceEmpty(DialogueLineNode node, int index)
+        {
+            if (node.Choices == null)
+                return true;
+
+            foreach (var lang in DialogueCSVFormat.LANGUAGES)
+            {
+                if (!string.IsNullOrWhiteSpace(node.Choices.GetChoiceText(index, lang)))
+                    return false;
+            }
+
+            return true;
         }
 
         private void CheckDisconnectedConditionPorts(DialogueLineNode node, ValidationResult result)
