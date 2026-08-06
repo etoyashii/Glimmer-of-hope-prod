@@ -2,48 +2,42 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GlimmerOfHope.Audio
+namespace GlimmerOfHope.Gameplay.Audio
 {
     [System.Serializable]
     public class ZoneMusicEntry
     {
-        [Tooltip("Glisse directement l'asset Terrain Layer concerné (celui peint sur le Terrain).")]
+        #region Public Fields
+        [Tooltip("Drag the relevant Terrain Layer asset directly (the one painted on the Terrain).")]
         public TerrainLayer layer;
         public AudioClip clip;
         [Range(0f, 1f)] public float volume = 1f;
+        #endregion
     }
 
-    /// <summary>
-    /// Joue une musique d'ambiance par zone, avec un crossfade fluide entre les
-    /// morceaux. Le mapping se fait directement par référence à l'asset
-    /// TerrainLayer — pas de texte à faire correspondre entre deux listes, pas
-    /// d'ordre à respecter.
-    ///
-    /// Mise en place :
-    /// 1. GameObject vide (ex: "AudioManager") dans la scène, persistant.
-    /// 2. Attacher ce script.
-    /// 3. Remplir la liste "Zone Musics" : une entrée par Terrain Layer, en
-    ///    glissant l'asset TerrainLayer directement (Project > ton dossier de
-    ///    Terrain Layers) et le clip audio correspondant.
-    /// </summary>
     public class AmbientMusicManager : MonoBehaviour
     {
+        #region Public Fields
         public static AmbientMusicManager Instance;
 
-        [Header("Sons par Terrain Layer")]
+        [Header("Sounds per Terrain Layer")]
         public List<ZoneMusicEntry> zoneMusics = new List<ZoneMusicEntry>();
 
         [Header("Crossfade")]
-        [Tooltip("Durée du fondu enchaîné entre deux morceaux, en secondes.")]
+        [Tooltip("Crossfade duration between two tracks, in seconds.")]
         public float crossfadeDuration = 2f;
+        #endregion
 
+        #region Private Properties
         private AudioSource sourceA;
         private AudioSource sourceB;
         private AudioSource activeSource;
         private AudioSource inactiveSource;
         private TerrainLayer currentLayer;
         private Coroutine crossfadeRoutine;
+        #endregion
 
+        #region Unity LifeCycle
         private void Awake()
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
@@ -58,15 +52,18 @@ namespace GlimmerOfHope.Audio
                 s.loop = true;
                 s.playOnAwake = false;
                 s.volume = 0f;
-                s.spatialBlend = 0f; // son 2D, indépendant de la position (musique d'ambiance)
+                s.spatialBlend = 0f; // 2D sound, independent of position (ambient music)
             }
 
             activeSource = sourceA;
             inactiveSource = sourceB;
         }
+        #endregion 
 
-        /// <summary>Change la zone musicale actuelle en fonction du Terrain Layer dominant
-        /// (ne fait rien si c'est déjà le layer actif).</summary>
+        /// <summary>Changes the current musical zone based on the dominant Terrain Layer
+        /// (does nothing if it's already the active layer).</summary>
+        #region Public Methods
+
         public void SetZone(TerrainLayer layer)
         {
             if (layer == currentLayer) { return; }
@@ -75,7 +72,7 @@ namespace GlimmerOfHope.Audio
             if (entry == null || entry.clip == null)
             {
                 string layerName = layer != null ? layer.name : "null";
-                Debug.LogWarning($"AmbientMusicManager : aucun clip configuré pour le Terrain Layer '{layerName}'.");
+                Debug.LogWarning($"AmbientMusicManager: no clip configured for Terrain Layer '{layerName}'.");
                 return;
             }
 
@@ -85,6 +82,9 @@ namespace GlimmerOfHope.Audio
             crossfadeRoutine = StartCoroutine(CrossfadeTo(entry.clip, entry.volume));
         }
 
+        #endregion
+
+        #region Private Methods
         private ZoneMusicEntry FindEntry(TerrainLayer layer)
         {
             foreach (ZoneMusicEntry entry in zoneMusics)
@@ -119,5 +119,6 @@ namespace GlimmerOfHope.Audio
             activeSource = inactiveSource;
             inactiveSource = temp;
         }
+        #endregion
     }
 }

@@ -2,24 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace GlimmerOfHope.Audio
+namespace GlimmerOfHope.Gameplay.Audio
 {
-    /// <summary>
-    /// Musique d'ambiance globale, INDÉPENDANTE du Terrain Layer, jouée EN PLUS de
-    /// AmbientMusicManager (qui gère la musique liée à la zone). Les deux tournent
-    /// sur des AudioSource séparées, donc elles se superposent naturellement — l'une
-    /// n'interrompt jamais l'autre.
-    ///
-    /// Lit une playlist de morceaux en boucle, avec crossfade fluide entre chaque piste.
-    ///
-    /// Mise en place :
-    /// 1. GameObject vide (ex: "GlobalMusicManager") dans la scène, persistant.
-    /// 2. Attacher ce script.
-    /// 3. Remplir "Playlist" avec tes morceaux (musique de fond continue, pas liée à
-    ///    une texture de terrain en particulier).
-    /// </summary>
     public class GlobalAmbientMusicPlayer : MonoBehaviour
     {
+        #region Public Fields
         [Header("Playlist")]
         [Tooltip("Morceaux joués en boucle, indépendamment de la zone/du Terrain Layer.")]
         public List<AudioClip> playlist = new List<AudioClip>();
@@ -32,7 +19,9 @@ namespace GlimmerOfHope.Audio
         [Range(0f, 1f)] public float volume = 0.5f;
         [Tooltip("Durée du fondu enchaîné entre deux morceaux de la playlist, en secondes.")]
         public float crossfadeDuration = 3f;
+        #endregion
 
+        #region Private Properties
         private AudioSource sourceA;
         private AudioSource sourceB;
         private AudioSource activeSource;
@@ -40,7 +29,9 @@ namespace GlimmerOfHope.Audio
 
         private List<int> playOrder = new List<int>();
         private int playOrderIndex = -1;
+        #endregion
 
+        #region Unity LifeCycle
         private void Awake()
         {
             sourceA = gameObject.AddComponent<AudioSource>();
@@ -64,7 +55,9 @@ namespace GlimmerOfHope.Audio
             BuildPlayOrder();
             StartCoroutine(PlaybackLoop());
         }
+        #endregion
 
+        #region Private Methods
         private void BuildPlayOrder()
         {
             playOrder.Clear();
@@ -130,5 +123,6 @@ namespace GlimmerOfHope.Audio
             activeSource = inactiveSource;
             inactiveSource = temp;
         }
+        #endregion
     }
 }
