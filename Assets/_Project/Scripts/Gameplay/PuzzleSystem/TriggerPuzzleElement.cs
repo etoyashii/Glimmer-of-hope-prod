@@ -42,6 +42,8 @@ namespace GlimmerOfHope.Gameplay.Puzzles
             if (_isActivated) return;
             if (!other.CompareTag(_playerTag)) return;
 
+            Debug.Log($"TriggerPuzzleElement activated by {other.name}.");
+
             Activate();
         }
 
