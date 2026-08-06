@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -164,3 +165,4 @@ namespace GlimmerOfHope.Gameplay
         #endregion
     }
 }
+#endif

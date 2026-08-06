@@ -9,12 +9,17 @@ namespace GlimmerOfHope.Gameplay.Characters
     public class CharacterRegistrySO : ScriptableObject
     {
         #region Serialized Fields
-        [InfoBox("C'est ici qu'on référence toutes les catégories du système. Un seul asset à connaître.", EInfoBoxType.Normal)]
+        [InfoBox("C'est ici qu'on reference toutes les categories du systeme. Un seul asset a connaitre.", EInfoBoxType.Normal)]
         [SerializeField] private List<CharacterCategorySO> _categories = new();
+
+        [Header("SkinnedMesh")]
+        [Tooltip("FBX maitre contenant tous les SkinnedMeshRenderers du personnage. Assigne une fois ici, tous les outils s'en servent.")]
+        [SerializeField] private GameObject _masterCharacterPrefab;
         #endregion
 
         #region Public Properties
         public IReadOnlyList<CharacterCategorySO> Categories => _categories;
+        public GameObject MasterCharacterPrefab => _masterCharacterPrefab;
         #endregion
 
         #region Public Methods
@@ -40,7 +45,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void OnValidate()
         {
             if (_categories == null || _categories.Count == 0)
-                Debug.LogWarning("[CharacterRegistrySO] Aucune catégorie référencée dans le Registry.", this);
+                Debug.LogWarning("[CharacterRegistrySO] Aucune categorie referencee dans le Registry.", this);
         }
         #endregion
     }

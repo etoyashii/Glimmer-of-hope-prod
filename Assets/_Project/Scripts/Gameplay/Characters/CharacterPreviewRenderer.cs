@@ -25,18 +25,30 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("Event")]
         [SerializeField] private StringEventChannel _onPartChanged;
 
+        [Header("SkinnedMesh Character")]
+        [Tooltip("Prefab FBX contenant tous les SkinnedMeshRenderers du personnage.")]
+        [SerializeField] private GameObject _masterCharacterPrefab;
+
+        [Tooltip("Decalage de position du personnage instancie par rapport au pivot CharacterPreview.")]
+        [SerializeField] private Vector3 _characterOffset = Vector3.zero;
+
+        [Tooltip("Rotation en Y du personnage instancie (180 si le FBX est exporte de dos).")]
+        [SerializeField] private float _characterYRotation = 0f;
+
         [Header("Anchor Points 3D")]
-        [Tooltip("Associe chaque categoryId à un Transform parent pour les prefabs 3D.")]
+        [Tooltip("Associe chaque categoryId a un Transform parent pour les prefabs 3D.")]
         [SerializeField] private List<CategoryAnchor> _anchors3D = new();
 
         [Header("Anchor Points 2D")]
-        [Tooltip("Associe chaque categoryId à un SpriteRenderer pour les sprites 2D.")]
+        [Tooltip("Associe chaque categoryId a un SpriteRenderer pour les sprites 2D.")]
         [SerializeField] private List<CategorySpriteRenderer> _spriteRenderers = new();
         #endregion
 
         #region Private Fields
         private CharacterCreatorController _controller;
 
+        private GameObject _characterInstance;
+        private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName = new();
         private readonly Dictionary<string, GameObject> _spawnedPrefabs = new();
         #endregion
 
@@ -49,6 +61,14 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void Start()
         {
             _controller = ServiceLocator.Get<CharacterCreatorController>();
+
+            // Le Registry prime sur le champ de scene quand il est assigne.
+            if (_controller?.Registry?.MasterCharacterPrefab != null)
+                _masterCharacterPrefab = _controller.Registry.MasterCharacterPrefab;
+
+            if (_masterCharacterPrefab != null)
+                InstantiateCharacter();
+
             RefreshAll();
         }
 
@@ -56,9 +76,36 @@ namespace GlimmerOfHope.Gameplay.Characters
         {
             _onPartChanged.Unsubscribe(OnPartChanged);
         }
+
+        private void OnValidate()
+        {
+            if (_characterInstance == null) return;
+            _characterInstance.transform.localPosition = _characterOffset;
+            _characterInstance.transform.localRotation = Quaternion.Euler(0f, _characterYRotation, 0f);
+        }
+
+        private void OnDestroy()
+        {
+            if (_characterInstance != null)
+                Destroy(_characterInstance);
+        }
         #endregion
 
         #region Private Methods
+        private void InstantiateCharacter()
+        {
+            _characterInstance = Instantiate(_masterCharacterPrefab, transform);
+            _characterInstance.transform.localPosition = _characterOffset;
+            _characterInstance.transform.localRotation = Quaternion.Euler(0f, _characterYRotation, 0f);
+
+            foreach (var smr in _characterInstance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                if (smr.sharedMesh == null) continue;
+                _smrByMeshName[smr.sharedMesh.name] = smr;
+                smr.enabled = false;
+            }
+        }
+
         private void OnPartChanged(string categoryId)
         {
             RefreshCategory(categoryId);
@@ -66,9 +113,7 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         private void RefreshAll()
         {
-            if (_controller == null)
-                return;
-
+            if (_controller == null) return;
             foreach (var category in _controller.Registry.Categories)
             {
                 if (category != null)
@@ -79,23 +124,47 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void RefreshCategory(string categoryId)
         {
             var part = _controller.GetSelectedPart(categoryId);
-
             if (part == null)
             {
                 ClearCategory(categoryId);
                 return;
             }
 
-            if (part.PartType == CharacterPartType.Prefab3D)
-                Refresh3D(categoryId, part);
+            switch (part.PartType)
+            {
+                case CharacterPartType.SkinnedMesh: RefreshSkinnedMesh(categoryId, part); break;
+                case CharacterPartType.Prefab3D:    Refresh3D(categoryId, part);          break;
+                case CharacterPartType.Sprite2D:    Refresh2D(categoryId, part);          break;
+            }
+        }
+
+        private void RefreshSkinnedMesh(string categoryId, CharacterPartSO part)
+        {
+            if (part.Mesh == null) return;
+
+            // Desactive toutes les parts SkinnedMesh de cette categorie
+            var category = _controller.Registry.GetCategoryById(categoryId);
+            if (category != null)
+            {
+                foreach (var catPart in category.Parts)
+                {
+                    if (catPart?.PartType != CharacterPartType.SkinnedMesh || catPart.Mesh == null)
+                        continue;
+                    if (_smrByMeshName.TryGetValue(catPart.Mesh.name, out var smr))
+                        smr.enabled = false;
+                }
+            }
+
+            // Active la part selectionnee
+            if (_smrByMeshName.TryGetValue(part.Mesh.name, out var selectedSmr))
+                selectedSmr.enabled = true;
             else
-                Refresh2D(categoryId, part);
+                Debug.LogWarning($"[CharacterPreviewRenderer] SMR introuvable pour mesh '{part.Mesh.name}'.");
         }
 
         private void Refresh3D(string categoryId, CharacterPartSO part)
         {
             var anchor = GetAnchor3D(categoryId);
-
             if (anchor == null)
             {
                 Debug.LogWarning($"[CharacterPreviewRenderer] Aucun anchor 3D pour '{categoryId}'.");
@@ -108,40 +177,55 @@ namespace GlimmerOfHope.Gameplay.Characters
                 _spawnedPrefabs.Remove(categoryId);
             }
 
-            if (part.Prefab == null)
-                return;
+            if (part.Prefab == null) return;
 
             var instance = Instantiate(part.Prefab, anchor);
             instance.transform.localPosition = Vector3.zero;
             instance.transform.localRotation = Quaternion.identity;
-
             _spawnedPrefabs[categoryId] = instance;
         }
 
         private void Refresh2D(string categoryId, CharacterPartSO part)
         {
             var sr = GetSpriteRenderer(categoryId);
-
             if (sr == null)
             {
                 Debug.LogWarning($"[CharacterPreviewRenderer] Aucun SpriteRenderer pour '{categoryId}'.");
                 return;
             }
-
-            sr.sprite = part.Sprite;
+            sr.sprite   = part.Sprite;
+            sr.enabled  = part.Sprite != null;
         }
 
         private void ClearCategory(string categoryId)
         {
-            if (_spawnedPrefabs.TryGetValue(categoryId, out var existing))
+            // SkinnedMesh : desactive toutes les parts de la categorie
+            var category = _controller?.Registry.GetCategoryById(categoryId);
+            if (category != null)
             {
-                Destroy(existing);
+                foreach (var catPart in category.Parts)
+                {
+                    if (catPart?.PartType != CharacterPartType.SkinnedMesh || catPart.Mesh == null)
+                        continue;
+                    if (_smrByMeshName.TryGetValue(catPart.Mesh.name, out var smr))
+                        smr.enabled = false;
+                }
+            }
+
+            // Prefab3D : detruit l'instance
+            if (_spawnedPrefabs.TryGetValue(categoryId, out var go))
+            {
+                Destroy(go);
                 _spawnedPrefabs.Remove(categoryId);
             }
 
-            var sr = GetSpriteRenderer(categoryId);
-            if (sr != null)
-                sr.sprite = null;
+            // Sprite2D : vide et desactive le SpriteRenderer
+            var spriteRenderer = GetSpriteRenderer(categoryId);
+            if (spriteRenderer != null)
+            {
+                spriteRenderer.sprite  = null;
+                spriteRenderer.enabled = false;
+            }
         }
         #endregion
 
@@ -149,20 +233,14 @@ namespace GlimmerOfHope.Gameplay.Characters
         private Transform GetAnchor3D(string categoryId)
         {
             foreach (var anchor in _anchors3D)
-            {
-                if (anchor.categoryId == categoryId)
-                    return anchor.anchor;
-            }
+                if (anchor.categoryId == categoryId) return anchor.anchor;
             return null;
         }
 
         private SpriteRenderer GetSpriteRenderer(string categoryId)
         {
             foreach (var entry in _spriteRenderers)
-            {
-                if (entry.categoryId == categoryId)
-                    return entry.spriteRenderer;
-            }
+                if (entry.categoryId == categoryId) return entry.spriteRenderer;
             return null;
         }
         #endregion
