@@ -8,10 +8,13 @@ namespace GlimmerOfHope.Gameplay
         private BoxCollider box;
 
         private GrayZone gz;
+        private GameObject skills;
+
         private void Awake()
         {
             box = GetComponent<BoxCollider>();
             gz = GetComponent<GrayZone>();
+            skills = GameObject.FindGameObjectWithTag("Skills");
         }
 
         private void OnTriggerStay(Collider other)
@@ -22,6 +25,8 @@ namespace GlimmerOfHope.Gameplay
             }
             else
             {
+                gz.worldPoint = other.transform.position;
+                skills.SetActive(false);
                 if (other.gameObject.TryGetComponent(out PostProcessEffects effects))
                 {
                     Vector3 localPos = transform.InverseTransformPoint(other.transform.position);
@@ -53,11 +58,11 @@ namespace GlimmerOfHope.Gameplay
             }
             else
             {
+                skills.SetActive(true);
                 if (other.gameObject.TryGetComponent(out PostProcessEffects effects))
                 {
                     effects.SetCorruptionEffect(0f);
-                    gz.PaintFromPoint(other.transform.position, targetRadius: 4f, duration: 6f);
-
+                    
                 }
                 else
                 {

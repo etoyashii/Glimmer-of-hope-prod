@@ -59,6 +59,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b14f8915f73ac6449b2fd692750bfb08, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3557465564685321958}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: b14f8915f73ac6449b2fd692750bfb08, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -8959831855883369041}
   m_SourcePrefab: {fileID: 100100000, guid: b14f8915f73ac6449b2fd692750bfb08, type: 3}
 --- !u!1 &6942951831608643514 stripped
 GameObject:
@@ -87,3 +90,18 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -878372002519994448, guid: b14f8915f73ac6449b2fd692750bfb08, type: 3}
+--- !u!114 &-8959831855883369041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6942951831608643514}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af95da0ba5b14044a99b36556a6e5b43, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.PointGrassDisplacer
+  localPosition: {x: 0, y: 0, z: 0}
+  radius: 0.5
+  strength: 1

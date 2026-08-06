@@ -63,7 +63,7 @@ namespace GlimmerOfHope.Gameplay
 
                 vignette.intensity.value = Mathf.Lerp(0f, 0.6f, eased);
 
-                colorAdjustments.saturation.value = -Mathf.Lerp(-40f, 80f, eased);
+                colorAdjustments.saturation.value = Mathf.Lerp(10f, -80f, eased);
             }
             else
             {
@@ -71,9 +71,9 @@ namespace GlimmerOfHope.Gameplay
 
                 vignette.intensity.value = 0;
 
-                colorAdjustments.saturation.value = 40;
+                colorAdjustments.saturation.value = 10;
             }
-            
+
         }
         public IEnumerator OpenEyes(float time)
         {

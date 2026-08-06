@@ -20,6 +20,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
         [Range(0.0f, 100.0f)]
         [SerializeField] private float _followRadius = 50.0f;
         [SerializeField] private float _followHeightOffset = 1.5f;
+        [SerializeField] private float _followRightOffset = 1.5f;
 
         [Header("Idle Movement")]
         [Range(1.0f, 100.0f)]
@@ -67,6 +68,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
                 PatrolRadius = _patrolRadius,
                 FollowRadius = _followRadius,
                 FollowHeightOffset = _followHeightOffset,
+                FollowRightOffset = _followRightOffset,
                 HopChance = _hopChance,
                 HopHeight = _hopHeight,
                 HopFrequency = _hopFrequency,
@@ -96,6 +98,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
             _context.PatrolRadius = _patrolRadius;
             _context.FollowRadius = _followRadius;
             _context.FollowHeightOffset = _followHeightOffset;
+            _context.FollowRightOffset = _followRightOffset;
             _context.HopChance = _hopChance;
             _context.HopHeight = _hopHeight;
             _context.HopFrequency = _hopFrequency;

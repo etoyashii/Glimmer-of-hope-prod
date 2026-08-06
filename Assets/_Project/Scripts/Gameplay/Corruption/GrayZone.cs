@@ -20,6 +20,7 @@ namespace GlimmerOfHope.Gameplay
         public int maskIndex;
 
         [Header("Repeinte")]
+        public Vector3 worldPoint;
         private Vector2 paintOrigin;
         private float paintRadius;
 
@@ -69,6 +70,11 @@ namespace GlimmerOfHope.Gameplay
             data.paintOrigin = paintOrigin;
             data.paintRadius = paintRadius;
             return data;
+        }
+
+        public void Repaint()
+        {
+            PaintFromPoint(worldPoint, 4f, 5f);
         }
 
         //animation repaint

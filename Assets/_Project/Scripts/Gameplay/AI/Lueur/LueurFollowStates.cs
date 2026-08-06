@@ -14,7 +14,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
 
         public override void Tick()
         {
-            Vector3 elevatedPlayerPosition = _context.Player.position + Vector3.up * _context.FollowHeightOffset;
+            Vector3 elevatedPlayerPosition = _context.Player.position + Vector3.up * _context.FollowHeightOffset + Vector3.right * _context.FollowRightOffset;
             Vector3 target = elevatedPlayerPosition;
             float distance = Vector3.Distance(_context.Mover.Position, elevatedPlayerPosition);
 
