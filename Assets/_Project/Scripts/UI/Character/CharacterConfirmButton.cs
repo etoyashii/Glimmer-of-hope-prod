@@ -42,10 +42,10 @@ namespace GlimmerOfHope.UI.Widgets
         {
             if (_controller == null) return;
 
-            // F4 : SaveToData ici quand le save system sera branché
+            _controller.SaveCurrentSelections();
             _onCharacterConfirmed?.Raise("confirmed");
 
-            Debug.Log("[CharacterConfirmButton] Personnage confirmé.");
+            Debug.Log("[CharacterConfirmButton] Personnage confirme et sauvegarde.");
         }
         #endregion
     }
