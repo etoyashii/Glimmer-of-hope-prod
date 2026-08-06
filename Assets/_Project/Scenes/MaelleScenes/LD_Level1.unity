@@ -1474,6 +1474,56 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.1114058
   m_Center: {x: 0.0025444627, y: 0.18794045, z: -0.018306077}
+--- !u!1 &17814258
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 17814260}
+  - component: {fileID: 17814259}
+  m_Layer: 0
+  m_Name: AmbientMusicPlayer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &17814259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17814258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b89a6014d5246544a10e25eeed59a10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Audio.GlobalAmbientMusicPlayer
+  playlist:
+  - {fileID: 8300000, guid: 2356a72a31bb2ef43899e223cd90284c, type: 3}
+  shuffle: 1
+  loopPlaylist: 1
+  volume: 0.03
+  crossfadeDuration: 0.5
+--- !u!4 &17814260
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 17814258}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2457.7468, y: 374.96982, z: 5123.1294}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &17951652
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75312,6 +75362,64 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3500417839217517092, guid: fdab8d8d77ea24f4b8e85f5eafb3b4ee, type: 3}
   m_PrefabInstance: {fileID: 697713572}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &697897007
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 697897009}
+  - component: {fileID: 697897008}
+  m_Layer: 0
+  m_Name: AudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &697897008
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697897007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b62bec282b4da7e40a99603b5485822f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.AmbientMusicManager
+  zoneMusics:
+  - layer: {fileID: 8574412962073106934, guid: 5efd33f1162817746a7385999820fbbb, type: 2}
+    clip: {fileID: 8300000, guid: 22ab561452bf0324f8e5f2a17a50303c, type: 3}
+    volume: 0.016
+  - layer: {fileID: 8574412962073106934, guid: b9c45b70462ae8f4a863a2052a521309, type: 2}
+    clip: {fileID: 8300000, guid: 6816a2c5bfc2939469accb401d249d51, type: 3}
+    volume: 0.06
+  - layer: {fileID: 8574412962073106934, guid: ae5b8f40a5ac6e74f95c420fca005bea, type: 2}
+    clip: {fileID: 8300000, guid: 5be824a13856a934ca292f2590c7be4b, type: 3}
+    volume: 0.016
+  - layer: {fileID: 8574412962073106934, guid: d7feef2d34c10fb478a07a13abbe9816, type: 2}
+    clip: {fileID: 8300000, guid: 6816a2c5bfc2939469accb401d249d51, type: 3}
+    volume: 0.06
+  crossfadeDuration: 2
+--- !u!4 &697897009
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 697897007}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 2457.7468, y: 374.96982, z: 5123.1294}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &698218327
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -232362,3 +232470,5 @@ SceneRoots:
   - {fileID: 1072976110}
   - {fileID: 632459000}
   - {fileID: 865051895}
+  - {fileID: 17814260}
+  - {fileID: 697897009}
