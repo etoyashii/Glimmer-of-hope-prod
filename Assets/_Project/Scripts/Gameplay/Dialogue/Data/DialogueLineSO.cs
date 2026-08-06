@@ -59,5 +59,17 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         public bool HasConditionals => _conditionalNexts != null && _conditionalNexts.Length > 0;
 
         #endregion
+
+        #region Unity Lifecycle
+
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (string.IsNullOrWhiteSpace(_lineId))
+                _lineId = name;
+        }
+#endif
+
+        #endregion
     }
 }

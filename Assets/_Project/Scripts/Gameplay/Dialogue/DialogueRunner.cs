@@ -287,6 +287,9 @@ namespace GlimmerOfHope.Gameplay.Dialogue
 
             foreach (var c in choices)
             {
+                if (c == null || c.IsEmpty)
+                    continue;
+
                 if (string.IsNullOrEmpty(c.conditionFlag) ||
                     (_flagManager != null && ConditionParser.Evaluate(c.conditionFlag, _flagManager)))
                 {

@@ -95,6 +95,22 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
             string language,
             Dictionary<string, string> entries)
         {
+            if (string.IsNullOrWhiteSpace(conversationId))
+            {
+                Debug.LogError(
+                    "[DialogueGraph] ConversationId vide : localisation non sauvegardee. " +
+                    "Renseignez ConversationId sur l'asset de conversation.");
+                return;
+            }
+
+            var merged = LoadLanguage(conversationId, language);
+
+            foreach (var kvp in entries)
+            {
+                if (!string.IsNullOrWhiteSpace(kvp.Key) && !string.IsNullOrEmpty(kvp.Value))
+                    merged[kvp.Key] = kvp.Value;
+            }
+
             var table = new LocalizationTable
             {
                 tableName = $"dialogue_{conversationId}",
@@ -102,7 +118,7 @@ namespace GlimmerOfHope.Editor.Dialogue.Graph
                 entries = new List<LocalizationEntry>()
             };
 
-            foreach (var kvp in entries)
+            foreach (var kvp in merged)
             {
                 if (!string.IsNullOrEmpty(kvp.Value))
                 {

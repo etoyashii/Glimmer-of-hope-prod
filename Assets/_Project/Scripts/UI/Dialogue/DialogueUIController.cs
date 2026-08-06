@@ -48,14 +48,14 @@ namespace GlimmerOfHope.UI.Dialogue
 
         private void Start()
         {
+            ServiceLocator.TryGet(out _localization);
+
             if (ServiceLocator.TryGet<DialogueRunner>(out var runner))
             {
                 _runner = runner;
                 _runner.SetEventChannels(_onDialogueStarted, _onDialogueEnded, _onChoiceMade);
                 Subscribe();
             }
-
-            ServiceLocator.TryGet(out _localization);
 
             Hide();
         }
@@ -95,6 +95,9 @@ namespace GlimmerOfHope.UI.Dialogue
 
         private void Subscribe()
         {
+            if (_localization != null)
+                _localization.OnLanguageChanged += HandleLanguageChanged;
+
             if (_runner == null) return;
 
             _runner.OnLineStart += HandleLineStart;
@@ -108,6 +111,9 @@ namespace GlimmerOfHope.UI.Dialogue
 
         private void Unsubscribe()
         {
+            if (_localization != null)
+                _localization.OnLanguageChanged -= HandleLanguageChanged;
+
             if (_runner != null)
             {
                 _runner.OnLineStart -= HandleLineStart;
@@ -176,6 +182,21 @@ namespace GlimmerOfHope.UI.Dialogue
             return localized;
         }
 
+        private void HandleLanguageChanged()
+        {
+            if (_runner == null || !_runner.IsPlaying)
+                return;
+
+            var line = _runner.CurrentLine;
+            if (line == null)
+                return;
+
+            _typewriter?.Play(GetLocalizedText(line), line.TypewriterSpeed);
+
+            if (_runner.IsShowingChoices)
+                ShowLocalizedChoices(GetValidChoices(line.Choices));
+        }
+
         private void HandleSkipRequest()
         {
             if (_typewriter != null && _typewriter.IsPlaying)
@@ -217,11 +238,26 @@ namespace GlimmerOfHope.UI.Dialogue
 
             for (int i = 0; i < choices.Count; i++)
             {
-                var text = GetLocalizedChoiceText(line, i, choices[i].choiceText);
+                var sourceIndex = IndexOfChoice(line, choices[i]);
+                var text = GetLocalizedChoiceText(line, sourceIndex, choices[i].choiceText);
                 localizedTexts.Add(text);
             }
 
             _choicePanel.ShowWithTexts(localizedTexts);
+        }
+
+        private int IndexOfChoice(DialogueLineSO line, DialogueChoice choice)
+        {
+            if (line?.Choices == null)
+                return 0;
+
+            for (int i = 0; i < line.Choices.Length; i++)
+            {
+                if (ReferenceEquals(line.Choices[i], choice))
+                    return i;
+            }
+
+            return 0;
         }
 
         private void HandleChoiceSelected(int index)
@@ -279,16 +315,18 @@ namespace GlimmerOfHope.UI.Dialogue
             var result = new List<DialogueChoice>();
             if (choices == null) return result;
 
-            if (!ServiceLocator.TryGet<FlagManager>(out var fm))
-            {
-                result.AddRange(choices);
-                return result;
-            }
+            ServiceLocator.TryGet<FlagManager>(out var fm);
 
             foreach (var c in choices)
             {
-                if (string.IsNullOrEmpty(c.conditionFlag) || ConditionParser.Evaluate(c.conditionFlag, fm))
+                if (c == null || c.IsEmpty)
+                    continue;
+
+                if (string.IsNullOrEmpty(c.conditionFlag) ||
+                    (fm != null && ConditionParser.Evaluate(c.conditionFlag, fm)))
+                {
                     result.Add(c);
+                }
             }
 
             return result;
