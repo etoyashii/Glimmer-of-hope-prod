@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using UnityEngine.EventSystems;
 using TMPro;
 using GlimmerOfHope.Core.Services;
 using GlimmerOfHope.Core.Events;
@@ -89,6 +90,11 @@ namespace GlimmerOfHope.UI.Dialogue
             HideContinueIndicator();
         }
 
+        public void Advance()
+        {
+            _runner?.RequestSkip();
+        }
+
         #endregion
 
         #region Private Methods
@@ -134,10 +140,18 @@ namespace GlimmerOfHope.UI.Dialogue
             bool spacePressed = Keyboard.current != null && Keyboard.current.spaceKey.wasPressedThisFrame;
             bool mouseClicked = Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame;
 
+            if (mouseClicked && IsPointerOverUI())
+                mouseClicked = false;
+
             if (spacePressed || mouseClicked)
             {
                 _runner.RequestSkip();
             }
+        }
+
+        private bool IsPointerOverUI()
+        {
+            return EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
         }
 
         private void HandleLineStart(DialogueLineSO line)

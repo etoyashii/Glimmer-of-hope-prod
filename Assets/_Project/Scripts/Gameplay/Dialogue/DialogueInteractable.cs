@@ -48,6 +48,12 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         
         #endregion
 
+        #region Properties
+
+        public bool CanInteract => _playerInRange && !_isDialogueActive;
+
+        #endregion
+
         #region Unity Lifecycle
 
         private void Start()
@@ -93,15 +99,9 @@ namespace GlimmerOfHope.Gameplay.Dialogue
 
         #endregion
 
-        #region Private Methods
+        #region Public Methods
 
-        private void TryGetRunner()
-        {
-            if (ServiceLocator.TryGet(out _runner))
-                LogVerbose("DialogueRunner found");
-        }
-
-        private void StartDialogue()
+        public void StartDialogue()
         {
             if (_runner == null)
             {
@@ -130,6 +130,16 @@ namespace GlimmerOfHope.Gameplay.Dialogue
             _runner.StartConversation(conversation);
 
             LogVerbose($"Started: {conversation.ConversationId}");
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void TryGetRunner()
+        {
+            if (ServiceLocator.TryGet(out _runner))
+                LogVerbose("DialogueRunner found");
         }
 
         private ConversationSO ResolveConversation(out bool isConditional)
