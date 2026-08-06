@@ -15,6 +15,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
         public float PatrolRadius;
         public float FollowRadius;
         public float FollowHeightOffset;
+        public float FollowRightOffset;
         public float ArriveThreshold = 0.2f;
         public float HopChance;
         public float HopHeight;
