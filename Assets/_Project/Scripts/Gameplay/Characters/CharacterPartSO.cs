@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Serialization;
 using NaughtyAttributes;
 
 namespace GlimmerOfHope.Gameplay.Characters
@@ -6,7 +7,8 @@ namespace GlimmerOfHope.Gameplay.Characters
     public enum CharacterPartType
     {
         Sprite2D,
-        Prefab3D
+        Prefab3D,
+        SkinnedMesh
     }
 
     [CreateAssetMenu(menuName = "GlimmerOfHope/Characters/Part")]
@@ -20,8 +22,9 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         #region Serialized Fields
         [BoxGroup(GROUP_IDENTITY)]
-        [Required("L'ID est obligatoire pour référencer cette part.")]
-        [SerializeField] private string _partID;
+        [Required("L'ID est obligatoire pour referencer cette part.")]
+        [FormerlySerializedAs("_partID")]
+        [SerializeField] private string _partId;
 
         [BoxGroup(GROUP_IDENTITY)]
         [Required]
@@ -45,35 +48,45 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Required("Un prefab est requis pour les parts 3D.")]
         [SerializeField] private GameObject _prefab;
 
+        [BoxGroup(GROUP_ASSET)]
+        [ShowIf(nameof(_partType), CharacterPartType.SkinnedMesh)]
+        [Required("Un mesh est requis pour les parts SkinnedMesh.")]
+        [SerializeField] private Mesh _mesh;
+
+        [BoxGroup(GROUP_ASSET)]
+        [ShowIf(nameof(_partType), CharacterPartType.SkinnedMesh)]
+        [SerializeField] private Material[] _materials;
+
         [BoxGroup(GROUP_METADATA)]
         [SerializeField] private string[] _tags;
         #endregion
 
         #region Public Properties
-        public string PartID => _partID;
-        public string DisplayName => _displayName;
-        public Sprite Thumbnail => _thumbnail;
+        public string PartID         => _partId;
+        public string DisplayName    => _displayName;
+        public Sprite Thumbnail      => _thumbnail;
         public CharacterPartType PartType => _partType;
-        public Sprite Sprite => _sprite;
-        public GameObject Prefab => _prefab;
-        public string[] Tags => _tags;
+        public Sprite Sprite         => _sprite;
+        public GameObject Prefab     => _prefab;
+        public Mesh Mesh             => _mesh;
+        public Material[] Materials  => _materials;
+        public string[] Tags         => _tags;
         #endregion
 
         #region Editor
         private void OnValidate()
         {
-            if (string.IsNullOrWhiteSpace(_partID))
-            {
-                Debug.LogWarning($"[CharacterPartSO] `{name}` : partID est vide.", this);
-            }
+            if (string.IsNullOrWhiteSpace(_partId))
+                Debug.LogWarning($"[CharacterPartSO] `{name}` : partId est vide.", this);
+
             if (_partType == CharacterPartType.Sprite2D && _sprite == null)
-            {
-                Debug.LogWarning($"[CharacterPartSO] `{name}` : type Sprite2D mais aucun sprite assigné.", this);
-            }
+                Debug.LogWarning($"[CharacterPartSO] `{name}` : type Sprite2D mais aucun sprite assigne.", this);
+
             if (_partType == CharacterPartType.Prefab3D && _prefab == null)
-            {
-                Debug.LogWarning($"[CharacterPartSO] `{name}` : type Prefab3D mais aucun prefab assigné.", this);
-            }
+                Debug.LogWarning($"[CharacterPartSO] `{name}` : type Prefab3D mais aucun prefab assigne.", this);
+
+            if (_partType == CharacterPartType.SkinnedMesh && _mesh == null)
+                Debug.LogWarning($"[CharacterPartSO] `{name}` : type SkinnedMesh mais aucun mesh assigne.", this);
         }
         #endregion
     }

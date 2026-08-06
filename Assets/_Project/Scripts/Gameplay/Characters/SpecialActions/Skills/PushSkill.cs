@@ -101,7 +101,7 @@ namespace GlimmerOfHope.Gameplay
                 WindReactive reactive = col.GetComponent<WindReactive>();
                 if (reactive != null && reactive.ReactsToPush)
                 {
-                    reactive.NotifyPush();
+                    reactive.NotifyPush(_playerTransform.position);
                     continue;
                 }
 
