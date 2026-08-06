@@ -1604,14 +1604,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.PullSkill
   _cooldownTime: 1
-  isActive: 0
+  isActive: 1
   _playerTransform: {fileID: 3042084320906130243}
   _pullVFX: {fileID: 6132878843011529860}
   _detectionMask:
     serializedVersion: 2
     m_Bits: 4294967295
   _pullLength: 8
-  _pullRadius: 3
+  _pullRadius: 0.5
   _pullForce: 18
   _downwardForce: 2
   _dampOnArrival: 1
@@ -1633,11 +1633,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.PushSkill
   _cooldownTime: 1
-  isActive: 0
+  isActive: 1
   _playerTransform: {fileID: 3042084320906130243}
   _pushVFX: {fileID: 614570713015899726}
-  _pushLength: 0.64
-  _pushRadius: 0.24
+  _pushLength: 8
+  _pushRadius: 0.5
   _detectionMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -2380,6 +2380,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
+    - target: {fileID: 2956140590276622045, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
+      propertyPath: _skillManager
+      value: 
+      objectReference: {fileID: 5300802072146365405}
     - target: {fileID: 3389602989275686823, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_Layer
       value: 12

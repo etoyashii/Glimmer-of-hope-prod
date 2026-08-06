@@ -284,6 +284,10 @@ MonoBehaviour:
   _verticalGain: 0.3
   _horizontalSplitRatio: 0.5
   _verticalSplitRatio: 0.2
+  _swipeAction: {fileID: 0}
+  _rightStickAction: {fileID: 0}
+  _gamepadHorizontalGain: 3
+  _gamepadVerticalGain: 2
 --- !u!1 &8965634446214696993
 GameObject:
   m_ObjectHideFlags: 0
@@ -438,6 +442,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97712351c4d598843b9711d8749ee347, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4488570217002441744}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 97712351c4d598843b9711d8749ee347, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2956140590276622045}
   m_SourcePrefab: {fileID: 100100000, guid: 97712351c4d598843b9711d8749ee347, type: 3}
 --- !u!4 &3475693823866867731 stripped
 Transform:
@@ -495,10 +502,32 @@ MonoBehaviour:
   _rb: {fileID: 0}
   _playerCamera: {fileID: 0}
   _climbing: {fileID: 0}
+  _slide: {fileID: 0}
   _groundCheckDistance: 0.2
   _groundLayer:
     serializedVersion: 2
     m_Bits: 0
+  _targetMoveDirection: {x: 0, y: 0, z: 0}
+--- !u!114 &2956140590276622045
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4285163718492998313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 259e268736accaf4dbfe530e87b1b780, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.WindTargetDetector
+  _casterTransform: {fileID: 3475693823866867731}
+  _skillManager: {fileID: 0}
+  _detectionLength: 8
+  _detectionRadius: 0.5
+  _detectionMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  _checkInterval: 0.15
 --- !u!1001 &6602268171245349034
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -3,12 +3,14 @@ using UnityEngine;
 namespace GlimmerOfHope.Gameplay.Interaction
 {
     /// <summary>
-    /// Toggles the outline effect on an interactable object.
+    /// Toggles the outline effect on an interactable object, and optionally
+    /// a subtle traveling ripple riding along the same outline shell.
     /// Adds the outline material as an extra material slot on each target
     /// renderer if not already present, then drives it with a
     /// MaterialPropertyBlock scoped to that slot only, so the original
     /// material and its own property block, for example FireSpell color
-    /// fades, are never affected.
+    /// fades, are never affected. The ripple is a pure Base Color addition
+    /// in the shader, no alpha blending involved, stays fully Opaque.
     /// </summary>
     public class InteractableOutline : MonoBehaviour
     {
@@ -21,6 +23,16 @@ namespace GlimmerOfHope.Gameplay.Interaction
 
         [SerializeField] private Color _outlineColor = Color.yellow;
 
+        [Header("Ripple")]
+        [Tooltip("If true, a subtle traveling highlight rides along the outline while it is active.")]
+        [SerializeField] private bool _useRipple = false;
+
+        [SerializeField] private Color _rippleColor = new Color(0.6f, 1f, 0.6f);
+        [SerializeField] private float _rippleSpeed = 1.5f;
+        [SerializeField] private float _rippleFrequency = 3f;
+        [Range(0f, 1f)]
+        [SerializeField] private float _rippleIntensity = 0.6f;
+
         #endregion
 
         #region Private Fields
@@ -30,6 +42,11 @@ namespace GlimmerOfHope.Gameplay.Interaction
 
         private static readonly int OutlineEnabledId = Shader.PropertyToID("_OutlineEnabled");
         private static readonly int OutlineColorId = Shader.PropertyToID("_OutlineColor");
+        private static readonly int RippleEnabledId = Shader.PropertyToID("_RippleEnabled");
+        private static readonly int RippleColorId = Shader.PropertyToID("_RippleColor");
+        private static readonly int RippleSpeedId = Shader.PropertyToID("_RippleSpeed");
+        private static readonly int RippleFrequencyId = Shader.PropertyToID("_RippleFrequency");
+        private static readonly int RippleIntensityId = Shader.PropertyToID("_RippleIntensity");
 
         #endregion
 
@@ -61,6 +78,13 @@ namespace GlimmerOfHope.Gameplay.Interaction
                 renderer.GetPropertyBlock(_propertyBlock, slotIndex);
                 _propertyBlock.SetFloat(OutlineEnabledId, active ? 1f : 0f);
                 _propertyBlock.SetColor(OutlineColorId, _outlineColor);
+
+                _propertyBlock.SetFloat(RippleEnabledId, active && _useRipple ? 1f : 0f);
+                _propertyBlock.SetColor(RippleColorId, _rippleColor);
+                _propertyBlock.SetFloat(RippleSpeedId, _rippleSpeed);
+                _propertyBlock.SetFloat(RippleFrequencyId, _rippleFrequency);
+                _propertyBlock.SetFloat(RippleIntensityId, _rippleIntensity);
+
                 renderer.SetPropertyBlock(_propertyBlock, slotIndex);
             }
         }
