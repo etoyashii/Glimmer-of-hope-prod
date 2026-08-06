@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+
 namespace GlimmerOfHope.Gameplay
 {
     [System.Serializable]
@@ -23,3 +25,4 @@ namespace GlimmerOfHope.Gameplay
         #endregion
     }
 }
+#endif
