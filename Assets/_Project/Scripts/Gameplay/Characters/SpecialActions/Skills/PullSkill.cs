@@ -96,9 +96,9 @@ namespace GlimmerOfHope.Gameplay
 
                 // Let a scripted reaction take over instead of a raw physics push
                 WindReactive reactive = col.GetComponent<WindReactive>();
-                if (reactive != null && reactive.ReactsToPull)
+                if (reactive != null && reactive.ReactsToPush)
                 {
-                    reactive.NotifyPush();
+                    reactive.NotifyPush(_playerTransform.position);
                     continue;
                 }
 

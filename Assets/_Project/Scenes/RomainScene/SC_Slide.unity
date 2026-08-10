@@ -6521,14 +6521,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Slide
   _cooldownTime: 0
   isActive: 1
-  _maxDegree: 30
+  _movement: {fileID: 1520878049}
+  _rb: {fileID: 1520878051}
+  _pm: {fileID: 13400000, guid: a485a997301307e40aba9215aa744116, type: 2}
+  _capsuleColliderPlayer: {fileID: 1520878055}
   _slideSpeed: 2
   _stopSlidingTimer: 1.5
   _slideAcceleration: 2
   _speedDesactivation: 0.05
   _slideControlStrength: 0.2
-  _impulseStartSlide: 3
-  _slideFriction: 0
   _slideSpeedCurve:
     serializedVersion: 2
     m_Curve:
@@ -6565,13 +6566,8 @@ MonoBehaviour:
   _maxDecelForce: 15
   _slideBackwardDecel: 0.85
   _slideForwardBoost: 2
-  _movement: {fileID: 1520878049}
-  _rb: {fileID: 1520878051}
-  _pm: {fileID: 13400000, guid: a485a997301307e40aba9215aa744116, type: 2}
-  _capsuleColliderPlayer: {fileID: 1520878055}
-  isSliding: 0
-  lastDirection: {x: 0, y: 0, z: 0}
-  _stopTimer: 0
+  _maxDegree: 30
+  _impulseStartSlide: 3
 --- !u!1 &82794303
 GameObject:
   m_ObjectHideFlags: 0
@@ -175800,7 +175796,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 556447614927376363, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -14.901093
+      value: -15.568161
       objectReference: {fileID: 0}
     - target: {fileID: 556447614927376363, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -175808,7 +175804,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 556447614927376363, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.1645129
+      value: -2.5171266
       objectReference: {fileID: 0}
     - target: {fileID: 750756167921748778, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_Layer
@@ -175856,7 +175852,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 2555.9976
+      value: 2554.8638
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.y
@@ -175864,7 +175860,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 6301.46
+      value: 6303.3286
       objectReference: {fileID: 0}
     - target: {fileID: 1935421742309871357, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -175967,9 +175963,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _comboList.Array.data[3]._skillType
+      value: 12
+      objectReference: {fileID: 0}
+    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: _comboList.Array.data[3]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 79985905}
+    - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _comboList.Array.data[3]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LaunchSkill
+      objectReference: {fileID: 0}
     - target: {fileID: 2935019632860922148, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: _comboList.Array.data[3]._useSkill.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: GlimmerOfHope.Gameplay.Slide, GlimmerOfHope.Gameplay
@@ -176112,6 +176116,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: _learningSkillList.Array.data[5]._isUnlocked
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5300802072146365405, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _learningSkillList.Array.data[12]._isUnlocked
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5454898777869320120, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
@@ -176354,7 +176362,8 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8766793058998464731, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5334369126312943657, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}

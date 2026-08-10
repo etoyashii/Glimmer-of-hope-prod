@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.UI;
@@ -14,25 +15,42 @@ namespace GlimmerOfHope.Editor.Characters
     {
         #region Menu
 
-        [MenuItem("Tools/GlimmerOfHope/3 — Generate Character Creator Scene")]
+        private const string DATA_PATH   = "Assets/_Project/Data";
+        private const string PREFAB_PATH = "Assets/_Project/Prefabs/UI/Characters";
+
+        private static CharacterRegistrySO _registry;
+
+        [MenuItem("Tools/GlimmerOfHope/3 - Generate Character Creator Scene")]
         public static void Generate()
         {
             if (!ValidateAssets()) return;
 
-            if (!EditorUtility.DisplayDialog(
-                    "Générer la scène Character Creator",
-                    "Crée toute la hiérarchie UI dans la scène active.\nContinuer ?",
-                    "Générer", "Annuler"))
+            _registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>($"{DATA_PATH}/Characters/_Registry.asset");
+            if (_registry == null)
+            {
+                EditorUtility.DisplayDialog("Assets manquants",
+                    "Registry introuvable :\n" + DATA_PATH + "/Characters/_Registry.asset", "OK");
                 return;
+            }
+
+            if (!EditorUtility.DisplayDialog(
+                    "Generer la scene Character Creator",
+                    "Cree toute la hierarchie UI dans la scene active.\nContinuer ?",
+                    "Generer", "Annuler"))
+            {
+                _registry = null;
+                return;
+            }
 
             var root = BuildRoot();
             WireAllComponents(root);
             Selection.activeGameObject = root;
 
+            _registry = null;
+
             EditorUtility.DisplayDialog(
-                "Scène générée",
-                "Hiérarchie créée ET composants branchés automatiquement.\n\n" +
-                "Tout est prêt — appuie sur Play pour tester.",
+                "Scene generee",
+                "Hierarchie creee et composants branches automatiquement.\n\nTout est pret.",
                 "OK");
         }
 
@@ -84,14 +102,18 @@ namespace GlimmerOfHope.Editor.Characters
         private static void BuildCharacterPreview(GameObject parent)
         {
             var preview = Child("CharacterPreview", parent);
+            if (_registry == null) return;
 
-            Child("Anchor_Tete",       preview).transform.localPosition = new Vector3(0f, 1.6f, 0f);
-            Child("Anchor_Cheveux",    preview).transform.localPosition = new Vector3(0f, 1.7f, 0f);
-            Child("Anchor_Vetements",  preview).transform.localPosition = new Vector3(0f, 1.0f, 0f);
-            Child("Anchor_Accessoires", preview).transform.localPosition = new Vector3(0f, 1.8f, 0f);
+            foreach (var category in _registry.Categories)
+            {
+                if (category == null) continue;
+                var pascal = ToPascalCase(category.CategoryID);
 
-            BuildSpriteAnchor("Sprite_Yeux",   preview, new Vector3(-0.12f, 1.52f, -0.05f));
-            BuildSpriteAnchor("Sprite_Bouche", preview, new Vector3(0f, 1.38f, -0.05f));
+                if (category.DefaultPartType == CharacterPartType.Prefab3D)
+                    Child($"Anchor_{pascal}", preview);
+                else
+                    BuildSpriteAnchor($"Sprite_{pascal}", preview, Vector3.zero);
+            }
         }
 
         private static void BuildSpriteAnchor(string name, GameObject parent, Vector3 pos)
@@ -164,7 +186,7 @@ namespace GlimmerOfHope.Editor.Characters
             AddText("Title", go,
                 new Vector2(0f, 0.5f), new Vector2(0f, 0.5f), new Vector2(0f, 0.5f),
                 new Vector2(28f, 0f), new Vector2(600f, 44f),
-                "Créer mon personnage", FONT_TITLE, FontStyles.Bold,
+                "Creer mon personnage", FONT_TITLE, FontStyles.Bold,
                 TOPBAR_TEXT, TextAlignmentOptions.Left);
 
             AddText("Subtitle", go,
@@ -202,7 +224,7 @@ namespace GlimmerOfHope.Editor.Characters
             hlg.childForceExpandHeight = true;
             hlg.childAlignment         = TextAnchor.MiddleCenter;
 
-            BuildActionButton("BtnReset",   row, "Réinitialiser", BTN_NEUTRAL_BG, TEXT_PRIMARY);
+            BuildActionButton("BtnReset",   row, "Reinitialiser", BTN_NEUTRAL_BG, TEXT_PRIMARY);
             BuildActionButton("BtnConfirm", row, "Confirmer",     CONFIRM,        TEXT_ON_ACCENT);
         }
 
@@ -310,7 +332,7 @@ namespace GlimmerOfHope.Editor.Characters
             AddLayoutElement(go, 40f, 0f);
 
             var tmp = go.AddComponent<TextMeshProUGUI>();
-            tmp.text             = "CATÉGORIE";
+            tmp.text             = "CATEGORIE";
             tmp.fontSize         = FONT_SECTION;
             tmp.fontStyle        = FontStyles.Bold;
             tmp.color            = TEXT_MUTED;
@@ -380,25 +402,21 @@ namespace GlimmerOfHope.Editor.Characters
 
         #region Auto-Wire Components
 
-        private const string DATA_PATH   = "Assets/_Project/Data";
-        private const string PREFAB_PATH = "Assets/_Project/Prefabs/UI/Characters";
-
         private static void WireAllComponents(GameObject root)
         {
-            var registry   = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>($"{DATA_PATH}/Characters/_Registry.asset");
             var evtCat     = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCategorySelected.asset");
             var evtPart    = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterPartChanged.asset");
             var evtConfirm = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterConfirmed.asset");
             var tabPrefab  = AssetDatabase.LoadAssetAtPath<GameObject>($"{PREFAB_PATH}/CategoryTabPrefab.prefab");
             var partPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PREFAB_PATH}/PartButtonPrefab.prefab");
 
-            if (registry == null || evtCat == null || evtPart == null)
+            if (evtCat == null || evtPart == null || evtConfirm == null)
             {
-                Debug.LogError("[SceneGenerator] Assets manquants — Registry ou EventChannels introuvables.");
+                Debug.LogError("[SceneGenerator] EventChannels manquants.");
                 return;
             }
 
-            WireBootstrapper(root, registry, evtPart);
+            WireBootstrapper(root, evtPart);
             WirePreviewRenderer(root, evtPart);
             WireCategoryTabs(root, tabPrefab, evtCat);
             WirePartsGrid(root, partPrefab, evtCat, evtPart);
@@ -406,49 +424,59 @@ namespace GlimmerOfHope.Editor.Characters
             WireResetButton(root, evtCat);
             WireConfirmButton(root, evtConfirm);
 
-            Debug.Log("[SceneGenerator] Tous les composants branchés automatiquement.");
+            Debug.Log("[SceneGenerator] Tous les composants branches automatiquement.");
         }
 
-        private static void WireBootstrapper(GameObject root, CharacterRegistrySO registry, StringEventChannel evtPart)
+        private static void WireBootstrapper(GameObject root, StringEventChannel evtPart)
         {
             var boot = root.AddComponent<CharacterSystemBootstrapper>();
             var so = new SerializedObject(boot);
-            so.FindProperty("_characterRegistry").objectReferenceValue       = registry;
-            so.FindProperty("_onCharacterPartChanged").objectReferenceValue  = evtPart;
+            so.FindProperty("_characterRegistry").objectReferenceValue      = _registry;
+            so.FindProperty("_onCharacterPartChanged").objectReferenceValue = evtPart;
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
         private static void WirePreviewRenderer(GameObject root, StringEventChannel evtPart)
         {
             var preview = root.transform.Find("CharacterPreview");
-            if (preview == null) return;
+            if (preview == null || _registry == null) return;
 
             var renderer = preview.gameObject.AddComponent<CharacterPreviewRenderer>();
             var so = new SerializedObject(renderer);
             so.FindProperty("_onPartChanged").objectReferenceValue = evtPart;
 
-            // Anchors 3D
-            var anchors = so.FindProperty("_anchors3D");
-            string[] cats3D   = { "tete", "cheveux", "vetements", "accessoires" };
-            string[] names3D  = { "Anchor_Tete", "Anchor_Cheveux", "Anchor_Vetements", "Anchor_Accessoires" };
-            anchors.arraySize = cats3D.Length;
-            for (int i = 0; i < cats3D.Length; i++)
+            // Priorite : champ defini sur le Registry, sinon detection automatique
+            var masterPrefab = _registry.MasterCharacterPrefab ?? CharacterPartsImporter.FindMasterCharacterPrefab();
+            if (masterPrefab != null)
+                so.FindProperty("_masterCharacterPrefab").objectReferenceValue = masterPrefab;
+
+            var cats3D = new List<CharacterCategorySO>();
+            var cats2D = new List<CharacterCategorySO>();
+            foreach (var cat in _registry.Categories)
             {
-                var el = anchors.GetArrayElementAtIndex(i);
-                el.FindPropertyRelative("categoryId").stringValue            = cats3D[i];
-                el.FindPropertyRelative("anchor").objectReferenceValue       = preview.Find(names3D[i]);
+                if (cat == null) continue;
+                if (cat.DefaultPartType == CharacterPartType.Prefab3D) cats3D.Add(cat);
+                else cats2D.Add(cat);
             }
 
-            // Sprite Renderers 2D
-            var sprites = so.FindProperty("_spriteRenderers");
-            string[] cats2D   = { "yeux", "bouche" };
-            string[] names2D  = { "Sprite_Yeux", "Sprite_Bouche" };
-            sprites.arraySize = cats2D.Length;
-            for (int i = 0; i < cats2D.Length; i++)
+            var anchors = so.FindProperty("_anchors3D");
+            anchors.arraySize = cats3D.Count;
+            for (int i = 0; i < cats3D.Count; i++)
             {
-                var el = sprites.GetArrayElementAtIndex(i);
-                el.FindPropertyRelative("categoryId").stringValue                  = cats2D[i];
-                el.FindPropertyRelative("spriteRenderer").objectReferenceValue     = preview.Find(names2D[i])?.GetComponent<SpriteRenderer>();
+                var el     = anchors.GetArrayElementAtIndex(i);
+                var pascal = ToPascalCase(cats3D[i].CategoryID);
+                el.FindPropertyRelative("categoryId").stringValue      = cats3D[i].CategoryID;
+                el.FindPropertyRelative("anchor").objectReferenceValue = preview.Find($"Anchor_{pascal}");
+            }
+
+            var sprites = so.FindProperty("_spriteRenderers");
+            sprites.arraySize = cats2D.Count;
+            for (int i = 0; i < cats2D.Count; i++)
+            {
+                var el     = sprites.GetArrayElementAtIndex(i);
+                var pascal = ToPascalCase(cats2D[i].CategoryID);
+                el.FindPropertyRelative("categoryId").stringValue              = cats2D[i].CategoryID;
+                el.FindPropertyRelative("spriteRenderer").objectReferenceValue = preview.Find($"Sprite_{pascal}")?.GetComponent<SpriteRenderer>();
             }
 
             so.ApplyModifiedPropertiesWithoutUndo();
@@ -535,10 +563,16 @@ namespace GlimmerOfHope.Editor.Characters
 
             EditorUtility.DisplayDialog("Assets manquants",
                 "Sprites UI introuvables.\n\n" +
-                "Lance d'abord :\nTools → GlimmerOfHope → 1 — Generate UI Style Assets\n" +
-                "Puis : Tools → GlimmerOfHope → 2 — Generate Character UI Prefabs",
+                "Lance d'abord :\nTools > GlimmerOfHope > 1 - Generate UI Style Assets\n" +
+                "Puis : Tools > GlimmerOfHope > 2 - Generate Character UI Prefabs",
                 "OK");
             return false;
+        }
+
+        private static string ToPascalCase(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return s;
+            return char.ToUpperInvariant(s[0]) + s.Substring(1);
         }
 
         private static GameObject Child(string name, GameObject parent)
