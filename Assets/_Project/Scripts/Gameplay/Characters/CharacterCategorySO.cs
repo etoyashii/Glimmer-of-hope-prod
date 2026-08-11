@@ -15,12 +15,10 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         #region Serialized Fields
         [BoxGroup(GROUP_IDENTITY)]
-        [Required("L'ID est obligatoire pour referencer cette categorie.")]
         [FormerlySerializedAs("_categoryID")]
         [SerializeField] private string _categoryId;
 
         [BoxGroup(GROUP_IDENTITY)]
-        [Required]
         [SerializeField] private string _displayName;
 
         [BoxGroup(GROUP_IDENTITY)]
