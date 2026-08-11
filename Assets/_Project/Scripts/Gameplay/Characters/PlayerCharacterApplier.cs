@@ -5,41 +5,60 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.Characters
 {
-    // Place ce composant sur n'importe quel GameObject de scene de jeu
-    // qui doit afficher le personnage tel que configure dans le CharacterCreator.
+    // Place ce composant sur le GameObject parent du personnage (ex: MC).
+    //
+    // Mode "existing root" : assigner _characterRoot -> scanne le rig deja dans la scene, aucun Instantiate.
+    // Mode "prefab"        : laisser _characterRoot vide -> instancie le FBX et place ses enfants
+    //                        directement sous ce transform, sans couche intermediaire.
     public class PlayerCharacterApplier : MonoBehaviour
     {
         [Header("References")]
         [Tooltip("Registry contenant les categories, les parts, et le FBX maitre.")]
         [SerializeField] private CharacterRegistrySO _registry;
 
-        [Header("Transform")]
-        [Tooltip("Decalage de position par rapport au pivot de ce GameObject.")]
+        [Header("Mode")]
+        [Tooltip("Racine du personnage deja dans la scene. Si assigne : aucun Instantiate. Si vide : instancie depuis le Registry.")]
+        [SerializeField] private Transform _characterRoot;
+
+        [Header("Prefab mode uniquement")]
+        [Tooltip("Decalage local applique avant l'unwrap du FBX instancie.")]
         [SerializeField] private Vector3 _characterOffset = Vector3.zero;
-        [Tooltip("Rotation en Y de l'instance (180 si le FBX est exporte de dos).")]
+        [Tooltip("Rotation en Y du FBX instancie (180 si exporte de dos).")]
         [SerializeField] private float _characterYRotation = 0f;
 
-        private GameObject _characterInstance;
         private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName = new();
 
         private void Start()
         {
-            var prefab = _registry?.MasterCharacterPrefab;
-            if (prefab == null)
+            if (_characterRoot != null)
             {
-                Debug.LogWarning("[PlayerCharacterApplier] MasterCharacterPrefab non assigne sur le Registry.", this);
-                return;
+                BuildSmrMap(_characterRoot);
             }
-
-            _characterInstance = Instantiate(prefab, transform);
-            _characterInstance.transform.localPosition = _characterOffset;
-            _characterInstance.transform.localRotation = Quaternion.Euler(0f, _characterYRotation, 0f);
-
-            foreach (var smr in _characterInstance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            else
             {
-                if (smr.sharedMesh == null) continue;
-                _smrByMeshName[smr.sharedMesh.name] = smr;
-                smr.enabled = false;
+                var prefab = _registry?.MasterCharacterPrefab;
+                if (prefab == null)
+                {
+                    Debug.LogWarning("[PlayerCharacterApplier] MasterCharacterPrefab non assigne sur le Registry.", this);
+                    return;
+                }
+
+                // Instancie le FBX, applique l'offset/rotation, puis deplace tous ses enfants
+                // directement sous ce transform. Le root vide est detruit.
+                var fbxInstance = Instantiate(prefab);
+                fbxInstance.transform.SetParent(transform, false);
+                fbxInstance.transform.localPosition = _characterOffset;
+                fbxInstance.transform.localRotation = Quaternion.Euler(0f, _characterYRotation, 0f);
+
+                for (int i = fbxInstance.transform.childCount - 1; i >= 0; i--)
+                    fbxInstance.transform.GetChild(i).SetParent(transform, true);
+
+                Destroy(fbxInstance);
+
+                BuildSmrMap(transform);
+
+                var animator = GetComponentInParent<Animator>();
+                if (animator != null) animator.Rebind();
             }
 
             var saveManager = ServiceLocator.Get<SaveManager>();
@@ -55,6 +74,17 @@ namespace GlimmerOfHope.Gameplay.Characters
                 ApplyDefaults();
             else
                 ApplySelections(selections);
+        }
+
+        private void BuildSmrMap(Transform root)
+        {
+            _smrByMeshName.Clear();
+            foreach (var smr in root.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+            {
+                if (smr.sharedMesh == null) continue;
+                _smrByMeshName[smr.sharedMesh.name] = smr;
+                smr.enabled = false;
+            }
         }
 
         private void ApplySelections(List<CharacterSaveEntry> selections)
@@ -74,7 +104,6 @@ namespace GlimmerOfHope.Gameplay.Characters
             }
         }
 
-        // Active la premiere part SkinnedMesh de chaque categorie si pas de save.
         private void ApplyDefaults()
         {
             if (_registry == null) return;
@@ -93,12 +122,6 @@ namespace GlimmerOfHope.Gameplay.Characters
                     }
                 }
             }
-        }
-
-        private void OnDestroy()
-        {
-            if (_characterInstance != null)
-                Destroy(_characterInstance);
         }
     }
 }
