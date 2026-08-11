@@ -1,0 +1,393 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854570b06e704594590a2991490370e7, type: 3}
+  m_Name: New Dialogue
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::DialogueSystem.Data.DialogueGraph
+  graphId: 78e774aa
+  startNodeId: 99a75258
+  nodes:
+  - nodeId: 99a75258
+    nodeType: 1
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 1
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 15d07684
+    editorPosition: {x: -693, y: -220.91644}
+  - nodeId: e1f7d054
+    nodeType: 2
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices: []
+    editorPosition: {x: 2270.4463, y: -355.21512}
+  - nodeId: fd0ef587
+    nodeType: 0
+    speakerId: Capsule
+    text: Hello je suis la capsule , j'ai une quete pour toi.dqsdsqqsdqsdqsdqsdsqdqsdqsdsqdqsdsdsqdqsdqsdqsdqsdqsdsqdqsdqsdqsdqsdqsdqsdsqdqdqsdqsdqsdqsdqsdsqqsdqsdqsd
+    bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+    followSpeaker: 1
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 1f899c39
+    editorPosition: {x: 60.787243, y: -239.54271}
+  - nodeId: 1f899c39
+    nodeType: 0
+    speakerId: Capsule
+    text: Ramene moi un cube
+    bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+    followSpeaker: 1
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 30
+    hasChoices: 1
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: yes
+      nextNodeId: b1858f8d
+    - choiceText: no
+      nextNodeId: e1f7d054
+    editorPosition: {x: 602.50024, y: -317.14755}
+  - nodeId: 95be7725
+    nodeType: 0
+    speakerId: Player
+    text: Ok
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: e1f7d054
+    editorPosition: {x: 1438.4781, y: -653.57355}
+  - nodeId: 15d07684
+    nodeType: 4
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: CubeMissionRequested
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: ec80ab80
+    - choiceText: 
+      nextNodeId: fd0ef587
+    editorPosition: {x: -362, y: -223}
+  - nodeId: b1858f8d
+    nodeType: 5
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: CubeMissionRequested
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 95be7725
+    editorPosition: {x: 826.7251, y: -587.00745}
+  - nodeId: 100f8696
+    nodeType: 0
+    speakerId: Capsule
+    text: A tu ramener mon cube
+    bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+    followSpeaker: 1
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 30
+    hasChoices: 1
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: Oui
+      nextNodeId: ab6bfcdd
+    - choiceText: Non
+      nextNodeId: 
+    editorPosition: {x: 682, y: 34.749977}
+  - nodeId: ec80ab80
+    nodeType: 4
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: HasCube
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 100f8696
+    - choiceText: 
+      nextNodeId: 50dcb907
+    editorPosition: {x: 59.7, y: 50.65001}
+  - nodeId: 50dcb907
+    nodeType: 0
+    speakerId: Capsule
+    text: RAMENE MON CUBE!
+    bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+    followSpeaker: 1
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: e1f7d054
+    editorPosition: {x: 655.8805, y: 360.17947}
+  - nodeId: ab6bfcdd
+    nodeType: 0
+    speakerId: Capsule
+    text: Merci
+    bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+    followSpeaker: 1
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 9e40dfc2
+    editorPosition: {x: 1180.2725, y: -163.69281}
+  - nodeId: 9e40dfc2
+    nodeType: 2
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: END
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices: []
+    editorPosition: {x: 1614.6381, y: -164.34003}
