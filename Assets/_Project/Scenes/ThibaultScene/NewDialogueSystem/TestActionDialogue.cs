@@ -9,7 +9,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         void Awake()
         {
             DialogueActions.Register("takecube", takecube);
-
             
         }
 
