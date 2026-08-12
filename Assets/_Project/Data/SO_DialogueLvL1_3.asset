@@ -1,0 +1,361 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854570b06e704594590a2991490370e7, type: 3}
+  m_Name: SO_DialogueLvL1_3
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
+  graphId: 2a628e2f
+  startNodeId: 5bc2c945
+  nodes:
+  - nodeId: 5bc2c945
+    nodeType: 1
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 0
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 567c2508
+    editorPosition: {x: 0, y: 200}
+  - nodeId: f9129a7c
+    nodeType: 2
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices: []
+    editorPosition: {x: 600, y: 200}
+  - nodeId: 567c2508
+    nodeType: 0
+    speakerId: Glow
+    text: "\"Wait! It\u2019s\u2026 !!!\""
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 10fb7ce1
+    editorPosition: {x: 100, y: 100}
+  - nodeId: 10fb7ce1
+    nodeType: 0
+    speakerId: Glow
+    text: "\"A dull zone\u2026 The Monochronite has spread again! It has taken over
+      this place.\""
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: f4923031
+    editorPosition: {x: 100, y: 100}
+  - nodeId: f4923031
+    nodeType: 0
+    speakerId: Glow
+    text: "This disease turns all matter dull and monochrome. It spreads so fast\u2026"
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: a2d9662c
+    editorPosition: {x: 100, y: 100}
+  - nodeId: a2d9662c
+    nodeType: 0
+    speakerId: Glow
+    text: "Originally, dull zones were only in the central hub, but now, they\u2019ve
+      started spreading outside it too."
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: d87ac2fb
+    editorPosition: {x: 100, y: 100}
+  - nodeId: d87ac2fb
+    nodeType: 0
+    speakerId: Glow
+    text: I need to heal the Cosmic Tree to free the central hub.
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 1
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: The Cosmic Tree?
+      nextNodeId: fb59ee18
+    editorPosition: {x: 100, y: 100}
+  - nodeId: fb59ee18
+    nodeType: 0
+    speakerId: Glow
+    text: "The Cosmic Tree is the world-tree you\u2019re currently walking on. Its
+      sap, the sap of hope, nourishes the plants of this reality!"
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 65252705
+    editorPosition: {x: 100, y: 100}
+  - nodeId: 65252705
+    nodeType: 0
+    speakerId: Glow
+    text: 'You yourself were summoned by the world tree ! '
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: ecc52dfc
+    editorPosition: {x: 100, y: 100}
+  - nodeId: ecc52dfc
+    nodeType: 0
+    speakerId: Glow
+    text: But dull zones can still be healed, especially this one, if all the lanterns
+      in it are lit. You just have to take me close to them.
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 25639217
+    editorPosition: {x: 100, y: 100}
+  - nodeId: 25639217
+    nodeType: 0
+    speakerId: Glow
+    text: 'Remember: Monochronite remains a formidable enemy. But together, we can
+      defeat it.'
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 
+    editorPosition: {x: 100, y: 100}
