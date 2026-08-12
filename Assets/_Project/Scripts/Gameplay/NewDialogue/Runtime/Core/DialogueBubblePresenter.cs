@@ -95,6 +95,9 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             if (_bubble == null) return;
             _bubble.SetText(node.text, node.useTypewriter, node.typewriterCharsPerSecond);
             _bubble.SetChoices(choiceLabels);
+    
+            _bubble.SetSpeakerName(node.speakerId);
+               
         }
 
         public void Show() => _bubble?.Show();

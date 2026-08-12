@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using TMPro;
+using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
@@ -12,6 +14,9 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         void Initialize(Action onContinue, Action<int> onChoiceSelected);
 
         void SetText(string text, bool typewriter, float charsPerSecond);
+
+        void SetSpeakerName(string Name);
+        public TMP_Text _SpeakerName { get; }
 
         bool IsRevealingText { get; }
 

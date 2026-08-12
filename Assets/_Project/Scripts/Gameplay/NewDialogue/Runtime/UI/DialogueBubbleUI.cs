@@ -37,6 +37,18 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #endregion
 
         #region Public Properties
+
+
+
+        [Header("Speaker")]
+        [SerializeField] private TMP_Text _speakerName; // champ sérialisé visible dans l'Inspector
+
+        // propriété implémentant l'interface — Unity ne sérialise pas la propriété mais le champ ci‑dessous l'est.
+        public TMP_Text _SpeakerName
+        {
+            get => _speakerName;
+            set => _speakerName = value;
+        }
         public bool IsRevealingText { get; private set; }
         #endregion
 
@@ -75,6 +87,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
             _typewriterCoroutine = StartCoroutine(TypewriterRoutine(text, charsPerSecond));
         }
+        public void SetSpeakerName(string name)
+        {
+            if (_speakerName != null) _speakerName.text = name;
+        }
+
 
         public void CompleteTextReveal()
         {
