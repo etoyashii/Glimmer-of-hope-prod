@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GlimmerOfHope.Core.Save;
 using GlimmerOfHope.Core.Services;
@@ -26,7 +27,14 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Tooltip("Rotation en Y du FBX instancie (180 si exporte de dos).")]
         [SerializeField] private float _characterYRotation = 0f;
 
-        private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName = new();
+        [Header("Meshes permanents")]
+        [Tooltip("Ces meshes restent toujours actives, independamment des selections (body, etc.).")]
+        [SerializeField] private string[] _alwaysOnMeshNames = { "body" };
+
+        // StringComparer.OrdinalIgnoreCase : evite les bugs de casse entre noms de meshes FBX
+        // et les entrees de _alwaysOnMeshNames (ex: "Body" vs "body").
+        private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName
+            = new(StringComparer.OrdinalIgnoreCase);
 
         private void Start()
         {
@@ -66,6 +74,7 @@ namespace GlimmerOfHope.Gameplay.Characters
             {
                 Debug.LogWarning("[PlayerCharacterApplier] SaveManager introuvable - applique les defaults.", this);
                 ApplyDefaults();
+                EnableAlwaysOnMeshes();
                 return;
             }
 
@@ -74,6 +83,8 @@ namespace GlimmerOfHope.Gameplay.Characters
                 ApplyDefaults();
             else
                 ApplySelections(selections);
+
+            EnableAlwaysOnMeshes();
         }
 
         private void BuildSmrMap(Transform root)
@@ -85,6 +96,10 @@ namespace GlimmerOfHope.Gameplay.Characters
                 _smrByMeshName[smr.sharedMesh.name] = smr;
                 smr.enabled = false;
             }
+            // Desactive aussi les MeshRenderer non skinnes (ex: parts sans bone weights dans le FBX).
+            // Patch temporaire jusqu'a ce que ces meshes soient skinnes dans l'outil 3D.
+            foreach (var mr in root.GetComponentsInChildren<MeshRenderer>(true))
+                mr.enabled = false;
         }
 
         private void ApplySelections(List<CharacterSaveEntry> selections)
@@ -104,11 +119,22 @@ namespace GlimmerOfHope.Gameplay.Characters
             }
         }
 
+        private void EnableAlwaysOnMeshes()
+        {
+            foreach (var meshName in _alwaysOnMeshNames)
+            {
+                if (_smrByMeshName.TryGetValue(meshName, out var smr))
+                    smr.enabled = true;
+            }
+        }
+
         private void ApplyDefaults()
         {
             if (_registry == null) return;
 
-            foreach (var category in _registry.Categories)
+            // GetAllLeafCategories couvre les sous-categories (Hauts, Bas, etc.)
+            // que _registry.Categories (top-level seulement) manquerait.
+            foreach (var category in _registry.GetAllLeafCategories())
             {
                 if (category == null) continue;
                 foreach (var part in category.Parts)

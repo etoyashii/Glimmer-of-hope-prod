@@ -13,48 +13,6 @@ namespace GlimmerOfHope.Editor.Characters
         private const string DATA_ROOT     = "Assets/_Project/Data/Characters/Parts";
         private const string REGISTRY_PATH = "Assets/_Project/Data/Characters/_Registry.asset";
 
-        [MenuItem("Tools/GlimmerOfHope/4 - Import Character Parts")]
-        public static void Import()
-        {
-            var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
-            if (registry == null)
-            {
-                EditorUtility.DisplayDialog("Import", "Registry introuvable :\n" + REGISTRY_PATH, "OK");
-                return;
-            }
-
-            if (!AssetDatabase.IsValidFolder(IMPORT_ROOT))
-            {
-                EditorUtility.DisplayDialog(
-                    "Import",
-                    "Dossier d'import introuvable :\n" + IMPORT_ROOT +
-                    "\n\nDeplacer les FBX dans Art/Characters/ avant de lancer l'import.",
-                    "OK");
-                return;
-            }
-
-            int created = 0, updated = 0;
-            var errors = new List<string>();
-
-            var guids = AssetDatabase.FindAssets("t:Model", new[] { IMPORT_ROOT });
-            foreach (var guid in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                if (!path.EndsWith(".fbx", System.StringComparison.OrdinalIgnoreCase)) continue;
-
-                ProcessFbx(path, registry, ref created, ref updated, errors);
-            }
-
-            AssetDatabase.SaveAssets();
-            AssetDatabase.Refresh();
-
-            var report = $"Cree : {created}\nMis a jour : {updated}";
-            if (errors.Count > 0)
-                report += $"\n\nErreurs ({errors.Count}) :\n" + string.Join("\n", errors);
-
-            EditorUtility.DisplayDialog("Import termine", report, "OK");
-        }
-
         private static void ProcessFbx(
             string fbxPath,
             CharacterRegistrySO registry,
@@ -77,8 +35,15 @@ namespace GlimmerOfHope.Editor.Characters
                 if (category == null) continue;
 
                 var partId = BuildPartId(category.CategoryID, smr.sharedMesh.name);
+
+                // Sous-categories : dossier vetements/hauts/, sinon juste category.CategoryID/
+                var parentCat = registry.GetParentCategory(category.CategoryID);
+                var folderPath = parentCat != null
+                    ? $"{DATA_ROOT}/{parentCat.CategoryID}/{category.CategoryID}"
+                    : $"{DATA_ROOT}/{category.CategoryID}";
+
                 bool wasCreated = ProcessSkinnedPart(
-                    partId, smr.sharedMesh, smr.sharedMaterials, category, out var error);
+                    partId, smr.sharedMesh, smr.sharedMaterials, category, folderPath, out var error);
 
                 if (error != null)  errors.Add(error);
                 else if (wasCreated) created++;
@@ -91,7 +56,17 @@ namespace GlimmerOfHope.Editor.Characters
         {
             foreach (var category in registry.Categories)
             {
-                if (category != null && category.MatchesMeshName(meshName))
+                if (category == null) continue;
+
+                // Sous-categories en priorite (filtres plus specifiques que le parent).
+                foreach (var sub in category.SubCategories)
+                {
+                    if (sub != null && sub.MatchesMeshName(meshName))
+                        return sub;
+                }
+
+                // Categorie parente uniquement si elle n'a pas de sous-categories.
+                if (!category.HasSubCategories && category.MatchesMeshName(meshName))
                     return category;
             }
             return null;
@@ -110,32 +85,37 @@ namespace GlimmerOfHope.Editor.Characters
             Mesh mesh,
             Material[] materials,
             CharacterCategorySO category,
+            string folderPath,
             out string error)
         {
             error = null;
 
+            var partAssetPath = $"{folderPath}/{partId}.asset";
+            var displayName   = FormatDisplayName(mesh.name, category);
+
+            // Recherche 1 : par PartID (SO correctement importe)
             var existing = FindPartSOByPartId(partId);
-            bool isNew   = existing == null;
+            // Recherche 2 : par chemin exact (SO orphelin avec PartID vide)
+            if (existing == null)
+                existing = AssetDatabase.LoadAssetAtPath<CharacterPartSO>(partAssetPath);
+
+            bool isNew = existing == null;
 
             if (isNew)
             {
+                // Remplir les champs AVANT CreateAsset : Unity serialise l'etat courant de
+                // l'instance, donc les donnees sont deja presentes au moment de l'ecriture sur disque.
                 existing = ScriptableObject.CreateInstance<CharacterPartSO>();
-                EnsureFolderExists($"{DATA_ROOT}/{category.CategoryID}");
-                AssetDatabase.CreateAsset(existing, $"{DATA_ROOT}/{category.CategoryID}/{partId}.asset");
+                existing.SetupFromImporter(partId, displayName, CharacterPartType.SkinnedMesh, mesh, materials);
+                EnsureFolderExists(folderPath);
+                AssetDatabase.CreateAsset(existing, partAssetPath);
             }
-
-            var so = new SerializedObject(existing);
-            so.FindProperty("_partId").stringValue       = partId;
-            so.FindProperty("_displayName").stringValue  = FormatDisplayName(mesh.name, category);
-            so.FindProperty("_partType").enumValueIndex  = (int)CharacterPartType.SkinnedMesh;
-            so.FindProperty("_mesh").objectReferenceValue = mesh;
-
-            var matsProperty = so.FindProperty("_materials");
-            matsProperty.arraySize = materials?.Length ?? 0;
-            for (int i = 0; i < matsProperty.arraySize; i++)
-                matsProperty.GetArrayElementAtIndex(i).objectReferenceValue = materials[i];
-
-            so.ApplyModifiedProperties();
+            else
+            {
+                // Mise a jour d'un SO existant
+                existing.SetupFromImporter(partId, displayName, CharacterPartType.SkinnedMesh, mesh, materials);
+                EditorUtility.SetDirty(existing);
+            }
 
             if (!CategoryContainsPart(category, partId))
             {
@@ -222,122 +202,150 @@ namespace GlimmerOfHope.Editor.Characters
         }
 
         // --------------------------------------------------------
-        // Clear & Reimport : supprime tous les PartSOs puis reimporte
+        // Reset complet : clear + import + cleanup + patch en une seule operation
         // --------------------------------------------------------
 
-        [MenuItem("Tools/GlimmerOfHope/4b - Clear and Reimport Character Parts")]
-        public static void ClearAndImport()
+        [MenuItem("Tools/GlimmerOfHope/Reset complet + Reimport depuis FBX")]
+        public static void FullResetAndReimport()
         {
+            var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
+            if (registry == null)
+            {
+                EditorUtility.DisplayDialog("Reset", "Registry introuvable :\n" + REGISTRY_PATH, "OK");
+                return;
+            }
+
+            if (!AssetDatabase.IsValidFolder(IMPORT_ROOT))
+            {
+                EditorUtility.DisplayDialog("Reset",
+                    "Dossier FBX introuvable :\n" + IMPORT_ROOT +
+                    "\n\nDeplace les FBX dans Art/Characters/ avant de continuer.", "OK");
+                return;
+            }
+
             if (!EditorUtility.DisplayDialog(
-                "Clear & Reimport",
-                "Tous les PartSOs existants vont etre supprimes et recrees depuis les FBX.\n\nUtilise quand tu changes de FBX source ou que des anciens meshes trainent.\n\nContinuer ?",
-                "Oui, supprimer et reimporter", "Annuler"))
+                "Reset complet + Reimport",
+                "Supprime TOUS les CharacterPartSO et vide toutes les categories,\n" +
+                "puis reimporte tout depuis les FBX dans Art/Characters/.\n\n" +
+                "Prerequis :\n" +
+                "  - Registry > MasterCharacterPrefab pointe vers le bon FBX rig\n" +
+                "  - Chaque CategorySO a ses MeshNameFilters a jour\n" +
+                "  - La scene CharacterCreator est ouverte (pour le patch Preview)\n\n" +
+                "Continuer ?",
+                "Oui, reset + reimporter", "Annuler"))
                 return;
 
+            // 1. Vide les categories et supprime tous les PartSOs
             ClearAllParts();
-            Import();
+
+            // 2. Reimporte depuis les FBX
+            int created = 0, updated = 0;
+            var errors = new List<string>();
+            var guids = AssetDatabase.FindAssets("t:Model", new[] { IMPORT_ROOT });
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                if (!path.EndsWith(".fbx", System.StringComparison.OrdinalIgnoreCase)) continue;
+                ProcessFbx(path, registry, ref created, ref updated, errors);
+            }
+            AssetDatabase.SaveAssets();
+            AssetDatabase.Refresh();
+
+            // 3. Retire les placeholders non-SkinnedMesh des categories qui ont des SkinnedMesh
+            int removed = RunCleanupPlaceholders(registry);
+
+            // 4. Patch CharacterPreviewRenderer si present dans la scene
+            string patchInfo = RunPatchMasterFbxSilent(registry);
+
+            // 5. Sauvegarde scene pour que les modifs persistent en Play mode
+            EditorSceneManager.SaveOpenScenes();
+
+            // Rapport final unique
+            var sb = new System.Text.StringBuilder();
+            sb.AppendLine($"Parts crees : {created}");
+            sb.AppendLine($"Parts mis a jour : {updated}");
+            if (removed > 0) sb.AppendLine($"Placeholders retires : {removed}");
+            sb.AppendLine(patchInfo);
+            if (errors.Count > 0)
+                sb.AppendLine("\nErreurs :\n" + string.Join("\n", errors));
+
+            EditorUtility.DisplayDialog("Reset + Reimport termine", sb.ToString(), "OK");
         }
 
         private static void ClearAllParts()
         {
+            // 1. Vide les listes _parts de toutes les CategorySOs
             var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
             if (registry != null)
             {
                 foreach (var category in registry.Categories)
                 {
                     if (category == null) continue;
-                    var catSo = new SerializedObject(category);
-                    catSo.FindProperty("_parts").arraySize = 0;
-                    catSo.ApplyModifiedProperties();
+                    ClearCategoryPartsList(category);
+                    foreach (var sub in category.SubCategories)
+                        if (sub != null) ClearCategoryPartsList(sub);
                 }
                 AssetDatabase.SaveAssets();
             }
 
-            var guids = AssetDatabase.FindAssets("t:CharacterPartSO");
-            foreach (var guid in guids)
-                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(guid));
+            // 2. Supprime le dossier Parts entier.
+            // MoveAssetToTrash gere les sous-dossiers et les .meta ; DeleteAsset ne fonctionne
+            // pas sur les dossiers de facon fiable sur toutes les versions Unity/Windows.
+            if (AssetDatabase.IsValidFolder(DATA_ROOT))
+            {
+                bool moved = AssetDatabase.MoveAssetToTrash(DATA_ROOT);
+                if (!moved)
+                {
+                    // Fallback : suppression directe via FileUtil si MoveToTrash echoue
+                    FileUtil.DeleteFileOrDirectory(DATA_ROOT);
+                    FileUtil.DeleteFileOrDirectory(DATA_ROOT + ".meta");
+                }
+            }
 
+            AssetDatabase.Refresh();
+
+            // 3. Recrée le dossier vide
+            AssetDatabase.CreateFolder("Assets/_Project/Data/Characters", "Parts");
             AssetDatabase.Refresh();
         }
 
-        // --------------------------------------------------------
-        // Patch : assigne le bon FBX maitre sur CharacterPreviewRenderer
-        // --------------------------------------------------------
-
-        [MenuItem("Tools/GlimmerOfHope/5 - Patch CharacterPreview Master FBX")]
-        public static void PatchMasterFbx()
+        private static void ClearCategoryPartsList(CharacterCategorySO category)
         {
-            var renderer = Object.FindAnyObjectByType<CharacterPreviewRenderer>(FindObjectsInactive.Include);
-            if (renderer == null)
-            {
-                EditorUtility.DisplayDialog("Patch", "CharacterPreviewRenderer introuvable dans la scene active.", "OK");
-                return;
-            }
-
-            // Priorite 1 : le champ defini sur le Registry
-            var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
-            var masterPrefab = registry != null ? registry.MasterCharacterPrefab : null;
-
-            // Priorite 2 : detection automatique (FBX le plus reference par les PartSOs)
-            if (masterPrefab == null) masterPrefab = FindMasterCharacterPrefab();
-
-            if (masterPrefab == null)
-            {
-                EditorUtility.DisplayDialog("Patch",
-                    "Aucun FBX adequat trouve.\n\nAssigne-le sur le Registry SO (champ MasterCharacterPrefab)\nou lance d'abord Tools > 4 - Import Character Parts.", "OK");
-                return;
-            }
-
-            var so = new SerializedObject(renderer);
-            so.FindProperty("_masterCharacterPrefab").objectReferenceValue = masterPrefab;
+            var so = new SerializedObject(category);
+            so.FindProperty("_parts").arraySize = 0;
             so.ApplyModifiedProperties();
-
-            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(renderer.gameObject.scene);
-
-            EditorUtility.DisplayDialog("Patch",
-                $"_masterCharacterPrefab mis a jour vers : {masterPrefab.name}\n({AssetDatabase.GetAssetPath(masterPrefab)})", "OK");
         }
 
         // --------------------------------------------------------
-        // Nettoyage : retire les anciens placeholders Prefab3D / Sprite2D
-        // des categories qui ont deja des parts SkinnedMesh.
+        // Purge des references "Missing" dans les _parts de toutes les categories.
+        // A lancer quand des CharacterPartSO ont ete supprimes manuellement du projet.
         // --------------------------------------------------------
 
-        [MenuItem("Tools/GlimmerOfHope/6 - Cleanup Old Placeholder Parts")]
-        public static void CleanupOldPlaceholders()
+        [MenuItem("Tools/GlimmerOfHope/Cleanup - Purger references Missing dans les categories")]
+        public static void PurgeMissingPartReferences()
         {
             var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
             if (registry == null)
             {
-                EditorUtility.DisplayDialog("Cleanup", "Registry introuvable.", "OK");
+                EditorUtility.DisplayDialog("Purge", "Registry introuvable.", "OK");
                 return;
             }
 
             int removed = 0;
 
-            foreach (var category in registry.Categories)
+            void PurgeCategory(CharacterCategorySO cat)
             {
-                if (category == null) continue;
-
-                bool hasSkinnedMesh = false;
-                foreach (var part in category.Parts)
-                {
-                    if (part != null && part.PartType == CharacterPartType.SkinnedMesh)
-                    {
-                        hasSkinnedMesh = true;
-                        break;
-                    }
-                }
-
-                if (!hasSkinnedMesh) continue;
-
-                // Retire les parts non-SkinnedMesh de cette categorie
-                var catSo = new SerializedObject(category);
+                if (cat == null) return;
+                var catSo = new SerializedObject(cat);
                 var parts = catSo.FindProperty("_parts");
                 for (int i = parts.arraySize - 1; i >= 0; i--)
                 {
-                    var partRef = parts.GetArrayElementAtIndex(i).objectReferenceValue as CharacterPartSO;
-                    if (partRef == null || partRef.PartType != CharacterPartType.SkinnedMesh)
+                    var elem = parts.GetArrayElementAtIndex(i);
+                    var partRef = elem.objectReferenceValue as CharacterPartSO;
+                    // Detecte les refs null ET les refs "Missing" (objectReferenceValue non nul mais PartID vide)
+                    bool isMissing = partRef == null
+                        || string.IsNullOrEmpty(partRef.PartID);
+                    if (isMissing)
                     {
                         parts.DeleteArrayElementAtIndex(i);
                         removed++;
@@ -346,12 +354,132 @@ namespace GlimmerOfHope.Editor.Characters
                 catSo.ApplyModifiedProperties();
             }
 
+            foreach (var category in registry.Categories)
+            {
+                PurgeCategory(category);
+                if (category == null) continue;
+                foreach (var sub in category.SubCategories)
+                    PurgeCategory(sub);
+            }
+
             AssetDatabase.SaveAssets();
-            EditorUtility.DisplayDialog("Cleanup",
+            EditorUtility.DisplayDialog("Purge terminee",
                 removed > 0
-                    ? $"{removed} placeholder(s) retires des categories SkinnedMesh."
-                    : "Rien a nettoyer.",
+                    ? $"{removed} reference(s) manquante(s) retiree(s) de toutes les categories."
+                    : "Aucune reference manquante trouvee.",
                 "OK");
+        }
+
+        // --------------------------------------------------------
+        // Diagnostic : liste les meshes trouves dans les FBX et leur categorie
+        // --------------------------------------------------------
+
+        [MenuItem("Tools/GlimmerOfHope/Diagnostic - Lister les meshes FBX")]
+        public static void ListFbxMeshes()
+        {
+            var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
+            var guids    = AssetDatabase.FindAssets("t:Model", new[] { IMPORT_ROOT });
+            var sb       = new System.Text.StringBuilder();
+            sb.AppendLine($"Dossier : {IMPORT_ROOT}\n");
+
+            int totalMatched = 0, totalSkipped = 0;
+
+            foreach (var guid in guids)
+            {
+                var path = AssetDatabase.GUIDToAssetPath(guid);
+                if (!path.EndsWith(".fbx", System.StringComparison.OrdinalIgnoreCase)) continue;
+
+                var prefab = AssetDatabase.LoadMainAssetAtPath(path) as GameObject;
+                if (prefab == null) continue;
+
+                sb.AppendLine($"[FBX] {System.IO.Path.GetFileName(path)}");
+                foreach (var smr in prefab.GetComponentsInChildren<SkinnedMeshRenderer>(true))
+                {
+                    if (smr.sharedMesh == null) continue;
+                    var meshName = smr.sharedMesh.name;
+                    var cat      = registry != null ? FindCategoryForMesh(meshName, registry) : null;
+                    if (cat != null)
+                    {
+                        sb.AppendLine($"  OK  {meshName}  ->  {cat.CategoryID}");
+                        totalMatched++;
+                    }
+                    else
+                    {
+                        sb.AppendLine($"  --  {meshName}  (aucune categorie)");
+                        totalSkipped++;
+                    }
+                }
+                sb.AppendLine();
+            }
+
+            sb.AppendLine($"Total : {totalMatched} importes, {totalSkipped} ignores (aucun filtre ne correspond).");
+            Debug.Log(sb.ToString());
+            EditorUtility.DisplayDialog("Diagnostic FBX",
+                $"{totalMatched} meshes importables, {totalSkipped} ignores.\nDetail complet dans la Console Unity.", "OK");
+        }
+
+        // --------------------------------------------------------
+        // Helpers internes (utilises par FullResetAndReimport)
+        // --------------------------------------------------------
+
+        // Retire les parts non-SkinnedMesh des categories qui en ont deja un.
+        // Couvre aussi les sous-categories, contrairement a CleanupOldPlaceholders.
+        private static int RunCleanupPlaceholders(CharacterRegistrySO registry)
+        {
+            int removed = 0;
+            foreach (var category in registry.Categories)
+            {
+                if (category == null) continue;
+                removed += CleanupCategoryPlaceholders(category);
+                foreach (var sub in category.SubCategories)
+                    if (sub != null) removed += CleanupCategoryPlaceholders(sub);
+            }
+            if (removed > 0) AssetDatabase.SaveAssets();
+            return removed;
+        }
+
+        private static int CleanupCategoryPlaceholders(CharacterCategorySO category)
+        {
+            bool hasSkinnedMesh = false;
+            foreach (var part in category.Parts)
+            {
+                if (part != null && part.PartType == CharacterPartType.SkinnedMesh)
+                { hasSkinnedMesh = true; break; }
+            }
+            if (!hasSkinnedMesh) return 0;
+
+            int removed = 0;
+            var catSo = new SerializedObject(category);
+            var parts  = catSo.FindProperty("_parts");
+            for (int i = parts.arraySize - 1; i >= 0; i--)
+            {
+                var partRef = parts.GetArrayElementAtIndex(i).objectReferenceValue as CharacterPartSO;
+                if (partRef == null || partRef.PartType != CharacterPartType.SkinnedMesh)
+                {
+                    parts.DeleteArrayElementAtIndex(i);
+                    removed++;
+                }
+            }
+            catSo.ApplyModifiedProperties();
+            return removed;
+        }
+
+        // Patch silencieux du CharacterPreviewRenderer : retourne une ligne de rapport.
+        private static string RunPatchMasterFbxSilent(CharacterRegistrySO registry)
+        {
+            var renderer = Object.FindAnyObjectByType<CharacterPreviewRenderer>(FindObjectsInactive.Include);
+            if (renderer == null)
+                return "Preview : CharacterPreviewRenderer absent de la scene.";
+
+            var masterPrefab = registry.MasterCharacterPrefab ?? FindMasterCharacterPrefab();
+            if (masterPrefab == null)
+                return "Preview : aucun FBX master trouve (assigne-le sur le Registry SO).";
+
+            var so = new SerializedObject(renderer);
+            so.FindProperty("_masterCharacterPrefab").objectReferenceValue = masterPrefab;
+            so.ApplyModifiedProperties();
+            EditorSceneManager.MarkSceneDirty(renderer.gameObject.scene);
+            return $"Preview patche : {masterPrefab.name}";
         }
 
         // Retourne le FBX principal : le FBX dont les meshes sont references par le plus de PartSOs.

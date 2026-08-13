@@ -78,7 +78,9 @@ namespace GlimmerOfHope.UI.Widgets
 
             foreach (var part in category.Parts)
             {
-                if (part == null) continue;
+                // "Missing (Character Part SO)" bypasse parfois le null check Unity :
+                // on filtre aussi les parts dont le PartID est vide ou null.
+                if (part == null || string.IsNullOrEmpty(part.PartID)) continue;
 
                 var btn  = Instantiate(_partButtonPrefab, transform);
                 var view = btn.GetComponent<PartButtonView>();

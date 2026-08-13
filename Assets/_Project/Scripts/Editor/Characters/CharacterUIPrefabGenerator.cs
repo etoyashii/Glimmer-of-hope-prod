@@ -26,7 +26,6 @@ namespace GlimmerOfHope.Editor.Characters
 
         #region Menu
 
-        [MenuItem("Tools/GlimmerOfHope/2 — Generate Character UI Prefabs")]
         public static void Generate()
         {
             if (!ValidateSprites()) return;

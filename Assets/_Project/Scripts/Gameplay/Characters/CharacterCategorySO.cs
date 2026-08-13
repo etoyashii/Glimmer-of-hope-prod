@@ -9,8 +9,9 @@ namespace GlimmerOfHope.Gameplay.Characters
     public class CharacterCategorySO : ScriptableObject
     {
         #region Constants
-        private const string GROUP_IDENTITY = "Identity";
-        private const string GROUP_PARTS    = "Parts";
+        private const string GROUP_IDENTITY      = "Identity";
+        private const string GROUP_SUBCATEGORIES = "Sous-categories";
+        private const string GROUP_PARTS         = "Parts";
         #endregion
 
         #region Serialized Fields
@@ -29,21 +30,32 @@ namespace GlimmerOfHope.Gameplay.Characters
         [SerializeField] private CharacterPartType _defaultPartType = CharacterPartType.Prefab3D;
 
         [BoxGroup(GROUP_IDENTITY)]
-        [Tooltip("Prefixes de noms de mesh FBX mappes a cette categorie. Ex: 'A_Tenue', 'Hair_M'. Convention finale : '{CategoryId}_'.")]
+        [Tooltip("Prefixes de noms de mesh FBX mappes a cette categorie. Ex: 'Haut_', 'Bas_'. Laisser vide si la categorie utilise des sous-categories.")]
         [SerializeField] private string[] _meshNameFilters = new string[0];
 
+        [BoxGroup(GROUP_SUBCATEGORIES)]
+        [Tooltip("Sous-categories de cette categorie. Si renseignees, les parts sont dans les sous-categories et pas ici directement.")]
+        [SerializeField] private List<CharacterCategorySO> _subCategories = new();
+
+        [BoxGroup(GROUP_SUBCATEGORIES)]
+        [Tooltip("Si actif, selectionner une part dans cette categorie desactive toutes les autres sous-categories du meme parent (ex : Ensembles desactive Hauts et Bas).")]
+        [SerializeField] private bool _excludesSiblings = false;
+
         [BoxGroup(GROUP_PARTS)]
-        [InfoBox("Ajouter une part : lancer Tools > GlimmerOfHope > 4 - Import Character Parts.", EInfoBoxType.Normal)]
+        [InfoBox("Ajouter une part : lancer Tools > GlimmerOfHope > Import Character Parts.", EInfoBoxType.Normal)]
         [SerializeField] private List<CharacterPartSO> _parts = new();
         #endregion
 
         #region Public Properties
-        public string CategoryID                  => _categoryId;
-        public string DisplayName                 => _displayName;
-        public Sprite CategoryIcon                => _categoryIcon;
-        public CharacterPartType DefaultPartType  => _defaultPartType;
-        public IReadOnlyList<string> MeshNameFilters => _meshNameFilters;
-        public IReadOnlyList<CharacterPartSO> Parts  => _parts;
+        public string CategoryID                              => _categoryId;
+        public string DisplayName                             => _displayName;
+        public Sprite CategoryIcon                            => _categoryIcon;
+        public CharacterPartType DefaultPartType              => _defaultPartType;
+        public IReadOnlyList<string> MeshNameFilters          => _meshNameFilters;
+        public IReadOnlyList<CharacterCategorySO> SubCategories => _subCategories;
+        public bool ExcludesSiblings                          => _excludesSiblings;
+        public bool HasSubCategories                          => _subCategories != null && _subCategories.Count > 0;
+        public IReadOnlyList<CharacterPartSO> Parts           => _parts;
         #endregion
 
         #region Public Methods
@@ -75,8 +87,8 @@ namespace GlimmerOfHope.Gameplay.Characters
             if (string.IsNullOrWhiteSpace(_categoryId))
                 Debug.LogWarning($"[CharacterCategorySO] '{name}' : categoryId est vide.", this);
 
-            if (_parts == null || _parts.Count == 0)
-                Debug.LogWarning($"[CharacterCategorySO] '{name}' : aucune part assignee.", this);
+            if (!HasSubCategories && (_parts == null || _parts.Count == 0))
+                Debug.LogWarning($"[CharacterCategorySO] '{name}' : aucune part et aucune sous-categorie.", this);
         }
         #endregion
     }

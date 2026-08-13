@@ -1,22 +1,15 @@
-using GlimmerOfHope.Core.Events;
-using GlimmerOfHope.Core.Services;
-using GlimmerOfHope.Gameplay.Characters;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using GlimmerOfHope.Core.Services;
+using GlimmerOfHope.Gameplay.Characters;
 
 namespace GlimmerOfHope.UI.Character
 {
     [RequireComponent(typeof(Button))]
     public class CharacterConfirmButton : MonoBehaviour
     {
-        [Header("Event")]
-        [Tooltip("Raise apres confirmation.")]
-        [SerializeField] private VoidEventChannel _onCharacterConfirmed;
-
-        [Header("Scene Transition")]
-        [Tooltip("Nom exact de la scene a charger apres save. Laisser vide pour ne pas changer de scene.")]
-        [SerializeField] private string _targetSceneName;
+        [SerializeField] private string _targetScene;
 
         private Button _button;
         private CharacterCreatorController _controller;
@@ -29,27 +22,22 @@ namespace GlimmerOfHope.UI.Character
         private void Start()
         {
             _controller = ServiceLocator.Get<CharacterCreatorController>();
-            _button.onClick.AddListener(OnClick);
+            _button.onClick.AddListener(OnConfirm);
         }
 
         private void OnDestroy()
         {
-            _button.onClick.RemoveListener(OnClick);
+            _button.onClick.RemoveListener(OnConfirm);
         }
 
-        private void OnClick()
+        private void OnConfirm()
         {
-            if (_controller == null)
-            {
-                Debug.LogWarning("[CharacterConfirmButton] CharacterCreatorController introuvable.");
-                return;
-            }
+            _controller?.SaveCurrentSelections();
 
-            _controller.SaveCurrentSelections();
-            _onCharacterConfirmed?.Raise();
-
-            if (!string.IsNullOrEmpty(_targetSceneName))
-                SceneManager.LoadScene(_targetSceneName);
+            if (!string.IsNullOrEmpty(_targetScene))
+                SceneManager.LoadScene(_targetScene);
+            else
+                Debug.LogWarning("[CharacterConfirmButton] Aucune scene cible assignee.", this);
         }
     }
 }
