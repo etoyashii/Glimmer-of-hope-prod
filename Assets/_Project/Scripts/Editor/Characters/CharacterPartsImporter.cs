@@ -99,7 +99,10 @@ namespace GlimmerOfHope.Editor.Characters
 
         private static string BuildPartId(string categoryId, string meshName)
         {
-            return $"{categoryId}_{meshName}";
+            // Le nom du mesh est unique dans un FBX - pas besoin du prefixe de categorie.
+            // Les espaces sont normalises en underscores pour la serialisation.
+            _ = categoryId;
+            return meshName.Replace(' ', '_');
         }
 
         private static bool ProcessSkinnedPart(
@@ -123,7 +126,7 @@ namespace GlimmerOfHope.Editor.Characters
 
             var so = new SerializedObject(existing);
             so.FindProperty("_partId").stringValue       = partId;
-            so.FindProperty("_displayName").stringValue  = FormatDisplayName(mesh.name);
+            so.FindProperty("_displayName").stringValue  = FormatDisplayName(mesh.name, category);
             so.FindProperty("_partType").enumValueIndex  = (int)CharacterPartType.SkinnedMesh;
             so.FindProperty("_mesh").objectReferenceValue = mesh;
 
@@ -167,13 +170,38 @@ namespace GlimmerOfHope.Editor.Characters
             return false;
         }
 
-        private static string FormatDisplayName(string meshName)
+        private static string FormatDisplayName(string meshName, CharacterCategorySO category = null)
         {
             var name = meshName;
 
             // Retire le prefixe "A_" utilise par les arts (convention temporaire)
             if (name.StartsWith("A_", System.StringComparison.OrdinalIgnoreCase))
                 name = name.Substring(2);
+
+            // Retire le prefixe de categorie pour ne garder que la partie descriptive.
+            // Ex: mesh "cheveux_courts" + filtre "cheveux_" -> display "Courts"
+            if (category != null)
+            {
+                foreach (var filter in category.MeshNameFilters)
+                {
+                    if (string.IsNullOrEmpty(filter)) continue;
+
+                    // Normalise le filtre : retire aussi le A_ s'il en a un
+                    var f = filter.StartsWith("A_", System.StringComparison.OrdinalIgnoreCase)
+                        ? filter.Substring(2)
+                        : filter;
+
+                    if (name.StartsWith(f, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        var suffix = name.Substring(f.Length).TrimStart('_');
+                        if (!string.IsNullOrEmpty(suffix))
+                        {
+                            name = suffix;
+                            break;
+                        }
+                    }
+                }
+            }
 
             var parts = name.Split('_');
             for (int i = 0; i < parts.Length; i++)
@@ -191,6 +219,45 @@ namespace GlimmerOfHope.Editor.Characters
             var child  = Path.GetFileName(path);
             EnsureFolderExists(parent);
             AssetDatabase.CreateFolder(parent, child);
+        }
+
+        // --------------------------------------------------------
+        // Clear & Reimport : supprime tous les PartSOs puis reimporte
+        // --------------------------------------------------------
+
+        [MenuItem("Tools/GlimmerOfHope/4b - Clear and Reimport Character Parts")]
+        public static void ClearAndImport()
+        {
+            if (!EditorUtility.DisplayDialog(
+                "Clear & Reimport",
+                "Tous les PartSOs existants vont etre supprimes et recrees depuis les FBX.\n\nUtilise quand tu changes de FBX source ou que des anciens meshes trainent.\n\nContinuer ?",
+                "Oui, supprimer et reimporter", "Annuler"))
+                return;
+
+            ClearAllParts();
+            Import();
+        }
+
+        private static void ClearAllParts()
+        {
+            var registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(REGISTRY_PATH);
+            if (registry != null)
+            {
+                foreach (var category in registry.Categories)
+                {
+                    if (category == null) continue;
+                    var catSo = new SerializedObject(category);
+                    catSo.FindProperty("_parts").arraySize = 0;
+                    catSo.ApplyModifiedProperties();
+                }
+                AssetDatabase.SaveAssets();
+            }
+
+            var guids = AssetDatabase.FindAssets("t:CharacterPartSO");
+            foreach (var guid in guids)
+                AssetDatabase.DeleteAsset(AssetDatabase.GUIDToAssetPath(guid));
+
+            AssetDatabase.Refresh();
         }
 
         // --------------------------------------------------------

@@ -5,19 +5,7 @@ using UnityEngine;
 
 namespace PerfectCulling
 {
-    /// <summary>
-    /// Culling 100% automatique basé sur le champ de vision, la taille à l'écran, le brouillard
-    /// natif d'Unity et l'occlusion réelle.
-    ///
-    /// Les raycasts d'occlusion sont regroupés et exécutés en un seul batch via RaycastCommand.ScheduleBatch,
-    /// sur le Job System (plusieurs threads workers en parallèle, pas le thread principal). Le batch est
-    /// planifié à la fin d'un Update() et résolu au DÉBUT du Update() suivant (~1 frame de décalage).
-    ///
-    /// Optimisation clé : Renderer.bounds n'est PAS un simple accès à un champ — Unity recalcule l'AABB
-    /// world-space à chaque appel. Les bounds sont donc mises en cache par objet (voir Entry) plutôt que
-    /// relues à chaque frame, ce qui était le vrai coût dominant du script. Désactivable via
-    /// assumeStaticBounds si certains objets culled bougent réellement.
-    /// </summary>
+
     [DefaultExecutionOrder(-100)]
     [AddComponentMenu("Perfect Culling/Auto Culling Manager")]
     public class AutoCullingManager : MonoBehaviour

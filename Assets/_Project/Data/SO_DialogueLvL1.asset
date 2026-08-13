@@ -1,0 +1,236 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854570b06e704594590a2991490370e7, type: 3}
+  m_Name: SO_DialogueLvL1
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
+  graphId: 3f5a3eec
+  startNodeId: b5e4f160
+  nodes:
+  - nodeId: b5e4f160
+    nodeType: 1
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 0
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: abd424bd
+    editorPosition: {x: 0, y: 200}
+  - nodeId: 6f7562ae
+    nodeType: 2
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices: []
+    editorPosition: {x: 600, y: 200}
+  - nodeId: 57b47868
+    nodeType: 0
+    speakerId: Glow
+    text: "Hello, I\u2019m called the Glow.\nI\u2019m desperately searching for the
+      Celestial Drum, but I can\u2019t see it anywhere\u2026"
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 1
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: Would you like me to help you find it?
+      nextNodeId: 7288292d
+    editorPosition: {x: 100, y: 100}
+  - nodeId: 7288292d
+    nodeType: 0
+    speakerId: Glow
+    text: Perfect!!! Thank you so much! I can guide you through this world. Together,
+      we can achieve great things.
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 419e2abb
+    editorPosition: {x: 100, y: 100}
+  - nodeId: 419e2abb
+    nodeType: 0
+    speakerId: Glow
+    text: '
+
+      the Celestial Drum is located in a pointy stele.'
+    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 1
+    typewriterCharsPerSecond: 20
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 0
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: 
+    choices:
+    - choiceText: 
+      nextNodeId: 17fa6ab1
+    editorPosition: {x: 100, y: 100}
+  - nodeId: abd424bd
+    nodeType: 5
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 1
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: EnableMovement
+    choices:
+    - choiceText: 
+      nextNodeId: 57b47868
+    editorPosition: {x: 100, y: 100}
+  - nodeId: 17fa6ab1
+    nodeType: 5
+    speakerId: 
+    text: 
+    bubblePrefab: {fileID: 0}
+    followSpeaker: 0
+    bubbleOffset: {x: 0, y: 2, z: 0}
+    useTypewriter: 0
+    typewriterCharsPerSecond: 30
+    hasChoices: 0
+    triggerType: 2
+    buttonOffset: {x: 0, y: 2, z: 0}
+    triggerZoneRadius: 2
+    outcomeId: 
+    gateTriggerType: 0
+    gateEventId: 
+    gateTimerSeconds: 1
+    gateFlagName: 
+    gateFlagExpectedValue: 1
+    conditionType: 0
+    conditionFlagName: 
+    conditionExpectedValue: 1
+    conditionScriptId: 
+    actionType: 1
+    actionFlagName: 
+    actionFlagValue: 1
+    actionScriptId: EnableMovement
+    choices:
+    - choiceText: 
+      nextNodeId: 6f7562ae
+    editorPosition: {x: 100, y: 100}

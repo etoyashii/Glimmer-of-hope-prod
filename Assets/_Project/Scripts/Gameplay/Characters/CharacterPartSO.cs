@@ -76,7 +76,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         #region Editor
         private void OnValidate()
         {
-            if (string.IsNullOrWhiteSpace(_partId))
+            // L'import cree l'asset avant de remplir les champs -> ne valider qu'en Play Mode.
+            if (string.IsNullOrWhiteSpace(_partId) && UnityEngine.Application.isPlaying)
                 Debug.LogWarning($"[CharacterPartSO] `{name}` : partId est vide.", this);
 
             if (_partType == CharacterPartType.Sprite2D && _sprite == null)

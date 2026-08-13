@@ -1,25 +1,26 @@
-using UnityEngine;
-using UnityEngine.UI;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Services;
+using GlimmerOfHope.Gameplay.Characters;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
-namespace GlimmerOfHope.UI.Widgets
+namespace GlimmerOfHope.UI.Character
 {
     [RequireComponent(typeof(Button))]
     public class CharacterConfirmButton : MonoBehaviour
     {
-        #region Serialized Fields
-        [Header("Event (optionnel)")]
-        [Tooltip("Fired quand le joueur confirme son personnage. Laisser vide si non utilisé.")]
-        [SerializeField] private StringEventChannel _onCharacterConfirmed;
-        #endregion
+        [Header("Event")]
+        [Tooltip("Raise apres confirmation.")]
+        [SerializeField] private VoidEventChannel _onCharacterConfirmed;
 
-        #region Private Fields
+        [Header("Scene Transition")]
+        [Tooltip("Nom exact de la scene a charger apres save. Laisser vide pour ne pas changer de scene.")]
+        [SerializeField] private string _targetSceneName;
+
         private Button _button;
-        private GlimmerOfHope.Gameplay.Characters.CharacterCreatorController _controller;
-        #endregion
+        private CharacterCreatorController _controller;
 
-        #region Unity Lifecycle
         private void Awake()
         {
             _button = GetComponent<Button>();
@@ -27,7 +28,7 @@ namespace GlimmerOfHope.UI.Widgets
 
         private void Start()
         {
-            _controller = ServiceLocator.Get<GlimmerOfHope.Gameplay.Characters.CharacterCreatorController>();
+            _controller = ServiceLocator.Get<CharacterCreatorController>();
             _button.onClick.AddListener(OnClick);
         }
 
@@ -35,18 +36,20 @@ namespace GlimmerOfHope.UI.Widgets
         {
             _button.onClick.RemoveListener(OnClick);
         }
-        #endregion
 
-        #region Private Methods
         private void OnClick()
         {
-            if (_controller == null) return;
+            if (_controller == null)
+            {
+                Debug.LogWarning("[CharacterConfirmButton] CharacterCreatorController introuvable.");
+                return;
+            }
 
             _controller.SaveCurrentSelections();
-            _onCharacterConfirmed?.Raise("confirmed");
+            _onCharacterConfirmed?.Raise();
 
-            Debug.Log("[CharacterConfirmButton] Personnage confirme et sauvegarde.");
+            if (!string.IsNullOrEmpty(_targetSceneName))
+                SceneManager.LoadScene(_targetSceneName);
         }
-        #endregion
     }
 }

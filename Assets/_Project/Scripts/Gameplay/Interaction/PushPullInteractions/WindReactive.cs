@@ -66,6 +66,12 @@ namespace GlimmerOfHope.Gameplay
             OnWindPull?.Invoke();
         }
 
+        /// <summary>Read only check, used by feedback systems like WindTargetDetector to preview reactivity without triggering the event.</summary>
+        public bool CanReactToPush(Vector3 casterPosition) => _reactToPush && IsWithinAngle(casterPosition);
+
+        /// <summary>Read only check, used by feedback systems like WindTargetDetector to preview reactivity without triggering the event.</summary>
+        public bool CanReactToPull(Vector3 casterPosition) => _reactToPull && IsWithinAngle(casterPosition);
+
         #endregion
 
         #region Private Methods

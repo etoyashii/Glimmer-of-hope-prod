@@ -1,4 +1,6 @@
 using System;
+using GlimmerOfHope.Gameplay.Dialogue;
+using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -95,6 +97,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
             if (_animator == null)
                 Debug.LogWarning("[Movement] No Animator found on this GameObject.");
+            DialogueActions.Register("EnableMovement", SetMovementEnabledViaDialogue);
         }
 
         private void OnEnable()
@@ -155,6 +158,18 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
                 _rb.linearVelocity = new Vector3(0f, 0f, 0f);
                 if (_animator != null)
                     _animator.SetFloat("Speed", 0f);
+            }
+        }
+        
+        public void SetMovementEnabledViaDialogue()
+        {
+            if (_movementEnabled)
+            {
+                SetMovementEnabled(false);
+            }
+            else
+            {
+                SetMovementEnabled(true);
             }
         }
 
