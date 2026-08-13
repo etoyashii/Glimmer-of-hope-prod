@@ -49,6 +49,9 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Raycast distance in front of the caster")]
         [SerializeField] private float _spawnDistance = 3f;
 
+        [Tooltip("Minimum horizontal distance the ground target point must be from the caster to be considered valid, prevents spawning a platform on top of or right underneath the player.")]
+        [SerializeField] private float _minGroundDistanceFromPlayer = 1f;
+
         [Tooltip("For walls => height from which the raycast is cast")]
         [SerializeField] private float _wallRaycastHeight = 1f;
 
@@ -278,12 +281,26 @@ namespace GlimmerOfHope.Gameplay
                     targetPos = wallHit.point + wallHit.normal * _targetHeightOffset;
                     exitDir = wallHit.normal;
                     isWall = true;
+
+                    // Reject wall targets too close to the caster, same reasoning as
+                    // the ground check: prevents the platform from spawning overlapping
+                    // the player's own collider when aiming at a nearby wall.
+                    float distanceToPlayer = Vector3.Distance(_playerTransform.position, wallHit.point);
+                    canBuild &= distanceToPlayer >= _minGroundDistanceFromPlayer;
                 }
                 else
                 {
                     targetPos = wallHit.point + Vector3.up * _playerTransform.lossyScale.y;
                     exitDir = Vector3.up;
                     isWall = false;
+
+                    // Reject ground targets too close to the caster, otherwise the
+                    // platform spawns overlapping the player's own collider.
+                    Vector2 playerFlatPos = new Vector2(_playerTransform.position.x, _playerTransform.position.z);
+                    Vector2 hitFlatPos = new Vector2(wallHit.point.x, wallHit.point.z);
+                    float distanceToPlayer = Vector2.Distance(playerFlatPos, hitFlatPos);
+
+                    canBuild &= distanceToPlayer >= _minGroundDistanceFromPlayer;
                 }
 
                 return true;
