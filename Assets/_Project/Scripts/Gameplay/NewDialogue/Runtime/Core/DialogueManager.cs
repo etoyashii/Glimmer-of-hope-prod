@@ -16,6 +16,13 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         [Tooltip("Prefab for the fixed interaction panel (continue + choices). Used when followSpeaker = true. Must implement IDialogueInteractionUI.")]
         [FormerlySerializedAs("interactionUIPrefab")]
         [SerializeField] private GameObject _interactionUIPrefab;
+
+        [Header("Proximity Check")]
+        [Tooltip("Max distance the player can walk away from where they were when the dialogue started, before it auto-cancels. Set to 0 to disable.")]
+        [SerializeField] private float _maxDistanceFromStart = 3f;
+
+        [Tooltip("Tag used to find the player GameObject.")]
+        [SerializeField] private string _playerTag = "Player";
         #endregion
 
         #region Public Properties
@@ -43,6 +50,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         private DialogueInteractionPresenter _interaction;
         private DialogueGateController _gate;
         private DialogueNodePresenter _nodePresenter;
+        private DialogueProximityGuard _proximityGuard;
         #endregion
 
         #region Unity Lifecycle
@@ -64,9 +72,16 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
             _gate = new DialogueGateController(this, GoToNode, eventId => OnGateWaitingForEvent?.Invoke(eventId));
             _nodePresenter = new DialogueNodePresenter(_bubble, _interaction);
+            _proximityGuard = new DialogueProximityGuard(_playerTag, _maxDistanceFromStart);
         }
 
-        private void Update() => _gate.Tick();
+        private void Update()
+        {
+            _gate.Tick();
+
+            if (_proximityGuard.HasPlayerMovedTooFar())
+                EndDialogue("player_left_range");
+        }
         #endregion
 
         #region Public Methods
@@ -82,7 +97,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             if (IsPlaying)
             {
                 Debug.LogWarning("[DialogueManager] A dialogue is already playing, interrupting it.");
-                EndDialogue();
+                return;
             }
 
             var firstNode = graph.GetFirstDialogueNode();
@@ -93,6 +108,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             }
 
             _currentGraph = graph;
+            _proximityGuard.BeginTracking();
             OnDialogueStarted?.Invoke(graph);
             PlayNode(firstNode);
         }
@@ -102,8 +118,9 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #endregion
 
         #region Private Methods
+
         //Plays a node according to its type. nodes (Gate, If, Action) resolve and chain on their own, only the Dialogues nodes shows something
-   
+
         private void PlayNode(DialogueNode node)
         {
             Debug.Log($"[DEBUG] PlayNode called with: {(node == null ? "NULL" : $"type={node.nodeType}, id={node.nodeId}, outcomeId={node.outcomeId}")}");
@@ -168,10 +185,9 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         private void EndDialogue(string outcomeId = null)
         {
-            Debug.Log($"[DEBUG] EndDialogue called with outcomeId='{outcomeId}'");
-
             var endedGraph = _currentGraph;
 
+            _proximityGuard.StopTracking();
             _gate.CancelWait();
             _bubble.Cleanup();
             _interaction.Cleanup();
