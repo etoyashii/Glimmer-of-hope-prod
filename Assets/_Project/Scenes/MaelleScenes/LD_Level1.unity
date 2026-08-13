@@ -23013,7 +23013,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueTriggerZone
   _dialogueGraph: {fileID: 11400000, guid: 8bb31077db3f1e84eb9954441ed1a302, type: 2}
   _playerTag: Player
-  _triggerOnce: 1
+  _triggerOnce: 0
   _ignoreIfAlreadyPlaying: 1
   _disableOnOutcomes: []
 --- !u!65 &181907765
@@ -138650,6 +138650,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueManager
   _interactionUIPrefab: {fileID: 9057694529147399281, guid: 2b7663811ba9c5748936f72dd565c62e, type: 3}
+  _maxDistanceFromStart: 3
+  _playerTag: Player
 --- !u!4 &1239834812
 Transform:
   m_ObjectHideFlags: 0
