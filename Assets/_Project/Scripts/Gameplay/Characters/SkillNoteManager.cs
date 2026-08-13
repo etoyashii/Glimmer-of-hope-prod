@@ -16,7 +16,7 @@ namespace GlimmerOfHope.Gameplay
     /// </summary>
     public class Combo
     {
-        [Tooltip("Skill this combo unlocks and launches. Set explicitly instead of relying on list order matching the SkillType enum.")]
+        [Tooltip("Skill this combo unlocks and previews. Set explicitly instead of relying on list order matching the SkillType enum.")]
         public SkillManager.SkillType _skillType;
 
         public List<int> _combo;
@@ -29,6 +29,10 @@ namespace GlimmerOfHope.Gameplay
     /// On mobile: ActivateNote() is called directly from UI buttons.
     /// On Keyboard/Mouse: 1 = note 0, 2 = note 1, 3 = note 2.
     /// On Gamepad: Button East = note 0, Button North = note 1, Button West = note 2.
+    /// The note buttons UI stays visible on every scheme, since it also
+    /// serves as the visual reveal for newly unlocked combos, but is only
+    /// interactable on Mobile so a mouse click cannot accidentally trigger
+    /// a note on Keyboard/Mouse or Gamepad.
     /// </summary>
     public class SkillNoteManager : MonoBehaviour
     {
@@ -45,17 +49,17 @@ namespace GlimmerOfHope.Gameplay
         [SerializeField] private SkillManager _skillLearningManager;
 
         [Header("Mobile UI Buttons")]
-        [Tooltip("The three skill input buttons shown on mobile (index 0, 1, 2).")]
+        [Tooltip("The three skill input buttons shown on mobile (index 0, 1, 2). Stays visible on all schemes, only interactable on Mobile.")]
         [SerializeField] private List<Button> _playerSkillInputList;
 
         [Header("Input Actions")]
-        [Tooltip("Note 0 — A [Keyboard] / Button East [Gamepad]")]
+        [Tooltip("Note 0 - A [Keyboard] / Button East [Gamepad]")]
         [SerializeField] private InputActionReference _note0Action;
 
-        [Tooltip("Note 1 — E [Keyboard] / Button North [Gamepad]")]
+        [Tooltip("Note 1 - E [Keyboard] / Button North [Gamepad]")]
         [SerializeField] private InputActionReference _note1Action;
 
-        [Tooltip("Note 2 — R [Keyboard] / Button West [Gamepad]")]
+        [Tooltip("Note 2 - R [Keyboard] / Button West [Gamepad]")]
         [SerializeField] private InputActionReference _note2Action;
 
         #endregion
@@ -66,6 +70,11 @@ namespace GlimmerOfHope.Gameplay
         private int _currentInputNumber = 0;
         private int _validCheck = 0;
         private Coroutine _currentChrono;
+        private Coroutine _currentRevealRoutine;
+
+        // Default idle color of each note button, captured once so a reveal
+        // interrupted mid flash never leaves a button stuck red.
+        private Color[] _defaultButtonColors;
 
         #endregion
 
@@ -81,6 +90,8 @@ namespace GlimmerOfHope.Gameplay
             _inputNoteList = new();
             for (int i = 0; i < _maxNoteNumber; i++)
                 _inputNoteList.Add(-1); // default value
+
+            CacheDefaultButtonColors();
         }
 
         private void OnEnable()
@@ -93,6 +104,7 @@ namespace GlimmerOfHope.Gameplay
             {
                 InputManager.Instance.OnSchemeChanged.AddListener(OnSchemeChanged);
                 ApplyBindingMask(InputManager.Instance.CurrentScheme);
+                SetNoteButtonsInteractable(InputManager.Instance.CurrentScheme == InputManager.ControlScheme.Mobile);
             }
         }
 
@@ -124,17 +136,30 @@ namespace GlimmerOfHope.Gameplay
             SaveNote(noteIndex);
         }
 
-        public void ShowCombo(int index)
+        /// <summary>
+        /// Plays the reveal animation for the combo tied to the given skill,
+        /// only if that skill is unlocked. Safe to call at any time, not
+        /// just right after an unlock, for example from a spellbook or a
+        /// help button. Cancels and resets any reveal already playing so
+        /// two calls never overlap on the same buttons.
+        /// </summary>
+        public void ShowCombo(int skillTypeIndex)
         {
-            int comboIndex = _comboList.FindIndex(c => (int)c._skillType == index);
+            if (!_skillLearningManager.IsSkillUnlocked(skillTypeIndex)) return;
+
+            int comboIndex = _comboList.FindIndex(c => (int)c._skillType == skillTypeIndex);
             if (comboIndex == -1) return;
 
-            StartCoroutine(RevealCombo(0.4f, 0.2f, comboIndex));
+            if (_currentRevealRoutine != null)
+                StopCoroutine(_currentRevealRoutine);
+
+            ResetButtonColors();
+            _currentRevealRoutine = StartCoroutine(RevealCombo(0.4f, 0.2f, comboIndex));
         }
 
         #endregion
 
-        #region Private Methods — Input
+        #region Private Methods - Input
 
         private void OnNote0(InputAction.CallbackContext ctx) => ActivateNote(0);
         private void OnNote1(InputAction.CallbackContext ctx) => ActivateNote(1);
@@ -147,10 +172,11 @@ namespace GlimmerOfHope.Gameplay
             ResetNotes();
 
             ApplyBindingMask(scheme);
+            SetNoteButtonsInteractable(scheme == InputManager.ControlScheme.Mobile);
         }
 
         /// <summary>
-        /// On mobile the actions are disabled — UI buttons call ActivateNote() directly.
+        /// On mobile the actions are disabled - UI buttons call ActivateNote() directly.
         /// On other schemes only the relevant bindings are active.
         /// </summary>
         private void ApplyBindingMask(InputManager.ControlScheme scheme)
@@ -196,9 +222,20 @@ namespace GlimmerOfHope.Gameplay
             actionRef.action.performed -= callback;
         }
 
+        /// <summary>
+        /// Note buttons stay visible on every scheme so they can still show
+        /// the combo reveal animation on Keyboard/Mouse and Gamepad, but
+        /// only respond to clicks on Mobile.
+        /// </summary>
+        private void SetNoteButtonsInteractable(bool interactable)
+        {
+            foreach (Button button in _playerSkillInputList)
+                if (button != null) button.interactable = interactable;
+        }
+
         #endregion
 
-        #region Private Methods — Combo Logic
+        #region Private Methods - Combo Logic
 
         private void CheckNoteCombo()
         {
@@ -216,8 +253,6 @@ namespace GlimmerOfHope.Gameplay
                 {
                     if (_skillLearningManager.IsSkillUnlocked((int)_comboList[i]._skillType))
                         _comboList[i]._useSkill?.Invoke();
-                    else
-                        Debug.Log($"[SkillNoteManager] Combo matched for {_comboList[i]._skillType} but it is not unlocked yet.");
 
                     break;
                 }
@@ -247,6 +282,32 @@ namespace GlimmerOfHope.Gameplay
 
         #endregion
 
+        #region Private Methods - Reveal Animation
+
+        private void CacheDefaultButtonColors()
+        {
+            _defaultButtonColors = new Color[_playerSkillInputList.Count];
+
+            for (int i = 0; i < _playerSkillInputList.Count; i++)
+            {
+                Image image = _playerSkillInputList[i].GetComponent<Image>();
+                if (image != null)
+                    _defaultButtonColors[i] = image.color;
+            }
+        }
+
+        private void ResetButtonColors()
+        {
+            for (int i = 0; i < _playerSkillInputList.Count; i++)
+            {
+                Image image = _playerSkillInputList[i].GetComponent<Image>();
+                if (image != null)
+                    image.color = _defaultButtonColors[i];
+            }
+        }
+
+        #endregion
+
         #region Coroutines
 
         private IEnumerator NoteTimer(float delay)
@@ -257,25 +318,26 @@ namespace GlimmerOfHope.Gameplay
             ResetNotes();
         }
 
-        private IEnumerator RevealCombo(float t1, float t2, int index)
+        private IEnumerator RevealCombo(float t1, float t2, int comboIndex)
         {
             yield return new WaitForSeconds(t1);
 
-            int comboLength = _comboList[index]._combo.Count;
-            Debug.Log(index);
+            List<int> combo = _comboList[comboIndex]._combo;
 
-            for (int i = 0; i < comboLength; i++)
+            for (int i = 0; i < combo.Count; i++)
             {
-                int currentInputIndex = _comboList[index]._combo[i];
-                Image image = _playerSkillInputList[currentInputIndex].GetComponent<Image>();
-                Color baseColor = image.color;
+                int buttonIndex = combo[i];
+                Image image = _playerSkillInputList[buttonIndex].GetComponent<Image>();
+                if (image == null) continue;
 
                 yield return new WaitForSeconds(t1);
                 image.color = Color.red;
 
                 yield return new WaitForSeconds(t2);
-                image.color = baseColor;
+                image.color = _defaultButtonColors[buttonIndex];
             }
+
+            _currentRevealRoutine = null;
         }
 
         #endregion
