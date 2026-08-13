@@ -1,3 +1,4 @@
+using GlimmerOfHope.Gameplay.Dialogue;
 using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEngine;
 namespace GlimmerOfHope.Gameplay.NewDialogue
