@@ -41,9 +41,9 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
 
         [Header("Speaker")]
-        [SerializeField] private TMP_Text _speakerName; // champ sérialisé visible dans l'Inspector
+        [SerializeField] private TMP_Text _speakerName; 
 
-        // propriété implémentant l'interface — Unity ne sérialise pas la propriété mais le champ ci‑dessous l'est.
+        
         public TMP_Text _SpeakerName
         {
             get => _speakerName;
