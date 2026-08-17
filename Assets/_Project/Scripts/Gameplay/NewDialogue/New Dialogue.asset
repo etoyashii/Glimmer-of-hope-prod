@@ -74,7 +74,7 @@ MonoBehaviour:
     actionFlagValue: 1
     actionScriptId: 
     choices: []
-    editorPosition: {x: 2270.4463, y: -355.21512}
+    editorPosition: {x: 2095.2, y: -338.9}
   - nodeId: fd0ef587
     nodeType: 0
     speakerId: Capsule
@@ -395,3 +395,188 @@ MonoBehaviour:
     actionScriptId: 
     choices: []
     editorPosition: {x: 1614.6381, y: -164.34003}
+  _typedNodes:
+  - rid: 3506134069474492497
+  - rid: 3506134069474492498
+  - rid: 3506134069474492499
+  - rid: 3506134069474492500
+  - rid: 3506134069474492501
+  - rid: 3506134069474492502
+  - rid: 3506134069474492503
+  - rid: 3506134069474492504
+  - rid: 3506134069474492505
+  - rid: 3506134069474492506
+  - rid: 3506134069474492507
+  - rid: 3506134069474492508
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492497
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 99a75258
+        choices:
+        - choiceText: 
+          nextNodeId: 15d07684
+        editorPosition: {x: -693, y: -220.91644}
+        triggerType: 1
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492498
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: e1f7d054
+        choices: []
+        editorPosition: {x: 2095.2, y: -338.9}
+        outcomeId: 
+    - rid: 3506134069474492499
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: fd0ef587
+        choices:
+        - choiceText: 
+          nextNodeId: 1f899c39
+        editorPosition: {x: -50, y: -318}
+        speakerId: Capsule
+        text: 'Hello je suis la capsule , j''ai une quete pour toi.dqsdsqqsdqsd
+
+          qsdqsdsqdqsdqsdsqdqsdsdsqdqsdqsdqsdqsdqsdsqdqsdqsd
+
+          qsdqsdqsdqsdsqdqdqsdqsdqsdqsdqsdsqqsdqsdqsd'
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 3506134069474492500
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 1f899c39
+        choices:
+        - choiceText: yes
+          nextNodeId: b1858f8d
+        - choiceText: no
+          nextNodeId: e1f7d054
+        editorPosition: {x: 602.50024, y: -317.14755}
+        speakerId: Capsule
+        text: Ramene moi un cube
+        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+        followSpeaker: 1
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 3506134069474492501
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 95be7725
+        choices:
+        - choiceText: 
+          nextNodeId: e1f7d054
+        editorPosition: {x: 1463, y: -605}
+        speakerId: Player
+        text: Ok
+        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+        followSpeaker: 1
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 3506134069474492502
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 15d07684
+        choices:
+        - choiceText: 
+          nextNodeId: ec80ab80
+        - choiceText: 
+          nextNodeId: fd0ef587
+        editorPosition: {x: -372, y: -220}
+        conditionType: 0
+        conditionFlagName: CubeMissionRequested
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 3506134069474492503
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: b1858f8d
+        choices:
+        - choiceText: 
+          nextNodeId: 95be7725
+        editorPosition: {x: 826.7251, y: -587.00745}
+        actionType: 0
+        actionFlagName: CubeMissionRequested
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 3506134069474492504
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 100f8696
+        choices:
+        - choiceText: Oui
+          nextNodeId: ab6bfcdd
+        - choiceText: Non
+          nextNodeId: 
+        editorPosition: {x: 600.7075, y: 19.320005}
+        speakerId: Capsule
+        text: A tu ramener mon cube
+        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+        followSpeaker: 1
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 3506134069474492505
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: ec80ab80
+        choices:
+        - choiceText: 
+          nextNodeId: 100f8696
+        - choiceText: 
+          nextNodeId: 50dcb907
+        editorPosition: {x: 59.7, y: 50.65001}
+        conditionType: 0
+        conditionFlagName: HasCube
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 3506134069474492506
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 50dcb907
+        choices:
+        - choiceText: 
+          nextNodeId: e1f7d054
+        editorPosition: {x: 655.8805, y: 360.17947}
+        speakerId: Capsule
+        text: RAMENE MON CUBE!
+        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+        followSpeaker: 1
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 3506134069474492507
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: ab6bfcdd
+        choices:
+        - choiceText: 
+          nextNodeId: 9e40dfc2
+        editorPosition: {x: 1180.2725, y: -163.69281}
+        speakerId: Capsule
+        text: Merci
+        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+        followSpeaker: 1
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 3506134069474492508
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 9e40dfc2
+        choices: []
+        editorPosition: {x: 1614.6381, y: -164.34003}
+        outcomeId: END

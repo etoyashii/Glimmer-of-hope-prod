@@ -20,12 +20,19 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         public List<DialogueNode> nodes = new List<DialogueNode>();
 
+
+
+
+        public List<DialogueNodeBase> TypedNodes => _typedNodes;
+
         #endregion
 
         #region Private Fields
 
         private Dictionary<string, DialogueNode> _lookup;
 
+        [SerializeField, SerializeReference]
+        private List<DialogueNodeBase> _typedNodes = new List<DialogueNodeBase>();
         #endregion
 
         #region Unity Lifecycle
@@ -72,6 +79,10 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             return GetNode(start.choices[0].nextNodeId);
         }
 
+        public void SetTypedNodes(List<DialogueNodeBase> newNodes)
+        {
+            _typedNodes = newNodes;
+        }
         #endregion
 
         #region Private Methods

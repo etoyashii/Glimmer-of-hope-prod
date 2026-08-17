@@ -111,3 +111,49 @@ MonoBehaviour:
     - choiceText: 
       nextNodeId: c5ae5884
     editorPosition: {x: 17.629185, y: 461.74103}
+  _typedNodes:
+  - rid: 3506134069474492494
+  - rid: 3506134069474492495
+  - rid: 3506134069474492496
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492494
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: c0d142cf
+        choices:
+        - choiceText: 
+          nextNodeId: fa28b9e2
+        editorPosition: {x: -235, y: 462}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492495
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: c5ae5884
+        choices: []
+        editorPosition: {x: 712.4654, y: 461.85504}
+        outcomeId: 
+    - rid: 3506134069474492496
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: fa28b9e2
+        choices:
+        - choiceText: 
+          nextNodeId: c5ae5884
+        editorPosition: {x: 17.629185, y: 461.74103}
+        speakerId: Sphere
+        text: "Hello in this script graph dialogue . BLUB BLUB BLUB BLUB BLUB BLUB
+          BLUB BLUB BLUB BLUB\n BLUB BLUB BLUB BLUBBLUB BLUB BLUB BLUB BLUB BLUBBLUB
+          BLUB BLUB BLUB BLUB BLUB\nBLUB BLUB BLUB BLUB BLUB BLUBBLUB BLUB BLUB BLUB
+          BLUB BLUBBLUB BLUB BLUB BLUB \nBLUB BLUBBLUB BLUB BLUB BLUB BLUB BLUBBLUB
+          BLUB BLUB BLUB BLUB BLUBBLUB BLUB \nBLUB BLUB BLUB BLUBBLUB BLUB BLUB BLUB
+          BLUB BLUBBLUB BLUB BLUB BLUB BLUB BLUB\nBLUB BLUB BLUB BLUB BLUB BLUB"
+        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
+        followSpeaker: 1
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
