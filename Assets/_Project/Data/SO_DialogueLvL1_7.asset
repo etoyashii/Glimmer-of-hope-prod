@@ -106,3 +106,44 @@ MonoBehaviour:
     - choiceText: 
       nextNodeId: 
     editorPosition: {x: 100, y: 100}
+  _typedNodes:
+  - rid: 3506134069474492556
+  - rid: 3506134069474492557
+  - rid: 3506134069474492558
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492556
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 5bc2c945
+        choices:
+        - choiceText: 
+          nextNodeId: e210374b
+        editorPosition: {x: 0, y: 200}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492557
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f9129a7c
+        choices: []
+        editorPosition: {x: 600, y: 200}
+        outcomeId: 
+    - rid: 3506134069474492558
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: e210374b
+        choices:
+        - choiceText: 
+          nextNodeId: 
+        editorPosition: {x: 100, y: 100}
+        speakerId: 
+        text: 'Thanks for Playing ! More coming soon ! '
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0

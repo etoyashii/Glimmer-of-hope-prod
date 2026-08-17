@@ -83,6 +83,29 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         {
             _typedNodes = newNodes;
         }
+
+        public DialogueNodeBase GetTypedNode(string id)
+        {
+            if (string.IsNullOrEmpty(id)) return null;
+            foreach (var node in _typedNodes)
+                if (node.nodeId == id) return node;
+            return null;
+        }
+
+        public StartNode GetTypedStartNode()
+        {
+            foreach (var node in _typedNodes)
+                if (node is StartNode start) return start;
+            return null;
+        }
+
+        public DialogueNodeBase GetFirstTypedDialogueNode()
+        {
+            var start = GetTypedStartNode();
+            if (start == null || start.choices.Count == 0) return null;
+            return GetTypedNode(start.choices[0].nextNodeId);
+        }
+
         #endregion
 
         #region Private Methods

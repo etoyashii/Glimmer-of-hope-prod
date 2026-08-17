@@ -169,3 +169,80 @@ MonoBehaviour:
     - choiceText: 
       nextNodeId: f9129a7c
     editorPosition: {x: 100, y: 100}
+  _typedNodes:
+  - rid: 3506134069474492566
+  - rid: 3506134069474492567
+  - rid: 3506134069474492568
+  - rid: 3506134069474492569
+  - rid: 3506134069474492570
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492566
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 5bc2c945
+        choices:
+        - choiceText: 
+          nextNodeId: d96cb992
+        editorPosition: {x: 0, y: 200}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492567
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f9129a7c
+        choices: []
+        editorPosition: {x: 600, y: 200}
+        outcomeId: 
+    - rid: 3506134069474492568
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: d96cb992
+        choices:
+        - choiceText: 
+          nextNodeId: 173fee26
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: See !!! You bring back color and life to the world tree ! I knew you
+          could do it !
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492569
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 173fee26
+        choices:
+        - choiceText: 
+          nextNodeId: f8efb070
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: Look the path goes up this slope but It seems too steep for you to
+          climb.
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492570
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f8efb070
+        choices:
+        - choiceText: 
+          nextNodeId: f9129a7c
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: 'Surely, you have what it takes to go up there anyway ! '
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0

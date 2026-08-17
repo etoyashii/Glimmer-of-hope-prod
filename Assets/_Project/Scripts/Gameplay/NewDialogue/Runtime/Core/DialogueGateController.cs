@@ -5,23 +5,20 @@ using UnityEngine;
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// Handles waiting on a Gate node, whatever its mode (Timer, Flag, ScriptEvent).
+    /// Handles waiting on a GateNode, whatever its mode (Timer, Flag, ScriptEvent).
+    ///
+    /// Plain C# class, not a MonoBehaviour — it just needs an existing MonoBehaviour
+    /// (the DialogueManager) to start a coroutine on. Nothing extra to attach to a prefab.
     /// </summary>
     public class DialogueGateController
     {
-        #region Private Fields
-
         private readonly MonoBehaviour _coroutineRunner;
         private readonly Action<string> _onAdvance; // receives the nextNodeId to play once unlocked
         private readonly Action<string> _onWaitingForScriptEvent;
 
         private Coroutine _timerCoroutine;
-        private DialogueNode _pendingFlagNode;
-        private DialogueNode _pendingScriptEventNode;
-
-        #endregion
-
-        #region Constructor
+        private GateNode _pendingFlagNode;
+        private GateNode _pendingScriptEventNode;
 
         public DialogueGateController(MonoBehaviour coroutineRunner, Action<string> onAdvance, Action<string> onWaitingForScriptEvent)
         {
@@ -30,11 +27,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _onWaitingForScriptEvent = onWaitingForScriptEvent;
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public void BeginWait(DialogueNode node)
+        public void BeginWait(GateNode node)
         {
             switch (node.gateTriggerType)
             {
@@ -54,7 +47,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             }
         }
 
-        //Call every frame from DialogueManager.Update (only the Flag mode needs it)
+        /// <summary>Call every frame from DialogueManager.Update (only the Flag mode needs it).</summary>
         public void Tick()
         {
             if (_pendingFlagNode == null) return;
@@ -67,7 +60,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _onAdvance?.Invoke(node.GetNextNodeId());
         }
 
-        //Call from DialogueManager.NotifyGateEvent. Returns true if it matched a wait in progress
+        /// <summary>Call from DialogueManager.NotifyGateEvent. Returns true if it matched a wait in progress.</summary>
         public bool TryUnlockScriptEvent(string eventId)
         {
             if (_pendingScriptEventNode == null) return false;
@@ -79,7 +72,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             return true;
         }
 
-        //Cancels any wait in progress, typically at the end of a dialogue
+        /// <summary>Cancels any wait in progress, typically at the end of a dialogue.</summary>
         public void CancelWait()
         {
             if (_timerCoroutine != null)
@@ -91,17 +84,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _pendingScriptEventNode = null;
         }
 
-        #endregion
-
-        #region Helpers
-
-        private IEnumerator TimerRoutine(DialogueNode node)
+        private IEnumerator TimerRoutine(GateNode node)
         {
             yield return new WaitForSeconds(node.gateTimerSeconds);
             _timerCoroutine = null;
             _onAdvance?.Invoke(node.GetNextNodeId());
         }
-
-        #endregion
     }
 }

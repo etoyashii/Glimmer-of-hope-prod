@@ -3,19 +3,14 @@ using System.Collections.Generic;
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// present a standard Dialogue node: where the text goes, where the choices go,
-    /// depending on if the bubble follows the speaker or not. 
+    /// Knows how to present a DialogueLineNode: where the text goes, where the choices go,
+    /// depending on whether the bubble follows the speaker or not. Coordinates
+    /// DialogueBubblePresenter and DialogueInteractionPresenter without duplicating their logic.
     /// </summary>
     public class DialogueNodePresenter
     {
-        #region Private Fields
-
         private readonly DialogueBubblePresenter _bubble;
         private readonly DialogueInteractionPresenter _interaction;
-
-        #endregion
-
-        #region Constructor
 
         public DialogueNodePresenter(DialogueBubblePresenter bubble, DialogueInteractionPresenter interaction)
         {
@@ -23,11 +18,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _interaction = interaction;
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public void Present(DialogueNode node)
+        public void Present(DialogueLineNode node)
         {
             _bubble.EnsureInstance(node);
             _bubble.Position(node);
@@ -53,17 +44,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _bubble.Show();
         }
 
-        #endregion
-
-        #region Helpers
-
-        private static List<string> BuildChoiceLabels(DialogueNode node)
+        private static List<string> BuildChoiceLabels(DialogueLineNode node)
         {
             var labels = new List<string>(node.choices.Count);
             foreach (var choice in node.choices) labels.Add(choice.choiceText);
             return labels;
         }
-
-        #endregion
     }
 }

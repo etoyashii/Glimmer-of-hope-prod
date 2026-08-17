@@ -139,3 +139,63 @@ MonoBehaviour:
     - choiceText: 
       nextNodeId: f9129a7c
     editorPosition: {x: 100, y: 100}
+  _typedNodes:
+  - rid: 3506134069474492571
+  - rid: 3506134069474492572
+  - rid: 3506134069474492573
+  - rid: 3506134069474492574
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492571
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 5bc2c945
+        choices:
+        - choiceText: 
+          nextNodeId: b9f36798
+        editorPosition: {x: 0, y: 200}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492572
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f9129a7c
+        choices: []
+        editorPosition: {x: 600, y: 200}
+        outcomeId: 
+    - rid: 3506134069474492573
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: b9f36798
+        choices:
+        - choiceText: 
+          nextNodeId: 2cb44934
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: 'You just remembered the melody that alows you to generate platforms.
+          Try to use it to pass over these thorns ! '
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492574
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 2cb44934
+        choices:
+        - choiceText: 
+          nextNodeId: f9129a7c
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: Play the melodie 2 times to generate the platform. Try to get passed
+          these thorns now !
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0

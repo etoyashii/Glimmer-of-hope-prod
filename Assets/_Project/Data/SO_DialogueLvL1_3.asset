@@ -390,3 +390,202 @@ MonoBehaviour:
     - choiceText: 
       nextNodeId: 25639217
     editorPosition: {x: 100, y: 100}
+  _typedNodes:
+  - rid: 3506134069474492537
+  - rid: 3506134069474492538
+  - rid: 3506134069474492539
+  - rid: 3506134069474492540
+  - rid: 3506134069474492541
+  - rid: 3506134069474492542
+  - rid: 3506134069474492543
+  - rid: 3506134069474492544
+  - rid: 3506134069474492545
+  - rid: 3506134069474492546
+  - rid: 3506134069474492547
+  - rid: 3506134069474492548
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492537
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 5bc2c945
+        choices:
+        - choiceText: 
+          nextNodeId: 567c2508
+        editorPosition: {x: 0, y: 200}
+        triggerType: 0
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492538
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f9129a7c
+        choices: []
+        editorPosition: {x: 600, y: 200}
+        outcomeId: 
+    - rid: 3506134069474492539
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 567c2508
+        choices:
+        - choiceText: 
+          nextNodeId: 10fb7ce1
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: "\"Wait! It\u2019s\u2026 !!!\""
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492540
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 10fb7ce1
+        choices:
+        - choiceText: 
+          nextNodeId: f4923031
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: "\"A faded zone\u2026 The Monochronite has spread again! It has taken
+          over this place.\""
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492541
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f4923031
+        choices:
+        - choiceText: 
+          nextNodeId: a2d9662c
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: "This disease turns all matter fade and monochrome. It spreads so fast\u2026"
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492542
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: a2d9662c
+        choices:
+        - choiceText: 
+          nextNodeId: d87ac2fb
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: "Originally, faded zones were only in the central hub, but now, they\u2019ve
+          started spreading outside it too."
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492543
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: d87ac2fb
+        choices:
+        - choiceText: The Cosmic Tree?
+          nextNodeId: fb59ee18
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: I need to heal the World Tree to free the central hub.
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 1
+    - rid: 3506134069474492544
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: fb59ee18
+        choices:
+        - choiceText: 
+          nextNodeId: 65252705
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: "This tree is the world-tree you\u2019re currently walking on. Its
+          sap, the sap of hope, nourishes the plants of this reality!"
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492545
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 65252705
+        choices:
+        - choiceText: 
+          nextNodeId: ecc52dfc
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: 'You yourself were summoned by the world tree ! '
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492546
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: ecc52dfc
+        choices:
+        - choiceText: 
+          nextNodeId: 5a68eae9
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: But faded zones can still be healed, especially this one, if all the
+          lanterns in it are lit.
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492547
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 25639217
+        choices:
+        - choiceText: 
+          nextNodeId: f9129a7c
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: Remember ! Monochronite remains a formidable enemy. But together, we
+          can defeat it.
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492548
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 5a68eae9
+        choices:
+        - choiceText: 
+          nextNodeId: 25639217
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: You just have to take me close to them.
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0

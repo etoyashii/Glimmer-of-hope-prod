@@ -234,3 +234,108 @@ MonoBehaviour:
     - choiceText: 
       nextNodeId: 6f7562ae
     editorPosition: {x: 100, y: 100}
+  _typedNodes:
+  - rid: 3506134069474492559
+  - rid: 3506134069474492560
+  - rid: 3506134069474492561
+  - rid: 3506134069474492562
+  - rid: 3506134069474492563
+  - rid: 3506134069474492564
+  - rid: 3506134069474492565
+  references:
+    version: 2
+    RefIds:
+    - rid: 3506134069474492559
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: b5e4f160
+        choices:
+        - choiceText: 
+          nextNodeId: abd424bd
+        editorPosition: {x: 0, y: 200}
+        triggerType: 0
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 3506134069474492560
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 6f7562ae
+        choices: []
+        editorPosition: {x: 600, y: 200}
+        outcomeId: 
+    - rid: 3506134069474492561
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 57b47868
+        choices:
+        - choiceText: Would you like me to help you find it?
+          nextNodeId: 7288292d
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: "Hello, I\u2019m called the Glow.\nI\u2019m desperately searching for
+          the Celestial Drum, but I can\u2019t see it anywhere\u2026"
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 1
+    - rid: 3506134069474492562
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 7288292d
+        choices:
+        - choiceText: 
+          nextNodeId: 419e2abb
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: Perfect!!! Thank you so much! I can guide you through this world. Together,
+          we can achieve great things.
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492563
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 419e2abb
+        choices:
+        - choiceText: 
+          nextNodeId: 17fa6ab1
+        editorPosition: {x: 100, y: 100}
+        speakerId: Glow
+        text: '
+
+          the Celestial Drum is located in a pointy stele.'
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 20
+        hasChoices: 0
+    - rid: 3506134069474492564
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: abd424bd
+        choices:
+        - choiceText: 
+          nextNodeId: 57b47868
+        editorPosition: {x: 100, y: 100}
+        actionType: 1
+        actionFlagName: 
+        actionFlagValue: 1
+        actionScriptId: EnableMovement
+    - rid: 3506134069474492565
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 17fa6ab1
+        choices:
+        - choiceText: 
+          nextNodeId: 6f7562ae
+        editorPosition: {x: 100, y: 100}
+        actionType: 1
+        actionFlagName: 
+        actionFlagValue: 1
+        actionScriptId: EnableMovement

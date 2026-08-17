@@ -5,22 +5,28 @@ using UnityEngine.Serialization;
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// Central singleton for the dialogue system. It receive "start this dialogue", then
-    /// the nodes one by one, delegating the actual work to the support classes
+    /// Central singleton for the dialogue system. Its job: receive "start this dialogue", then
+    /// advance nodes one by one, delegating the actual work to a handful of support classes
+    /// created in Awake:
+    /// - DialogueBubblePresenter: spawns/positions/shows the bubble (DialogueLineNode only)
+    /// - DialogueInteractionPresenter: fixed "continue/choices" panel
+    /// - DialogueGateController: waiting on GateNode (timer/flag/event)
+    /// - DialogueLogicEvaluator: evaluates ConditionNode, runs ActionNode
+    /// - DialogueNodePresenter: splits a DialogueLineNode's content between bubble and panel
+    ///
+    /// All of those are plain C# classes, not MonoBehaviours — nothing extra to attach to a prefab.
     /// </summary>
-    [DefaultExecutionOrder(-100)] 
+    [DefaultExecutionOrder(-100)]
     public class DialogueManager : MonoBehaviour
     {
         #region Serialized Fields
         [Header("Fixed UI")]
-        [Tooltip("Prefab for the fixed interaction panel (continue + choices). Used when followSpeaker = true. Must implement IDialogueInteractionUI.")]
+        [Tooltip("Prefab for the fixed interaction panel (continue + choices). Must implement IDialogueInteractionUI.")]
         [FormerlySerializedAs("interactionUIPrefab")]
         [SerializeField] private GameObject _interactionUIPrefab;
-
         [Header("Proximity Check")]
-        [Tooltip("Max distance the player can walk away from where they were when the dialogue started, before it auto-cancels. Set to 0 to disable.")]
+        [Tooltip("Max distance the player can walk from the dialogue's start position before it auto-cancels. 0 disables it.")]
         [SerializeField] private float _maxDistanceFromStart = 3f;
-
         [Tooltip("Tag used to find the player GameObject.")]
         [SerializeField] private string _playerTag = "Player";
         #endregion
@@ -33,19 +39,14 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #region Events
         public event Action<DialogueGraph> OnDialogueStarted;
         public event Action OnDialogueEnded;
-        public event Action<DialogueNode> OnNodePlayed;
-
-        /// <summary>Fired when a Gate node in ScriptEvent mode is reached and waiting on NotifyGateEvent(id).</summary>
+        public event Action<DialogueNodeBase> OnNodePlayed;
         public event Action<string> OnGateWaitingForEvent;
-
-        /// <summary>Fired at the end of every dialogue: the graph, and the reached End node's Outcome ID (empty if none/interrupted).</summary>
         public event Action<DialogueGraph, string> OnDialogueEndedWithOutcome;
         #endregion
 
         #region Private Fields
         private DialogueGraph _currentGraph;
-        private DialogueNode _currentNode;
-
+        private DialogueNodeBase _currentNode;
         private DialogueBubblePresenter _bubble;
         private DialogueInteractionPresenter _interaction;
         private DialogueGateController _gate;
@@ -56,7 +57,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #region Unity Lifecycle
         private void Awake()
         {
-            // Simple singleton: if another DialogueManager already exists, remove this one.
             if (Instance != null && Instance != this)
             {
                 Destroy(gameObject);
@@ -66,10 +66,8 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
             _bubble = new DialogueBubblePresenter();
             _bubble.SetCallbacks(HandleContinue, HandleChoiceSelected);
-
             _interaction = new DialogueInteractionPresenter(_interactionUIPrefab);
             _interaction.SetCallbacks(HandleContinue, HandleChoiceSelected);
-
             _gate = new DialogueGateController(this, GoToNode, eventId => OnGateWaitingForEvent?.Invoke(eventId));
             _nodePresenter = new DialogueNodePresenter(_bubble, _interaction);
             _proximityGuard = new DialogueProximityGuard(_playerTag, _maxDistanceFromStart);
@@ -78,7 +76,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         private void Update()
         {
             _gate.Tick();
-
             if (_proximityGuard.HasPlayerMovedTooFar())
                 EndDialogue("player_left_range");
         }
@@ -93,14 +90,13 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
                 Debug.LogWarning("[DialogueManager] StartDialogue called with a null graph.");
                 return;
             }
-
             if (IsPlaying)
             {
-                Debug.LogWarning("[DialogueManager] A dialogue is already playing, interrupting it.");
+                Debug.LogWarning("[DialogueManager] A dialogue is already playing, ignoring this request.");
                 return;
             }
 
-            var firstNode = graph.GetFirstDialogueNode();
+            var firstNode = graph.GetFirstTypedDialogueNode();
             if (firstNode == null)
             {
                 Debug.LogWarning($"[DialogueManager] Graph '{graph.name}' has no valid first node (Start not connected?).");
@@ -113,60 +109,53 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             PlayNode(firstNode);
         }
 
-        /// <summary>Call from any script (or via DialogueGateEventRelay) to unlock the Gate node currently being waited on.</summary>
+        /// <summary>Call from any script (or via DialogueGateEventRelay) to unlock the Gate node currently waited on.</summary>
         public void NotifyGateEvent(string eventId) => _gate.TryUnlockScriptEvent(eventId);
         #endregion
 
         #region Private Methods
-
-        //Plays a node according to its type. nodes (Gate, If, Action) resolve and chain on their own, only the Dialogues nodes shows something
-
-        private void PlayNode(DialogueNode node)
+        /// <summary>
+        /// Plays a node according to its runtime type. Silent nodes (Gate, If, Action) resolve
+        /// immediately and chain on their own; only a DialogueLineNode shows something and waits.
+        /// </summary>
+        private void PlayNode(DialogueNodeBase node)
         {
-            Debug.Log($"[DEBUG] PlayNode called with: {(node == null ? "NULL" : $"type={node.nodeType}, id={node.nodeId}, outcomeId={node.outcomeId}")}");
-
             if (node == null || node.IsEnd)
             {
-                EndDialogue(node?.outcomeId);
+                EndDialogue((node as EndNode)?.outcomeId);
                 return;
             }
 
             _currentNode = node;
             OnNodePlayed?.Invoke(node);
 
-            if (node.IsGate)
+            switch (node)
             {
-                _interaction.Hide(); // nothing to pick while waiting
-                _gate.BeginWait(node);
-                return;
+                case GateNode gateNode:
+                    _interaction.Hide();
+                    _gate.BeginWait(gateNode);
+                    break;
+                case ConditionNode conditionNode:
+                    bool isTrue = DialogueLogicEvaluator.EvaluateCondition(conditionNode);
+                    GoToNode(conditionNode.GetNextNodeId(isTrue ? 0 : 1));
+                    break;
+                case ActionNode actionNode:
+                    DialogueLogicEvaluator.ExecuteAction(actionNode);
+                    GoToNode(actionNode.GetNextNodeId());
+                    break;
+                case DialogueLineNode lineNode:
+                    _nodePresenter.Present(lineNode);
+                    break;
             }
-
-            if (node.IsCondition)
-            {
-                bool conditionIsTrue = DialogueLogicEvaluator.EvaluateCondition(node);
-                GoToNode(node.GetNextNodeId(conditionIsTrue ? 0 : 1)); // choices[0] = True, choices[1] = False
-                return;
-            }
-
-            if (node.IsAction)
-            {
-                DialogueLogicEvaluator.ExecuteAction(node);
-                GoToNode(node.GetNextNodeId());
-                return;
-            }
-
-            _nodePresenter.Present(node);
         }
 
         private void HandleContinue()
         {
-            // If the text is still typing out, a click completes it instead of jumping to the next node.
             if (_bubble.IsRevealingText)
             {
                 _bubble.CompleteTextReveal();
                 return;
             }
-
             if (_currentNode == null) return;
             GoToNode(_currentNode.GetNextNodeId());
         }
@@ -179,19 +168,16 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         private void GoToNode(string nextNodeId)
         {
-            var next = _currentGraph.GetNode(nextNodeId);
-            PlayNode(next); // PlayNode already handles next == null / IsEnd -> EndDialogue()
+            PlayNode(_currentGraph.GetTypedNode(nextNodeId));
         }
 
         private void EndDialogue(string outcomeId = null)
         {
             var endedGraph = _currentGraph;
-
             _proximityGuard.StopTracking();
             _gate.CancelWait();
             _bubble.Cleanup();
             _interaction.Cleanup();
-
             _currentGraph = null;
             _currentNode = null;
 

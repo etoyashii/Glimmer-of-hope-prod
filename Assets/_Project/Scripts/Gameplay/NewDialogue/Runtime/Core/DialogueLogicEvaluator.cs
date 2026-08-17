@@ -1,14 +1,12 @@
-
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// Pure logic for Condition (If) and Action nodes, just functions that read/write flags or call registered functions.
+    /// Pure logic for Condition (If) and Action nodes — no state, no instance,
+    /// just functions that read/write flags or call custom registered functions.
     /// </summary>
     public static class DialogueLogicEvaluator
     {
-        #region Public Methods
-
-        public static bool EvaluateCondition(DialogueNode node)
+        public static bool EvaluateCondition(ConditionNode node)
         {
             return node.conditionType switch
             {
@@ -18,7 +16,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             };
         }
 
-        public static void ExecuteAction(DialogueNode node)
+        public static void ExecuteAction(ActionNode node)
         {
             switch (node.actionType)
             {
@@ -31,7 +29,5 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
                     break;
             }
         }
-
-        #endregion
     }
 }
