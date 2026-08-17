@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using TMPro;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Gameplay.Characters;
+using GlimmerOfHope.UI.Character;
 using GlimmerOfHope.UI.Widgets;
 using static GlimmerOfHope.Editor.Characters.CharacterUIConstants;
 using RectMask = UnityEngine.UI.RectMask2D;
@@ -406,13 +407,13 @@ namespace GlimmerOfHope.Editor.Characters
         {
             var evtCat     = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCategorySelected.asset");
             var evtPart    = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterPartChanged.asset");
-            var evtConfirm = AssetDatabase.LoadAssetAtPath<StringEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterConfirmed.asset");
+            var evtConfirm = AssetDatabase.LoadAssetAtPath<VoidEventChannel>($"{DATA_PATH}/Events/Characters/OnCharacterConfirmed.asset");
             var tabPrefab  = AssetDatabase.LoadAssetAtPath<GameObject>($"{PREFAB_PATH}/CategoryTabPrefab.prefab");
             var partPrefab = AssetDatabase.LoadAssetAtPath<GameObject>($"{PREFAB_PATH}/PartButtonPrefab.prefab");
 
-            if (evtCat == null || evtPart == null || evtConfirm == null)
+            if (evtCat == null || evtPart == null)
             {
-                Debug.LogError("[SceneGenerator] EventChannels manquants.");
+                Debug.LogError("[SceneGenerator] EventChannels manquants (OnCategorySelected, OnCharacterPartChanged).");
                 return;
             }
 
@@ -530,7 +531,7 @@ namespace GlimmerOfHope.Editor.Characters
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 
-        private static void WireConfirmButton(GameObject root, StringEventChannel evtConfirm)
+        private static void WireConfirmButton(GameObject root, VoidEventChannel evtConfirm)
         {
             var target = FindDeep(root.transform, "BtnConfirm");
             if (target == null) return;
