@@ -27,10 +27,8 @@ namespace GlimmerOfHope.Editor.Characters
         private const float SIDEBAR_SUBITEM_H = 56f;
         private const float SIDEBAR_ICON_SIZE = 40f;
 
-        private const float COLOR_SECTION_H  = 224f;
+        private const float COLOR_SECTION_H  = 140f; // COLOR_WHEEL_H + padding top/bottom (10+10)
         private const float COLOR_WHEEL_H    = 120f;
-        private const float COLOR_PRESET_SZ  = 36f;
-        private const float COLOR_BTN_H      = 44f;
 
         private static CharacterRegistrySO _registry;
 
@@ -38,6 +36,7 @@ namespace GlimmerOfHope.Editor.Characters
 
         #region Menu
 
+        [MenuItem("Tools/GlimmerOfHope/Rebuild UI - Sidebar Verticale")]
         public static void Generate()
         {
             _registry = AssetDatabase.LoadAssetAtPath<CharacterRegistrySO>(
@@ -81,8 +80,7 @@ namespace GlimmerOfHope.Editor.Characters
 
             Selection.activeGameObject = root;
 
-            // Sauvegarde immediatement pour que SetActive(false) sur ColorPickerSection
-            // soit bien pris en compte quand Unity entre en Play mode.
+            // Sauvegarde immediatement pour persister l'etat initial de la scene generee.
             EditorSceneManager.SaveOpenScenes();
 
             _registry = null;
@@ -593,8 +591,7 @@ namespace GlimmerOfHope.Editor.Characters
             grid.startCorner     = GridLayoutGroup.Corner.UpperLeft;
             grid.startAxis       = GridLayoutGroup.Axis.Horizontal;
             grid.childAlignment  = TextAnchor.UpperLeft;
-            grid.constraint      = GridLayoutGroup.Constraint.FixedColumnCount;
-            grid.constraintCount = GRID_COLUMNS;
+            grid.constraint      = GridLayoutGroup.Constraint.Flexible;
 
             var csf = content.AddComponent<ContentSizeFitter>();
             csf.horizontalFit = ContentSizeFitter.FitMode.Unconstrained;
@@ -610,62 +607,145 @@ namespace GlimmerOfHope.Editor.Characters
             le.preferredHeight = COLOR_SECTION_H;
             le.minHeight       = COLOR_SECTION_H;
 
-            // Cache par defaut : active par un futur script quand la part est colorisable
-            go.SetActive(false);
+            go.AddComponent<Image>().color = new Color(PANEL_BG.r - 0.02f, PANEL_BG.g - 0.02f, PANEL_BG.b - 0.02f);
 
-            var bg = go.AddComponent<Image>();
-            bg.color = new Color(PANEL_BG.r - 0.02f, PANEL_BG.g - 0.02f, PANEL_BG.b - 0.02f);
+            // Invisible et hors layout par defaut : CharacterColorPicker gere la visibilite
+            var cg = go.AddComponent<CanvasGroup>();
+            cg.alpha          = 0f;
+            cg.blocksRaycasts = false;
+            cg.interactable   = false;
+            le.ignoreLayout   = true;
+            // flexibleHeight=0 empeche le HLG enfant de remonter un flexibleHeight=1
+            // au parent VLG (ContentArea), ce qui sinon volait la moitie de l'espace flexible.
+            le.flexibleHeight  = 0f;
 
-            var vlg = go.AddComponent<VerticalLayoutGroup>();
-            vlg.spacing            = 8f;
-            vlg.childForceExpandWidth  = true;
-            vlg.childForceExpandHeight = false;
-            vlg.childControlWidth  = true;
-            vlg.childControlHeight = true;
-            vlg.padding            = new RectOffset(12, 12, 12, 12);
+            // Layout horizontal : roue a gauche, colonne sliders a droite
+            var hlg = go.AddComponent<HorizontalLayoutGroup>();
+            hlg.spacing                = 10f;
+            hlg.childForceExpandWidth  = false;
+            hlg.childForceExpandHeight = true;
+            hlg.childControlWidth      = true;
+            hlg.childControlHeight     = true;
+            hlg.padding                = new RectOffset(10, 10, 10, 10);
 
-            // Roue chromatique (placeholder)
-            var wheel   = UI("ColorWheelPlaceholder", go);
-            var wheelLe = wheel.AddComponent<LayoutElement>();
-            wheelLe.preferredHeight = COLOR_WHEEL_H;
-            wheel.AddComponent<Image>().color = new Color(0.78f, 0.78f, 0.78f, 0.25f);
-            TextFill("Label", wheel, "[ Roue chromatique ]",
-                13f, FontStyles.Normal, TEXT_MUTED, TextAlignmentOptions.Center, Vector4.zero);
+            // Roue chromatique : carre fixe COLOR_WHEEL_H x COLOR_WHEEL_H
+            // padding (10+10) + COLOR_WHEEL_H = COLOR_SECTION_H -> hauteur = largeur = 120
+            var wheelGo = UI("ColorWheel", go);
+            var wheelLe = wheelGo.AddComponent<LayoutElement>();
+            wheelLe.preferredWidth  = COLOR_WHEEL_H;
+            wheelLe.minWidth        = COLOR_WHEEL_H;
+            wheelLe.flexibleWidth   = 0f;
+            wheelLe.flexibleHeight  = 0f;
+            wheelGo.AddComponent<RawImage>();
 
-            // Rangee de presets
-            var presets   = UI("ColorPresetsRow", go);
-            var presetsLe = presets.AddComponent<LayoutElement>();
-            presetsLe.preferredHeight = COLOR_PRESET_SZ;
-            var presetsHlg = presets.AddComponent<HorizontalLayoutGroup>();
-            presetsHlg.spacing        = 10f;
-            presetsHlg.childAlignment = TextAnchor.MiddleCenter;
-            presetsHlg.childForceExpandWidth  = false;
-            presetsHlg.childForceExpandHeight = false;
+            // Colonne droite : trois sliders RGB + bande preview
+            var slidersPanel = UI("SlidersPanel", go);
+            slidersPanel.AddComponent<LayoutElement>().flexibleWidth = 1f;
+            var panelVlg = slidersPanel.AddComponent<VerticalLayoutGroup>();
+            panelVlg.spacing                = 4f;
+            panelVlg.childForceExpandWidth  = true;
+            panelVlg.childForceExpandHeight = false;
+            panelVlg.childControlWidth      = true;
+            panelVlg.childControlHeight     = true;
+            panelVlg.childAlignment         = TextAnchor.MiddleCenter;
 
-            Color[] presetColors = {
-                new Color(0.98f, 0.76f, 0.22f),
-                new Color(0.27f, 0.57f, 0.93f),
-                new Color(0.88f, 0.26f, 0.26f),
-                new Color(0.24f, 0.79f, 0.36f),
-            };
-            foreach (var col in presetColors)
-            {
-                var btn   = UI("ColorPreset", presets);
-                var btnLe = btn.AddComponent<LayoutElement>();
-                btnLe.preferredWidth  = COLOR_PRESET_SZ;
-                btnLe.preferredHeight = COLOR_PRESET_SZ;
-                btn.AddComponent<Image>().color = col;
-                btn.AddComponent<Button>();
-            }
+            BuildSliderRow("SliderRowR", slidersPanel, "R", new Color(0.85f, 0.30f, 0.30f));
+            BuildSliderRow("SliderRowG", slidersPanel, "G", new Color(0.30f, 0.75f, 0.30f));
+            BuildSliderRow("SliderRowB", slidersPanel, "B", new Color(0.30f, 0.50f, 0.85f));
 
-            // Bouton Valider couleur
-            var vBtn   = UI("ValidateColorButton", go);
-            var vBtnLe = vBtn.AddComponent<LayoutElement>();
-            vBtnLe.preferredHeight = COLOR_BTN_H;
-            vBtn.AddComponent<Image>().color = CONFIRM;
-            vBtn.AddComponent<Button>();
-            TextFill("Label", vBtn, "VALIDER",
-                FONT_BUTTON, FontStyles.Bold, TEXT_ON_ACCENT, TextAlignmentOptions.Center, Vector4.zero);
+            var previewGo = UI("ColorPreview", slidersPanel);
+            var previewLe = previewGo.AddComponent<LayoutElement>();
+            previewLe.preferredHeight = 16f;
+            previewLe.minHeight       = 16f;
+            previewGo.AddComponent<Image>().color = Color.white;
+
+            go.AddComponent<CharacterColorPicker>();
+        }
+
+        private static void BuildSliderRow(string rowName, GameObject parent, string label, Color fillColor)
+        {
+            const float ROW_H   = 20f;
+            const float LABEL_W = 14f;
+
+            var row   = UI(rowName, parent);
+            var rowLe = row.AddComponent<LayoutElement>();
+            rowLe.preferredHeight = ROW_H;
+            var rowHlg = row.AddComponent<HorizontalLayoutGroup>();
+            rowHlg.spacing                = 6f;
+            rowHlg.childAlignment         = TextAnchor.MiddleLeft;
+            rowHlg.childForceExpandWidth  = false;
+            rowHlg.childForceExpandHeight = true;
+            rowHlg.childControlWidth      = true;
+            rowHlg.childControlHeight     = true;
+
+            // Lettre (R / G / B)
+            var lblGo   = UI("Label", row);
+            var lblLe   = lblGo.AddComponent<LayoutElement>();
+            lblLe.preferredWidth = LABEL_W;
+            var lblTmp  = lblGo.AddComponent<TMPro.TextMeshProUGUI>();
+            lblTmp.text          = label;
+            lblTmp.fontSize      = 11f;
+            lblTmp.color         = fillColor;
+            lblTmp.alignment     = TMPro.TextAlignmentOptions.MidlineRight;
+            lblTmp.raycastTarget = false;
+
+            // Slider Unity avec la hierarchie requise
+            var sliderGo   = UI("Slider", row);
+            var sliderLe   = sliderGo.AddComponent<LayoutElement>();
+            sliderLe.flexibleWidth = 1f;
+            var slider     = sliderGo.AddComponent<Slider>();
+            slider.minValue  = 0f;
+            slider.maxValue  = 1f;
+            slider.value     = 1f;
+            slider.direction = Slider.Direction.LeftToRight;
+            slider.wholeNumbers = false;
+
+            // Background
+            var bgGo = UI("Background", sliderGo);
+            var bgRt = bgGo.GetComponent<RectTransform>();
+            bgRt.anchorMin = Vector2.zero;
+            bgRt.anchorMax = Vector2.one;
+            bgRt.offsetMin = new Vector2(0f,  3f);
+            bgRt.offsetMax = new Vector2(0f, -3f);
+            bgGo.AddComponent<Image>().color = new Color(0.12f, 0.12f, 0.12f);
+
+            // Fill Area
+            var fillAreaGo = UI("Fill Area", sliderGo);
+            var fillAreaRt = fillAreaGo.GetComponent<RectTransform>();
+            fillAreaRt.anchorMin = Vector2.zero;
+            fillAreaRt.anchorMax = Vector2.one;
+            fillAreaRt.offsetMin = new Vector2(5f,   3f);
+            fillAreaRt.offsetMax = new Vector2(-15f, -3f);
+
+            var fillGo = UI("Fill", fillAreaGo);
+            var fillRt = fillGo.GetComponent<RectTransform>();
+            fillRt.anchorMin = Vector2.zero;
+            fillRt.anchorMax = Vector2.one;
+            fillRt.offsetMin = Vector2.zero;
+            fillRt.offsetMax = Vector2.zero;
+            fillGo.AddComponent<Image>().color = fillColor;
+
+            // Handle Slide Area
+            var handleAreaGo = UI("Handle Slide Area", sliderGo);
+            var handleAreaRt = handleAreaGo.GetComponent<RectTransform>();
+            handleAreaRt.anchorMin = Vector2.zero;
+            handleAreaRt.anchorMax = Vector2.one;
+            handleAreaRt.offsetMin = new Vector2(10f, 0f);
+            handleAreaRt.offsetMax = new Vector2(-10f, 0f);
+
+            var handleGo = UI("Handle", handleAreaGo);
+            var handleRt = handleGo.GetComponent<RectTransform>();
+            handleRt.anchorMin = new Vector2(0f, 0f);
+            handleRt.anchorMax = new Vector2(0f, 1f);
+            handleRt.sizeDelta = new Vector2(16f, 0f);
+            handleRt.anchoredPosition = Vector2.zero;
+            var handleImg = handleGo.AddComponent<Image>();
+            handleImg.color = new Color(0.9f, 0.9f, 0.9f);
+
+            // Wire Slider
+            slider.targetGraphic = handleImg;
+            slider.fillRect      = fillRt;
+            slider.handleRect    = handleRt;
         }
 
         private static void BuildBottomBar(GameObject canvas)
@@ -737,6 +817,7 @@ namespace GlimmerOfHope.Editor.Characters
             WirePartsGrid(root, partPrefab, evtCat, evtPart);
             WireCategoryLabel(root, evtCat);
             WireConfirmButton(root);
+            WireColorPicker(root, evtCat);
         }
 
         private static void WireBootstrapper(GameObject root, StringEventChannel evtPart)
@@ -809,6 +890,23 @@ namespace GlimmerOfHope.Editor.Characters
             var so    = new SerializedObject(label);
             so.FindProperty("_onCategorySelected").objectReferenceValue = evtCat;
             so.FindProperty("_uppercase").boolValue = true;
+            so.ApplyModifiedPropertiesWithoutUndo();
+        }
+
+        private static void WireColorPicker(GameObject root, StringEventChannel evtCat)
+        {
+            var target = FindDeep(root.transform, "ColorPickerSection");
+            if (target == null)
+            {
+                Debug.LogWarning("[SidebarGenerator] ColorPickerSection introuvable.");
+                return;
+            }
+
+            var picker = target.GetComponent<CharacterColorPicker>();
+            if (picker == null) return;
+
+            var so = new SerializedObject(picker);
+            so.FindProperty("_onCategoryChanged").objectReferenceValue = evtCat;
             so.ApplyModifiedPropertiesWithoutUndo();
         }
 

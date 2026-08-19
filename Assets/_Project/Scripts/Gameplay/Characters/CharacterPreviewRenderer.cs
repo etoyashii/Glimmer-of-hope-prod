@@ -70,6 +70,9 @@ namespace GlimmerOfHope.Gameplay.Characters
         {
             _controller = ServiceLocator.Get<CharacterCreatorController>();
 
+            if (_controller != null)
+                _controller.OnColorChanged += OnColorChanged;
+
             // Le Registry prime sur le champ de scene quand il est assigne.
             if (_controller?.Registry?.MasterCharacterPrefab != null)
                 _masterCharacterPrefab = _controller.Registry.MasterCharacterPrefab;
@@ -94,6 +97,8 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         private void OnDestroy()
         {
+            if (_controller != null)
+                _controller.OnColorChanged -= OnColorChanged;
             if (_characterInstance != null)
                 Destroy(_characterInstance);
         }
@@ -132,6 +137,24 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void OnPartChanged(string categoryId)
         {
             RefreshCategory(categoryId);
+        }
+
+        private void OnColorChanged(string categoryId, Color color)
+        {
+            var category = _controller?.Registry?.GetCategoryById(categoryId);
+            if (category == null) return;
+
+            foreach (var part in category.Parts)
+            {
+                if (part?.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null) continue;
+                if (!_smrByMeshName.TryGetValue(part.Mesh.name, out var smr) || !smr.enabled) continue;
+
+                var block = new MaterialPropertyBlock();
+                smr.GetPropertyBlock(block);
+                block.SetColor("_BaseColor", color);
+                smr.SetPropertyBlock(block);
+                break;
+            }
         }
 
         private void RefreshAll()
@@ -178,9 +201,15 @@ namespace GlimmerOfHope.Gameplay.Characters
                 }
             }
 
-            // Active la part selectionnee
+            // Active la part selectionnee et reapplique la couleur sauvegardee
             if (_smrByMeshName.TryGetValue(part.Mesh.name, out var selectedSmr))
+            {
                 selectedSmr.enabled = true;
+                var block = new MaterialPropertyBlock();
+                selectedSmr.GetPropertyBlock(block);
+                block.SetColor("_BaseColor", _controller.GetCategoryColor(categoryId));
+                selectedSmr.SetPropertyBlock(block);
+            }
             else
                 Debug.LogWarning($"[CharacterPreviewRenderer] SMR introuvable pour mesh '{part.Mesh.name}'.");
         }

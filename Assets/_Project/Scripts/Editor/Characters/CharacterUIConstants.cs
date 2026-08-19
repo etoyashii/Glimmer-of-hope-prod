@@ -46,7 +46,7 @@ namespace GlimmerOfHope.Editor.Characters
 
         public const float TOPBAR_HEIGHT    = 64f;
         public const float BOTTOMBAR_HEIGHT = 56f;
-        public const float PANEL_SPLIT      = 0.575f;
+        public const float PANEL_SPLIT      = 0.42f;
         public const float PANEL_GAP        = 12f;
 
         #endregion

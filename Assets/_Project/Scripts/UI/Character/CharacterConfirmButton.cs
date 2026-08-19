@@ -27,7 +27,9 @@ namespace GlimmerOfHope.UI.Character
 
         private void OnDestroy()
         {
-            _button.onClick.RemoveListener(OnConfirm);
+            // _button peut etre deja detruit (meme GO, ordre de destruction non garanti).
+            if (_button != null)
+                _button.onClick.RemoveListener(OnConfirm);
         }
 
         private void OnConfirm()

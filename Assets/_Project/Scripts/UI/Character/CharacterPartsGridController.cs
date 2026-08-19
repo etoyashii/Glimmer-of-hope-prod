@@ -49,7 +49,8 @@ namespace GlimmerOfHope.UI.Widgets
                 Debug.LogError("[CharacterPartsGridController] CharacterCreatorController introuvable.");
 
             if (_partButtonPrefab == null)
-                Debug.LogError("[CharacterPartsGridController] _partButtonPrefab non assigné.", this);
+                Debug.LogError("[CharacterPartsGridController] _partButtonPrefab non assigne.", this);
+
         }
         #endregion
 

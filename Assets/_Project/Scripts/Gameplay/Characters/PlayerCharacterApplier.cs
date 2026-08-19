@@ -85,6 +85,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 ApplySelections(selections);
 
             EnableAlwaysOnMeshes();
+            ApplySavedColors(saveManager.CurrentSave?.progression?.characterColors);
         }
 
         private void BuildSmrMap(Transform root)
@@ -125,6 +126,30 @@ namespace GlimmerOfHope.Gameplay.Characters
             {
                 if (_smrByMeshName.TryGetValue(meshName, out var smr))
                     smr.enabled = true;
+            }
+        }
+
+        private void ApplySavedColors(List<CharacterColorEntry> entries)
+        {
+            if (entries == null || _registry == null) return;
+
+            foreach (var entry in entries)
+            {
+                var category = _registry.GetCategoryById(entry.categoryId);
+                if (category == null) continue;
+
+                var color = new Color(entry.r, entry.g, entry.b);
+                foreach (var part in category.Parts)
+                {
+                    if (part?.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null) continue;
+                    if (!_smrByMeshName.TryGetValue(part.Mesh.name, out var smr) || !smr.enabled) continue;
+
+                    var block = new MaterialPropertyBlock();
+                    smr.GetPropertyBlock(block);
+                    block.SetColor("_BaseColor", color);
+                    smr.SetPropertyBlock(block);
+                    break;
+                }
             }
         }
 
