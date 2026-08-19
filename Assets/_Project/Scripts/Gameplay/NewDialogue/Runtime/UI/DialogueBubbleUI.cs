@@ -180,9 +180,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             }
             IsRevealingText = false;
         }
-        #endregion
 
-        #region Helpers
         private IEnumerator TypewriterRoutine(string text, float charsPerSecond)
         {
             IsRevealingText = true;

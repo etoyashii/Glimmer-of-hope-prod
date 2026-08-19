@@ -6,6 +6,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     [Serializable]
     public class DialogueLineNode : DialogueNodeBase
     {
+        #region Public Properties
         public override DialogueNodeType NodeType => DialogueNodeType.Dialogue;
 
         [Header("Content")]
@@ -35,7 +36,10 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         [Tooltip("Unchecked = simple auto-continue (Continue button, no visible choice). Checked = show real choices to the player.")]
         public bool hasChoices;
+        #endregion
 
+        #region Public Methods
         public override bool IsSimpleContinuation() => !hasChoices;
+        #endregion
     }
 }

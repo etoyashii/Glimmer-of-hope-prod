@@ -6,44 +6,64 @@ namespace GlimmerOfHope.Editor.NewDialogue
 {
     public class ActionFieldBuilder : DialogueNodeFieldBuilderBase
     {
-        public ActionFieldBuilder(DialogueNode node, VisualElement container, System.Action markDirty, System.Action<string> setTitle)
+        #region Private Fields
+        private TextField _flagNameField;
+        private Toggle _flagValueField;
+        private TextField _scriptIdField;
+        #endregion
+
+        #region Public Methods
+        public ActionFieldBuilder(DialogueNodeBase node, VisualElement container, System.Action markDirty, System.Action<string> setTitle)
             : base(node, container, markDirty, setTitle) { }
 
+
+        /// <summary>
+        /// Builds and appends the UI fields of the Action node type into Container />.
+        /// </summary>
         public override void Build()
         {
-            var typeField = new EnumField("Action Type", Node.actionType);
+            var node = (ActionNode)Node;
+
+            var typeField = new EnumField("Action Type", node.actionType);
             Container.Add(typeField);
 
-            var flagNameField = new TextField("Flag Name") { value = Node.actionFlagName };
-            flagNameField.RegisterValueChangedCallback(evt => { Node.actionFlagName = evt.newValue; MarkDirty(); });
+            // Fields used when actionType == SetFlag
+            _flagNameField = new TextField("Flag Name") { value = node.actionFlagName };
+            _flagNameField.RegisterValueChangedCallback(evt => { node.actionFlagName = evt.newValue; MarkDirty(); });
 
-            var flagValueField = new Toggle("Value To Set") { value = Node.actionFlagValue };
-            flagValueField.RegisterValueChangedCallback(evt => { Node.actionFlagValue = evt.newValue; MarkDirty(); });
+            _flagValueField = new Toggle("Value To Set") { value = node.actionFlagValue };
+            _flagValueField.RegisterValueChangedCallback(evt => { node.actionFlagValue = evt.newValue; MarkDirty(); });
 
-            var scriptIdField = new TextField("Action ID") { value = Node.actionScriptId };
-            scriptIdField.RegisterValueChangedCallback(evt => { Node.actionScriptId = evt.newValue; MarkDirty(); });
+            // Field used for other action types
+            _scriptIdField = new TextField("Action ID") { value = node.actionScriptId };
+            _scriptIdField.RegisterValueChangedCallback(evt => { node.actionScriptId = evt.newValue; MarkDirty(); });
 
-            Container.Add(flagNameField);
-            Container.Add(flagValueField);
-            Container.Add(scriptIdField);
+            Container.Add(_flagNameField);
+            Container.Add(_flagValueField);
+            Container.Add(_scriptIdField);
 
-            void UpdateVisibility(DialogueActionType type)
-            {
-                bool isSetFlag = type == DialogueActionType.SetFlag;
-                flagNameField.style.display = isSetFlag ? DisplayStyle.Flex : DisplayStyle.None;
-                flagValueField.style.display = isSetFlag ? DisplayStyle.Flex : DisplayStyle.None;
-                scriptIdField.style.display = isSetFlag ? DisplayStyle.None : DisplayStyle.Flex;
-            }
+            UpdateVisibility(node.actionType);
 
-            UpdateVisibility(Node.actionType);
-
+            // Update node type and refresh visibility on change
             typeField.RegisterValueChangedCallback(evt =>
             {
                 var newType = (DialogueActionType)evt.newValue;
-                Node.actionType = newType;
+                node.actionType = newType;
                 UpdateVisibility(newType);
                 MarkDirty();
             });
         }
+        #endregion
+
+        #region private Methods
+        // Shows flag fields for SetFlag, script field otherwise
+        private void UpdateVisibility(DialogueActionType type)
+        {
+            bool isSetFlag = type == DialogueActionType.SetFlag;
+            _flagNameField.style.display = isSetFlag ? DisplayStyle.Flex : DisplayStyle.None;
+            _flagValueField.style.display = isSetFlag ? DisplayStyle.Flex : DisplayStyle.None;
+            _scriptIdField.style.display = isSetFlag ? DisplayStyle.None : DisplayStyle.Flex;
+        }
+        #endregion
     }
 }

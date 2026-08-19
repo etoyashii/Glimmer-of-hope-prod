@@ -14,131 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 2a628e2f
   startNodeId: 5bc2c945
-  nodes:
-  - nodeId: 5bc2c945
-    nodeType: 1
-    speakerId: 
-    text: 
-    bubblePrefab: {fileID: 0}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 0
-    typewriterCharsPerSecond: 30
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices:
-    - choiceText: 
-      nextNodeId: b9f36798
-    editorPosition: {x: 0, y: 200}
-  - nodeId: f9129a7c
-    nodeType: 2
-    speakerId: 
-    text: 
-    bubblePrefab: {fileID: 0}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 0
-    typewriterCharsPerSecond: 30
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices: []
-    editorPosition: {x: 600, y: 200}
-  - nodeId: b9f36798
-    nodeType: 0
-    speakerId: Glow
-    text: 'You just remembered the melody that alows you to generate platforms. Try
-      to use it to pass over these thorns ! '
-    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 1
-    typewriterCharsPerSecond: 20
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices:
-    - choiceText: 
-      nextNodeId: 2cb44934
-    editorPosition: {x: 100, y: 100}
-  - nodeId: 2cb44934
-    nodeType: 0
-    speakerId: Glow
-    text: Play the melodie 2 times to generate the platform. Try to get passed these
-      thorns now !
-    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 1
-    typewriterCharsPerSecond: 20
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices:
-    - choiceText: 
-      nextNodeId: f9129a7c
-    editorPosition: {x: 100, y: 100}
   _typedNodes:
   - rid: 3506134069474492571
   - rid: 3506134069474492572
@@ -154,7 +29,7 @@ MonoBehaviour:
         choices:
         - choiceText: 
           nextNodeId: b9f36798
-        editorPosition: {x: 0, y: 200}
+        editorPosition: {x: -532.25757, y: 198.25096}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
@@ -163,7 +38,7 @@ MonoBehaviour:
       data:
         nodeId: f9129a7c
         choices: []
-        editorPosition: {x: 600, y: 200}
+        editorPosition: {x: 1173.3313, y: 186.49557}
         outcomeId: 
     - rid: 3506134069474492573
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
@@ -172,7 +47,7 @@ MonoBehaviour:
         choices:
         - choiceText: 
           nextNodeId: 2cb44934
-        editorPosition: {x: 100, y: 100}
+        editorPosition: {x: -257.86252, y: 171.7548}
         speakerId: Glow
         text: 'You just remembered the melody that alows you to generate platforms.
           Try to use it to pass over these thorns ! '
@@ -189,7 +64,7 @@ MonoBehaviour:
         choices:
         - choiceText: 
           nextNodeId: f9129a7c
-        editorPosition: {x: 100, y: 100}
+        editorPosition: {x: 503.85535, y: 180.59424}
         speakerId: Glow
         text: Play the melodie 2 times to generate the platform. Try to get passed
           these thorns now !

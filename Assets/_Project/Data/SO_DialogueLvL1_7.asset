@@ -14,98 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 2a628e2f
   startNodeId: 5bc2c945
-  nodes:
-  - nodeId: 5bc2c945
-    nodeType: 1
-    speakerId: 
-    text: 
-    bubblePrefab: {fileID: 0}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 0
-    typewriterCharsPerSecond: 30
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices:
-    - choiceText: 
-      nextNodeId: e210374b
-    editorPosition: {x: 0, y: 200}
-  - nodeId: f9129a7c
-    nodeType: 2
-    speakerId: 
-    text: 
-    bubblePrefab: {fileID: 0}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 0
-    typewriterCharsPerSecond: 30
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices: []
-    editorPosition: {x: 600, y: 200}
-  - nodeId: e210374b
-    nodeType: 0
-    speakerId: 
-    text: 'Thanks for Playing ! More coming soon ! '
-    bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-    followSpeaker: 0
-    bubbleOffset: {x: 0, y: 2, z: 0}
-    useTypewriter: 1
-    typewriterCharsPerSecond: 20
-    hasChoices: 0
-    triggerType: 2
-    buttonOffset: {x: 0, y: 2, z: 0}
-    triggerZoneRadius: 2
-    outcomeId: 
-    gateTriggerType: 0
-    gateEventId: 
-    gateTimerSeconds: 1
-    gateFlagName: 
-    gateFlagExpectedValue: 1
-    conditionType: 0
-    conditionFlagName: 
-    conditionExpectedValue: 1
-    conditionScriptId: 
-    actionType: 0
-    actionFlagName: 
-    actionFlagValue: 1
-    actionScriptId: 
-    choices:
-    - choiceText: 
-      nextNodeId: 
-    editorPosition: {x: 100, y: 100}
   _typedNodes:
   - rid: 3506134069474492556
   - rid: 3506134069474492557
@@ -120,7 +28,7 @@ MonoBehaviour:
         choices:
         - choiceText: 
           nextNodeId: e210374b
-        editorPosition: {x: 0, y: 200}
+        editorPosition: {x: -183.28, y: 207}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
@@ -137,8 +45,8 @@ MonoBehaviour:
         nodeId: e210374b
         choices:
         - choiceText: 
-          nextNodeId: 
-        editorPosition: {x: 100, y: 100}
+          nextNodeId: f9129a7c
+        editorPosition: {x: 164, y: 86}
         speakerId: 
         text: 'Thanks for Playing ! More coming soon ! '
         bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}

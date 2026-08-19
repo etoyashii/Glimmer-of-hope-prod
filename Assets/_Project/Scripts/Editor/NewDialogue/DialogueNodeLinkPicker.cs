@@ -7,27 +7,20 @@ using UnityEngine;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Builds readable node labels and draws the "next node"dropdown
-    /// Holds a reference to the graph's node list so it doesn't need to be passed every call.
+    /// Builds readable node labels (for foldouts and dropdowns) and draws the "next node" dropdown. 
     /// </summary>
     public class DialogueNodeLinkPicker
     {
-        #region Private Fields
-
+        #region private fields
         private readonly DialogueGraph _graph;
-
         #endregion
 
-        #region Constructor
+        #region Public Methods
 
         public DialogueNodeLinkPicker(DialogueGraph graph)
         {
             _graph = graph;
         }
-
-        #endregion
-
-        #region Public Methods
 
         //Draws a dropdown listing every eligible node for a "next" link
         public void DrawNextDropdown(SerializedProperty choiceProperty, string label, string selfId, params GUILayoutOption[] options)
@@ -42,29 +35,29 @@ namespace GlimmerOfHope.Editor.NewDialogue
             nextProperty.stringValue = ids[newIndex];
         }
 
-        //Readable preview of a node 
-        public string BuildNodeLabel(DialogueNode node)
+        //Readable preview of a node (e.g. "[Dialogue] blacksmith: Hello there... (a3f92e1c)").
+        public string BuildNodeLabel(DialogueNodeBase node)
         {
-            switch (node.nodeType)
+            switch (node)
             {
-                case DialogueNodeType.Dialogue:
-                    string preview = string.IsNullOrEmpty(node.text) ? "(empty)" : Truncate(node.text, 30);
-                    return $"[Dialogue] {(string.IsNullOrEmpty(node.speakerId) ? "?" : node.speakerId)} : {preview} ({node.nodeId})";
-                case DialogueNodeType.Start:
+                case DialogueLineNode lineNode:
+                    string preview = string.IsNullOrEmpty(lineNode.text) ? "(empty)" : Truncate(lineNode.text, 30);
+                    string speaker = string.IsNullOrEmpty(lineNode.speakerId) ? "?" : lineNode.speakerId;
+                    return $"[Dialogue] {speaker} : {preview} ({node.nodeId})";
+                case StartNode:
                     return "[START]";
-                case DialogueNodeType.End:
-                    return string.IsNullOrEmpty(node.outcomeId) ? $"[END] ({node.nodeId})" : $"[END] {node.outcomeId} ({node.nodeId})";
-                case DialogueNodeType.Gate:
+                case EndNode endNode:
+                    return string.IsNullOrEmpty(endNode.outcomeId) ? $"[END] ({node.nodeId})" : $"[END] {endNode.outcomeId} ({node.nodeId})";
+                case GateNode:
                     return $"[GATE] ({node.nodeId})";
-                case DialogueNodeType.Condition:
+                case ConditionNode:
                     return $"[IF] ({node.nodeId})";
-                case DialogueNodeType.Action:
+                case ActionNode:
                     return $"[ACTION] ({node.nodeId})";
                 default:
                     return node.nodeId;
             }
         }
-
         #endregion
 
         #region Private Methods
@@ -74,9 +67,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
             var labels = new List<string> { "(none / implicit end)" };
             var ids = new List<string> { "" };
 
-            foreach (var node in _graph.nodes)
+            foreach (var node in _graph.TypedNodes)
             {
-                if (node.nodeType == DialogueNodeType.Start) continue; // nothing should link back into Start
+                if (node is StartNode) continue; // nothing should link back into Start
                 labels.Add(BuildNodeLabel(node));
                 ids.Add(node.nodeId);
             }
@@ -84,12 +77,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
             return (labels.ToArray(), ids.ToArray());
         }
 
-        #endregion
-
-        #region Helpers
-
         private static string Truncate(string text, int max) => text.Length <= max ? text : text.Substring(0, max) + "…";
 
         #endregion
+
     }
 }

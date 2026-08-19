@@ -3,13 +3,15 @@ using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     public class DialogueGraphWindow : EditorWindow
     {
+        #region Private Fields
         private DialogueGraph _graph;
+        #endregion
 
+        #region Public Methods
         [MenuItem("Window/Dialogue System/Graph Editor")]
         public static void Open()
         {
@@ -17,6 +19,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             window.titleContent = new GUIContent("Dialogue Graph");
         }
 
+        // Called by Unity when a DialogueGraph asset is double-clicked in the Project window
         [OnOpenAsset(1)]
         public static bool OnOpenAsset(int instanceId, int line)
         {
@@ -29,7 +32,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
             window.BuildView();
             return true;
         }
+        #endregion
 
+        #region private Methods
         private void CreateGUI()
         {
             BuildView();
@@ -44,12 +49,12 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 name = "Dialogue Graph View"
             };
             graphView.StretchToParentSize();
+            graphView.nodeCreationRequest = null; // disables the default shortcut (spacebar)
 
-            graphView.nodeCreationRequest = null; // désactive le raccourci par défaut (barre espace)
+            // Right-click context menu: one entry per creatable node type
             graphView.RegisterCallback<ContextualMenuPopulateEvent>(evt =>
             {
                 var localMousePosition = graphView.ChangeCoordinatesTo(graphView.contentViewContainer, evt.localMousePosition);
-
                 evt.menu.AppendAction("Create Dialogue Node (simple)", _ => graphView.CreateNewNode(localMousePosition, DialogueNodeType.Dialogue, hasChoices: false));
                 evt.menu.AppendAction("Create Dialogue Node (with choices)", _ => graphView.CreateNewNode(localMousePosition, DialogueNodeType.Dialogue, hasChoices: true));
                 evt.menu.AppendAction("Create Gate Node", _ => graphView.CreateNewNode(localMousePosition, DialogueNodeType.Gate));
@@ -60,5 +65,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             rootVisualElement.Add(graphView);
         }
+        #endregion
     }
 }

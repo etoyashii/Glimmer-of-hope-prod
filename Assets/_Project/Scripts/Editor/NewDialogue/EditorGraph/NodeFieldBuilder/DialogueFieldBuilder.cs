@@ -2,61 +2,69 @@ using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
-
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     public class DialogueFieldBuilder : DialogueNodeFieldBuilderBase
     {
-        public DialogueFieldBuilder(DialogueNode node, VisualElement container, System.Action markDirty, System.Action<string> setTitle)
+        #region Public Methods
+        public DialogueFieldBuilder(DialogueNodeBase node, VisualElement container, System.Action markDirty, System.Action<string> setTitle)
             : base(node, container, markDirty, setTitle) { }
-
+        /// <summary>
+        /// Builds and appends the UI fields of the Dialogue node type into Container.
+        /// </summary>
         public override void Build()
         {
-            var speakerField = new TextField("Speaker ID") { value = Node.speakerId };
+            var node = (DialogueLineNode)Node;
+           
+            var speakerField = new TextField("Speaker ID") { value = node.speakerId };
             speakerField.RegisterValueChangedCallback(evt =>
             {
-                Node.speakerId = evt.newValue;
+                node.speakerId = evt.newValue;
+                // Speaker ID doubles as the node's display title
                 SetTitle?.Invoke(string.IsNullOrEmpty(evt.newValue) ? "(no speaker)" : evt.newValue);
                 MarkDirty();
             });
             Container.Add(speakerField);
-
-            var textField = new TextField("Text") { value = Node.text, multiline = true };
+            
+            var textField = new TextField("Text") { value = node.text, multiline = true };
             textField.style.minHeight = 40;
-            textField.RegisterValueChangedCallback(evt => { Node.text = evt.newValue; MarkDirty(); });
+            textField.RegisterValueChangedCallback(evt => { node.text = evt.newValue; MarkDirty(); });
             Container.Add(textField);
-
-            var bubbleField = new ObjectField("Bubble Prefab") { objectType = typeof(GameObject), value = Node.bubblePrefab };
-            bubbleField.RegisterValueChangedCallback(evt => { Node.bubblePrefab = evt.newValue as GameObject; MarkDirty(); });
+           
+            var bubbleField = new ObjectField("Bubble Prefab") { objectType = typeof(GameObject), value = node.bubblePrefab };
+            bubbleField.RegisterValueChangedCallback(evt => { node.bubblePrefab = evt.newValue as GameObject; MarkDirty(); });
             Container.Add(bubbleField);
-
-            var offsetField = new Vector3Field("Bubble Offset") { value = Node.bubbleOffset };
-            offsetField.style.display = Node.followSpeaker ? DisplayStyle.Flex : DisplayStyle.None;
-            offsetField.RegisterValueChangedCallback(evt => { Node.bubbleOffset = evt.newValue; MarkDirty(); });
-
-            var followToggle = new Toggle("Follows Speaker") { value = Node.followSpeaker };
+            
+            // Offset only applies when the bubble follows the speaker
+            var offsetField = new Vector3Field("Bubble Offset") { value = node.bubbleOffset };
+            offsetField.style.display = node.followSpeaker ? DisplayStyle.Flex : DisplayStyle.None;
+            offsetField.RegisterValueChangedCallback(evt => { node.bubbleOffset = evt.newValue; MarkDirty(); });
+            
+            var followToggle = new Toggle("Follows Speaker") { value = node.followSpeaker };
             followToggle.RegisterValueChangedCallback(evt =>
             {
-                Node.followSpeaker = evt.newValue;
+                node.followSpeaker = evt.newValue;
                 offsetField.style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
                 MarkDirty();
             });
             Container.Add(followToggle);
             Container.Add(offsetField);
-
-            var speedField = new FloatField("Typewriter Speed") { value = Node.typewriterCharsPerSecond };
-            speedField.style.display = Node.useTypewriter ? DisplayStyle.Flex : DisplayStyle.None;
-            speedField.RegisterValueChangedCallback(evt => { Node.typewriterCharsPerSecond = evt.newValue; MarkDirty(); });
-
-            var typewriterToggle = new Toggle("Use Typewriter") { value = Node.useTypewriter };
+           
+            // Speed only applies when the typewriter effect is enabled
+            var speedField = new FloatField("Typewriter Speed") { value = node.typewriterCharsPerSecond };
+            speedField.style.display = node.useTypewriter ? DisplayStyle.Flex : DisplayStyle.None;
+            speedField.RegisterValueChangedCallback(evt => { node.typewriterCharsPerSecond = evt.newValue; MarkDirty(); });
+            
+            var typewriterToggle = new Toggle("Use Typewriter") { value = node.useTypewriter };
             typewriterToggle.RegisterValueChangedCallback(evt =>
             {
-                Node.useTypewriter = evt.newValue;
+                node.useTypewriter = evt.newValue;
                 speedField.style.display = evt.newValue ? DisplayStyle.Flex : DisplayStyle.None;
                 MarkDirty();
             });
             Container.Add(typewriterToggle);
             Container.Add(speedField);
         }
+        #endregion
     }
 }

@@ -6,15 +6,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
     /// Central singleton for the dialogue system. Its job: receive "start this dialogue", then
-    /// advance nodes one by one, delegating the actual work to a handful of support classes
-    /// created in Awake:
-    /// - DialogueBubblePresenter: spawns/positions/shows the bubble (DialogueLineNode only)
-    /// - DialogueInteractionPresenter: fixed "continue/choices" panel
-    /// - DialogueGateController: waiting on GateNode (timer/flag/event)
-    /// - DialogueLogicEvaluator: evaluates ConditionNode, runs ActionNode
-    /// - DialogueNodePresenter: splits a DialogueLineNode's content between bubble and panel
-    ///
-    /// All of those are plain C# classes, not MonoBehaviours — nothing extra to attach to a prefab.
+    /// advance nodes one by one, delegating the actual work to the support classes
     /// </summary>
     [DefaultExecutionOrder(-100)]
     public class DialogueManager : MonoBehaviour
@@ -82,7 +74,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #endregion
 
         #region Public Methods
-        /// <summary>Main entry point: starts a dialogue from any script.</summary>
+        //Main entry point: starts a dialogue from any script.
         public void StartDialogue(DialogueGraph graph)
         {
             if (graph == null)

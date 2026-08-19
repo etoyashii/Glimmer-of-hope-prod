@@ -9,6 +9,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     /// </summary>
     public interface IDialogueInteractionUI
     {
+        #region Private Methods
         void Initialize(Action onContinue, Action<int> onChoiceSelected);
 
         //Shows just a "continue" button 
@@ -18,5 +19,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         void ShowChoices(IReadOnlyList<string> labels);
 
         void Hide();
+        #endregion
     }
 }

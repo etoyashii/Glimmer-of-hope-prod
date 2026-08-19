@@ -5,6 +5,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     [Serializable]
     public class ActionNode : DialogueNodeBase
     {
+        #region Public Properties
         public override DialogueNodeType NodeType => DialogueNodeType.Action;
 
         public DialogueActionType actionType = DialogueActionType.SetFlag;
@@ -17,5 +18,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         [UnityEngine.Tooltip("ID of the function registered with DialogueActions.Register (Script Action mode).")]
         public string actionScriptId;
+        #endregion
     }
 }

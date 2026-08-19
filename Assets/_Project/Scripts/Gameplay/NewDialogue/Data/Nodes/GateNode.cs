@@ -6,6 +6,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     [Serializable]
     public class GateNode : DialogueNodeBase
     {
+        #region Public Properties
         public override DialogueNodeType NodeType => DialogueNodeType.Gate;
 
         public DialogueGateTriggerType gateTriggerType = DialogueGateTriggerType.ScriptEvent;
@@ -21,5 +22,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         [Tooltip("Value the flag needs to reach for this to unlock (Flag mode).")]
         public bool gateFlagExpectedValue = true;
+        #endregion
     }
 }

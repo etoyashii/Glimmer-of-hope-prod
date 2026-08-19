@@ -5,6 +5,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     [Serializable]
     public class ConditionNode : DialogueNodeBase
     {
+        #region Public Properties
         public override DialogueNodeType NodeType => DialogueNodeType.Condition;
 
         public DialogueConditionType conditionType = DialogueConditionType.Flag;
@@ -17,5 +18,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         [UnityEngine.Tooltip("ID of the function registered with DialogueConditions.Register (Script Query mode).")]
         public string conditionScriptId;
+        #endregion
     }
 }

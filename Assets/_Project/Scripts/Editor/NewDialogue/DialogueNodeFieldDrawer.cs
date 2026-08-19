@@ -1,12 +1,12 @@
 using GlimmerOfHope.Gameplay.NewDialogue;
-
 using UnityEditor;
 using UnityEngine;
 
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Draws a node's fields depending on its type. Delegates anything about "pick the next node" to DialogueNodeLinkPicker.
+    /// Draws a node's fields in the Inspector, dispatched by its actual type. Delegates
+    /// anything about "pick the next node" to DialogueNodeLinkPicker.
     /// </summary>
     public class DialogueNodeFieldDrawer
     {
@@ -14,24 +14,22 @@ namespace GlimmerOfHope.Editor.NewDialogue
         private readonly DialogueNodeLinkPicker _linkPicker;
         #endregion
 
-        #region Constructor
+        #region Public Methods
         public DialogueNodeFieldDrawer(DialogueNodeLinkPicker linkPicker)
         {
             _linkPicker = linkPicker;
         }
-        #endregion
 
-        #region Public Methods
-        public void Draw(SerializedProperty node, DialogueNodeType type, string selfId)
+        public void Draw(SerializedProperty node, DialogueNodeBase dataNode, string selfId)
         {
-            switch (type)
+            switch (dataNode)
             {
-                case DialogueNodeType.Dialogue: DrawDialogueFields(node, selfId); break;
-                case DialogueNodeType.Start: DrawStartFields(node, selfId); break;
-                case DialogueNodeType.End: DrawEndFields(node); break;
-                case DialogueNodeType.Gate: DrawGateFields(node, selfId); break;
-                case DialogueNodeType.Condition: DrawConditionFields(node, selfId); break;
-                case DialogueNodeType.Action: DrawActionFields(node, selfId); break;
+                case DialogueLineNode: DrawDialogueFields(node, selfId); break;
+                case StartNode: DrawStartFields(node, selfId); break;
+                case EndNode: DrawEndFields(node); break;
+                case GateNode: DrawGateFields(node, selfId); break;
+                case ConditionNode: DrawConditionFields(node, selfId); break;
+                case ActionNode: DrawActionFields(node, selfId); break;
             }
         }
         #endregion
@@ -193,6 +191,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             if (choices.arraySize == 0) choices.InsertArrayElementAtIndex(0);
             _linkPicker.DrawNextDropdown(choices.GetArrayElementAtIndex(0), "Next", selfId);
         }
+
         #endregion
     }
 }

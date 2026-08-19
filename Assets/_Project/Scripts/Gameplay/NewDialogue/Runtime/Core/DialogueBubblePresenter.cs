@@ -5,24 +5,28 @@ using UnityEngine;
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// Owns everything about the dialogue bubble: which prefab to spawn, where to place it
+    /// Owns everything about the dialogue bubble, which prefab to spawn, where to place it
     /// (above the speaker or fixed on screen), and what to show in it.
-    ///
-    /// Plain C# class, not a MonoBehaviour — DialogueManager owns one instance and keeps it,
-    /// nothing extra to attach to a prefab.
     /// </summary>
     public class DialogueBubblePresenter
     {
+        #region Private Fields
         private GameObject _instance;
         private GameObject _prefabInUse;
         private IDialogueBubble _bubble;
 
         private Action _onContinue;
         private Action<int> _onChoiceSelected;
+        #endregion
+
+        #region Public Properties
 
         public bool IsRevealingText => _bubble != null && _bubble.IsRevealingText;
+        #endregion
 
-        /// <summary>Call once, typically from DialogueManager.Awake.</summary>
+        #region Public Methods
+
+        //Call once from DialogueManager.Awake.
         public void SetCallbacks(Action onContinue, Action<int> onChoiceSelected)
         {
             _onContinue = onContinue;
@@ -31,7 +35,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         public void CompleteTextReveal() => _bubble?.CompleteTextReveal();
 
-        /// <summary>Instantiates the right prefab if needed, or reuses the current one if it's already the same.</summary>
+        //Instantiates the right prefab if needed, or reuses the current one if it's already the same
         public void EnsureInstance(DialogueLineNode node)
         {
             if (node.bubblePrefab == null)
@@ -61,7 +65,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _bubble.Initialize(_onContinue, _onChoiceSelected);
         }
 
-        /// <summary>Parents the bubble above the speaker (world space) or detaches it for fixed UI.</summary>
+        //Parents the bubble above the speaker (world space) or detaches it for fixed UI
         public void Position(DialogueLineNode node)
         {
             if (_instance == null) return;
@@ -101,5 +105,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _prefabInUse = null;
             _bubble = null;
         }
+        #endregion
     }
 }

@@ -1,14 +1,17 @@
 using System;
 using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEngine.UIElements;
-
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     public static class DialogueNodeFieldBuilderFactory
     {
-        public static DialogueNodeFieldBuilderBase Create(DialogueNode node, VisualElement container, Action markDirty, Action<string> setTitle)
+        #region Public Methods
+        /// <summary>
+        /// Returns the field builder matching the node's type, or null if none exists.
+        /// </summary>
+        public static DialogueNodeFieldBuilderBase Create(DialogueNodeBase node, VisualElement container, Action markDirty, Action<string> setTitle)
         {
-            return node.nodeType switch
+            return node.NodeType switch
             {
                 DialogueNodeType.Dialogue => new DialogueFieldBuilder(node, container, markDirty, setTitle),
                 DialogueNodeType.Condition => new ConditionFieldBuilder(node, container, markDirty, setTitle),
@@ -19,5 +22,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 _ => null
             };
         }
+        #endregion
     }
 }

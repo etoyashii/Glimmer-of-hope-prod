@@ -6,6 +6,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     [Serializable]
     public class StartNode : DialogueNodeBase
     {
+        #region Public Properties
         public override DialogueNodeType NodeType => DialogueNodeType.Start;
 
         [Tooltip("How this dialogue can be started.")]
@@ -16,5 +17,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         [Tooltip("Trigger zone radius (used if Trigger = Trigger Zone, acts as a default for the scene collider).")]
         public float triggerZoneRadius = 2f;
+        #endregion
     }
 }

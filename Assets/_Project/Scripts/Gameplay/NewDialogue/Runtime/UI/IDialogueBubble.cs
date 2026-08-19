@@ -11,6 +11,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     /// </summary>
     public interface IDialogueBubble
     {
+        #region Private Methods
         void Initialize(Action onContinue, Action<int> onChoiceSelected);
 
         void SetText(string text, bool typewriter, float charsPerSecond);
@@ -28,5 +29,6 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         void Show();
         void Hide();
+        #endregion
     }
 }

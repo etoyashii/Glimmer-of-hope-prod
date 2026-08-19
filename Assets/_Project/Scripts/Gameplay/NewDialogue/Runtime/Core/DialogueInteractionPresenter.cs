@@ -21,16 +21,12 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         #endregion
 
-        #region Constructor
+        #region Public Methods
 
         public DialogueInteractionPresenter(GameObject prefab)
         {
             _prefab = prefab;
         }
-
-        #endregion
-
-        #region Public Methods
 
         //Call once,from DialogueManager.Awake
         public void SetCallbacks(Action onContinue, Action<int> onChoiceSelected)

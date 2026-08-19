@@ -10,19 +10,24 @@ namespace GlimmerOfHope.Editor.NewDialogue
 {
     public class DialogueNodeView : Node
     {
-        public DialogueNode DialogueNode { get; }
+        #region Public Properties
+        public DialogueNodeBase DialogueNode { get; }
         public Port InputPort { get; private set; }
         public List<Port> OutputPorts { get; } = new List<Port>();
+        #endregion
 
+        #region Private Fields
         private readonly DialogueGraph _graph;
         private Button _addChoiceButton;
+        #endregion
 
-        public DialogueNodeView(DialogueNode dialogueNode, DialogueGraph graph)
+        #region Public Methods
+        public DialogueNodeView(DialogueNodeBase dialogueNode, DialogueGraph graph)
         {
             DialogueNode = dialogueNode;
             _graph = graph;
             title = BuildTitle();
-            titleContainer.style.backgroundColor = new StyleColor(GetTitleColor(dialogueNode.nodeType));
+            titleContainer.style.backgroundColor = new StyleColor(GetTitleColor(dialogueNode.NodeType));
 
             BuildInputPort();
             BuildOutputPorts();
@@ -34,21 +39,24 @@ namespace GlimmerOfHope.Editor.NewDialogue
             RefreshPorts();
         }
 
-
         public override void SetPosition(Rect newPos)
         {
             base.SetPosition(newPos);
             DialogueNode.editorPosition = new Vector2(newPos.xMin, newPos.yMin);
             MarkDirty();
         }
+        #endregion
 
+        #region Private Methods
+        // Dialogue nodes use their speaker as the title, all other types use their node type name
         private string BuildTitle()
         {
-            if (DialogueNode.nodeType == DialogueNodeType.Dialogue)
-                return string.IsNullOrEmpty(DialogueNode.speakerId) ? "(no speaker)" : DialogueNode.speakerId;
+            if (DialogueNode is DialogueLineNode lineNode)
+                return string.IsNullOrEmpty(lineNode.speakerId) ? "(no speaker)" : lineNode.speakerId;
 
-            return DialogueNode.nodeType.ToString().ToUpper();
+            return DialogueNode.NodeType.ToString().ToUpper();
         }
+
         private static Color GetTitleColor(DialogueNodeType type) => type switch
         {
             DialogueNodeType.Start => new Color(0.18f, 0.45f, 0.2f),
@@ -58,20 +66,25 @@ namespace GlimmerOfHope.Editor.NewDialogue
             DialogueNodeType.Action => new Color(0.55f, 0.4f, 0.15f),
             _ => new Color(0.2f, 0.25f, 0.35f)
         };
+
+        // Start nodes have no input: they're always the entry point
         private void BuildInputPort()
         {
-            if (DialogueNode.nodeType == DialogueNodeType.Start) return;
+            if (DialogueNode is StartNode) return;
 
             InputPort = InstantiatePort(Orientation.Horizontal, Direction.Input, Port.Capacity.Multi, typeof(bool));
             InputPort.portName = "";
             inputContainer.Add(InputPort);
         }
 
+        // End nodes have no outputs. Dialogue nodes with choices get a dynamic
+        // list of choice ports plus an "add" button; everything else gets one
+        // fixed port per existing choice 
         private void BuildOutputPorts()
         {
-            if (DialogueNode.nodeType == DialogueNodeType.End) return;
+            if (DialogueNode is EndNode) return;
 
-            if (DialogueNode.nodeType == DialogueNodeType.Dialogue && DialogueNode.hasChoices)
+            if (DialogueNode is DialogueLineNode lineNode && lineNode.hasChoices)
             {
                 foreach (var choice in DialogueNode.choices)
                     AddChoicePort(choice);
@@ -81,14 +94,13 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 return;
             }
 
+            bool isCondition = DialogueNode is ConditionNode;
             for (int i = 0; i < DialogueNode.choices.Count; i++)
             {
                 var choice = DialogueNode.choices[i];
                 var port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
                 port.userData = choice;
-                port.portName = DialogueNode.nodeType == DialogueNodeType.Condition
-                    ? (i == 0 ? "True" : "False")
-                    : "";
+                port.portName = isCondition ? (i == 0 ? "True" : "False") : "";
 
                 OutputPorts.Add(port);
                 outputContainer.Add(port);
@@ -105,6 +117,8 @@ namespace GlimmerOfHope.Editor.NewDialogue
             MarkDirty();
         }
 
+        // Builds a choice port with an inline text field (choice label) and remove button,
+        // inserted before the "+ Choice" button so it stays at the bottom of the list
         private void AddChoicePort(DialogueChoice choice)
         {
             var port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
@@ -135,6 +149,8 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 outputContainer.Add(port);
         }
 
+        // Disconnects any edge attached to this port before removing it,
+        // so the graph doesn't end up with a dangling edge
         private void RemoveChoicePort(DialogueChoice choice, Port port)
         {
             foreach (var edge in port.connections.ToList())
@@ -154,5 +170,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
         }
 
         private void MarkDirty() => EditorUtility.SetDirty(_graph);
+        #endregion
     }
 }
