@@ -139,7 +139,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             var removeButton = new Button(() => RemoveChoicePort(choice, port)) { text = "x" };
             row.Add(removeButton);
 
-            port.contentContainer.Insert(0, row);
+            port.contentContainer.Add(row); 
 
             OutputPorts.Add(port);
 
