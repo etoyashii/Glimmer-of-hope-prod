@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
@@ -9,12 +10,16 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
     [Serializable]
     public class DialogueChoice
     {
-        #region Serialized Fields
+        #region Public Properties
         [Tooltip("Text shown as a choice option. Leave empty for a plain 'continue' link (no visible button).")]
         public string choiceText;
 
+        [Tooltip("Localized version of choiceText. Once migration is complete, this replaces the plain field above.")]
+        public LocalizedString localizedChoiceText;
+
         [Tooltip("ID of the next DialogueNode if this choice is picked. Leave empty to end the dialogue here.")]
         public string nextNodeId;
+
         #endregion
     }
 }

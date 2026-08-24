@@ -1,11 +1,12 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// Owns everything about the dialogue bubble, which prefab to spawn, where to place it
+    /// Owns everything about the dialogue bubble: which prefab to spawn, where to place it
     /// (above the speaker or fixed on screen), and what to show in it.
     /// </summary>
     public class DialogueBubblePresenter
@@ -22,11 +23,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #region Public Properties
 
         public bool IsRevealingText => _bubble != null && _bubble.IsRevealingText;
+
         #endregion
 
         #region Public Methods
-
-        //Call once from DialogueManager.Awake.
+        //Call once, typically from DialogueManager
         public void SetCallbacks(Action onContinue, Action<int> onChoiceSelected)
         {
             _onContinue = onContinue;
@@ -91,8 +92,16 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         public void SetContent(DialogueLineNode node, IReadOnlyList<string> choiceLabels)
         {
             if (_bubble == null) return;
-            _bubble.SetText(node.text, node.useTypewriter, node.typewriterCharsPerSecond);
+            string resolvedText = ResolveText(node.localizedText, node.text);
+            _bubble.SetText(resolvedText, node.useTypewriter, node.typewriterCharsPerSecond);
             _bubble.SetChoices(choiceLabels);
+        }
+
+        //Uses the localized entry once it's set up
+        private static string ResolveText(LocalizedString localized, string fallback)
+        {
+            Debug.Log($"[DEBUG] SelectedLocale = {UnityEngine.Localization.Settings.LocalizationSettings.SelectedLocale?.Identifier.Code ?? "NULL"}, TableReference = {localized?.TableReference}, TableEntryReference = {localized?.TableEntryReference}, IsEmpty = {localized?.IsEmpty}");
+            return localized != null && !localized.IsEmpty ? localized.GetLocalizedString() : fallback;
         }
 
         public void Show() => _bubble?.Show();

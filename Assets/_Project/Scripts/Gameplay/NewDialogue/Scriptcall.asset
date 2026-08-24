@@ -17,7 +17,7 @@ MonoBehaviour:
   _typedNodes:
   - rid: 3506134069474492514
   - rid: 3506134069474492515
-  - rid: 3506134069474492516
+  - rid: 3506134133705277669
   references:
     version: 2
     RefIds:
@@ -27,7 +27,16 @@ MonoBehaviour:
         nodeId: c0d142cf
         choices:
         - choiceText: 
-          nextNodeId: fa28b9e2
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_c0d142cf_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: f04dbb4b
         editorPosition: {x: -235, y: 462}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
@@ -37,25 +46,38 @@ MonoBehaviour:
       data:
         nodeId: c5ae5884
         choices: []
-        editorPosition: {x: 712.4654, y: 461.85504}
+        editorPosition: {x: 904, y: 474}
         outcomeId: 
-    - rid: 3506134069474492516
+    - rid: 3506134133705277669
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: fa28b9e2
+        nodeId: f04dbb4b
         choices:
         - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_f04dbb4b_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
           nextNodeId: c5ae5884
-        editorPosition: {x: 17.629185, y: 461.74103}
+        editorPosition: {x: 60.96, y: 311}
         speakerId: Sphere
-        text: "Hello in this script graph dialogue . BLUB BLUB BLUB BLUB BLUB BLUB
-          BLUB BLUB BLUB BLUB\n BLUB BLUB BLUB BLUBBLUB BLUB BLUB BLUB BLUB BLUBBLUB
-          BLUB BLUB BLUB BLUB BLUB\nBLUB BLUB BLUB BLUB BLUB BLUBBLUB BLUB BLUB BLUB
-          BLUB BLUBBLUB BLUB BLUB BLUB \nBLUB BLUBBLUB BLUB BLUB BLUB BLUB BLUBBLUB
-          BLUB BLUB BLUB BLUB BLUBBLUB BLUB \nBLUB BLUB BLUB BLUBBLUB BLUB BLUB BLUB
-          BLUB BLUBBLUB BLUB BLUB BLUB BLUB BLUB\nBLUB BLUB BLUB BLUB BLUB BLUB"
-        bubblePrefab: {fileID: 8710288237247528408, guid: 6294f555077548e42abf66e8383d1b42, type: 3}
-        followSpeaker: 1
+        text: sdmfjnhsdfjsdfsdifjsdqfsdfsdqfqsdfsdqfsdqfsdqfsdfsdfsdq
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_f04dbb4b
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30

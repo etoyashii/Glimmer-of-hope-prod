@@ -5,17 +5,20 @@ using UnityEngine;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Lays out imported nodes by walking the graph from Start (breadth-first), instead of
-    /// just spacing them out in CSV row order. Column = distance from Start. Row: a plain
-    /// continuation stays on the same line as its parent; a Condition's True branch goes up
-    /// and False goes down; any other multi-choice node spreads its targets vertically,
-    /// centered on the parent's row.
+    /// Lays out imported nodes by walking the graph from Start , instead ofjust spacing them out in CSV row order.
+    /// Column = distance from Start
+    /// continuation stays on the same line as its parent
+    /// a Condition's True branch goes up and False goes down, any other multi-choice node spreads its targets vertically
     /// </summary>
     public static class DialogueScriptLayoutEngine
     {
+        #region Private Fields
         private const float ColumnSpacing = 300f;
         private const float RowSpacing = 140f;
 
+        #endregion
+
+        #region Public Methods
         public static void Layout(StartNode start, List<DialogueNodeBase> nodes)
         {
             var byId = new Dictionary<string, DialogueNodeBase>();
@@ -36,6 +39,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             PlaceOrphans(nodes, visited);
         }
+        #endregion
+
+        #region Private Methods
 
         private static void PlaceChildren(
             DialogueNodeBase node, int depth, float y,
@@ -64,13 +70,13 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 return choiceIndex == 0 ? parentY - RowSpacing : parentY + RowSpacing;
 
             if (choiceCount <= 1)
-                return parentY; // plain continuation: same line as the parent
+                return parentY; 
 
             float middle = (choiceCount - 1) / 2f;
             return parentY + (choiceIndex - middle) * RowSpacing;
         }
 
-        /// <summary>Nodes never reached from Start (typo'd links, unused branches) get a fallback row below everything else.</summary>
+        //Nodes never reached from Start get a fallback row below everything else
         private static void PlaceOrphans(List<DialogueNodeBase> nodes, HashSet<string> visited)
         {
             float maxY = 0f;
@@ -87,5 +93,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 orphanX += ColumnSpacing;
             }
         }
+        #endregion
     }
 }

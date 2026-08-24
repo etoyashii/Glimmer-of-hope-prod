@@ -3,12 +3,11 @@ using GlimmerOfHope.Gameplay.NewDialogue;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Turns one row's Type/Speaker/Text columns into the matching node, with all the
-    /// type-specific settings left on their default values — Choices/links are filled in
-    /// separately afterwards by DialogueScriptLinkResolver.
+    /// Turns one row's Type/Speaker/Text columns into the matching node, with all the type-specific settings on their default values 
     /// </summary>
     public static class DialogueScriptNodeBuilder
     {
+        #region Public Methods
         public static DialogueNodeBase Build(string typeRaw, string speaker, string text)
         {
             string type = typeRaw.Trim();
@@ -59,5 +58,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
                     return new DialogueLineNode { speakerId = speaker, text = text };
             }
         }
+        #endregion
     }
 }

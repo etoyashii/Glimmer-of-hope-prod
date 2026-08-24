@@ -7,16 +7,16 @@ using UnityEngine;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Builds readable node labels (for foldouts and dropdowns) and draws the "next node" dropdown. 
+    /// Builds readable node labels and draws the "next node"dropdown. 
     /// </summary>
     public class DialogueNodeLinkPicker
     {
-        #region private fields
+        #region Private Fields
         private readonly DialogueGraph _graph;
+
         #endregion
 
         #region Public Methods
-
         public DialogueNodeLinkPicker(DialogueGraph graph)
         {
             _graph = graph;
@@ -33,6 +33,18 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             int newIndex = EditorGUILayout.Popup(label, currentIndex, labels, options);
             nextProperty.stringValue = ids[newIndex];
+        }
+
+        //Same as DrawNextDropdown but writes directly to a DialogueChoice object instead of a SerializedProperty
+        public void DrawNextDropdownRaw(DialogueChoice choice, string label, params GUILayoutOption[] options)
+        {
+            var (labels, ids) = BuildOptions();
+
+            int currentIndex = Array.IndexOf(ids, choice.nextNodeId);
+            if (currentIndex < 0) currentIndex = 0;
+
+            int newIndex = EditorGUILayout.Popup(label, currentIndex, labels, options);
+            choice.nextNodeId = ids[newIndex];
         }
 
         //Readable preview of a node (e.g. "[Dialogue] blacksmith: Hello there... (a3f92e1c)").
@@ -61,7 +73,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
         #endregion
 
         #region Private Methods
-
         private (string[] labels, string[] ids) BuildOptions()
         {
             var labels = new List<string> { "(none / implicit end)" };
@@ -80,6 +91,5 @@ namespace GlimmerOfHope.Editor.NewDialogue
         private static string Truncate(string text, int max) => text.Length <= max ? text : text.Substring(0, max) + "…";
 
         #endregion
-
     }
 }

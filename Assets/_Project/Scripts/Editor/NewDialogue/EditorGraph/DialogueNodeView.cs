@@ -48,7 +48,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
         #endregion
 
         #region Private Methods
-        // Dialogue nodes use their speaker as the title, all other types use their node type name
         private string BuildTitle()
         {
             if (DialogueNode is DialogueLineNode lineNode)
@@ -67,7 +66,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
             _ => new Color(0.2f, 0.25f, 0.35f)
         };
 
-        // Start nodes have no input: they're always the entry point
         private void BuildInputPort()
         {
             if (DialogueNode is StartNode) return;
@@ -77,9 +75,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
             inputContainer.Add(InputPort);
         }
 
-        // End nodes have no outputs. Dialogue nodes with choices get a dynamic
-        // list of choice ports plus an "add" button; everything else gets one
-        // fixed port per existing choice 
         private void BuildOutputPorts()
         {
             if (DialogueNode is EndNode) return;
@@ -110,6 +105,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
         private void OnAddChoiceClicked()
         {
             var newChoice = new DialogueChoice { choiceText = "", nextNodeId = "" };
+            int index = DialogueNode.choices.Count;
+            DialogueLocalizationSync.CreateEntry(out newChoice.localizedChoiceText, $"choice_{DialogueNode.nodeId}_{index}");
+
             DialogueNode.choices.Add(newChoice);
             AddChoicePort(newChoice);
             RefreshExpandedState();
@@ -117,8 +115,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
             MarkDirty();
         }
 
-        // Builds a choice port with an inline text field (choice label) and remove button,
-        // inserted before the "+ Choice" button so it stays at the bottom of the list
         private void AddChoicePort(DialogueChoice choice)
         {
             var port = InstantiatePort(Orientation.Horizontal, Direction.Output, Port.Capacity.Single, typeof(bool));
@@ -127,11 +123,12 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             var row = new VisualElement { style = { flexDirection = FlexDirection.Row } };
 
-            var textField = new TextField { value = choice.choiceText };
+            var textField = new TextField { value = DialogueLocalizationSync.GetSourceValue(choice.localizedChoiceText, choice.choiceText) };
             textField.style.minWidth = 90;
             textField.RegisterValueChangedCallback(evt =>
             {
                 choice.choiceText = evt.newValue;
+                DialogueLocalizationSync.UpdateSourceValue(choice.localizedChoiceText, evt.newValue);
                 MarkDirty();
             });
             row.Add(textField);
@@ -139,7 +136,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             var removeButton = new Button(() => RemoveChoicePort(choice, port)) { text = "x" };
             row.Add(removeButton);
 
-            port.contentContainer.Add(row); 
+            port.contentContainer.Add(row);
 
             OutputPorts.Add(port);
 
@@ -149,8 +146,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 outputContainer.Add(port);
         }
 
-        // Disconnects any edge attached to this port before removing it,
-        // so the graph doesn't end up with a dangling edge
         private void RemoveChoicePort(DialogueChoice choice, Port port)
         {
             foreach (var edge in port.connections.ToList())
@@ -160,6 +155,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 edge.RemoveFromHierarchy();
             }
 
+            DialogueLocalizationSync.RemoveEntry(choice.localizedChoiceText);
             DialogueNode.choices.Remove(choice);
             OutputPorts.Remove(port);
             outputContainer.Remove(port);

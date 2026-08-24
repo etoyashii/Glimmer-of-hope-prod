@@ -1,10 +1,11 @@
 using System.Collections.Generic;
+using UnityEngine.Localization;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// Knows how to present a DialogueLineNode ,where the text goes, where the choices go,
-    /// depending on whether the bubble follows the speaker or not.
+    /// Knows how to present a DialogueLineNode: where the text goes, where the choices go,
+    /// depending on whether the bubble follows the speaker or not. 
     /// </summary>
     public class DialogueNodePresenter
     {
@@ -14,6 +15,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         #endregion
 
         #region Public Methods
+
         public DialogueNodePresenter(DialogueBubblePresenter bubble, DialogueInteractionPresenter interaction)
         {
             _bubble = bubble;
@@ -45,14 +47,23 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
             _bubble.Show();
         }
+
         #endregion
 
         #region Private Methods
         private static List<string> BuildChoiceLabels(DialogueLineNode node)
         {
             var labels = new List<string>(node.choices.Count);
-            foreach (var choice in node.choices) labels.Add(choice.choiceText);
+            foreach (var choice in node.choices) labels.Add(ResolveChoiceText(choice));
             return labels;
+        }
+
+        //Uses the localized entry once it's set up.
+        private static string ResolveChoiceText(DialogueChoice choice)
+        {
+            return choice.localizedChoiceText != null && !choice.localizedChoiceText.IsEmpty
+                ? choice.localizedChoiceText.GetLocalizedString()
+                : choice.choiceText;
         }
         #endregion
     }

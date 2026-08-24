@@ -4,12 +4,12 @@ using GlimmerOfHope.Gameplay.NewDialogue;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Fills in the choices/links for every node, in one pass over the sheet's rows.
-    /// Empty Choices = auto-continue to the row directly below (or an implicit end if it's
-    /// the last row). Condition nodes always need exactly two explicit targets.
+    /// Fills in the choices/links for every node
+    /// Empty Choices = auto-continue to the row directly below
     /// </summary>
     public static class DialogueScriptLinkResolver
     {
+        #region Public Methods
         public static void ResolveAll(List<DialogueNodeBase> nodesInOrder, List<string> choicesRaw)
         {
             for (int i = 0; i < nodesInOrder.Count; i++)
@@ -29,38 +29,51 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 ResolveDefault(node, parsed, nextRowId);
             }
         }
+        #endregion
+
+        #region Private Methods
 
         private static void ResolveCondition(DialogueNodeBase node, List<(string text, string target)> parsed)
         {
             if (parsed.Count < 2)
             {
                 UnityEngine.Debug.LogWarning($"[DialogueScriptImporter] Condition row '{node.nodeId}' needs exactly two Choices (true|false); left unlinked.");
-                node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = "" });
-                node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = "" });
+                AddSyncedChoice(node, "", "");
+                AddSyncedChoice(node, "", "");
                 return;
             }
 
-            node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = parsed[0].target });
-            node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = parsed[1].target });
+            AddSyncedChoice(node, "", parsed[0].target);
+            AddSyncedChoice(node, "", parsed[1].target);
         }
 
         private static void ResolveDefault(DialogueNodeBase node, List<(string text, string target)> parsed, string nextRowId)
         {
             if (parsed.Count == 0)
             {
-                node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = nextRowId });
+                AddSyncedChoice(node, "", nextRowId);
                 return;
             }
 
             bool anyRealChoiceText = false;
             foreach (var (text, target) in parsed)
             {
-                node.choices.Add(new DialogueChoice { choiceText = text, nextNodeId = target });
+                AddSyncedChoice(node, text, target);
                 if (!string.IsNullOrEmpty(text)) anyRealChoiceText = true;
             }
 
             if (node is DialogueLineNode lineNode)
                 lineNode.hasChoices = anyRealChoiceText;
         }
+
+        private static void AddSyncedChoice(DialogueNodeBase node, string text, string target)
+        {
+            var choice = new DialogueChoice { choiceText = text, nextNodeId = target };
+            int index = node.choices.Count;
+            DialogueLocalizationSync.CreateEntry(out choice.localizedChoiceText, $"choice_{node.nodeId}_{index}", text);
+            node.choices.Add(choice);
+        }
+
+        #endregion
     }
 }

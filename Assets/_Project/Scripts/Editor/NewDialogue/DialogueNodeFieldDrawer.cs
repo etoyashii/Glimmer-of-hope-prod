@@ -12,19 +12,21 @@ namespace GlimmerOfHope.Editor.NewDialogue
     {
         #region Private Fields
         private readonly DialogueNodeLinkPicker _linkPicker;
+        private readonly DialogueChoiceListDrawer _choiceListDrawer;
         #endregion
 
         #region Public Methods
-        public DialogueNodeFieldDrawer(DialogueNodeLinkPicker linkPicker)
+        public DialogueNodeFieldDrawer(DialogueGraph graph, DialogueNodeLinkPicker linkPicker)
         {
             _linkPicker = linkPicker;
+            _choiceListDrawer = new DialogueChoiceListDrawer(graph, linkPicker);
         }
 
         public void Draw(SerializedProperty node, DialogueNodeBase dataNode, string selfId)
         {
             switch (dataNode)
             {
-                case DialogueLineNode: DrawDialogueFields(node, selfId); break;
+                case DialogueLineNode lineNode: DrawDialogueFields(node, lineNode, selfId); break;
                 case StartNode: DrawStartFields(node, selfId); break;
                 case EndNode: DrawEndFields(node); break;
                 case GateNode: DrawGateFields(node, selfId); break;
@@ -35,7 +37,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
         #endregion
 
         #region Private Methods
-        private void DrawDialogueFields(SerializedProperty node, string selfId)
+        private void DrawDialogueFields(SerializedProperty node, DialogueLineNode dataNode, string selfId)
         {
             var speakerId = node.FindPropertyRelative("speakerId");
             var text = node.FindPropertyRelative("text");
@@ -45,10 +47,19 @@ namespace GlimmerOfHope.Editor.NewDialogue
             var useTypewriter = node.FindPropertyRelative("useTypewriter");
             var typewriterSpeed = node.FindPropertyRelative("typewriterCharsPerSecond");
             var hasChoices = node.FindPropertyRelative("hasChoices");
-            var choices = node.FindPropertyRelative("choices");
 
             EditorGUILayout.PropertyField(speakerId, new GUIContent("Speaker ID"));
-            EditorGUILayout.PropertyField(text, new GUIContent("Text"));
+
+            EditorGUILayout.LabelField("Text");
+            string resolvedText = DialogueLocalizationSync.GetSourceValue(dataNode.localizedText, text.stringValue);
+            EditorGUI.BeginChangeCheck();
+            string newText = EditorGUILayout.TextArea(resolvedText, GUILayout.MinHeight(40));
+            if (EditorGUI.EndChangeCheck())
+            {
+                text.stringValue = newText;
+                DialogueLocalizationSync.UpdateSourceValue(dataNode.localizedText, newText);
+            }
+
             EditorGUILayout.PropertyField(bubblePrefab, new GUIContent("Bubble Prefab"));
             EditorGUILayout.PropertyField(followSpeaker, new GUIContent("Follows Speaker"));
             if (followSpeaker.boolValue)
@@ -60,45 +71,8 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             EditorGUILayout.PropertyField(hasChoices, new GUIContent("Has Choices?"));
 
-            if (hasChoices.boolValue) DrawMultipleChoices(choices, selfId);
-            else DrawSingleContinuation(choices, selfId);
-        }
-
-        private void DrawMultipleChoices(SerializedProperty choices, string selfId)
-        {
-            EditorGUILayout.LabelField("Choices", EditorStyles.boldLabel);
-            for (int i = 0; i < choices.arraySize; i++)
-            {
-                var choice = choices.GetArrayElementAtIndex(i);
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(choice.FindPropertyRelative("choiceText"), GUIContent.none);
-                _linkPicker.DrawNextDropdown(choice, "→", selfId, GUILayout.Width(260));
-                if (GUILayout.Button("x", GUILayout.Width(22)))
-                {
-                    choices.DeleteArrayElementAtIndex(i);
-                    EditorGUILayout.EndHorizontal();
-                    break;
-                }
-                EditorGUILayout.EndHorizontal();
-            }
-
-            if (GUILayout.Button("+ Choice", GUILayout.Width(100)))
-            {
-                choices.InsertArrayElementAtIndex(choices.arraySize);
-                var newChoice = choices.GetArrayElementAtIndex(choices.arraySize - 1);
-                newChoice.FindPropertyRelative("choiceText").stringValue = "";
-                newChoice.FindPropertyRelative("nextNodeId").stringValue = "";
-            }
-        }
-
-        private void DrawSingleContinuation(SerializedProperty choices, string selfId)
-        {
-            if (choices.arraySize == 0) choices.InsertArrayElementAtIndex(0);
-            while (choices.arraySize > 1) choices.DeleteArrayElementAtIndex(choices.arraySize - 1);
-
-            var onlyChoice = choices.GetArrayElementAtIndex(0);
-            onlyChoice.FindPropertyRelative("choiceText").stringValue = "";
-            _linkPicker.DrawNextDropdown(onlyChoice, "Next", selfId);
+            if (hasChoices.boolValue) _choiceListDrawer.DrawMultipleChoices(dataNode, selfId);
+            else _choiceListDrawer.DrawSingleContinuation(dataNode, selfId);
         }
 
         private void DrawStartFields(SerializedProperty node, string selfId)
@@ -191,7 +165,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
             if (choices.arraySize == 0) choices.InsertArrayElementAtIndex(0);
             _linkPicker.DrawNextDropdown(choices.GetArrayElementAtIndex(0), "Next", selfId);
         }
-
         #endregion
     }
 }

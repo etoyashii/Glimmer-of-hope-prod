@@ -4,11 +4,11 @@ using System.Collections.Generic;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Parses the Choices column: "Yes->take|No->end_refuse", or "->target" for a plain
-    /// continuation, or "Text->" for a choice that ends the dialogue implicitly.
+    /// Parses the Choices column: "Yes->take|No->end_refuse", or "->target" for a continuation, or "Text->" for a choice that ends the dialogue implicitly.
     /// </summary>
     public static class DialogueScriptChoiceParser
     {
+        #region Public Methods
         public static List<(string text, string target)> Parse(string raw)
         {
             var result = new List<(string text, string target)>();
@@ -22,7 +22,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 int arrowIndex = trimmed.IndexOf("->", StringComparison.Ordinal);
                 if (arrowIndex < 0)
                 {
-                    result.Add(("", trimmed)); // malformed but recoverable: treat as a bare target
+                    result.Add(("", trimmed)); // malformed but recoverable: treat as a target
                     continue;
                 }
 
@@ -33,5 +33,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             return result;
         }
+        #endregion
     }
 }

@@ -1,4 +1,4 @@
-using System.IO;
+ï»¿using System.IO;
 using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEditor;
 using UnityEngine;
@@ -7,6 +7,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
 {
     public class DialogueScriptImporterWindow : EditorWindow
     {
+        #region Private Fields
         private enum Mode { SingleFile, Folder }
 
         private Mode _mode = Mode.SingleFile;
@@ -15,9 +16,13 @@ namespace GlimmerOfHope.Editor.NewDialogue
         private string _csvPath;
         private DialogueGraph _targetGraph;
 
-        // Folder (batch, one graph per feuille) mode
+        // Folder mode
         private string _sourceFolder;
         private string _outputFolder;
+
+        #endregion
+
+        #region Public Methods
 
         [MenuItem("Window/Dialogue System/Import From CSV (Script Format)...")]
         public static void Open()
@@ -26,6 +31,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
             window.titleContent = new GUIContent("Import Dialogue CSV");
             window.minSize = new Vector2(420, 220);
         }
+        #endregion
+
+        #region Unity Lifecycle
 
         private void OnGUI()
         {
@@ -40,6 +48,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
             else
                 DrawFolderGUI();
         }
+        #endregion
+
+        #region Private Methods
 
         private void DrawSingleFileGUI()
         {
@@ -84,7 +95,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             if (!string.IsNullOrEmpty(_sourceFolder) && Directory.Exists(_sourceFolder))
                 csvCount = Directory.GetFiles(_sourceFolder, "*.csv", SearchOption.TopDirectoryOnly).Length;
             if (!string.IsNullOrEmpty(_sourceFolder))
-                EditorGUILayout.LabelField(" ", $"{csvCount} CSV file(s) found — {csvCount} graph(s) will be created.");
+                EditorGUILayout.LabelField(" ", $"{csvCount} CSV file(s) found ï¿½ {csvCount} graph(s) will be created.");
 
             EditorGUILayout.Space();
             EditorGUILayout.BeginHorizontal();
@@ -95,13 +106,14 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 if (!string.IsNullOrEmpty(picked)) _outputFolder = picked;
             }
             EditorGUILayout.EndHorizontal();
-            EditorGUILayout.HelpBox("Each import creates NEW graph assets (uniquely named if one already exists) — nothing existing gets overwritten.", MessageType.Warning);
+            EditorGUILayout.HelpBox("Each import creates NEW graph assets (uniquely named if one already exists) ï¿½ nothing existing gets overwritten.", MessageType.Warning);
 
             EditorGUILayout.Space();
             GUI.enabled = csvCount > 0 && !string.IsNullOrEmpty(_outputFolder);
             if (GUILayout.Button($"Import {csvCount} Feuille(s)", GUILayout.Height(28)))
-                DialogueScriptImporter.ImportFolder(_sourceFolder, _outputFolder);
+                DialogueScriptFolderImporter.ImportFolder(_sourceFolder, _outputFolder);
             GUI.enabled = true;
         }
+        #endregion
     }
 }

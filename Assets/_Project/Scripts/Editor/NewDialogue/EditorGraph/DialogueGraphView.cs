@@ -10,10 +10,12 @@ namespace GlimmerOfHope.Editor.NewDialogue
 {
     public class DialogueGraphView : GraphView
     {
+
         #region Private Fields
         private readonly DialogueGraph _graph;
         private readonly Dictionary<string, List<Port>> _outputPorts = new Dictionary<string, List<Port>>();
         private readonly Dictionary<string, Port> _inputPorts = new Dictionary<string, Port>();
+
         #endregion
 
         #region Public Methods
@@ -39,47 +41,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
             PopulateView();
         }
 
-        // Only allow connecting output <-> input ports on different nodes
-        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
-        {
-            return ports.ToList().Where(port =>
-                port.direction != startPort.direction &&
-                port.node != startPort.node
-            ).ToList();
-        }
-
-        /// <summary>
-        /// Creates a new node of the given type at the given position and adds it to the graph.
-        /// </summary>
-        public void CreateNewNode(Vector2 localPosition, DialogueNodeType type, bool hasChoices = false)
-        {
-            DialogueNodeBase newNode = type switch
-            {
-                DialogueNodeType.Dialogue => new DialogueLineNode { hasChoices = hasChoices },
-                DialogueNodeType.Start => new StartNode(),
-                DialogueNodeType.End => new EndNode(),
-                DialogueNodeType.Gate => new GateNode(),
-                DialogueNodeType.Condition => new ConditionNode(),
-                DialogueNodeType.Action => new ActionNode(),
-                _ => null
-            };
-            if (newNode == null) return;
-
-            newNode.nodeId = System.Guid.NewGuid().ToString("N").Substring(0, 8);
-            newNode.editorPosition = localPosition;
-
-            InitializeDefaultChoices(newNode, hasChoices);
-
-            _graph.TypedNodes.Add(newNode);
-            EditorUtility.SetDirty(_graph);
-
-            PopulateView();
-        }
         #endregion
 
         #region Private Methods
-        // Rebuilds the entire view from the graph asset: clears existing elements,
-        // recreates node views, then reconnects edges (nodes must all exist before linking).
         private void PopulateView()
         {
             foreach (var element in graphElements.ToList())
@@ -110,7 +74,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
             _outputPorts[dialogueNode.nodeId] = node.OutputPorts;
         }
 
-        // Draws an edge for each choice that already points to a valid target node
         private void ConnectExistingLink(DialogueNodeBase dialogueNode)
         {
             if (!_outputPorts.TryGetValue(dialogueNode.nodeId, out var outputPorts)) return;
@@ -126,6 +89,13 @@ namespace GlimmerOfHope.Editor.NewDialogue
             }
         }
 
+        public override List<Port> GetCompatiblePorts(Port startPort, NodeAdapter nodeAdapter)
+        {
+            return ports.ToList().Where(port =>
+                port.direction != startPort.direction &&
+                port.node != startPort.node
+            ).ToList();
+        }
 
         private GraphViewChange OnGraphViewChanged(GraphViewChange change)
         {
@@ -144,7 +114,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
                     if (element is Edge edge)
                         HandleEdgeRemoved(edge);
                     else if (element is DialogueNodeView nodeView)
-                        _graph.TypedNodes.Remove(nodeView.DialogueNode);
+                        RemoveNodeAndSync(nodeView.DialogueNode);
                 }
             }
 
@@ -152,41 +122,56 @@ namespace GlimmerOfHope.Editor.NewDialogue
             return change;
         }
 
-        // Syncs the underlying choice's nextNodeId when the user draws a new edge
         private void HandleEdgeCreated(Edge edge)
         {
             if (edge.output.userData is DialogueChoice choice && edge.input.node is DialogueNodeView targetView)
                 choice.nextNodeId = targetView.DialogueNode.nodeId;
         }
 
-        // Clears the underlying choice's nextNodeId when the user deletes an edge
         private void HandleEdgeRemoved(Edge edge)
         {
             if (edge.output.userData is DialogueChoice choice)
                 choice.nextNodeId = "";
         }
 
-       
-
-        // Seeds each node type with its default choice slots 
-        private static void InitializeDefaultChoices(DialogueNodeBase node, bool hasChoices)
+        //Removes a node from the graph AND its localization entries (line text + every choice's text)
+        private void RemoveNodeAndSync(DialogueNodeBase node)
         {
-            switch (node)
+            if (node is DialogueLineNode lineNode)
+                DialogueLocalizationSync.RemoveEntry(lineNode.localizedText);
+
+            foreach (var choice in node.choices)
+                DialogueLocalizationSync.RemoveEntry(choice.localizedChoiceText);
+
+            _graph.TypedNodes.Remove(node);
+        }
+
+        public void CreateNewNode(Vector2 localPosition, DialogueNodeType type, bool hasChoices = false)
+        {
+            DialogueNodeBase newNode = type switch
             {
-                case DialogueLineNode:
-                    int count = hasChoices ? 2 : 1;
-                    for (int i = 0; i < count; i++)
-                        node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = "" });
-                    break;
-                case GateNode:
-                case ActionNode:
-                    node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = "" });
-                    break;
-                case ConditionNode:
-                    node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = "" });
-                    node.choices.Add(new DialogueChoice { choiceText = "", nextNodeId = "" });
-                    break;
-            }
+                DialogueNodeType.Dialogue => new DialogueLineNode { hasChoices = hasChoices },
+                DialogueNodeType.Start => new StartNode(),
+                DialogueNodeType.End => new EndNode(),
+                DialogueNodeType.Gate => new GateNode(),
+                DialogueNodeType.Condition => new ConditionNode(),
+                DialogueNodeType.Action => new ActionNode(),
+                _ => null
+            };
+            if (newNode == null) return;
+
+            newNode.nodeId = System.Guid.NewGuid().ToString("N").Substring(0, 8);
+            newNode.editorPosition = localPosition;
+
+            if (newNode is DialogueLineNode lineNode)
+                DialogueLocalizationSync.CreateEntry(out lineNode.localizedText, $"line_{newNode.nodeId}");
+
+            DialogueNodeChoiceInitializer.InitializeDefaultChoices(newNode, hasChoices);
+
+            _graph.TypedNodes.Add(newNode);
+            EditorUtility.SetDirty(_graph);
+
+            PopulateView();
         }
         #endregion
     }

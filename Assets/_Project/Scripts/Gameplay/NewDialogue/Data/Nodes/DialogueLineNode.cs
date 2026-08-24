@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using UnityEngine.Localization;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
@@ -16,6 +17,9 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         [Tooltip("Text shown in the bubble.")]
         [TextArea(2, 5)]
         public string text;
+
+        [Tooltip("Localized version of Text. Once migration is complete, this replaces the plain 'text' field above.")]
+        public LocalizedString localizedText;
 
         [Header("Bubble")]
         [Tooltip("Bubble prefab for this line. Needs a component implementing IDialogueBubble.")]
@@ -36,9 +40,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         [Tooltip("Unchecked = simple auto-continue (Continue button, no visible choice). Checked = show real choices to the player.")]
         public bool hasChoices;
-        #endregion
 
-        #region Public Methods
         public override bool IsSimpleContinuation() => !hasChoices;
         #endregion
     }

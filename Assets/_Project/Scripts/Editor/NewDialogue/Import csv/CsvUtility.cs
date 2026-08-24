@@ -5,11 +5,12 @@ using System.Text;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Small CSV parser. Handles quoted fields containing commas or newlines (Google Sheets
+    /// Small CSV parser, Handles fields containing commas or newlines (Google Sheets
     /// exports dialogue Text that way), which a naive line-split would break.
     /// </summary>
     public static class CsvUtility
     {
+        #region Public Methods
         public static List<string[]> Parse(string path)
         {
             var text = File.ReadAllText(path);
@@ -71,5 +72,6 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             return rows;
         }
+        #endregion
     }
 }

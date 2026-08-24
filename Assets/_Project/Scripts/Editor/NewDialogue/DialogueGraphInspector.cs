@@ -7,8 +7,7 @@ using UnityEngine;
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Custom Inspector for DialogueGraph edits nodes as a foldable list, with dropdowns to
-    /// pick the "next" links. Reads field values through SerializedProperty 
+    /// Custom Inspector for DialogueGraph, edits nodes as a foldable list, with dropdowns to pick the "next" links.
     /// </summary>
     [CustomEditor(typeof(DialogueGraph))]
     public class DialogueGraphInspector : UnityEditor.Editor
@@ -22,14 +21,14 @@ namespace GlimmerOfHope.Editor.NewDialogue
         private DialogueNodeFieldDrawer _fieldDrawer;
         #endregion
 
-        #region Private Methods
+        #region Unity Lifecycle
         private void OnEnable()
         {
             _graph = (DialogueGraph)target;
             _nodesProperty = serializedObject.FindProperty("_typedNodes");
 
             _linkPicker = new DialogueNodeLinkPicker(_graph);
-            _fieldDrawer = new DialogueNodeFieldDrawer(_linkPicker);
+            _fieldDrawer = new DialogueNodeFieldDrawer(_graph, _linkPicker);
         }
 
         public override void OnInspectorGUI()
@@ -50,7 +49,9 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             serializedObject.ApplyModifiedProperties();
         }
+        #endregion
 
+        #region Private Methods
         private void DrawNode(int index)
         {
             var dataNode = _graph.TypedNodes[index];
@@ -68,7 +69,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             if (GUILayout.Button("Delete", GUILayout.Width(80)))
             {
                 Undo.RecordObject(_graph, "Delete Dialogue Node");
-                _graph.TypedNodes.RemoveAt(index);
+                RemoveNodeAndSync(dataNode);
                 EditorUtility.SetDirty(_graph);
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
@@ -107,6 +108,17 @@ namespace GlimmerOfHope.Editor.NewDialogue
             EditorGUILayout.EndHorizontal();
         }
 
+        private void RemoveNodeAndSync(DialogueNodeBase node)
+        {
+            if (node is DialogueLineNode lineNode)
+                DialogueLocalizationSync.RemoveEntry(lineNode.localizedText);
+
+            foreach (var choice in node.choices)
+                DialogueLocalizationSync.RemoveEntry(choice.localizedChoiceText);
+
+            _graph.TypedNodes.Remove(node);
+        }
+
         private void AddNode(DialogueNodeType type, bool hasChoices)
         {
             DialogueNodeBase newNode = type switch
@@ -121,6 +133,11 @@ namespace GlimmerOfHope.Editor.NewDialogue
             if (newNode == null) return;
 
             newNode.nodeId = Guid.NewGuid().ToString("N").Substring(0, 8);
+
+            if (newNode is DialogueLineNode lineNode)
+                DialogueLocalizationSync.CreateEntry(out lineNode.localizedText, $"line_{newNode.nodeId}", lineNode.text);
+
+            DialogueNodeChoiceInitializer.InitializeDefaultChoices(newNode, hasChoices);
 
             Undo.RecordObject(_graph, "Add Dialogue Node");
             _graph.TypedNodes.Add(newNode);
