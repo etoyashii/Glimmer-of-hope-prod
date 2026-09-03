@@ -60861,11 +60861,19 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 554147389}
   m_SourcePrefab: {fileID: 100100000, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
 --- !u!4 &554147386 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 554147385}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &554147387 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
   m_PrefabInstance: {fileID: 554147385}
   m_PrefabAsset: {fileID: 0}
 --- !u!114 &554147388 stripped
@@ -60873,12 +60881,27 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7049626466121975970, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
   m_PrefabInstance: {fileID: 554147385}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 554147387}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8cfd31c7452dfe44e91f0587b9ced85e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Puzzles.TriggerPuzzleElement
+--- !u!114 &554147389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 554147387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d1a61bc8cbd96c409327204e9a5308b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::BlendShapeController
+  skinnedMesh: {fileID: 0}
+  blendShapeIndex: 0
+  duration: 1
 --- !u!1001 &554965647
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -182547,7 +182570,7 @@ Transform:
   m_GameObject: {fileID: 1651545406}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: -0.22, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
