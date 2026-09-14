@@ -100,8 +100,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1878710184181024329}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.020905776, y: -0.70679766, z: -0.020905774, w: 0.7067977}
-  m_LocalPosition: {x: 341.60785, y: 0.3237944, z: -671.3377}
+  m_LocalRotation: {x: -0.020905862, y: -0.70679766, z: -0.02090586, w: 0.7067977}
+  m_LocalPosition: {x: 2463.6716, y: 375.15347, z: 6349.955}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -477,7 +477,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - _skillType: 11
-    _combo: 00000000020000000200000002000000
+    _combo: 000000000200000001000000
     _useSkill:
       m_PersistentCalls:
         m_Calls:
@@ -511,7 +511,7 @@ MonoBehaviour:
             m_BoolArgument: 0
           m_CallState: 2
   - _skillType: 13
-    _combo: 00000000020000000200000002000000
+    _combo: 020000000200000002000000
     _useSkill:
       m_PersistentCalls:
         m_Calls:
@@ -1665,6 +1665,7 @@ MonoBehaviour:
   _camera: {fileID: 1029520268486590004}
   _surfaceEntries: []
   _spawnDistance: 1
+  _minGroundDistanceFromPlayer: 1
   _wallRaycastHeight: 1
   _wallRaycastDistance: 5
   _groundRaycastOriginHeight: 5
@@ -2354,23 +2355,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -768.2975
+      value: -768.29755
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.7174379
+      value: 0.7174382
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.021220494
+      value: -0.021208994
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.6959948
+      value: 0.69599515
       objectReference: {fileID: 0}
     - target: {fileID: 2140164903672196283, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.020586245
+      value: 0.020575091
       objectReference: {fileID: 0}
     - target: {fileID: 2223032878480269160, guid: 59109fd352bb13d438f07c1b2886ae78, type: 3}
       propertyPath: m_Layer
@@ -3349,8 +3350,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5ee593c5411282a4faed202e70e2f7fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Audio.FootstepAudioSystem
-  movement: {fileID: 0}
-  rb: {fileID: 0}
   footstepSounds:
   - layer: {fileID: 8574412962073106934, guid: 5efd33f1162817746a7385999820fbbb, type: 2}
     walkClips:
@@ -3408,6 +3407,8 @@ MonoBehaviour:
   minSpeedToStep: 0.3
   runSpeedThreshold: 5
   pitchVariation: 0.3
+  movement: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!114 &6381713758817758496
 MonoBehaviour:
   m_ObjectHideFlags: 0
