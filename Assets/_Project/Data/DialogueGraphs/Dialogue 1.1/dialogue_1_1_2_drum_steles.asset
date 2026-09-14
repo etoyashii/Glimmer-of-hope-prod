@@ -20,8 +20,6 @@ MonoBehaviour:
   - rid: 8558608729178636402
   - rid: 8558608729178636403
   - rid: 8558608729178636404
-  - rid: 8558608729178636405
-  - rid: 8558608729178636406
   - rid: 8558608729178636407
   references:
     version: 2
@@ -78,7 +76,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636402
@@ -97,8 +95,8 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: row2_6c725372
-        editorPosition: {x: 600, y: 0}
-        speakerId: 
+        editorPosition: {x: 1068, y: -406.112}
+        speakerId: Remplacer par contition 1.1.2
         text: (The player tries a combination with no effect.)
         localizedText:
           m_TableReference:
@@ -131,7 +129,7 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: row3_7482d8d2
-        editorPosition: {x: 900, y: 0}
+        editorPosition: {x: 1552.245, y: -8.380391}
         speakerId: Glow (reassuring)
         text: "Not bad! Wait a moment... There\u2019s something written on the stele.
           Let\u2019s see... At the top (3)... In the middle (2)... At the bottom
@@ -148,7 +146,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636404
@@ -166,9 +164,9 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row4_28b037a7
-        editorPosition: {x: 1200, y: 0}
-        speakerId: 
+          nextNodeId: no_platform
+        editorPosition: {x: 2755.2, y: -411.44}
+        speakerId: Remplacer par Condition 1.2.2
         text: (The player tries once.)
         localizedText:
           m_TableReference:
@@ -185,49 +183,10 @@ MonoBehaviour:
         useTypewriter: 0
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636405
-      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row4_28b037a7
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row4_28b037a7_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: platform_ok
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row4_28b037a7_1
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: no_platform
-        editorPosition: {x: 1500, y: 0}
-        conditionType: 0
-        conditionFlagName: platform_created
-        conditionExpectedValue: 1
-        conditionScriptId: 
-    - rid: 8558608729178636406
-      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: platform_ok
-        choices: []
-        editorPosition: {x: 1800, y: -140}
-        outcomeId: 
     - rid: 8558608729178636407
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
         nodeId: no_platform
         choices: []
-        editorPosition: {x: 1800, y: 140}
+        editorPosition: {x: 3194.4001, y: -16.800018}
         outcomeId: 

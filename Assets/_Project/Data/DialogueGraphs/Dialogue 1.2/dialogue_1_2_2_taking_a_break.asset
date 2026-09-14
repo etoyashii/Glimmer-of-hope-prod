@@ -21,6 +21,10 @@ MonoBehaviour:
   - rid: 8558608729178636411
   - rid: 8558608729178636412
   - rid: 8558608729178636413
+  - rid: 8558608729178636433
+  - rid: 8558608729178636434
+  - rid: 8558608729178636435
+  - rid: 8558608729178636436
   references:
     version: 2
     RefIds:
@@ -59,11 +63,11 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_71e39bba
-        editorPosition: {x: 300, y: 0}
+          nextNodeId: b5534077
+        editorPosition: {x: 272, y: -1.6000061}
         speakerId: Glow (calm)
         text: "And there you go, another dull zone healed! We could take a moment
-          to breathe\u2014what do you think? There\u2019s a bench right there."
+          to breathe. What do you think? There\u2019s a bench right there."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
@@ -76,7 +80,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636410
@@ -94,7 +98,7 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: break_a
+          nextNodeId: 6db8a976
         - choiceText: "But\u2026 don\u2019t we need to hurry? We have a world to
             save."
           localizedChoiceText:
@@ -106,7 +110,7 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: hurry_a
+          nextNodeId: e4823890
         - choiceText: "No need. I\u2019m full of energy."
           localizedChoiceText:
             m_TableReference:
@@ -117,10 +121,10 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: energy_a
-        editorPosition: {x: 600, y: 0}
-        speakerId: 
-        text: "(Glow\u2019s gaze then turns to the lake to cross.)"
+          nextNodeId: a97beaa4
+        editorPosition: {x: 1568, y: -2.399994}
+        speakerId: You
+        text: 
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
@@ -133,7 +137,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 1
     - rid: 8558608729178636411
@@ -141,19 +145,161 @@ MonoBehaviour:
       data:
         nodeId: break_a
         choices: []
-        editorPosition: {x: 900, y: -140}
+        editorPosition: {x: 3283.2002, y: -120.8}
         outcomeId: 
     - rid: 8558608729178636412
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
         nodeId: hurry_a
         choices: []
-        editorPosition: {x: 900, y: 0}
+        editorPosition: {x: 3286.4001, y: 22.399994}
         outcomeId: 
     - rid: 8558608729178636413
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
         nodeId: energy_a
         choices: []
-        editorPosition: {x: 900, y: 140}
+        editorPosition: {x: 3288, y: 246.4}
         outcomeId: 
+    - rid: 8558608729178636433
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: b5534077
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_b5534077_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row1_71e39bba
+        editorPosition: {x: 1138.4, y: -395.728}
+        speakerId: Remplacer par Action 1.2.3
+        text: "(Le regard se pose ensuite sur le lac \xE0 traverser.)"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_b5534077
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 0
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 8558608729178636434
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 6db8a976
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_6db8a976_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: break_a
+        editorPosition: {x: 2084, y: -193.344}
+        speakerId: Glow
+        text: "Perfect. Taking a break helps solidify what we\u2019ve just learned.
+          Let\u2019s sit down and recap: how do we heal a dull zone\u2026 and how
+          could we cross that lake?"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_6db8a976
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 8558608729178636435
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: e4823890
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_e4823890_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: hurry_a
+        editorPosition: {x: 2086.4, y: 23.199982}
+        speakerId: Glow
+        text: "Don\u2019t worry. We\u2019re not in a rush\u2014it\u2019s been years
+          since Monochronite has been eating away at the World-Tree. Taking a break
+          helps solidify what we\u2019ve just learned, and in the end, we\u2019ll
+          save time."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_e4823890
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 8558608729178636436
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: a97beaa4
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_a97beaa4_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: energy_a
+        editorPosition: {x: 2084, y: 251.20001}
+        speakerId: Glow
+        text: "That\u2019s great! But don\u2019t hesitate to take a break when you
+          feel the need. Thinking with a clear mind changes everything."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_a97beaa4
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0

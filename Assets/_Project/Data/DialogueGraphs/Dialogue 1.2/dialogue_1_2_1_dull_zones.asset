@@ -18,12 +18,13 @@ MonoBehaviour:
   - rid: 8558608729178636391
   - rid: 8558608729178636392
   - rid: 8558608729178636393
-  - rid: 8558608729178636394
   - rid: 8558608729178636395
   - rid: 8558608729178636396
   - rid: 8558608729178636397
   - rid: 8558608729178636398
   - rid: 8558608729178636399
+  - rid: 8558608729178636431
+  - rid: 8558608729178636432
   references:
     version: 2
     RefIds:
@@ -78,7 +79,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636393
@@ -96,8 +97,8 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_79a71e91
-        editorPosition: {x: 600, y: 0}
+          nextNodeId: 60e04103
+        editorPosition: {x: 682.8133, y: -6.3678417}
         speakerId: Glow (approaches a gray zone)
         text: It looks like the World-Tree is losing its colors here too. There have
           been more and more dull zones like this lately. The inhabitants call it
@@ -114,57 +115,9 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636394
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row2_79a71e91
-        choices:
-        - choiceText: The World-Tree?
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row2_79a71e91_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: wt_ask
-        - choiceText: (Stay silent and listen)
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row2_79a71e91_1
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: continue_a
-        editorPosition: {x: 900, y: 0}
-        speakerId: Glow (softly)
-        text: "Sometimes, everything becomes heavy because of stress, fear, or loneliness...
-          That\u2019s when the World-Tree loses its light. But that doesn\u2019t
-          mean it\u2019s gone forever. It\u2019s just diminished, and the colors
-          faded with it."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row2_79a71e91
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 1
     - rid: 8558608729178636395
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
@@ -181,7 +134,7 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: continue_a
-        editorPosition: {x: 1200, y: -70}
+        editorPosition: {x: 3255.2002, y: -188.8}
         speakerId: Glow (enthusiastic)
         text: "Yes, it\u2019s what we\u2019re walking on right now. Its sap, filled
           with hope, nourishes everything that exists."
@@ -197,7 +150,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636396
@@ -216,7 +169,7 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: row5_1f952534
-        editorPosition: {x: 1200, y: 70}
+        editorPosition: {x: 3942.4001, y: 15.199982}
         speakerId: Glow
         text: I know the World-Tree seems immense. But together, we can help it.
           One small step at a time.
@@ -232,7 +185,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636397
@@ -251,7 +204,7 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: row6_4445732b
-        editorPosition: {x: 1500, y: 70}
+        editorPosition: {x: 4695.2, y: 18.400024}
         speakerId: Glow (thoughtful)
         text: "Hmm... Do you see those unlit lanterns? Let\u2019s get closer. Maybe
           I can share a little of my light with them."
@@ -267,7 +220,7 @@ MonoBehaviour:
         bubblePrefab: {fileID: 0}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
+        useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
     - rid: 8558608729178636398
@@ -286,8 +239,8 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: row7_d034f00b
-        editorPosition: {x: 1800, y: 70}
-        speakerId: 
+        editorPosition: {x: 5483.2, y: -563.472}
+        speakerId: 'Remplacer par condition 1.2.1 '
         text: (The player brings the Glow closer to the unlit lanterns; they relight,
           and the area regains its colors.)
         localizedText:
@@ -310,5 +263,87 @@ MonoBehaviour:
       data:
         nodeId: row7_d034f00b
         choices: []
-        editorPosition: {x: 2100, y: 70}
+        editorPosition: {x: 6196.8003, y: 16.495972}
         outcomeId: 
+    - rid: 8558608729178636431
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: ef23d9c6
+        choices:
+        - choiceText: The World-Tree?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_ef23d9c6_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wt_ask
+        - choiceText: ...
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_ef23d9c6_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: continue_a
+        editorPosition: {x: 2939.2002, y: -8.799988}
+        speakerId: You
+        text: 
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_ef23d9c6
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 8558608729178636432
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 60e04103
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_60e04103_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: ef23d9c6
+        editorPosition: {x: 1659.2001, y: -5.600006}
+        speakerId: Glow (softly)
+        text: "Sometimes, everything becomes heavy because of stress, fear, or loneliness...
+          That\u2019s when the World-Tree loses its light. But that doesn\u2019t
+          mean it\u2019s gone forever. It\u2019s just diminished, and the colors
+          faded with it."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_60e04103
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
