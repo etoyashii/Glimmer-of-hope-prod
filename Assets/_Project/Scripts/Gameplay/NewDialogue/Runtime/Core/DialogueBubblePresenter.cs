@@ -102,10 +102,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         //Uses the localized entry once it's set up
         private static string ResolveText(LocalizedString localized, string fallback)
         {
-            Debug.Log($"[DEBUG] SelectedLocale = {UnityEngine.Localization.Settings.LocalizationSettings.SelectedLocale?.Identifier.Code ?? "NULL"}, TableReference = {localized?.TableReference}, TableEntryReference = {localized?.TableEntryReference}, IsEmpty = {localized?.IsEmpty}");
-            return localized != null && !localized.IsEmpty ? localized.GetLocalizedString() : fallback;
-        }
+            if (localized == null || localized.IsEmpty) return fallback;
 
+            string result = localized.GetLocalizedString();
+            return string.IsNullOrEmpty(result) ? fallback : result;
+        }
         public void Show() => _bubble?.Show();
 
         public void Cleanup()

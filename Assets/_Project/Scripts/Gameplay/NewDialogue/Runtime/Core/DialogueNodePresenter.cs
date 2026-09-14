@@ -61,9 +61,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         //Uses the localized entry once it's set up.
         private static string ResolveChoiceText(DialogueChoice choice)
         {
-            return choice.localizedChoiceText != null && !choice.localizedChoiceText.IsEmpty
-                ? choice.localizedChoiceText.GetLocalizedString()
-                : choice.choiceText;
+            if (choice.localizedChoiceText == null || choice.localizedChoiceText.IsEmpty)
+                return choice.choiceText;
+
+            string result = choice.localizedChoiceText.GetLocalizedString();
+            return string.IsNullOrEmpty(result) ? choice.choiceText : result;
         }
         #endregion
     }
