@@ -27,13 +27,9 @@ namespace GlimmerOfHope.Core.Bootstrap
 
             // Save System
             if (_useSecureSave)
-            {
-                ServiceLocator.Register(new SecureSaveManager());
-            }
+                ServiceLocator.Register<ISaveService>(new SecureSaveManager());
             else
-            {
-                ServiceLocator.Register(new SaveManager());
-            }
+                ServiceLocator.Register<ISaveService>(new SaveManager());
 
             // Apply saved preferences
             ApplySavedPreferences();
@@ -45,7 +41,7 @@ namespace GlimmerOfHope.Core.Bootstrap
 
         private void ApplySavedPreferences()
         {
-            if (ServiceLocator.TryGet<SaveManager>(out var saveManager))
+            if (ServiceLocator.TryGet<ISaveService>(out var saveManager))
             {
                 var prefs = saveManager.CurrentSave.preferences;
 
@@ -66,7 +62,7 @@ namespace GlimmerOfHope.Core.Bootstrap
             if (pause)
             {
                 // Auto-save on pause (mobile)
-                if (ServiceLocator.TryGet<SaveManager>(out var saveManager))
+                if (ServiceLocator.TryGet<ISaveService>(out var saveManager))
                 {
                     saveManager.Save();
                 }

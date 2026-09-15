@@ -31,9 +31,9 @@ namespace GlimmerOfHope.Core.Bootstrap
             ServiceLocator.Register(new LocalizationManager());
 
             if (_useSecureSave)
-                ServiceLocator.Register(new SecureSaveManager());
+                ServiceLocator.Register<ISaveService>(new SecureSaveManager());
             else
-                ServiceLocator.Register(new SaveManager());
+                ServiceLocator.Register<ISaveService>(new SaveManager());
 
             Debug.Log("[DevBootstrapper] Services initialized (dev mode).");
         }

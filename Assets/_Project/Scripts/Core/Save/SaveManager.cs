@@ -5,7 +5,7 @@ using GlimmerOfHope.Core.Services;
 
 namespace GlimmerOfHope.Core.Save
 {
-    public class SaveManager : IService
+    public class SaveManager : ISaveService
     {
         private const string SaveFileName = "save.json";
 

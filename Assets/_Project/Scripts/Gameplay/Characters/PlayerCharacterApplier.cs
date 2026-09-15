@@ -69,7 +69,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 if (animator != null) animator.Rebind();
             }
 
-            var saveManager = ServiceLocator.Get<SaveManager>();
+            var saveManager = ServiceLocator.Get<ISaveService>();
             if (saveManager == null)
             {
                 Debug.LogWarning("[PlayerCharacterApplier] SaveManager introuvable - applique les defaults.", this);
