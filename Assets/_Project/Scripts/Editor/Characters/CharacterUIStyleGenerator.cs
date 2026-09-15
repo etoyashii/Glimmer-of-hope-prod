@@ -15,7 +15,6 @@ namespace GlimmerOfHope.Editor.Characters
 
         #region Menu
 
-        [MenuItem("Tools/GlimmerOfHope/1 — Generate UI Style Assets")]
         public static void Generate()
         {
             EnsureFolder(OUTPUT_PATH);
