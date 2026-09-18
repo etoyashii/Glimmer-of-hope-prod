@@ -1,18 +1,19 @@
+using System;
+using System.Linq;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "UI/Hint")]
 public class UIHintSO : ScriptableObject
 {
-    
-    [Serialized]
+    [Serializable]
     class StringImageAssociation
     {
         public string Name;
         public Sprite Image;
     }
     
-    [SerializedField] StringImageAssociation[] _data;
+    [SerializeField] StringImageAssociation[] _data;
     
-    //public Image GetSpriteForInput(string n) => _da
-    
+    public Sprite GetSpriteForInput(string n) => _data.FirstOrDefault(i=>i.Name == n)?.Image;
     
 }
