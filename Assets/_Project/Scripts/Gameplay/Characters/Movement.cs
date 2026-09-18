@@ -196,6 +196,13 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         private void ApplyMovement()
         {
+            //TODO quick fix
+            if (InputSystem.actions.FindActionMap("Player").enabled == false)
+            {
+                OnMovementCanceled(default);
+                return;
+            }
+            
             Vector3 cameraForward = _playerCamera.transform.forward;
             Vector3 cameraRight = _playerCamera.transform.right;
             cameraForward.y = 0f;
