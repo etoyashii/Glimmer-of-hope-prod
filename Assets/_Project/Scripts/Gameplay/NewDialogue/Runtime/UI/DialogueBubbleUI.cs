@@ -135,7 +135,8 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             
             //TODO Clean up input 
             InputSystem.actions.FindActionMap("Player").Enable();
-            InputSystem.actions.FindActionMap("UI").Disable();
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
 
         /// <summary>
