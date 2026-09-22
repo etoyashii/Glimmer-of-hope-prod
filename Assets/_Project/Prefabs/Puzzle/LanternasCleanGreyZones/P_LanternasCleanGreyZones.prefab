@@ -1,0 +1,478 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8641580047046164398
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3363118314409140258}
+  - component: {fileID: 5548155703733252937}
+  m_Layer: 0
+  m_Name: P_LanternasCleanGreyZones
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3363118314409140258
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641580047046164398}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 2452.016, y: 374.63, z: 5112.303}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2332036619783054441}
+  - {fileID: 5482310492046307236}
+  - {fileID: 6478531736843660486}
+  - {fileID: 4843283478764903702}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5548155703733252937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8641580047046164398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c6dec2d25ba6740448f4bcdf55ef016d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Puzzles.PuzzleManager
+  _puzzleId: puzzle_01
+  _puzzleName: My Puzzle
+  _solveMode: 0
+  _elements:
+  - {fileID: 5571702143228806938}
+  - {fileID: 2385416039683951831}
+  - {fileID: 3812289582546390965}
+  OnPuzzleSolved:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7376663556181499320}
+        m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
+        m_MethodName: set_enabled
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 6787393314707595599}
+        m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.GrayZone, GlimmerOfHope.Gameplay
+        m_MethodName: Repaint
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.PostProcessEffects, GlimmerOfHope.Gameplay
+        m_MethodName: SetCorruptionEffect
+        m_Mode: 4
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.NewDialogue.DialogueManager,
+          GlimmerOfHope.Gameplay
+        m_MethodName: StartDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: c870178fdd3e40c44871fc13e8fb0187, type: 2}
+          m_ObjectArgumentAssemblyTypeName: GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph,
+            GlimmerOfHope.Gameplay
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
+        m_CallState: 2
+  OnPuzzleTriggered:
+    m_PersistentCalls:
+      m_Calls: []
+  OnPuzzleReset:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!1001 &3208784497412345784
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3363118314409140258}
+    m_Modifications:
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -11.224609
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.677
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17.949707
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Name
+      value: Lanterne
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+--- !u!4 &2332036619783054441 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 3208784497412345784}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &5571702143228806938 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7049626466121975970, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 3208784497412345784}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cfd31c7452dfe44e91f0587b9ced85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Puzzles.TriggerPuzzleElement
+--- !u!1001 &4670231526276138101
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3363118314409140258}
+    m_Modifications:
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.266357
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.67700195
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 17.713379
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Name
+      value: Lanterne (1)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+--- !u!114 &2385416039683951831 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7049626466121975970, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 4670231526276138101}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cfd31c7452dfe44e91f0587b9ced85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Puzzles.TriggerPuzzleElement
+--- !u!4 &5482310492046307236 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 4670231526276138101}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6015539175862009268
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3363118314409140258}
+    m_Modifications:
+    - target: {fileID: 957814540910894331, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: contrast
+      value: 0.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 957814540910894331, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: maskIndex
+      value: 7
+      objectReference: {fileID: 0}
+    - target: {fileID: 957814540910894331, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: threshold
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.8792881
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.8792881
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.8792881
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -9.43
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 15.77
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8985436
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.43888423
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -52.065
+      objectReference: {fileID: 0}
+    - target: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1417269713710166384, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_Name
+      value: GrayZone
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829275098619568140, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_Size.x
+      value: 2.92
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829275098619568140, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_Size.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829275098619568140, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_Size.z
+      value: 3.17
+      objectReference: {fileID: 0}
+    - target: {fileID: 3829275098619568140, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_Center.y
+      value: 0.06
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+--- !u!4 &4843283478764903702 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1174790430106034338, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+  m_PrefabInstance: {fileID: 6015539175862009268}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6787393314707595599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 957814540910894331, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+  m_PrefabInstance: {fileID: 6015539175862009268}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e22ee56d034c1e44bdc30c9368bd9db, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.GrayZone
+--- !u!65 &7376663556181499320 stripped
+BoxCollider:
+  m_CorrespondingSourceObject: {fileID: 3829275098619568140, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+  m_PrefabInstance: {fileID: 6015539175862009268}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1001 &6139168008531937047
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 3363118314409140258}
+    m_Modifications:
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -8.936035
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.67700195
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 14.333496
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4244131029524793323, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5333080892723891874, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: OnActivated.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2672762746320276803}
+    - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Name
+      value: Lanterne (2)
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+--- !u!1 &2672762746320276803 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 6139168008531937047}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3812289582546390965 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7049626466121975970, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 6139168008531937047}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2672762746320276803}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8cfd31c7452dfe44e91f0587b9ced85e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Puzzles.TriggerPuzzleElement
+--- !u!4 &6478531736843660486 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 926310563956665297, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+  m_PrefabInstance: {fileID: 6139168008531937047}
+  m_PrefabAsset: {fileID: 0}

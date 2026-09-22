@@ -4,36 +4,31 @@ using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEditor;
 using UnityEngine;
 
-namespace GlimmerOfHope.Editor.NewDialogue 
+namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Custom Inspector for Dialogue edits nodes as a list, with dropdowns to pick the "next" links. 
-    /// This file only handles the main loop and adding/removing nodes
-    /// the field drawing is delegated to DialogueNodeFieldDrawer and DialogueNodeLinkPicker
+    /// Custom Inspector for DialogueGraph, edits nodes as a foldable list, with dropdowns to pick the "next" links.
     /// </summary>
     [CustomEditor(typeof(DialogueGraph))]
     public class DialogueGraphInspector : UnityEditor.Editor
     {
         #region Private Fields
-
         private DialogueGraph _graph;
         private SerializedProperty _nodesProperty;
         private readonly Dictionary<string, bool> _expandedNodes = new Dictionary<string, bool>();
 
         private DialogueNodeLinkPicker _linkPicker;
         private DialogueNodeFieldDrawer _fieldDrawer;
-
         #endregion
 
         #region Unity Lifecycle
-
         private void OnEnable()
         {
             _graph = (DialogueGraph)target;
-            _nodesProperty = serializedObject.FindProperty("nodes");
+            _nodesProperty = serializedObject.FindProperty("_typedNodes");
 
             _linkPicker = new DialogueNodeLinkPicker(_graph);
-            _fieldDrawer = new DialogueNodeFieldDrawer(_linkPicker);
+            _fieldDrawer = new DialogueNodeFieldDrawer(_graph, _linkPicker);
         }
 
         public override void OnInspectorGUI()
@@ -46,7 +41,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
                 MessageType.None);
             EditorGUILayout.Space();
 
-            for (int i = 0; i < _nodesProperty.arraySize; i++)
+            for (int i = 0; i < _graph.TypedNodes.Count; i++)
                 DrawNode(i);
 
             EditorGUILayout.Space();
@@ -54,33 +49,32 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             serializedObject.ApplyModifiedProperties();
         }
-
         #endregion
 
         #region Private Methods
-
         private void DrawNode(int index)
         {
+            var dataNode = _graph.TypedNodes[index];
             var nodeProperty = _nodesProperty.GetArrayElementAtIndex(index);
-            var nodeIdProperty = nodeProperty.FindPropertyRelative("nodeId");
-            var nodeTypeProperty = nodeProperty.FindPropertyRelative("nodeType");
-            var type = (DialogueNodeType)nodeTypeProperty.enumValueIndex;
 
-            string nodeId = nodeIdProperty.stringValue;
-            if (!_expandedNodes.ContainsKey(nodeId)) _expandedNodes[nodeId] = type == DialogueNodeType.Start;
+            string nodeId = dataNode.nodeId;
+            if (!_expandedNodes.ContainsKey(nodeId)) _expandedNodes[nodeId] = dataNode is StartNode;
 
             EditorGUILayout.BeginVertical(GUI.skin.box);
             EditorGUILayout.BeginHorizontal();
 
-            _expandedNodes[nodeId] = EditorGUILayout.Foldout(_expandedNodes[nodeId], _linkPicker.BuildNodeLabel(_graph.nodes[index]), true);
+            _expandedNodes[nodeId] = EditorGUILayout.Foldout(_expandedNodes[nodeId], _linkPicker.BuildNodeLabel(dataNode), true);
 
-            GUI.enabled = type != DialogueNodeType.Start; // Start is unique and required, never deletable
+            GUI.enabled = !(dataNode is StartNode); // Start is unique and required, never deletable
             if (GUILayout.Button("Delete", GUILayout.Width(80)))
             {
-                _nodesProperty.DeleteArrayElementAtIndex(index);
+                Undo.RecordObject(_graph, "Delete Dialogue Node");
+                RemoveNodeAndSync(dataNode);
+                EditorUtility.SetDirty(_graph);
                 GUI.enabled = true;
                 EditorGUILayout.EndHorizontal();
                 EditorGUILayout.EndVertical();
+                serializedObject.Update();
                 return;
             }
             GUI.enabled = true;
@@ -90,7 +84,7 @@ namespace GlimmerOfHope.Editor.NewDialogue
             if (_expandedNodes[nodeId])
             {
                 EditorGUI.indentLevel++;
-                _fieldDrawer.Draw(nodeProperty, type, nodeId);
+                _fieldDrawer.Draw(nodeProperty, dataNode, nodeId);
                 EditorGUI.indentLevel--;
             }
 
@@ -114,24 +108,43 @@ namespace GlimmerOfHope.Editor.NewDialogue
             EditorGUILayout.EndHorizontal();
         }
 
-        private void AddNode(DialogueNodeType type, bool hasChoices)
+        private void RemoveNodeAndSync(DialogueNodeBase node)
         {
-            var newNode = new DialogueNode
-            {
-                nodeId = Guid.NewGuid().ToString("N").Substring(0, 8),
-                nodeType = type,
-                hasChoices = hasChoices,
-                text = type == DialogueNodeType.Dialogue ? "New line" : ""
-            };
+            if (node is DialogueLineNode lineNode)
+                DialogueLocalizationSync.RemoveEntry(lineNode.localizedText);
 
-            Undo.RecordObject(_graph, "Add Dialogue Node");
-            _graph.nodes.Add(newNode);
-            EditorUtility.SetDirty(_graph);
+            foreach (var choice in node.choices)
+                DialogueLocalizationSync.RemoveEntry(choice.localizedChoiceText);
 
-            // Resyncs the SerializedObject with the change made.
-            serializedObject.Update();
+            _graph.TypedNodes.Remove(node);
         }
 
+        private void AddNode(DialogueNodeType type, bool hasChoices)
+        {
+            DialogueNodeBase newNode = type switch
+            {
+                DialogueNodeType.Dialogue => new DialogueLineNode { hasChoices = hasChoices, text = "New line" },
+                DialogueNodeType.Gate => new GateNode(),
+                DialogueNodeType.Condition => new ConditionNode(),
+                DialogueNodeType.Action => new ActionNode(),
+                DialogueNodeType.End => new EndNode(),
+                _ => null
+            };
+            if (newNode == null) return;
+
+            newNode.nodeId = Guid.NewGuid().ToString("N").Substring(0, 8);
+
+            if (newNode is DialogueLineNode lineNode)
+                DialogueLocalizationSync.CreateEntry(out lineNode.localizedText, $"line_{newNode.nodeId}", lineNode.text);
+
+            DialogueNodeChoiceInitializer.InitializeDefaultChoices(newNode, hasChoices);
+
+            Undo.RecordObject(_graph, "Add Dialogue Node");
+            _graph.TypedNodes.Add(newNode);
+            EditorUtility.SetDirty(_graph);
+
+            serializedObject.Update();
+        }
         #endregion
     }
 }

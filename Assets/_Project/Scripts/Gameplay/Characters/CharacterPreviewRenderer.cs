@@ -1,6 +1,7 @@
+using System;
+using System.Collections.Generic;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Services;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.Characters
@@ -35,6 +36,10 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Tooltip("Rotation en Y du personnage instancie (180 si le FBX est exporte de dos).")]
         [SerializeField] private float _characterYRotation = 0f;
 
+        [Header("Meshes permanents")]
+        [Tooltip("Ces meshes restent toujours actives, independamment des selections (body, etc.).")]
+        [SerializeField] private string[] _alwaysOnMeshNames = { "body" };
+
         [Header("Anchor Points 3D")]
         [Tooltip("Associe chaque categoryId a un Transform parent pour les prefabs 3D.")]
         [SerializeField] private List<CategoryAnchor> _anchors3D = new();
@@ -48,7 +53,10 @@ namespace GlimmerOfHope.Gameplay.Characters
         private CharacterCreatorController _controller;
 
         private GameObject _characterInstance;
-        private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName = new();
+        // StringComparer.OrdinalIgnoreCase : evite les bugs de casse entre noms de meshes FBX
+        // et les entrees de _alwaysOnMeshNames (ex: "Body" vs "body").
+        private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName
+            = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, GameObject> _spawnedPrefabs = new();
         #endregion
 
@@ -61,6 +69,9 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void Start()
         {
             _controller = ServiceLocator.Get<CharacterCreatorController>();
+
+            if (_controller != null)
+                _controller.OnColorChanged += OnColorChanged;
 
             // Le Registry prime sur le champ de scene quand il est assigne.
             if (_controller?.Registry?.MasterCharacterPrefab != null)
@@ -86,6 +97,8 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         private void OnDestroy()
         {
+            if (_controller != null)
+                _controller.OnColorChanged -= OnColorChanged;
             if (_characterInstance != null)
                 Destroy(_characterInstance);
         }
@@ -104,6 +117,21 @@ namespace GlimmerOfHope.Gameplay.Characters
                 _smrByMeshName[smr.sharedMesh.name] = smr;
                 smr.enabled = false;
             }
+            // Desactive aussi les MeshRenderer non skinnes (ex: parts sans bone weights dans le FBX).
+            // Patch temporaire jusqu'a ce que ces meshes soient skinnes dans l'outil 3D.
+            foreach (var mr in _characterInstance.GetComponentsInChildren<MeshRenderer>(true))
+                mr.enabled = false;
+
+            EnableAlwaysOnMeshes();
+        }
+
+        private void EnableAlwaysOnMeshes()
+        {
+            foreach (var meshName in _alwaysOnMeshNames)
+            {
+                if (_smrByMeshName.TryGetValue(meshName, out var smr))
+                    smr.enabled = true;
+            }
         }
 
         private void OnPartChanged(string categoryId)
@@ -111,10 +139,28 @@ namespace GlimmerOfHope.Gameplay.Characters
             RefreshCategory(categoryId);
         }
 
+        private void OnColorChanged(string categoryId, Color color)
+        {
+            var category = _controller?.Registry?.GetCategoryById(categoryId);
+            if (category == null) return;
+
+            foreach (var part in category.Parts)
+            {
+                if (part?.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null) continue;
+                if (!_smrByMeshName.TryGetValue(part.Mesh.name, out var smr) || !smr.enabled) continue;
+
+                var block = new MaterialPropertyBlock();
+                smr.GetPropertyBlock(block);
+                block.SetColor("_BaseColor", color);
+                smr.SetPropertyBlock(block);
+                break;
+            }
+        }
+
         private void RefreshAll()
         {
             if (_controller == null) return;
-            foreach (var category in _controller.Registry.Categories)
+            foreach (var category in _controller.Registry.GetAllLeafCategories())
             {
                 if (category != null)
                     RefreshCategory(category.CategoryID);
@@ -155,9 +201,15 @@ namespace GlimmerOfHope.Gameplay.Characters
                 }
             }
 
-            // Active la part selectionnee
+            // Active la part selectionnee et reapplique la couleur sauvegardee
             if (_smrByMeshName.TryGetValue(part.Mesh.name, out var selectedSmr))
+            {
                 selectedSmr.enabled = true;
+                var block = new MaterialPropertyBlock();
+                selectedSmr.GetPropertyBlock(block);
+                block.SetColor("_BaseColor", _controller.GetCategoryColor(categoryId));
+                selectedSmr.SetPropertyBlock(block);
+            }
             else
                 Debug.LogWarning($"[CharacterPreviewRenderer] SMR introuvable pour mesh '{part.Mesh.name}'.");
         }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Save;
@@ -12,10 +13,12 @@ namespace GlimmerOfHope.Gameplay.Characters
         private readonly CharacterRegistrySO _registry;
         private readonly StringEventChannel _onPartChanged;
         private readonly Dictionary<string, string> _currentSelections = new();
+        private readonly Dictionary<string, Color>  _categoryColors    = new();
         #endregion
 
         #region Public Properties
         public CharacterRegistrySO Registry => _registry;
+        public event Action<string, Color> OnColorChanged;
         #endregion
 
         #region Constructor
@@ -37,6 +40,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         public void Shutdown()
         {
             _currentSelections.Clear();
+            _categoryColors.Clear();
+            OnColorChanged = null;
             Debug.Log("[CharacterCreatorController] Shutdown.");
         }
         #endregion
@@ -44,14 +49,57 @@ namespace GlimmerOfHope.Gameplay.Characters
         #region Public Methods
         public void SelectPart(string categoryId, string partId)
         {
-            if (_registry.GetCategoryById(categoryId) == null)
+            var category = _registry.GetCategoryById(categoryId);
+            if (category == null)
             {
                 Debug.LogWarning($"[CharacterCreatorController] Categorie inconnue : '{categoryId}'.");
                 return;
             }
 
             _currentSelections[categoryId] = partId;
+
+            // Exclusion mutuelle entre sous-categories du meme parent.
+            var parent = _registry.GetParentCategory(categoryId);
+            if (parent != null)
+            {
+                if (category.ExcludesSiblings)
+                {
+                    // Ex: Ensembles selectionne -> vide Hauts et Bas.
+                    foreach (var sibling in parent.SubCategories)
+                    {
+                        if (sibling != null && sibling.CategoryID != categoryId)
+                        {
+                            _currentSelections.Remove(sibling.CategoryID);
+                            _onPartChanged?.Raise(sibling.CategoryID);
+                        }
+                    }
+                }
+                else
+                {
+                    // Ex: Hauts ou Bas selectionne -> vide Ensembles.
+                    foreach (var sibling in parent.SubCategories)
+                    {
+                        if (sibling != null && sibling.ExcludesSiblings)
+                        {
+                            _currentSelections.Remove(sibling.CategoryID);
+                            _onPartChanged?.Raise(sibling.CategoryID);
+                        }
+                    }
+                }
+            }
+
             _onPartChanged?.Raise(categoryId);
+        }
+
+        public void SetCategoryColor(string categoryId, Color color)
+        {
+            _categoryColors[categoryId] = color;
+            OnColorChanged?.Invoke(categoryId, color);
+        }
+
+        public Color GetCategoryColor(string categoryId)
+        {
+            return _categoryColors.TryGetValue(categoryId, out var c) ? c : Color.white;
         }
 
         public CharacterPartSO GetSelectedPart(string categoryId)
@@ -66,16 +114,19 @@ namespace GlimmerOfHope.Gameplay.Characters
         {
             _currentSelections.Clear();
 
-            foreach (var category in _registry.Categories)
+            foreach (var category in _registry.GetAllLeafCategories())
             {
                 if (category == null || category.Parts.Count == 0) continue;
+
+                // Les categories exclusives (Ensembles) ne sont pas selectionnees par defaut.
+                if (category.ExcludesSiblings) continue;
 
                 CharacterPartSO first = null;
                 CharacterPartSO firstSkinnedMesh = null;
 
                 foreach (var part in category.Parts)
                 {
-                    if (part == null) continue;
+                    if (part == null || string.IsNullOrEmpty(part.PartID)) continue;
                     if (first == null) first = part;
                     if (firstSkinnedMesh == null && part.PartType == CharacterPartType.SkinnedMesh)
                         firstSkinnedMesh = part;
@@ -101,6 +152,17 @@ namespace GlimmerOfHope.Gameplay.Characters
             foreach (var kvp in _currentSelections)
                 list.Add(new CharacterSaveEntry { categoryId = kvp.Key, partId = kvp.Value });
 
+            var colorList = saveManager.CurrentSave.progression.characterColors;
+            colorList.Clear();
+            foreach (var kvp in _categoryColors)
+                colorList.Add(new CharacterColorEntry
+                {
+                    categoryId = kvp.Key,
+                    r          = kvp.Value.r,
+                    g          = kvp.Value.g,
+                    b          = kvp.Value.b
+                });
+
             saveManager.Save();
         }
         #endregion
@@ -118,6 +180,16 @@ namespace GlimmerOfHope.Gameplay.Characters
             {
                 if (!string.IsNullOrEmpty(entry.categoryId) && !string.IsNullOrEmpty(entry.partId))
                     _currentSelections[entry.categoryId] = entry.partId;
+            }
+
+            var savedColors = saveManager.CurrentSave?.progression?.characterColors;
+            if (savedColors != null)
+            {
+                foreach (var entry in savedColors)
+                {
+                    if (!string.IsNullOrEmpty(entry.categoryId))
+                        _categoryColors[entry.categoryId] = new Color(entry.r, entry.g, entry.b);
+                }
             }
         }
         #endregion

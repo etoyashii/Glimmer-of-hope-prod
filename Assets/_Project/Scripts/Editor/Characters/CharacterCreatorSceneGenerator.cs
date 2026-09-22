@@ -21,7 +21,6 @@ namespace GlimmerOfHope.Editor.Characters
 
         private static CharacterRegistrySO _registry;
 
-        [MenuItem("Tools/GlimmerOfHope/3 - Generate Character Creator Scene")]
         public static void Generate()
         {
             if (!ValidateAssets()) return;

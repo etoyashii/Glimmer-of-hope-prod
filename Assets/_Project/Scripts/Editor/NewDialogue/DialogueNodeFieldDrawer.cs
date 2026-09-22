@@ -1,43 +1,43 @@
 using GlimmerOfHope.Gameplay.NewDialogue;
-
 using UnityEditor;
 using UnityEngine;
 
 namespace GlimmerOfHope.Editor.NewDialogue
 {
     /// <summary>
-    /// Draws a node's fields depending on its type. Delegates anything about "pick the next node" to DialogueNodeLinkPicker.
+    /// Draws a node's fields in the Inspector, dispatched by its actual type. Delegates
+    /// anything about "pick the next node" to DialogueNodeLinkPicker.
     /// </summary>
     public class DialogueNodeFieldDrawer
     {
         #region Private Fields
         private readonly DialogueNodeLinkPicker _linkPicker;
-        #endregion
-
-        #region Constructor
-        public DialogueNodeFieldDrawer(DialogueNodeLinkPicker linkPicker)
-        {
-            _linkPicker = linkPicker;
-        }
+        private readonly DialogueChoiceListDrawer _choiceListDrawer;
         #endregion
 
         #region Public Methods
-        public void Draw(SerializedProperty node, DialogueNodeType type, string selfId)
+        public DialogueNodeFieldDrawer(DialogueGraph graph, DialogueNodeLinkPicker linkPicker)
         {
-            switch (type)
+            _linkPicker = linkPicker;
+            _choiceListDrawer = new DialogueChoiceListDrawer(graph, linkPicker);
+        }
+
+        public void Draw(SerializedProperty node, DialogueNodeBase dataNode, string selfId)
+        {
+            switch (dataNode)
             {
-                case DialogueNodeType.Dialogue: DrawDialogueFields(node, selfId); break;
-                case DialogueNodeType.Start: DrawStartFields(node, selfId); break;
-                case DialogueNodeType.End: DrawEndFields(node); break;
-                case DialogueNodeType.Gate: DrawGateFields(node, selfId); break;
-                case DialogueNodeType.Condition: DrawConditionFields(node, selfId); break;
-                case DialogueNodeType.Action: DrawActionFields(node, selfId); break;
+                case DialogueLineNode lineNode: DrawDialogueFields(node, lineNode, selfId); break;
+                case StartNode: DrawStartFields(node, selfId); break;
+                case EndNode: DrawEndFields(node); break;
+                case GateNode: DrawGateFields(node, selfId); break;
+                case ConditionNode: DrawConditionFields(node, selfId); break;
+                case ActionNode: DrawActionFields(node, selfId); break;
             }
         }
         #endregion
 
         #region Private Methods
-        private void DrawDialogueFields(SerializedProperty node, string selfId)
+        private void DrawDialogueFields(SerializedProperty node, DialogueLineNode dataNode, string selfId)
         {
             var speakerId = node.FindPropertyRelative("speakerId");
             var text = node.FindPropertyRelative("text");
@@ -47,10 +47,19 @@ namespace GlimmerOfHope.Editor.NewDialogue
             var useTypewriter = node.FindPropertyRelative("useTypewriter");
             var typewriterSpeed = node.FindPropertyRelative("typewriterCharsPerSecond");
             var hasChoices = node.FindPropertyRelative("hasChoices");
-            var choices = node.FindPropertyRelative("choices");
 
             EditorGUILayout.PropertyField(speakerId, new GUIContent("Speaker ID"));
-            EditorGUILayout.PropertyField(text, new GUIContent("Text"));
+
+            EditorGUILayout.LabelField("Text");
+            string resolvedText = DialogueLocalizationSync.GetSourceValue(dataNode.localizedText, text.stringValue);
+            EditorGUI.BeginChangeCheck();
+            string newText = EditorGUILayout.TextArea(resolvedText, GUILayout.MinHeight(40));
+            if (EditorGUI.EndChangeCheck())
+            {
+                text.stringValue = newText;
+                DialogueLocalizationSync.UpdateSourceValue(dataNode.localizedText, newText);
+            }
+
             EditorGUILayout.PropertyField(bubblePrefab, new GUIContent("Bubble Prefab"));
             EditorGUILayout.PropertyField(followSpeaker, new GUIContent("Follows Speaker"));
             if (followSpeaker.boolValue)
@@ -62,45 +71,8 @@ namespace GlimmerOfHope.Editor.NewDialogue
 
             EditorGUILayout.PropertyField(hasChoices, new GUIContent("Has Choices?"));
 
-            if (hasChoices.boolValue) DrawMultipleChoices(choices, selfId);
-            else DrawSingleContinuation(choices, selfId);
-        }
-
-        private void DrawMultipleChoices(SerializedProperty choices, string selfId)
-        {
-            EditorGUILayout.LabelField("Choices", EditorStyles.boldLabel);
-            for (int i = 0; i < choices.arraySize; i++)
-            {
-                var choice = choices.GetArrayElementAtIndex(i);
-                EditorGUILayout.BeginHorizontal();
-                EditorGUILayout.PropertyField(choice.FindPropertyRelative("choiceText"), GUIContent.none);
-                _linkPicker.DrawNextDropdown(choice, "→", selfId, GUILayout.Width(260));
-                if (GUILayout.Button("x", GUILayout.Width(22)))
-                {
-                    choices.DeleteArrayElementAtIndex(i);
-                    EditorGUILayout.EndHorizontal();
-                    break;
-                }
-                EditorGUILayout.EndHorizontal();
-            }
-
-            if (GUILayout.Button("+ Choice", GUILayout.Width(100)))
-            {
-                choices.InsertArrayElementAtIndex(choices.arraySize);
-                var newChoice = choices.GetArrayElementAtIndex(choices.arraySize - 1);
-                newChoice.FindPropertyRelative("choiceText").stringValue = "";
-                newChoice.FindPropertyRelative("nextNodeId").stringValue = "";
-            }
-        }
-
-        private void DrawSingleContinuation(SerializedProperty choices, string selfId)
-        {
-            if (choices.arraySize == 0) choices.InsertArrayElementAtIndex(0);
-            while (choices.arraySize > 1) choices.DeleteArrayElementAtIndex(choices.arraySize - 1);
-
-            var onlyChoice = choices.GetArrayElementAtIndex(0);
-            onlyChoice.FindPropertyRelative("choiceText").stringValue = "";
-            _linkPicker.DrawNextDropdown(onlyChoice, "Next", selfId);
+            if (hasChoices.boolValue) _choiceListDrawer.DrawMultipleChoices(dataNode, selfId);
+            else _choiceListDrawer.DrawSingleContinuation(dataNode, selfId);
         }
 
         private void DrawStartFields(SerializedProperty node, string selfId)

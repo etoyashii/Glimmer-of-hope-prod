@@ -76,9 +76,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         #region Editor
         private void OnValidate()
         {
-            // L'import cree l'asset avant de remplir les champs -> ne valider qu'en Play Mode.
-            if (string.IsNullOrWhiteSpace(_partId) && UnityEngine.Application.isPlaying)
-                Debug.LogWarning($"[CharacterPartSO] `{name}` : partId est vide.", this);
+            // Pas de validation si le SO n'a pas encore ete rempli par l'importer.
+            if (string.IsNullOrWhiteSpace(_partId)) return;
 
             if (_partType == CharacterPartType.Sprite2D && _sprite == null)
                 Debug.LogWarning($"[CharacterPartSO] `{name}` : type Sprite2D mais aucun sprite assigne.", this);
@@ -89,6 +88,20 @@ namespace GlimmerOfHope.Gameplay.Characters
             if (_partType == CharacterPartType.SkinnedMesh && _mesh == null)
                 Debug.LogWarning($"[CharacterPartSO] `{name}` : type SkinnedMesh mais aucun mesh assigne.", this);
         }
+
+#if UNITY_EDITOR
+        // Appele par CharacterPartsImporter pour initialiser les champs avant CreateAsset.
+        // Les champs sont remplis sur l'instance en memoire, Unity les serialise lors du CreateAsset.
+        public void SetupFromImporter(string partId, string displayName,
+                                      CharacterPartType partType, Mesh mesh, Material[] mats)
+        {
+            _partId      = partId;
+            _displayName = displayName;
+            _partType    = partType;
+            _mesh        = mesh;
+            _materials   = mats ?? new Material[0];
+        }
+#endif
         #endregion
     }
 }
