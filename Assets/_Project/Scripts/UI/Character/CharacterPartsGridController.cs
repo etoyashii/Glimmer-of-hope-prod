@@ -49,7 +49,8 @@ namespace GlimmerOfHope.UI.Widgets
                 Debug.LogError("[CharacterPartsGridController] CharacterCreatorController introuvable.");
 
             if (_partButtonPrefab == null)
-                Debug.LogError("[CharacterPartsGridController] _partButtonPrefab non assigné.", this);
+                Debug.LogError("[CharacterPartsGridController] _partButtonPrefab non assigne.", this);
+
         }
         #endregion
 
@@ -78,7 +79,9 @@ namespace GlimmerOfHope.UI.Widgets
 
             foreach (var part in category.Parts)
             {
-                if (part == null) continue;
+                // "Missing (Character Part SO)" bypasse parfois le null check Unity :
+                // on filtre aussi les parts dont le PartID est vide ou null.
+                if (part == null || string.IsNullOrEmpty(part.PartID)) continue;
 
                 var btn  = Instantiate(_partButtonPrefab, transform);
                 var view = btn.GetComponent<PartButtonView>();

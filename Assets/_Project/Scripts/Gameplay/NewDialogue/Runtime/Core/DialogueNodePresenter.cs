@@ -1,21 +1,20 @@
 using System.Collections.Generic;
+using UnityEngine.Localization;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
     /// <summary>
-    /// present a standard Dialogue node: where the text goes, where the choices go,
-    /// depending on if the bubble follows the speaker or not. 
+    /// Knows how to present a DialogueLineNode: where the text goes, where the choices go,
+    /// depending on whether the bubble follows the speaker or not. 
     /// </summary>
     public class DialogueNodePresenter
     {
         #region Private Fields
-
         private readonly DialogueBubblePresenter _bubble;
         private readonly DialogueInteractionPresenter _interaction;
-
         #endregion
 
-        #region Constructor
+        #region Public Methods
 
         public DialogueNodePresenter(DialogueBubblePresenter bubble, DialogueInteractionPresenter interaction)
         {
@@ -23,11 +22,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             _interaction = interaction;
         }
 
-        #endregion
-
-        #region Public Methods
-
-        public void Present(DialogueNode node)
+        public void Present(DialogueLineNode node)
         {
             _bubble.EnsureInstance(node);
             _bubble.Position(node);
@@ -55,15 +50,23 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
         #endregion
 
-        #region Helpers
-
-        private static List<string> BuildChoiceLabels(DialogueNode node)
+        #region Private Methods
+        private static List<string> BuildChoiceLabels(DialogueLineNode node)
         {
             var labels = new List<string>(node.choices.Count);
-            foreach (var choice in node.choices) labels.Add(choice.choiceText);
+            foreach (var choice in node.choices) labels.Add(ResolveChoiceText(choice));
             return labels;
         }
 
+        //Uses the localized entry once it's set up.
+        private static string ResolveChoiceText(DialogueChoice choice)
+        {
+            if (choice.localizedChoiceText == null || choice.localizedChoiceText.IsEmpty)
+                return choice.choiceText;
+
+            string result = choice.localizedChoiceText.GetLocalizedString();
+            return string.IsNullOrEmpty(result) ? choice.choiceText : result;
+        }
         #endregion
     }
 }

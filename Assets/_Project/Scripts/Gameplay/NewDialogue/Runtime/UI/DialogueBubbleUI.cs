@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
 using UnityEngine.Serialization;
 using UnityEngine.UI;
 
@@ -84,7 +86,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
                 _textLabel.text = text;
                 return;
             }
-
+            
             _typewriterCoroutine = StartCoroutine(TypewriterRoutine(text, charsPerSecond));
         }
         public void SetSpeakerName(string name)
@@ -115,6 +117,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             gameObject.SetActive(true);
             if (_canvasGroup == null) return;
 
+            //TODO Clean up input 
+            InputSystem.actions.FindActionMap("Player").Disable();
+            InputSystem.actions.FindActionMap("UI").Enable();
+            EventSystem.current.SetSelectedGameObject(_continueButton.gameObject);
+            
             _canvasGroup.alpha = 1f;
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
@@ -125,6 +132,11 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             StopTypewriter();
             ClearChoiceButtons();
             gameObject.SetActive(false);
+            
+            //TODO Clean up input 
+            InputSystem.actions.FindActionMap("Player").Enable();
+            EventSystem.current.SetSelectedGameObject(null);
+
         }
 
         /// <summary>
@@ -180,9 +192,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             }
             IsRevealingText = false;
         }
-        #endregion
 
-        #region Helpers
         private IEnumerator TypewriterRoutine(string text, float charsPerSecond)
         {
             IsRevealingText = true;

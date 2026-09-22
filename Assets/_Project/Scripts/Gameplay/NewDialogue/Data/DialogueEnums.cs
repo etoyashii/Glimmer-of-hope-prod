@@ -2,6 +2,7 @@ using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.NewDialogue
 {
+    #region Public Enums
     public enum DialogueNodeType
     {
         Dialogue,
@@ -53,4 +54,5 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
         [Tooltip("No automatic trigger: you call DialogueManager.Instance.StartDialogue(graph) yourself from a script.")]
         ScriptCall
     }
+    #endregion
 }

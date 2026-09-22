@@ -108,7 +108,7 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
             // Falls back to the offset configured on the dialogue's Start node.
             Vector3 offset = Vector3.up * 2f;
-            var startNode = _dialogueGraph != null ? _dialogueGraph.GetStartNode() : null;
+            var startNode = _dialogueGraph != null ? _dialogueGraph.GetTypedStartNode() : null;
             if (startNode != null) offset = startNode.buttonOffset;
 
             _buttonInstance = Instantiate(_buttonPrefab, anchorTransform);

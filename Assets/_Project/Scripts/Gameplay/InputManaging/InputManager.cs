@@ -98,6 +98,18 @@ namespace GlimmerOfHope.Gameplay
             ApplyScheme(scheme, silent: false);
         }
 
+        public static void FreezeInput(bool isActive)
+        {
+            if (isActive)
+            {
+                InputSystem.actions.FindActionMap("Player").Enable();
+            }
+            else
+            {
+                InputSystem.actions.FindActionMap("Player").Disable();
+            }
+        }
+        
         // Convenience wrappers for UI buttons
         public void SetSchemeMobile() => SetScheme(ControlScheme.Mobile);
         public void SetSchemeKeyboardMouse() => SetScheme(ControlScheme.KeyboardMouse);
