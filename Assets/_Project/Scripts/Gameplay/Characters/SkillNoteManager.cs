@@ -2,6 +2,7 @@ using GlimmerOfHope.Gameplay.Character.SpecialActions;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -9,6 +10,13 @@ using UnityEngine.UI;
 
 namespace GlimmerOfHope.Gameplay
 {
+    [Serializable]
+    public class InputAnimatorAssociation
+    {
+        public int Index;
+        public string ParamName;
+    }
+    
     [Serializable]
     /// <summary>
     /// The combo list that can be set up by Designers. It allows specifying the combo input
@@ -41,6 +49,9 @@ namespace GlimmerOfHope.Gameplay
         [Header("Combo Stats")]
         [Range(0.5f, 10.0f)]
         [SerializeField] private float _delayBetweenNotes = 1.0f;
+        [Tooltip("Minimum time required between two notes, so spamming inputs can't cut a note's animation/feedback short.")]
+        [Range(0f, 1f)]
+        [SerializeField] private float _minDelayBetweenNotes = 0.15f;
         [SerializeField] private List<Combo> _comboList;
         [Range(4, 7)]
         [SerializeField] private int _maxNoteNumber = 4;
@@ -62,6 +73,17 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Note 2 - R [Keyboard] / Button West [Gamepad]")]
         [SerializeField] private InputActionReference _note2Action;
 
+        [Header("Animator")] 
+        [SerializeField] Animator _animator;
+        
+        [SerializeField] InputAnimatorAssociation[] _inputAnimatorAssociation = new []
+        {
+            new InputAnimatorAssociation() {Index = 0, ParamName = "Skill1" },
+            new InputAnimatorAssociation() {Index = 1, ParamName = "Skill2" },
+            new InputAnimatorAssociation() {Index = 2, ParamName = "Skill3" },
+        };
+        
+        
         #endregion
 
         #region Private Fields
@@ -71,6 +93,9 @@ namespace GlimmerOfHope.Gameplay
         private int _validCheck = 0;
         private Coroutine _currentChrono;
         private Coroutine _currentRevealRoutine;
+        private float _lastNoteTime = float.NegativeInfinity;
+        
+        
 
         // Default idle color of each note button, captured once so a reveal
         // interrupted mid flash never leaves a button stuck red.
@@ -130,9 +155,17 @@ namespace GlimmerOfHope.Gameplay
         /// </summary>
         public void ActivateNote(int noteIndex)
         {
+            if (Time.time - _lastNoteTime < _minDelayBetweenNotes)
+                return;
+
+            _lastNoteTime = Time.time;
+
             if (_currentChrono != null)
                 StopCoroutine(_currentChrono);
 
+            // Animation Trigger
+            _animator?.SetTrigger(_inputAnimatorAssociation.FirstOrDefault(i => i.Index == noteIndex)?.ParamName);
+            
             SaveNote(noteIndex);
         }
 
