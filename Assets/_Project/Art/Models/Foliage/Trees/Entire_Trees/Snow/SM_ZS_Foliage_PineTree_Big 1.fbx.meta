@@ -1,14 +1,25 @@
 fileFormatVersion: 2
-guid: 00a2b7b44c1583a4d931710da8f3e8e2
+guid: c8cdda93cb13d9040ac0d70e5e2cef15
 ModelImporter:
-  serializedVersion: 24200
+  serializedVersion: 24300
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Leave_pine.001
+    second: {fileID: 2100000, guid: 73b963eb93a6db3438b2c94dd7538caf, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: pine_wood
+    second: {fileID: 2100000, guid: 78faaa33643349c4fa839d50242cea19, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
+    searchTexturesGlobally: 0
   animations:
     legacyGenerateAnimations: 4
     bakeSimulation: 0
@@ -50,7 +61,7 @@ ModelImporter:
     useFileUnits: 1
     keepQuads: 0
     weldVertices: 1
-    bakeAxisConversion: 0
+    bakeAxisConversion: 1
     preserveHierarchy: 0
     skinWeightsMode: 0
     maxBonesPerVertex: 4
