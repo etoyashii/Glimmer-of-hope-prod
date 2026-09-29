@@ -1,0 +1,10 @@
+<linker>
+  <!-- Preserve all Save data types used by JsonUtility (accessed via reflection, invisible to the linker). -->
+  <assembly fullname="GlimmerOfHope.Core">
+    <namespace fullname="GlimmerOfHope.Core.Save" preserve="all"/>
+    <namespace fullname="GlimmerOfHope.Core.Services" preserve="all"/>
+  </assembly>
+  <assembly fullname="GlimmerOfHope.Gameplay">
+    <namespace fullname="GlimmerOfHope.Gameplay.Characters" preserve="all"/>
+  </assembly>
+</linker>
