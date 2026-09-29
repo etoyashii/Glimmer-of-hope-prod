@@ -91,7 +91,7 @@ namespace GlimmerOfHope.Gameplay.Puzzles
             // If no target is assigned, solved state is driven externally via ForceSetSolved()
             if (_targetPosition == null) return;
 
-            // Already snapped — stays solved
+            // Already snapped - stays solved
             if (_isSnapped) return;
 
             float distance = Vector3.Distance(transform.position, _targetPosition.position);

@@ -41,13 +41,13 @@ public class UIHint : MonoBehaviour
     {
         if (_lastUsedDevice is Touchscreen)
         {
-            _uiBackground.enabled = false;
+            //_uiBackground.enabled = false;
             _uiHint.enabled = false;
             return;
         }
         else
         {
-            _uiBackground.enabled = true;
+            //_uiBackground.enabled = true;
             _uiHint.enabled = true;
         }
 
