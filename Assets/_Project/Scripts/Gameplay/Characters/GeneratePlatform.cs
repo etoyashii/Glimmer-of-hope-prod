@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay
@@ -192,7 +193,7 @@ namespace GlimmerOfHope.Gameplay
                                out Vector3 targetPos, out Vector3 exitDir, out bool isWall,
                                out bool canBuild))
             {
-                // Surface lost entirely — hide ghost but stay in preview state
+                // Surface lost entirely ï¿½ hide ghost but stay in preview state
                 if (_previewInstance != null)
                     _previewInstance.SetActive(false);
                 return;
@@ -224,7 +225,7 @@ namespace GlimmerOfHope.Gameplay
             // Refuse to spawn if the current target isn't buildable (wrong terrain layer)
             if (!_canBuildAtCurrentTarget)
             {
-                Debug.Log("[GeneratePlatform] Cannot build here — invalid terrain layer.");
+                Debug.Log("[GeneratePlatform] Cannot build here ï¿½ invalid terrain layer.");
                 return;
             }
 
@@ -418,6 +419,13 @@ namespace GlimmerOfHope.Gameplay
                     mats[i] = targetMaterial;
                 renderer.sharedMaterials = mats;
             }
+            
+            // Find and remove Particles
+            foreach (var r in renderers.Skip(2))
+            {
+                r.gameObject.SetActive(false);
+            }
+            
         }
         #endregion
         public bool IsOnTerrainLayer(TerrainLayer terrainLayer, Vector3 worldPos)
