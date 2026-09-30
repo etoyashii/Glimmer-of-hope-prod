@@ -140,7 +140,7 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         public void SaveCurrentSelections()
         {
-            var saveManager = ServiceLocator.Get<SaveManager>();
+            var saveManager = ServiceLocator.Get<ISaveService>();
             if (saveManager == null)
             {
                 Debug.LogWarning("[CharacterCreatorController] SaveManager introuvable, selection non sauvegardee.");
@@ -170,7 +170,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         #region Private Methods
         private void LoadSavedSelections()
         {
-            var saveManager = ServiceLocator.Get<SaveManager>();
+            var saveManager = ServiceLocator.Get<ISaveService>();
             if (saveManager == null) return;
 
             var saved = saveManager.CurrentSave?.progression?.characterSelections;

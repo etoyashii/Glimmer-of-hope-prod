@@ -12,7 +12,7 @@ namespace GlimmerOfHope.Gameplay.Dialogue
         #region Private Fields
 
         private HashSet<string> _flags = new();
-        private SaveManager _saveManager;
+        private ISaveService _saveManager;
         private bool _isDirty;
 
         #endregion
@@ -32,7 +32,7 @@ namespace GlimmerOfHope.Gameplay.Dialogue
 
         private void TryLoadFromSave()
         {
-            if (ServiceLocator.TryGet<SaveManager>(out var sm))
+            if (ServiceLocator.TryGet<ISaveService>(out var sm))
             {
                 _saveManager = sm;
                 LoadFromSave();

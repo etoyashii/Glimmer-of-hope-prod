@@ -11,7 +11,7 @@ namespace GlimmerOfHope.Core.Save
     /// Secure save manager with encryption and checksum validation.
     /// Post-MVP implementation (ADR-006).
     /// </summary>
-    public class SecureSaveManager : IService
+    public class SecureSaveManager : ISaveService
     {
         private const string SaveFileName = "save.dat";
         private const string ChecksumSuffix = ".checksum";
