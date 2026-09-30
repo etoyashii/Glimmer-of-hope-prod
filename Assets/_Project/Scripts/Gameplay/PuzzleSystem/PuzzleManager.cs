@@ -147,12 +147,6 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         /// </summary>
         public void ResetPuzzle()
         {
-            if (IsSolved)
-            {
-                Debug.Log($"[PuzzleManager] '{_puzzleName}' is already solved — reset blocked.");
-                return;
-            }
-
             foreach (PuzzleElement element in _elements)
             {
                 if (element != null)

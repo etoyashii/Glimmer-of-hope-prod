@@ -1,6 +1,5 @@
 using System;
 using UnityEngine;
-using UnityEngine.Events;
 
 namespace GlimmerOfHope.Gameplay.Puzzles
 {
@@ -45,7 +44,6 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         // Initial state snapshot taken on Awake, used for reset
         private Vector3 _initialPosition;
         private Quaternion _initialRotation;
-        private bool _snapshotTaken;
 
         #endregion
 
@@ -114,7 +112,7 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         /// Override to implement the logic that checks whether this element is in its solved state.
         /// Called by the PuzzleManager every frame (or on demand).
         /// </summary>
-        public abstract void CheckSolvedState();
+        public virtual void CheckSolvedState() { }
 
         #endregion
 
@@ -124,7 +122,6 @@ namespace GlimmerOfHope.Gameplay.Puzzles
         {
             _initialPosition = transform.position;
             _initialRotation = transform.rotation;
-            _snapshotTaken = true;
         }
 
         #endregion
