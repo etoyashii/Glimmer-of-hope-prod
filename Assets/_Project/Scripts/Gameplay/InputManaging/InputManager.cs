@@ -2,13 +2,15 @@ using System;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.Utilities;
 
 namespace GlimmerOfHope.Gameplay
 {
     /// <summary>
     /// Central input manager. Holds the current control scheme and notifies
     /// all listeners when it changes. All input scripts read from here.
-    /// Use SetScheme() to switch between schemes manually.
+    /// Use SetScheme() to switch between schemes manually, or let it switch
+    /// automatically on the first input coming from another kind of device.
     /// </summary>
 
     [DefaultExecutionOrder(-100)]
@@ -38,6 +40,10 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Control scheme active on startup.")]
         [SerializeField] private ControlScheme _defaultScheme = ControlScheme.Mobile;
 
+        [Header("Auto Switch")]
+        [Tooltip("Switch scheme automatically when a button is pressed on another kind of device.")]
+        [SerializeField] private bool _autoSwitchScheme = true;
+
         [Header("Mobile UI")]
         [Tooltip("All mobile-only UI root GameObjects to show/hide on scheme change.")]
         [SerializeField] private GameObject[] _mobileUIRoots;
@@ -53,6 +59,9 @@ namespace GlimmerOfHope.Gameplay
         #region Public Properties
 
         public ControlScheme CurrentScheme { get; private set; }
+
+        private IDisposable _anyButtonPressListener;
+        private ControlScheme? _pendingScheme;
 
         public bool IsMobile => CurrentScheme == ControlScheme.Mobile;
         public bool IsKeyboardMouse => CurrentScheme == ControlScheme.KeyboardMouse;
@@ -79,12 +88,27 @@ namespace GlimmerOfHope.Gameplay
         {
             if (MenuInput != null)
                 MenuInput.action.performed += OnMenuInputPressed;
+
+            if (_autoSwitchScheme)
+                _anyButtonPressListener = InputSystem.onAnyButtonPress.Call(OnAnyButtonPressed);
+        }
+
+        private void Update()
+        {
+            // Applied here rather than in the input callback: changing binding masks
+            // while the Input System is processing events is not safe.
+            if (_pendingScheme == null) return;
+            SetScheme(_pendingScheme.Value);
+            _pendingScheme = null;
         }
 
         private void OnDisable()
         {
             if (MenuInput != null)
                 MenuInput.action.performed -= OnMenuInputPressed;
+
+            _anyButtonPressListener?.Dispose();
+            _anyButtonPressListener = null;
         }
 
         #endregion
@@ -169,6 +193,30 @@ namespace GlimmerOfHope.Gameplay
         private void OnMenuInputPressed(InputAction.CallbackContext ctx)
         {
             OpenMenu?.Invoke();
+        }
+
+        private void OnAnyButtonPressed(InputControl control)
+        {
+            ControlScheme? scheme = GetSchemeForDevice(control.device);
+            if (scheme != null && scheme != CurrentScheme)
+                _pendingScheme = scheme;
+        }
+
+        private ControlScheme? GetSchemeForDevice(InputDevice device)
+        {
+            // On-screen controls (virtual stick/buttons) feed non-native devices, ignore them
+            // so touching the mobile UI doesn't switch to Gamepad.
+            if (!device.native) return null;
+
+            return device switch
+            {
+                Touchscreen => ControlScheme.Mobile,
+                Gamepad => ControlScheme.Gamepad,
+                Keyboard => ControlScheme.KeyboardMouse,
+                // A mouse click while on Mobile is most likely the editor simulating touch.
+                Mouse => CurrentScheme == ControlScheme.Mobile ? null : ControlScheme.KeyboardMouse,
+                _ => null
+            };
         }
 
         private ControlScheme DetectInitialScheme()

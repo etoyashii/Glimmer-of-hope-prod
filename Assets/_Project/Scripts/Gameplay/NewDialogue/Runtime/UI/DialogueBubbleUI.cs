@@ -120,8 +120,8 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
             //TODO Clean up input 
             InputSystem.actions.FindActionMap("Player").Disable();
             InputSystem.actions.FindActionMap("UI").Enable();
-            EventSystem.current.SetSelectedGameObject(_continueButton.gameObject);
-            
+            EventSystem.current.SetSelectedGameObject(GetDefaultSelection());
+
             _canvasGroup.alpha = 1f;
             _canvasGroup.interactable = true;
             _canvasGroup.blocksRaycasts = true;
@@ -174,6 +174,21 @@ namespace GlimmerOfHope.Gameplay.NewDialogue
 
                 _spawnedChoiceButtons.Add(buttonObject);
             }
+        }
+
+        /// <summary>
+        /// First interactable choice when real choices are shown, otherwise the continue button.
+        /// </summary>
+        private GameObject GetDefaultSelection()
+        {
+            foreach (var buttonObject in _spawnedChoiceButtons)
+            {
+                if (buttonObject == null || !buttonObject.activeInHierarchy) continue;
+                var button = buttonObject.GetComponent<Button>();
+                if (button != null && button.interactable) return buttonObject;
+            }
+
+            return _continueButton != null ? _continueButton.gameObject : null;
         }
 
         private void ClearChoiceButtons()

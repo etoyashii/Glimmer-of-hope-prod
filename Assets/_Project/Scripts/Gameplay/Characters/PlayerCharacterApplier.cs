@@ -69,7 +69,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 if (animator != null) animator.Rebind();
             }
 
-            var saveManager = ServiceLocator.Get<SaveManager>();
+            var saveManager = ServiceLocator.Get<ISaveService>();
             if (saveManager == null)
             {
                 Debug.LogWarning("[PlayerCharacterApplier] SaveManager introuvable - applique les defaults.", this);
@@ -114,7 +114,11 @@ namespace GlimmerOfHope.Gameplay.Characters
                     continue;
 
                 if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
+                {
                     smr.enabled = true;
+                    if (part.Materials != null && part.Materials.Length > 0)
+                        smr.sharedMaterials = part.Materials;
+                }
                 else
                     Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.Mesh.name}'.", this);
             }
@@ -169,6 +173,8 @@ namespace GlimmerOfHope.Gameplay.Characters
                     if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
                     {
                         smr.enabled = true;
+                        if (part.Materials != null && part.Materials.Length > 0)
+                            smr.sharedMaterials = part.Materials;
                         break;
                     }
                 }

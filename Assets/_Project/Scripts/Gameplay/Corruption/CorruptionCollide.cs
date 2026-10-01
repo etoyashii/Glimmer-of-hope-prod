@@ -9,9 +9,11 @@ namespace GlimmerOfHope.Gameplay
 
         private GrayZone gz;
         private GameObject skills;
+        bool _finished;
 
         private void Awake()
         {
+            _finished = false;
             box = GetComponent<BoxCollider>();
             gz = GetComponent<GrayZone>();
             skills = GameObject.FindGameObjectWithTag("Skills");
@@ -19,6 +21,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void OnTriggerStay(Collider other)
         {
+            if (_finished) return;
             if (!other.gameObject.CompareTag("Player"))
             {
 
@@ -69,6 +72,17 @@ namespace GlimmerOfHope.Gameplay
                     Debug.LogError("PostProccesEffects script not in the player");
                 }
             }
+        }
+
+        public void FinishCorruption()
+        {
+            var other = GameObject.FindGameObjectWithTag("Player");
+            if (other.gameObject.TryGetComponent(out PostProcessEffects effects))
+            {
+                effects.SetCorruptionEffect(0f);
+                _finished = true;
+            }
+            
         }
     }
 }
