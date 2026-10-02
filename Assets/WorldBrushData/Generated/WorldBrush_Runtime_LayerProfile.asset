@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cc1c73da5f6f5642b1c4be7c2baffc0, type: 3}
+  m_Name: WorldBrush_Runtime_LayerProfile
+  m_EditorClassIdentifier: 
+  _layers:
+  - Layer: 4
+    Enabled: 1
+    ActiveRadius: 700
+    ActiveHysteresis: 1.2
+    KeepAliveSeconds: 3
+    ActiveReplanInterval: 0.25
+    ExtraCellRadius: 1
+    MaxActiveManifests: 32
+    MaxNewPerSecond: 20
+    PriorityBias: 0
+    LoadRadius: 500
+    UnloadRadius: 650
+    Hysteresis: 1.15
+    ReplanInterval: 0.25
+    MaxTilesInPipeline: 64
+    UnwantedPipelinePolicy: 1
+    IoWeight: 1
+    DecodeWeight: 1
+    InstallWeight: 1
+    RendererWeight: 1

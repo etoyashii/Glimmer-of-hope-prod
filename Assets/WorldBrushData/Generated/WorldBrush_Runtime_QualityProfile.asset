@@ -1,0 +1,223 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 722338b3d09088f4184e3340d2a6d4e2, type: 3}
+  m_Name: WorldBrush_Runtime_QualityProfile
+  m_EditorClassIdentifier: 
+  _levels:
+  - Name: Nominal
+    InstallApplyPerFrame: 0
+    DecodeConcurrency: 0
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 1
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 1
+      ImpostorPolicy:
+        Mode: 1
+        PreferEnterDistanceScale: 0.7
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 0
+      ShadowMode: 0
+  - Name: InstallDown
+    InstallApplyPerFrame: 4
+    DecodeConcurrency: 0
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 1
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 1
+      ImpostorPolicy:
+        Mode: 1
+        PreferEnterDistanceScale: 0.7
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 0
+      ShadowMode: 0
+  - Name: DecodeDown
+    InstallApplyPerFrame: 4
+    DecodeConcurrency: 2
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 1
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 1
+      ImpostorPolicy:
+        Mode: 1
+        PreferEnterDistanceScale: 0.7
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 0
+      ShadowMode: 0
+  - Name: CullingDown
+    InstallApplyPerFrame: 4
+    DecodeConcurrency: 2
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 1
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 0
+      ImpostorPolicy:
+        Mode: 1
+        PreferEnterDistanceScale: 0.7
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 0
+      ShadowMode: 0
+  - Name: LodDown
+    InstallApplyPerFrame: 4
+    DecodeConcurrency: 2
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 0.85
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 0
+      ImpostorPolicy:
+        Mode: 1
+        PreferEnterDistanceScale: 0.7
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 0
+      ShadowMode: 0
+  - Name: ImpostorDown
+    InstallApplyPerFrame: 4
+    DecodeConcurrency: 2
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 0.85
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 0
+      ImpostorPolicy:
+        Mode: 2
+        PreferEnterDistanceScale: 0.75
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 0
+      ShadowMode: 0
+  - Name: ShadowsOff
+    InstallApplyPerFrame: 2
+    DecodeConcurrency: 1
+    RenderQuality:
+      CullingPolicy:
+        FrustumEnabled: 1
+        LodDistanceScale: 0.7
+        MaxDistance: 0
+        TypeGroupOverrides: []
+        OcclusionMode: 0
+      ImpostorPolicy:
+        Mode: 2
+        PreferEnterDistanceScale: 0.6
+      LodTransitionPolicy:
+        _defaultSettings:
+          CrossFadeEnabled: 1
+          HysteresisRatio: 0.1
+          CrossFadeBandRatio: 0.15
+          CrossFadeMinMeters: 2
+          CrossFadeMaxMeters: 18
+        _typeGroupOverrides: []
+      PagedPoolInstallPolicy:
+        InstancesPerFrame: 32768
+        NewPagesPerFrame: 4
+        InitialGpuUploadsPerFrame: 4
+        InitialGpuUploadInstancesPerFrame: 32768
+      OverrideShadowMode: 1
+      ShadowMode: 0
+  _thresholds:
+    StreamingFrameMsDegradeAbove: 0
+    StreamingFrameMsRestoreBelow: 0
+    IoBacklogRatioDegradeAbove: 0
+    IoBacklogRatioRestoreBelow: 0
+    MemoryBytesDegradeAbove: 0
+    MemoryBytesRestoreBelow: 0
+    MemoryBytesEmergencyDegradeAbove: 0
+  _restoreHysteresis:
+    BadFramesToDegrade: 8
+    GoodFramesToRestore: 90
+    MinSecondsBetweenTransitions: 0
