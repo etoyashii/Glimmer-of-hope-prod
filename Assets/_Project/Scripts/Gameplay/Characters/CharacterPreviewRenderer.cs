@@ -205,7 +205,7 @@ namespace GlimmerOfHope.Gameplay.Characters
             if (_smrByMeshName.TryGetValue(part.Mesh.name, out var selectedSmr))
             {
                 selectedSmr.enabled = true;
-                if (part.Materials != null && part.Materials.Length > 0)
+                if (part.HasValidMaterials)
                     selectedSmr.sharedMaterials = part.Materials;
                 var block = new MaterialPropertyBlock();
                 block.SetColor("_BaseColor", _controller.GetCategoryColor(categoryId));

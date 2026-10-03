@@ -116,7 +116,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
                 {
                     smr.enabled = true;
-                    if (part.Materials != null && part.Materials.Length > 0)
+                    if (part.HasValidMaterials)
                         smr.sharedMaterials = part.Materials;
                 }
                 else
@@ -166,6 +166,7 @@ namespace GlimmerOfHope.Gameplay.Characters
             foreach (var category in _registry.GetAllLeafCategories())
             {
                 if (category == null) continue;
+                if (category.ExcludesSiblings) continue;
                 foreach (var part in category.Parts)
                 {
                     if (part == null || part.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null)
@@ -173,7 +174,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                     if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
                     {
                         smr.enabled = true;
-                        if (part.Materials != null && part.Materials.Length > 0)
+                        if (part.HasValidMaterials)
                             smr.sharedMaterials = part.Materials;
                         break;
                     }

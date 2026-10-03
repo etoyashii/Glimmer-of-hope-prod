@@ -29,6 +29,8 @@ namespace GlimmerOfHope.Gameplay
 
         public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
         {
+            if (!renderingData.cameraData.postProcessEnabled) return;
+
             var stack = VolumeManager.instance.stack;
             var effect = stack.GetComponent<CinematicBarsEffect>();
             if (effect != null && effect.IsActive())

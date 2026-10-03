@@ -215,20 +215,22 @@ namespace GlimmerOfHope.Editor.Characters
                 return;
             }
 
-            if (!AssetDatabase.IsValidFolder(IMPORT_ROOT))
+            var masterPath = registry.MasterCharacterPrefab != null
+                ? AssetDatabase.GetAssetPath(registry.MasterCharacterPrefab)
+                : null;
+            if (string.IsNullOrEmpty(masterPath))
             {
                 EditorUtility.DisplayDialog("Reset",
-                    "Dossier FBX introuvable :\n" + IMPORT_ROOT +
-                    "\n\nDeplace les FBX dans Art/Characters/ avant de continuer.", "OK");
+                    "Registry > MasterCharacterPrefab n'est pas assigne.\n\n" +
+                    "Assigne le FBX du personnage avant de continuer.", "OK");
                 return;
             }
 
             if (!EditorUtility.DisplayDialog(
                 "Reset complet + Reimport",
                 "Supprime TOUS les CharacterPartSO et vide toutes les categories,\n" +
-                "puis reimporte tout depuis les FBX dans Art/Characters/.\n\n" +
+                "puis reimporte tout depuis :\n" + masterPath + "\n\n" +
                 "Prerequis :\n" +
-                "  - Registry > MasterCharacterPrefab pointe vers le bon FBX rig\n" +
                 "  - Chaque CategorySO a ses MeshNameFilters a jour\n" +
                 "  - La scene CharacterCreator est ouverte (pour le patch Preview)\n\n" +
                 "Continuer ?",
@@ -241,13 +243,7 @@ namespace GlimmerOfHope.Editor.Characters
             // 2. Reimporte depuis les FBX
             int created = 0, updated = 0;
             var errors = new List<string>();
-            var guids = AssetDatabase.FindAssets("t:Model", new[] { IMPORT_ROOT });
-            foreach (var guid in guids)
-            {
-                var path = AssetDatabase.GUIDToAssetPath(guid);
-                if (!path.EndsWith(".fbx", System.StringComparison.OrdinalIgnoreCase)) continue;
-                ProcessFbx(path, registry, ref created, ref updated, errors);
-            }
+            ProcessFbx(masterPath, registry, ref created, ref updated, errors);
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
 
