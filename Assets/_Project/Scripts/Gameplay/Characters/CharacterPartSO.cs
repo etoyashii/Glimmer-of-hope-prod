@@ -71,6 +71,22 @@ namespace GlimmerOfHope.Gameplay.Characters
         public Mesh Mesh             => _mesh;
         public Material[] Materials  => _materials;
         public string[] Tags         => _tags;
+
+        public bool HasValidMaterials
+        {
+            get
+            {
+                if (_materials == null || _materials.Length == 0)
+                    return false;
+
+                foreach (var mat in _materials)
+                {
+                    if (mat == null)
+                        return false;
+                }
+                return true;
+            }
+        }
         #endregion
 
         #region Editor
