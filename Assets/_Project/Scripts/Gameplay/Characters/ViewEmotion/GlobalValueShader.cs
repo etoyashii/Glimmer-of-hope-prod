@@ -35,12 +35,6 @@ public class GlobalValueShader : MonoBehaviour
     {
         //set the update variable of the shader
         Shader.SetGlobalVector("_CenterCircle", playerTransform.position);
-
-        if (Keyboard.current.tabKey.wasPressedThisFrame) //need to be change for mobile, with a button or something else
-        {
-            SwitchViewEmotionMode();
-        }
-
         if (viewEmotionIsActive)
         {
             if (currentPropRadius != 1f) //if the circle isnt full size

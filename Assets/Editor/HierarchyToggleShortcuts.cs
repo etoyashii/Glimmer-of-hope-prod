@@ -27,7 +27,7 @@ public static class HierarchyToggleShortcuts
         else vis.Show(selection, true);
     }
 
-    // Alt + G : active/désactive
+    // Alt + J : active/désactive
     [Shortcut("Hierarchy Toggle/Toggle Active", KeyCode.G, ShortcutModifiers.Alt)]
     private static void ToggleActive()
     {
