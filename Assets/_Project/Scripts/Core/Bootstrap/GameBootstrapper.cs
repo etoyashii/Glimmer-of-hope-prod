@@ -9,37 +9,39 @@ namespace GlimmerOfHope.Core.Bootstrap
 {
     public class GameBootstrapper : MonoBehaviour
     {
-        [SerializeField] private bool _useSecureSave;
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
+        private static void InitBeforeFirstScene()
+        {
+            InitializeServices();
+
+            Application.quitting -= OnQuit;
+            Application.quitting += OnQuit;
+            Application.focusChanged -= OnFocusChanged;
+            Application.focusChanged += OnFocusChanged;
+        }
 
         private void Awake()
         {
             DontDestroyOnLoad(gameObject);
             InitializeServices();
-        }
-
-        private void InitializeServices()
-        {
-            // Audio
-            ServiceLocator.Register(new AudioManager());
-
-            // Localization
-            ServiceLocator.Register(new LocalizationManager());
-
-            // Save System
-            if (_useSecureSave)
-                ServiceLocator.Register<ISaveService>(new SecureSaveManager());
-            else
-                ServiceLocator.Register<ISaveService>(new SaveManager());
-
-            // Apply saved preferences
-            ApplySavedPreferences();
-
-            Debug.Log("[GameBootstrapper] Services initialized.");
-
             SceneManager.LoadScene("MainMenu");
         }
 
-        private void ApplySavedPreferences()
+        private static void InitializeServices()
+        {
+            if (ServiceLocator.IsRegistered<ISaveService>())
+                return;
+
+            ServiceLocator.Register(new AudioManager());
+            ServiceLocator.Register(new LocalizationManager());
+            ServiceLocator.Register<ISaveService>(new SaveManager());
+
+            ApplySavedPreferences();
+
+            Debug.Log("[GameBootstrapper] Services initialized.");
+        }
+
+        private static void ApplySavedPreferences()
         {
             if (ServiceLocator.TryGet<ISaveService>(out var saveManager))
             {
@@ -52,20 +54,19 @@ namespace GlimmerOfHope.Core.Bootstrap
             }
         }
 
-        private void OnApplicationQuit()
+        private static void OnQuit()
         {
             ServiceLocator.Clear();
         }
 
-        private void OnApplicationPause(bool pause)
+        private static void OnFocusChanged(bool hasFocus)
         {
-            if (pause)
+            if (hasFocus)
+                return;
+
+            if (ServiceLocator.TryGet<ISaveService>(out var saveManager))
             {
-                // Auto-save on pause (mobile)
-                if (ServiceLocator.TryGet<ISaveService>(out var saveManager))
-                {
-                    saveManager.Save();
-                }
+                saveManager.Save();
             }
         }
     }

@@ -1,0 +1,190 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854570b06e704594590a2991490370e7, type: 3}
+  m_Name: dialogue_1_5_1a_fatima_incinerator
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
+  graphId: 83f793d6
+  startNodeId: 74d4ad2b
+  _typedNodes:
+  - rid: 1190579323228913672
+  - rid: 1190579323228913673
+  - rid: 1190579323228913674
+  - rid: 1190579323228913675
+  - rid: 1190579323228913676
+  - rid: 1190579323228913933
+  references:
+    version: 2
+    RefIds:
+    - rid: 1190579323228913672
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 74d4ad2b
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_74d4ad2b_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row0_7f14fa3d
+        editorPosition: {x: -298.6667, y: 334.6667}
+        triggerType: 1
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 100
+    - rid: 1190579323228913673
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row0_7f14fa3d
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row0_7f14fa3d_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row1_48470cf0
+        editorPosition: {x: -38.96247, y: 333.7143}
+        speakerId: Fatima (panicked)
+        text: "The incinerator is overheating! The river is supposed to prevent that\u2026
+          but it\u2019s run dry!"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row0_7f14fa3d
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 1190579323228913674
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row1_48470cf0
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row1_48470cf0_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: f38cb6b5
+        editorPosition: {x: 580.37103, y: 332.381}
+        speakerId: Player (calm)
+        text: "Panicking won\u2019t help anything. Let\u2019s stay calm. We\u2019ll
+          look at this step by step. Show me where the water used to flow."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row1_48470cf0
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 1190579323228913675
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_83f9ab11
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_83f9ab11_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row3_9f5359e3
+        editorPosition: {x: 1680.6666, y: 148.6667}
+        speakerId: Fatima (relieved)
+        text: "Phew\u2026 it wasn't such a big deal after all. Panicking only made
+          things harder. Good thing you kept your cool."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row2_83f9ab11
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 1190579323228913676
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row3_9f5359e3
+        choices: []
+        editorPosition: {x: 2409.3335, y: 357.3333}
+        outcomeId: 
+    - rid: 1190579323228913933
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f38cb6b5
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_f38cb6b5_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row2_83f9ab11
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_f38cb6b5_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row3_9f5359e3
+        editorPosition: {x: 1415.9999, y: 333.33337}
+        conditionType: 0
+        conditionFlagName: WaterEstablished
+        conditionExpectedValue: 1
+        conditionScriptId: 

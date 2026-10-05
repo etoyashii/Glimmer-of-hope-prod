@@ -1,0 +1,122 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854570b06e704594590a2991490370e7, type: 3}
+  m_Name: dialogue_1_5_5b_emotion_sensing
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
+  graphId: ac93aab0
+  startNodeId: 62df77c3
+  _typedNodes:
+  - rid: 1190579323228913900
+  - rid: 1190579323228913901
+  - rid: 1190579323228913902
+  - rid: 1190579323228913903
+  references:
+    version: 2
+    RefIds:
+    - rid: 1190579323228913900
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 62df77c3
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: 
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: 
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row0_3307157e
+        editorPosition: {x: -247.1929, y: 21.292236}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 1190579323228913901
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row0_3307157e
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row0_3307157e_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row1_4d15cd06
+        editorPosition: {x: 57.304188, y: 8.695725}
+        speakerId: Glow (quiet, aside to the player)
+        text: "Before you go back to them, listen with your emotional sensitivity.
+          Don\u2019t stop at their words alone\u2026 look at what they seem to feel
+          behind their anger. Listening is often the first step toward calming things."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row0_3307157e
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 1190579323228913902
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row1_4d15cd06
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row1_4d15cd06_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row2_446197e5
+        editorPosition: {x: 1275.7365, y: 8.666671}
+        speakerId: 
+        text: "(Player action: they use their emotional sensitivity to sense Tom\u2019s
+          and Harry\u2019s emotions.)"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row1_4d15cd06
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 1190579323228913903
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_446197e5
+        choices: []
+        editorPosition: {x: 1930.8351, y: 13.903265}
+        outcomeId: 
