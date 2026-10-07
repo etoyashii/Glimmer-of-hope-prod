@@ -89,6 +89,8 @@ GameObject:
   - component: {fileID: 2477031461940820883}
   - component: {fileID: 71753084803251097}
   - component: {fileID: 5290426663300998465}
+  - component: {fileID: 3152314350502873957}
+  - component: {fileID: 5006044284609231609}
   m_Layer: 5
   m_Name: SubMenu
   m_TagString: Untagged
@@ -114,7 +116,7 @@ RectTransform:
   m_AnchorMin: {x: 0.71883523, y: 0}
   m_AnchorMax: {x: 1, y: 0.76153207}
   m_AnchoredPosition: {x: -7.827942, y: -0.00012207031}
-  m_SizeDelta: {x: -15.656, y: 208.1689}
+  m_SizeDelta: {x: -15.656, y: 0}
   m_Pivot: {x: 0.5, y: 1}
 --- !u!222 &2477031461940820883
 CanvasRenderer:
@@ -167,6 +169,46 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
   m_ShowMaskGraphic: 1
+--- !u!114 &3152314350502873957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601259209677949793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!114 &5006044284609231609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601259209677949793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1183092077862888536
 GameObject:
   m_ObjectHideFlags: 0
@@ -203,10 +245,10 @@ RectTransform:
   - {fileID: 3199954680788014281}
   m_Father: {fileID: 7906617784604303667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 1}
-  m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 58.97675, y: -173.04724}
-  m_SizeDelta: {x: 117.9535, y: 346.09448}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 117.9535, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6889443089318867507
 CanvasRenderer:
@@ -261,10 +303,10 @@ MonoBehaviour:
   m_Padding:
     m_Left: 20
     m_Right: 20
-    m_Top: 30
-    m_Bottom: 13
+    m_Top: 50
+    m_Bottom: 50
   m_ChildAlignment: 1
-  m_Spacing: 0
+  m_Spacing: 30
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -307,8 +349,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50.114937, y: -35.784645}
-  m_SizeDelta: {x: 100.22987, y: 71.56929}
+  m_AnchoredPosition: {x: 58.97675, y: -80.51575}
+  m_SizeDelta: {x: 77.9535, y: 101.031494}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1571946616591636355
 CanvasRenderer:
@@ -364,7 +406,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 100
-  m_PreferredHeight: 150
+  m_PreferredHeight: 78
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -460,7 +502,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 100
-  m_PreferredHeight: 150
+  m_PreferredHeight: 78
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
@@ -556,7 +598,7 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 100
-  m_PreferredHeight: 150
+  m_PreferredHeight: 78
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
