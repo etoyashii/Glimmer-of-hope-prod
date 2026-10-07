@@ -21,9 +21,50 @@ MonoBehaviour:
   - rid: 1190579323228913668
   - rid: 1190579323228913669
   - rid: 1190579323228913670
+  - rid: 383362492082683904
+  - rid: 383362492082683905
   references:
     version: 2
     RefIds:
+    - rid: 383362492082683904
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 781fe7b4
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_781fe7b4_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row3_4805519b
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_781fe7b4_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row0_df38ff92
+        editorPosition: {x: -99.92005, y: -124.61832}
+        conditionType: 0
+        conditionFlagName: 
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362492082683905
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: 0a0273fd
+        choices: []
+        editorPosition: {x: 2437.4502, y: -32.466675}
+        outcomeId: 0
     - rid: 1190579323228913665
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
@@ -39,8 +80,8 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_df38ff92
-        editorPosition: {x: -44, y: -35.333344}
+          nextNodeId: 781fe7b4
+        editorPosition: {x: -430.5867, y: -121.95168}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
@@ -129,7 +170,7 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_4805519b
+          nextNodeId: 0a0273fd
         editorPosition: {x: 1472.6666, y: -35.333405}
         speakerId: Glow (suggesting)
         text: "What if we looked at the solution instead of looking for someone to
@@ -166,10 +207,10 @@ MonoBehaviour:
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: row4_035cd307
-        editorPosition: {x: 2422, y: -36.666656}
-        speakerId: 
-        text: (The player grows the plant with the tempo mushroom; the plant absorbs
-          the standing water.)
+        editorPosition: {x: 197.5284, y: -290.51337}
+        speakerId: Alexandre (softened)
+        text: "Indeed\u2026 you were right. Better to act today than to redo the
+          past. Thank you so much."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
@@ -190,5 +231,5 @@ MonoBehaviour:
       data:
         nodeId: row4_035cd307
         choices: []
-        editorPosition: {x: 3144.6667, y: -42.666656}
-        outcomeId: 
+        editorPosition: {x: 825.76337, y: -290}
+        outcomeId: 1
