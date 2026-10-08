@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 6959240283318856264}
   - component: {fileID: 8881573250652244491}
   - component: {fileID: 6121172486513286282}
+  - component: {fileID: 7349915096150799667}
   m_Layer: 0
   m_Name: Thorns
   m_TagString: Untagged
@@ -60,6 +61,27 @@ Animator:
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
 --- !u!65 &6121172486513286282
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 86515484214287669}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 4.5788574, y: 4.3191223, z: 4.583496}
+  m_Center: {x: -1.7894287, y: -1.6595612, z: -0.77075195}
+--- !u!65 &7349915096150799667
 BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -271,7 +293,7 @@ Animator:
   m_GameObject: {fileID: 3659238368635529876}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 9aa706cb21f77f0489aa6fcb79fd6b6c, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -311,7 +333,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5351096211985130136}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.022081457, y: 0.93321395, z: -0.058230285, w: 0.35388327}
+  m_LocalRotation: {x: 0.02209232, y: 0.93317616, z: -0.05824054, w: 0.35398072}
   m_LocalPosition: {x: 2.9978027, y: 1.7380066, z: -7.8691406}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -457,6 +479,7 @@ GameObject:
   - component: {fileID: 5432863587284891796}
   - component: {fileID: 694980824387927112}
   - component: {fileID: 1602071320808402066}
+  - component: {fileID: 2752528655928801667}
   m_Layer: 0
   m_Name: Puzzle_RockFruitFlowerThorn
   m_TagString: Untagged
@@ -502,11 +525,35 @@ MonoBehaviour:
   - {fileID: 395223209301887668}
   _onPuzzleCompleted:
     m_PersistentCalls:
-      m_Calls: []
-  _playableDirector: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 2752528655928801667}
+        m_TargetAssemblyTypeName: InputRef, Assembly-CSharp
+        m_MethodName: _DeactivateInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  _playableDirector: {fileID: 1602071320808402066}
   _onPuzzleCompletedPostTimeline:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2752528655928801667}
+        m_TargetAssemblyTypeName: InputRef, Assembly-CSharp
+        m_MethodName: _ActivateInput
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!320 &1602071320808402066
 PlayableDirector:
   m_ObjectHideFlags: 0
@@ -517,7 +564,7 @@ PlayableDirector:
   m_Enabled: 1
   serializedVersion: 3
   m_PlayableAsset: {fileID: 11400000, guid: 801118e56d88dc8458892480414ed2ae, type: 2}
-  m_InitialState: 1
+  m_InitialState: 0
   m_WrapMode: 2
   m_DirectorUpdateMode: 1
   m_InitialTime: 0
@@ -536,6 +583,18 @@ PlayableDirector:
     - 6a7e7f8fef96fc149a3aef734c6bbd93: {fileID: 1135719846507597279}
     - f597290ab27eaae498cd9233687da882: {fileID: 865029978992662562}
     - d125d1db627df0a4cb8688f05def3e3a: {fileID: 5968386640660637380}
+--- !u!114 &2752528655928801667
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604375922341151470}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc2740d73c7794fc28cba44782d07ef5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InputRef
 --- !u!1 &6732371162462087698
 GameObject:
   m_ObjectHideFlags: 0
