@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Unity.Mathematics;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -39,6 +40,9 @@ namespace GlimmerOfHope.Gameplay
         public BreathPhase CurrentPhase { get; private set; }
         public float HoldTimer { get; private set; }
         public int BreathsCompleted { get; private set; }
+        public float CurrentScalePercent => math.remap(ScaleMin, ScaleMax, 0f, 1f, CurrentScale.x);
+
+        public event Action<Vector3> OnDesiredScaleChanged;
 
         /// <summary>
         /// Estimated time remaining before reaching the current target's margin
@@ -175,6 +179,7 @@ namespace GlimmerOfHope.Gameplay
             CurrentPhase = BreathPhase.Exhale;
             _targetIsMax = false;
             DesiredScale = Vector3.one * ScaleMin;
+            OnDesiredScaleChanged?.Invoke(DesiredScale);
         }
 
         private void SwitchToInhale(bool completingBreath)
@@ -182,6 +187,7 @@ namespace GlimmerOfHope.Gameplay
             CurrentPhase = BreathPhase.Inhale;
             _targetIsMax = true;
             DesiredScale = Vector3.one * ScaleMax;
+            OnDesiredScaleChanged?.Invoke(DesiredScale);
 
             if (completingBreath)
             {

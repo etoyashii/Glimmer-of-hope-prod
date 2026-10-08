@@ -15,6 +15,8 @@ namespace GlimmerOfHope.Gameplay
 
         [Header("Camera")]
         public BenchCameraController CameraController;
+        public float MinCameraFOV = 60;
+        public float MaxCameraFOV = 120;
 
         [Header("Player positioning")]
         [Tooltip("Empty transform placed on the seat, oriented with the player's back to the bench camera. Position and rotation are copied onto the player when they sit down.")]
@@ -53,6 +55,14 @@ namespace GlimmerOfHope.Gameplay
 
         #region Private Properties
         private bool _isSitting = false;
+        #endregion
+
+        #region Unity Lifetime
+        private void Update()
+        {
+            if (_breathingExercise != null && _breathingExercise.IsActive)
+                CameraController.BenchCamera.fieldOfView = Mathf.Lerp(MinCameraFOV, MaxCameraFOV, _breathingExercise.Cycle.CurrentScalePercent);
+        }
         #endregion
 
         #region Public Methods

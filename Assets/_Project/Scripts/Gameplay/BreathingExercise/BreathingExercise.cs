@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
 using TMPro;
+using GlimmerOfHope.Gameplay.UI;
+using DG.Tweening;
+using System;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -25,6 +28,13 @@ namespace GlimmerOfHope.Gameplay
         public Color DefaultColor = Color.white;
         public float ColorFlashDuration = 0.3f; // how long the success/fail color shows before returning to neutral
 
+        [Header("Animation")]
+        public float DesiredScaleAnimTime = 0.5f;
+        public Ease DesiredScaleAnimEase = Ease.InCirc;
+
+        [Header("Time text")]
+        public TMP_Text TimeText;
+        public string TimeTextFormat = "{0:F0}s";
 
         [Header("Phase text (optional)")]
         [Tooltip("Text showing the current phase. Add it yourself in the prefab and assign it here.")]
@@ -35,14 +45,7 @@ namespace GlimmerOfHope.Gameplay
         public string HoldAfterExhaleLabel = "Hold";
 
         [Header("Breath count text (optional)")]
-        [Tooltip("Text showing the number of breaths completed. Add it yourself in the prefab and assign it here.")]
-        public TMP_Text BreathCountText;
-        public string BreathCountFormat = "{0} / {1}"; // {0} = BreathsCompleted, {1} = DesiredBreathCount
-
-        [Header("UI exit (optional)")]
-        [Tooltip("Text showing the instruction to quit the exercise. Add it yourself in the prefab and assign it here.")]
-        public TMP_Text QuitPromptText;
-        public string QuitPromptLabel = "Quit";
+        public BreathingPoints BreathingPoints = null;
 
         [Header("Events")]
         public UnityEngine.Events.UnityEvent OnExerciseComplete;
@@ -64,6 +67,7 @@ namespace GlimmerOfHope.Gameplay
             Cycle.OnSuccess += HandleSuccess;
             Cycle.OnMiss += HandleMiss;
             Cycle.OnExerciseComplete += HandleExerciseComplete;
+            Cycle.OnDesiredScaleChanged += OnDesiredScaleChanged;
         }
 
         void OnDestroy()
@@ -71,12 +75,20 @@ namespace GlimmerOfHope.Gameplay
             Cycle.OnSuccess -= HandleSuccess;
             Cycle.OnMiss -= HandleMiss;
             Cycle.OnExerciseComplete -= HandleExerciseComplete;
+            Cycle.OnDesiredScaleChanged -= OnDesiredScaleChanged;
+        }
+
+        private void OnDesiredScaleChanged(Vector3 desiredScale)
+        {
+            if (DesiredScaleImage != null)
+                DesiredScaleImage.transform.DOScale(desiredScale, DesiredScaleAnimTime).SetEase(DesiredScaleAnimEase);
         }
 
         void Start()
         {
             // The prefab is only instantiated when needed, so it's active right away.
             ActivateBreathingSystem();
+            DesiredScaleImage.transform.localScale = Cycle.DesiredScale;
         }
 
         void Update()
@@ -92,7 +104,7 @@ namespace GlimmerOfHope.Gameplay
         #endregion
 
         #region Public Methods
-        
+
         //Hook this up directly to the OnClick() of a UI exit button.
         public void RequestQuit()
         {
@@ -112,7 +124,7 @@ namespace GlimmerOfHope.Gameplay
             return inhaling;
         }
 
-        public  void HandleSuccess()
+        public void HandleSuccess()
         {
             FlashColor(SuccessColor);
         }
@@ -152,11 +164,7 @@ namespace GlimmerOfHope.Gameplay
                 CurrentScaleImage.color = CurrentScaleColor;
             }
 
-            if (DesiredScaleImage != null)
-            {
-                DesiredScaleImage.transform.localScale = Cycle.DesiredScale;
-                DesiredScaleImage.color = DesiredScaleColor;
-            }
+
         }
 
         public void UpdatePhaseText()
@@ -166,28 +174,32 @@ namespace GlimmerOfHope.Gameplay
             switch (Cycle.CurrentPhase)
             {
                 case BreathPhase.Inhale:
-                    PhaseText.text = $"{InhaleLabel} {Cycle.EstimatedTimeRemaining:F1}s";
+                    PhaseText.text = $"{InhaleLabel}";
+                    TimeText.text = string.Format(TimeTextFormat, Cycle.EstimatedTimeRemaining);
                     break;
 
                 case BreathPhase.Exhale:
-                    PhaseText.text = $"{ExhaleLabel} {Cycle.EstimatedTimeRemaining:F1}s";
+                    PhaseText.text = $"{ExhaleLabel}";
+                    TimeText.text = string.Format(TimeTextFormat, Cycle.EstimatedTimeRemaining);
                     break;
 
                 case BreathPhase.HoldAfterInhale:
-                    PhaseText.text = $"{HoldAfterInhaleLabel} {Cycle.HoldTimer:F1}s";
+                    PhaseText.text = $"{HoldAfterInhaleLabel}";
+                    TimeText.text = string.Format(TimeTextFormat, Cycle.HoldTimer);
                     break;
 
                 case BreathPhase.HoldAfterExhale:
-                    PhaseText.text = $"{HoldAfterExhaleLabel} {Cycle.HoldTimer:F1}s";
+                    PhaseText.text = $"{HoldAfterExhaleLabel}";
+                    TimeText.text = string.Format(TimeTextFormat, Cycle.HoldTimer);
                     break;
             }
         }
 
         public void UpdateBreathCountText()
         {
-            if (BreathCountText == null) return;
+            if (BreathingPoints == null) return;
 
-            BreathCountText.text = string.Format(BreathCountFormat, Cycle.BreathsCompleted, Cycle.DesiredBreathCount);
+            BreathingPoints.SetValue(Cycle.BreathsCompleted, true);
         }
 
         // Useful if you reuse the object without destroying/recreating it
@@ -196,9 +208,6 @@ namespace GlimmerOfHope.Gameplay
             IsActive = true;
             Cycle.ResetCycle();
             CurrentScaleColor = DefaultColor;
-
-            if (QuitPromptText != null)
-                QuitPromptText.text = QuitPromptLabel;
         }
 
         public void DeactivateBreathingSystem()
