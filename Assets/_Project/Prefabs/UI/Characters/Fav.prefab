@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 7175296437591714127}
   - component: {fileID: 1539850206593607400}
   - component: {fileID: 5083487467286587556}
+  - component: {fileID: 8725989811344623872}
+  - component: {fileID: 6645133052119089535}
   m_Layer: 5
   m_Name: Fav
   m_TagString: Untagged
@@ -30,7 +32,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 823059625074688794}
   - {fileID: 7906617784604303667}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -61,7 +62,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
+  m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -77,6 +78,73 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8725989811344623872
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21874967834469290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5967b3ba3537e8242a22c0d6258facd7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.CharacterCategoryGroupButton
+  _button: {fileID: 6645133052119089535}
+  _subMenuRT: {fileID: 7906617784604303667}
+  _subMenuContentSizeFitter: {fileID: 3152314350502873957}
+  _subMenuLayoutGroup: {fileID: 5006044284609231609}
+  _onCategorySelected: {fileID: 11400000, guid: ea6b727ee64884f43a2855aab08f47be, type: 2}
+  _subMenuShowAnimTime: 0.2
+  _subMenuShowAnimEase: 27
+  _subMenuHideAnimTime: 0.05
+  _subMenuHideAnimEase: 26
+  _selectCategoryOnClick: fav
+  CategoryGroup: 0
+--- !u!114 &6645133052119089535
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 21874967834469290}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
+  m_Navigation:
+    m_Mode: 3
+    m_WrapAround: 0
+    m_SelectOnUp: {fileID: 0}
+    m_SelectOnDown: {fileID: 0}
+    m_SelectOnLeft: {fileID: 0}
+    m_SelectOnRight: {fileID: 0}
+  m_Transition: 1
+  m_Colors:
+    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
+    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
+    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
+    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
+    m_ColorMultiplier: 1
+    m_FadeDuration: 0.1
+  m_SpriteState:
+    m_HighlightedSprite: {fileID: 0}
+    m_PressedSprite: {fileID: 0}
+    m_SelectedSprite: {fileID: 0}
+    m_DisabledSprite: {fileID: 0}
+  m_AnimationTriggers:
+    m_NormalTrigger: Normal
+    m_HighlightedTrigger: Highlighted
+    m_PressedTrigger: Pressed
+    m_SelectedTrigger: Selected
+    m_DisabledTrigger: Disabled
+  m_Interactable: 1
+  m_TargetGraphic: {fileID: 5083487467286587556}
+  m_OnClick:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &601259209677949793
 GameObject:
   m_ObjectHideFlags: 0
@@ -88,6 +156,9 @@ GameObject:
   - component: {fileID: 7906617784604303667}
   - component: {fileID: 2477031461940820883}
   - component: {fileID: 71753084803251097}
+  - component: {fileID: 5290426663300998465}
+  - component: {fileID: 3152314350502873957}
+  - component: {fileID: 5006044284609231609}
   m_Layer: 5
   m_Name: SubMenu
   m_TagString: Untagged
@@ -110,11 +181,11 @@ RectTransform:
   - {fileID: 6138165576742323754}
   m_Father: {fileID: 7175296437591714127}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.71883523, y: 0}
-  m_AnchorMax: {x: 1, y: 0.76153207}
-  m_AnchoredPosition: {x: -7.100006, y: -112.7}
-  m_SizeDelta: {x: 257.5688, y: 525.6508}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 200, y: 0}
+  m_SizeDelta: {x: 117.343994, y: 0}
+  m_Pivot: {x: 0, y: 1}
 --- !u!222 &2477031461940820883
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -144,7 +215,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: -1955970285, guid: c47f888d41b6b5743b066cb7bb485d07, type: 3}
-  m_Type: 0
+  m_Type: 1
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 4
@@ -153,6 +224,59 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5290426663300998465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601259209677949793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Mask
+  m_ShowMaskGraphic: 1
+--- !u!114 &3152314350502873957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601259209677949793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.ContentSizeFitter
+  m_HorizontalFit: 0
+  m_VerticalFit: 2
+--- !u!114 &5006044284609231609
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 601259209677949793}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59f8146938fff824cb5fd77236b75775, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
+  m_Padding:
+    m_Left: 0
+    m_Right: 0
+    m_Top: 0
+    m_Bottom: 0
+  m_ChildAlignment: 0
+  m_Spacing: 0
+  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandHeight: 1
+  m_ChildControlWidth: 0
+  m_ChildControlHeight: 1
+  m_ChildScaleWidth: 0
+  m_ChildScaleHeight: 0
+  m_ReverseArrangement: 0
 --- !u!1 &1183092077862888536
 GameObject:
   m_ObjectHideFlags: 0
@@ -189,10 +313,10 @@ RectTransform:
   - {fileID: 3199954680788014281}
   m_Father: {fileID: 7906617784604303667}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.36677447, y: 0.34160674}
-  m_AnchorMax: {x: 0.623, y: 0.6652174}
-  m_AnchoredPosition: {x: 2, y: 7.2631}
-  m_SizeDelta: {x: 0, y: 14.5262}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 117.9535, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6889443089318867507
 CanvasRenderer:
@@ -245,14 +369,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.VerticalLayoutGroup
   m_Padding:
-    m_Left: 0
-    m_Right: 0
-    m_Top: 0
-    m_Bottom: 0
-  m_ChildAlignment: 0
-  m_Spacing: 10.4
+    m_Left: 20
+    m_Right: 20
+    m_Top: 50
+    m_Bottom: 50
+  m_ChildAlignment: 1
+  m_Spacing: 30
   m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
   m_ChildControlHeight: 1
   m_ChildScaleWidth: 0
@@ -270,13 +394,14 @@ GameObject:
   - component: {fileID: 1571946616591636355}
   - component: {fileID: 8794357555817337720}
   - component: {fileID: 3380850866017801698}
+  - component: {fileID: 5312724040782080964}
   m_Layer: 5
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &5608703737659995558
 RectTransform:
   m_ObjectHideFlags: 0
@@ -291,10 +416,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 6138165576742323754}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 58.97675, y: -80.51575}
+  m_SizeDelta: {x: 77.9535, y: 101.031494}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &1571946616591636355
 CanvasRenderer:
@@ -350,10 +475,27 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 100
-  m_PreferredHeight: 150
+  m_PreferredHeight: 78
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &5312724040782080964
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047053382464962783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c48733e45bf724b850b20d05212ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.ScaleUpOnHover
+  _targetScale: 1.05
+  _scaleUpTime: 0.1
+  _scaleUpEase: 20
+  _scaleDownTime: 0.1
+  _scaleDownEase: 20
 --- !u!1 &2239327019276662918
 GameObject:
   m_ObjectHideFlags: 0
@@ -366,6 +508,7 @@ GameObject:
   - component: {fileID: 8173404888712523154}
   - component: {fileID: 1784125487273432101}
   - component: {fileID: 1222243430778544733}
+  - component: {fileID: 2244979646488302578}
   m_Layer: 5
   m_Name: Eyes
   m_TagString: Untagged
@@ -446,10 +589,27 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 100
-  m_PreferredHeight: 150
+  m_PreferredHeight: 78
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
+--- !u!114 &2244979646488302578
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2239327019276662918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21c48733e45bf724b850b20d05212ac0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.ScaleUpOnHover
+  _targetScale: 1.05
+  _scaleUpTime: 0.1
+  _scaleUpEase: 20
+  _scaleDownTime: 0.1
+  _scaleDownEase: 20
 --- !u!1 &4264917606949157576
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +622,7 @@ GameObject:
   - component: {fileID: 5045011487291284485}
   - component: {fileID: 4282181846097188747}
   - component: {fileID: 2718135100256604926}
+  - component: {fileID: 720478410309422588}
   m_Layer: 5
   m_Name: Accessoiries
   m_TagString: Untagged
@@ -542,146 +703,24 @@ MonoBehaviour:
   m_MinWidth: -1
   m_MinHeight: -1
   m_PreferredWidth: 100
-  m_PreferredHeight: 150
+  m_PreferredHeight: 78
   m_FlexibleWidth: -1
   m_FlexibleHeight: -1
   m_LayoutPriority: 1
---- !u!1 &8818988131596703647
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 823059625074688794}
-  - component: {fileID: 2683953919059571465}
-  - component: {fileID: 7518027154804385822}
-  - component: {fileID: 3077426233131127038}
-  - component: {fileID: 7748218488206949663}
-  m_Layer: 5
-  m_Name: ButtonSpace
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &823059625074688794
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8818988131596703647}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 7175296437591714127}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 1.2293, y: 0}
-  m_SizeDelta: {x: 200.7983, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &2683953919059571465
+--- !u!114 &720478410309422588
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8818988131596703647}
+  m_GameObject: {fileID: 4264917606949157576}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 21c48733e45bf724b850b20d05212ac0, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Button
-  m_Navigation:
-    m_Mode: 3
-    m_WrapAround: 0
-    m_SelectOnUp: {fileID: 0}
-    m_SelectOnDown: {fileID: 0}
-    m_SelectOnLeft: {fileID: 0}
-    m_SelectOnRight: {fileID: 0}
-  m_Transition: 1
-  m_Colors:
-    m_NormalColor: {r: 1, g: 1, b: 1, a: 1}
-    m_HighlightedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_PressedColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 1}
-    m_SelectedColor: {r: 0.9607843, g: 0.9607843, b: 0.9607843, a: 1}
-    m_DisabledColor: {r: 0.78431374, g: 0.78431374, b: 0.78431374, a: 0.5019608}
-    m_ColorMultiplier: 1
-    m_FadeDuration: 0.1
-  m_SpriteState:
-    m_HighlightedSprite: {fileID: 0}
-    m_PressedSprite: {fileID: 0}
-    m_SelectedSprite: {fileID: 0}
-    m_DisabledSprite: {fileID: 0}
-  m_AnimationTriggers:
-    m_NormalTrigger: Normal
-    m_HighlightedTrigger: Highlighted
-    m_PressedTrigger: Pressed
-    m_SelectedTrigger: Selected
-    m_DisabledTrigger: Disabled
-  m_Interactable: 1
-  m_TargetGraphic: {fileID: 5083487467286587556}
-  m_OnClick:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &7518027154804385822
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8818988131596703647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9d9efa1fb0f42c43ba8f4f3d8e5078e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Widgets.CharacterMenuToggle
-  _subMenu: {fileID: 601259209677949793}
-  _otherSubMenus:
-  - {fileID: 601259209677949793}
-  - {fileID: 601259209677949793}
-  - {fileID: 601259209677949793}
-  _openOnStart: 0
---- !u!222 &3077426233131127038
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8818988131596703647}
-  m_CullTransparentMesh: 1
---- !u!114 &7748218488206949663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8818988131596703647}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.ScaleUpOnHover
+  _targetScale: 1.05
+  _scaleUpTime: 0.1
+  _scaleUpEase: 20
+  _scaleDownTime: 0.1
+  _scaleDownEase: 20
