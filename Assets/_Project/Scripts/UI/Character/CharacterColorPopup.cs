@@ -1,21 +1,32 @@
 using UnityEngine;
 using UnityEngine.UI;
 using GlimmerOfHope.Core.Events;
+using DG.Tweening;
+using System.Collections.Generic;
 
 namespace GlimmerOfHope.UI.Widgets
 {
     [RequireComponent(typeof(CanvasGroup))]
     public class CharacterColorPopup : MonoBehaviour
     {
+        [Header("Animation")]
+        [SerializeField] private float _showAnimTime = 0.5f;
+        [SerializeField] private AnimationCurve _showAnimEase;
+        [SerializeField] private float _hideAnimTime = 0.5f;
+        [SerializeField] private AnimationCurve _hideAnimEase;
+        [SerializeField] private Ease _animatedElementsEase = Ease.OutBack;
+        [SerializeField] private float _animatedElementsShowTime = 0.2f;
+        [SerializeField] private List<Transform> _animatedElements;
+        [SerializeField] private float _timeBetweenAmimatedElements = 0.1f;
+        [Header("References")]
         [SerializeField] private VoidEventChannel _onColorRequested;
         [SerializeField] private Button _closeButton;
 
-        private CanvasGroup _group;
+        private bool _isOpen = false;
 
         private void Awake()
         {
-            _group = GetComponent<CanvasGroup>();
-            SetOpen(false);
+            transform.localScale = Vector3.zero;
         }
 
         private void OnEnable()
@@ -36,19 +47,36 @@ namespace GlimmerOfHope.UI.Widgets
 
         public void Open()
         {
-            SetOpen(true);
+            if (_isOpen)
+                return;
+            _isOpen = true;
+            HideAnimatedElements();
+            transform.DOKill();
+            Sequence sequence = DOTween.Sequence();
+
+            sequence.Append(transform.DOScale(1f, _showAnimTime)
+                .SetEase(_showAnimEase)
+                .ChangeStartValue(Vector3.zero));
+
+            foreach (Transform element in _animatedElements)
+            {
+                sequence.Append(element.DOScale(1f, _animatedElementsShowTime).SetEase(_animatedElementsEase));
+                sequence.AppendInterval(_timeBetweenAmimatedElements);
+            }
         }
 
         public void Close()
         {
-            SetOpen(false);
+            _isOpen = false;
+            transform.DOKill();
+            transform.DOScale(0f, _hideAnimTime)
+                .SetEase(_hideAnimEase);
         }
 
-        private void SetOpen(bool open)
+        private void HideAnimatedElements()
         {
-            _group.alpha = open ? 1f : 0f;
-            _group.blocksRaycasts = open;
-            _group.interactable = open;
+            foreach (Transform element in _animatedElements)
+                element.transform.localScale = Vector3.zero;
         }
     }
 }

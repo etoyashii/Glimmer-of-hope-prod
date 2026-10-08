@@ -197,7 +197,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         private void ApplyMovement()
         {
             //TODO quick fix
-            if (InputSystem.actions.FindActionMap("Player").enabled == false)
+            if (InputSystem.actions !=null && InputSystem.actions.FindActionMap("Player").enabled == false)
             {
                 OnMovementCanceled(default);
                 return;
