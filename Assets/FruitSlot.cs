@@ -28,6 +28,7 @@ public class FruitSlot : MonoBehaviour
             // Early validated if no Director
             if(_director== null) IsValidated = true;
             
+            _onReactPreDirector?.Invoke();
             if (_director == null) return;
             _director.Play();
             _director.stopped += PostReact;
