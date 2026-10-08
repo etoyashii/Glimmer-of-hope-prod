@@ -7,7 +7,7 @@ namespace GlimmerOfHope.Gameplay.Audio
     public class TerrainMusicZone : MonoBehaviour
     {
         #region Public Fields
-        [Tooltip("Fréquence de vérification en secondes (pas besoin de checker chaque frame).")]
+        [Tooltip("Frï¿½quence de vï¿½rification en secondes (pas besoin de checker chaque frame).")]
         public float checkInterval = 0.5f;
         #endregion
 
@@ -26,7 +26,7 @@ namespace GlimmerOfHope.Gameplay.Audio
             TerrainLayer dominantLayer = TerrainLayerUtility.GetDominantTerrainLayer(transform.position);
             if (dominantLayer != null && dominantLayer != lastLayer)
             {
-                AmbientMusicManager.Instance.SetZone(dominantLayer);
+                //AmbientMusicManager.Instance.SetZone(dominantLayer);
                 lastLayer = dominantLayer;
             }
         }

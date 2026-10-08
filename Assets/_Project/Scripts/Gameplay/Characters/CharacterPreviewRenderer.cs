@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Services;
+using Unity.Cinemachine;
+using UnityEditor.Animations;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.Characters
@@ -29,7 +31,12 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("SkinnedMesh Character")]
         [Tooltip("Prefab FBX contenant tous les SkinnedMeshRenderers du personnage.")]
         [SerializeField] private GameObject _masterCharacterPrefab;
-
+        
+        [Header("Camera")]
+        [SerializeField] AnimatorController _animator;
+        [SerializeField] CinemachineCamera _cinemachineCamera;
+        [SerializeField] float _rotationSpeed = 10;
+        
         [Tooltip("Decalage de position du personnage instancie par rapport au pivot CharacterPreview.")]
         [SerializeField] private Vector3 _characterOffset = Vector3.zero;
 
@@ -47,6 +54,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("Anchor Points 2D")]
         [Tooltip("Associe chaque categoryId a un SpriteRenderer pour les sprites 2D.")]
         [SerializeField] private List<CategorySpriteRenderer> _spriteRenderers = new();
+        
         #endregion
 
         #region Private Fields
@@ -105,12 +113,33 @@ namespace GlimmerOfHope.Gameplay.Characters
         #endregion
 
         #region Private Methods
+
+        async void RotateCameraAsync(CinemachineOrbitalFollow orbitalFollow)
+        {
+            try
+            {
+                while (true)
+                {
+                    orbitalFollow.HorizontalAxis.Value += Time.deltaTime * _rotationSpeed;
+                    await Awaitable.NextFrameAsync(cancellationToken:this.destroyCancellationToken);
+                }
+            } catch (OperationCanceledException){}
+        }
+        
         private void InstantiateCharacter()
         {
             _characterInstance = Instantiate(_masterCharacterPrefab, transform);
             _characterInstance.transform.localPosition = _characterOffset;
             _characterInstance.transform.localRotation = Quaternion.Euler(0f, _characterYRotation, 0f);
 
+            // Animator
+            var anim = _characterInstance.AddComponent<Animator>();
+            anim.runtimeAnimatorController = _animator;
+            var target = _cinemachineCamera.Target;
+            target.TrackingTarget = _characterInstance.transform;
+            _cinemachineCamera.Target = target;
+            RotateCameraAsync(_cinemachineCamera.GetComponent<CinemachineOrbitalFollow>());
+            
             foreach (var smr in _characterInstance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 if (smr.sharedMesh == null) continue;

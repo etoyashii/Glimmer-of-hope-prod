@@ -1144,6 +1144,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.InputManager
   _defaultScheme: 0
+  _autoSwitchScheme: 1
   _mobileUIRoots:
   - {fileID: 7394827904426454986}
   MenuInput: {fileID: 7608778142718306733, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
@@ -3434,6 +3435,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7506362463272630210, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
+      propertyPath: _actionReference
+      value: 
+      objectReference: {fileID: -2847105122054129835, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -4153,6 +4158,10 @@ PrefabInstance:
       propertyPath: m_RenderMode
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 2312819168707791470, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.000038
+      objectReference: {fileID: 0}
     - target: {fileID: 2900256495429112391, guid: 058e98626a3556c48b403317ede20404, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -4197,6 +4206,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3295368411129407469, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636471045438374485, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636471045438374485, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnViewEmotionButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 3636471045438374485, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GlimmerOfHope.Gameplay.Character.SpecialActions.ViewEmotionInput, GlimmerOfHope.Gameplay
+      objectReference: {fileID: 0}
     - target: {fileID: 4013737038535915793, guid: 058e98626a3556c48b403317ede20404, type: 3}
       propertyPath: m_Name
       value: =========UI==============
@@ -4236,6 +4261,14 @@ PrefabInstance:
     - target: {fileID: 6678249575331920154, guid: 058e98626a3556c48b403317ede20404, type: 3}
       propertyPath: m_Name
       value: ControlSchemeButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 6678249575331920154, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8185942369127087162, guid: 058e98626a3556c48b403317ede20404, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -5.0000076
       objectReference: {fileID: 0}
     - target: {fileID: 8443580094282272870, guid: 058e98626a3556c48b403317ede20404, type: 3}
       propertyPath: m_Sprite
@@ -4844,6 +4877,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIHint
       objectReference: {fileID: 0}
+    - target: {fileID: 4877717178890829984, guid: fd81d9867732446fe8868e8eb6ff7376, type: 3}
+      propertyPath: _actionReference
+      value: 
+      objectReference: {fileID: 6564360741783253687, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
     - target: {fileID: 7727390807579444037, guid: fd81d9867732446fe8868e8eb6ff7376, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -5301,51 +5338,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7506362463272630210, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
+      propertyPath: _actionReference
+      value: 
+      objectReference: {fileID: -4437196867953567655, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3168420119863378313, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2605353189134087343}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
 --- !u!224 &2746105877595773349 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5383137976395653277, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
   m_PrefabInstance: {fileID: 7829683637524052280}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &5138856245115451569 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3168420119863378313, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
-  m_PrefabInstance: {fileID: 7829683637524052280}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2605353189134087343
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5138856245115451569}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58abed6cfdc8c4d029c408f7116dba20, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  _uiHintSo: {fileID: 11400000, guid: 75f6ba5d67be54b90af35e588da10bef, type: 2}
-  _uiBackground: {fileID: 0}
-  _uiHint: {fileID: 8170435863499896205}
-  _actionReference: {fileID: 2411907206095950430, guid: 052faaac586de48259a63d0c4782560b, type: 3}
---- !u!114 &8170435863499896205 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 2146994270405053621, guid: 2a9c9e2c33c6544748c84df617ed80b7, type: 3}
-  m_PrefabInstance: {fileID: 7829683637524052280}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &9095826901579646039
 PrefabInstance:
   m_ObjectHideFlags: 0
