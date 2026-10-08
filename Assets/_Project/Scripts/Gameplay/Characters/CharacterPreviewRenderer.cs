@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Services;
 using Unity.Cinemachine;
-using UnityEditor.Animations;
 using UnityEngine;
 
 namespace GlimmerOfHope.Gameplay.Characters
@@ -33,7 +32,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         [SerializeField] private GameObject _masterCharacterPrefab;
         
         [Header("Camera")]
-        [SerializeField] AnimatorController _animator;
+        [SerializeField] RuntimeAnimatorController _animator; 
         [SerializeField] CinemachineCamera _cinemachineCamera;
         [SerializeField] float _rotationSpeed = 10;
         
