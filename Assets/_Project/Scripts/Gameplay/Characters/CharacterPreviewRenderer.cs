@@ -132,7 +132,7 @@ namespace GlimmerOfHope.Gameplay.Characters
             _characterInstance.transform.localRotation = Quaternion.Euler(0f, _characterYRotation, 0f);
 
             // Animator
-            var anim = _characterInstance.AddComponent<Animator>();
+            var anim = _characterInstance.GetComponent<Animator>();
             anim.runtimeAnimatorController = _animator;
             var target = _cinemachineCamera.Target;
             target.TrackingTarget = _characterInstance.transform;

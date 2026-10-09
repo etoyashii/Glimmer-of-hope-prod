@@ -647,6 +647,7 @@ GameObject:
   - component: {fileID: 3985059025191849583}
   - component: {fileID: 883561492158237732}
   - component: {fileID: 3812968692161488662}
+  - component: {fileID: 3351361597425906650}
   m_Layer: 12
   m_Name: 'MC (Missing Prefab with guid: a7306b135a399164cb40188addb63e12)'
   m_TagString: Player
@@ -3646,6 +3647,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a7306b135a399164cb40188addb63e12, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3812968692161488662}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: a7306b135a399164cb40188addb63e12, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3351361597425906650}
   m_SourcePrefab: {fileID: 100100000, guid: a7306b135a399164cb40188addb63e12, type: 3}
 --- !u!54 &8284349710711345098
 Rigidbody:
@@ -4127,6 +4131,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueSpeaker
   _speakerId: Player
+--- !u!114 &3351361597425906650
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2889384043998994851}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 474806fcb8f29aa458e974420492d37a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  _viewEmotionAction: {fileID: -2905649339906137778, guid: 6d3040ec1aaf3bf4fa0159a98879f28d, type: 3}
+  _shader: {fileID: 0}
 --- !u!1001 &3913779492417902234
 PrefabInstance:
   m_ObjectHideFlags: 0
