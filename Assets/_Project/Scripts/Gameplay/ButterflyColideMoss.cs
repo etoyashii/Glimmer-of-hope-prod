@@ -1,4 +1,6 @@
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Events;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -6,6 +8,9 @@ namespace GlimmerOfHope.Gameplay
     {
         
         [SerializeField] private GameObject Butterfly;
+        [SerializeField] PlayableDirector _director;
+        [SerializeField] UnityEvent _onReactPreDirector;
+  
         
         // Start is called once before the first execution of Update after the MonoBehaviour is created
         void Start()
@@ -24,7 +29,19 @@ namespace GlimmerOfHope.Gameplay
             {
                 Debug.Log("Collision with Moss");
                 Butterfly.SetActive(false);
+                
+                
+                if (_director == null) return;
+               
+                _director.Play();
+                
+               
             }
+        }
+        void PostReact(PlayableDirector director)
+        {
+            //_onReactPostDirector?.Invoke();
+            _director.stopped -= PostReact;
         }
     }
 }
