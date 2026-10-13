@@ -33,7 +33,7 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         // StringComparer.OrdinalIgnoreCase : evite les bugs de casse entre noms de meshes FBX
         // et les entrees de _alwaysOnMeshNames (ex: "Body" vs "body").
-        private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName
+        private readonly Dictionary<string, Renderer> _smrByMeshName
             = new(StringComparer.OrdinalIgnoreCase);
 
         private void Start()
@@ -100,7 +100,10 @@ namespace GlimmerOfHope.Gameplay.Characters
             // Desactive aussi les MeshRenderer non skinnes (ex: parts sans bone weights dans le FBX).
             // Patch temporaire jusqu'a ce que ces meshes soient skinnes dans l'outil 3D.
             foreach (var mr in root.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                _smrByMeshName[mr.name] = mr;
                 mr.enabled = false;
+            }
         }
 
         private void ApplySelections(List<CharacterSaveEntry> selections)
