@@ -41535,6 +41535,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
   Butterfly: {fileID: 407642434}
+  _director: {fileID: 0}
+  _onReactPreDirector:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &408369030
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -57110,6 +57114,11 @@ PrefabInstance:
 --- !u!4 &581069367 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6950979884098782443, guid: b7781087a63afcb499b1547400ac9309, type: 3}
+  m_PrefabInstance: {fileID: 581069366}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &581069368 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4587592448293363507, guid: b7781087a63afcb499b1547400ac9309, type: 3}
   m_PrefabInstance: {fileID: 581069366}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &581938124
@@ -178634,13 +178643,50 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7492428970832476162, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1660453525}
   m_SourcePrefab: {fileID: 100100000, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
 --- !u!4 &1660453523 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8744956441083577982, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
   m_PrefabInstance: {fileID: 1660453522}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1660453524 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7492428970832476162, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
+  m_PrefabInstance: {fileID: 1660453522}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1660453525
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1660453524}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49dbe9c556507454fbc35736d500a198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
+  Butterfly: {fileID: 0}
+  _director: {fileID: 0}
+  _onReactPreDirector:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 581069368}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1664618174
 GameObject:
   m_ObjectHideFlags: 0
