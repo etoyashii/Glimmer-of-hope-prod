@@ -5155,7 +5155,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53320fca7fc88564186ab35e70de25b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Character.CharacterConfirmButton
-  _targetScene: LD_Level1
 --- !u!114 &735447817
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14833,6 +14832,7 @@ GameObject:
   - component: {fileID: 2079742086}
   - component: {fileID: 2079742085}
   - component: {fileID: 2079742088}
+  - component: {fileID: 2079742089}
   m_Layer: 5
   m_Name: ValidateButton
   m_TagString: Untagged
@@ -14857,7 +14857,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.24700001, y: 0.04937497}
   m_AnchorMax: {x: 0.73600006, y: 0.165}
-  m_AnchoredPosition: {x: 0, y: -7.4995117}
+  m_AnchoredPosition: {x: 0, y: -7.4995728}
   m_SizeDelta: {x: 112.2448, y: 14.999}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2079742085
@@ -14903,7 +14903,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2079742086}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 2079742089}
+        m_TargetAssemblyTypeName: Kebab.SceneFlow.Components.LoadSceneOnEvent, SceneFlow
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2079742086
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14954,7 +14966,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53320fca7fc88564186ab35e70de25b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.UI::GlimmerOfHope.UI.Character.CharacterConfirmButton
-  _targetScene: LD_Level1
+--- !u!114 &2079742089
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2079742083}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f7e9ad02f7a05409f75cc077572eea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SceneFlow::Kebab.SceneFlow.Components.LoadSceneOnEvent
+  sceneToLoad: LD_Level1
+  showLoadingScreen: 1
 --- !u!1001 &2124943520
 PrefabInstance:
   m_ObjectHideFlags: 0
