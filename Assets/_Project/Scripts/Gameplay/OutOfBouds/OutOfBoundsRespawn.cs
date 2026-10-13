@@ -45,7 +45,7 @@ namespace GlimmerOfHope.Gameplay
         private void OnDrawGizmos()
         {
             Gizmos.color = gizmoColor;
-            Gizmos.DrawSphere(transform.position, 0.5f);
+            Gizmos.DrawSphere(transform.position, 0.3f);
         }
 #endif
     }
