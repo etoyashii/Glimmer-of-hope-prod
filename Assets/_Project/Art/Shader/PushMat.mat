@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!114 &-7009601674194978256
+--- !u!114 &-1245756595791396698
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20,13 +20,13 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Shader Graphs_New Shader Graph
-  m_Shader: {fileID: -6465566751694194690, guid: 45dd73df64c190b4d8429a57ed5689c6, type: 3}
+  m_Name: PushMat
+  m_Shader: {fileID: -6465566751694194690, guid: 729a3a6b9d5a7854ab8ac153bfbc9bd6, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
   m_ValidKeywords: []
   m_InvalidKeywords: []
-  m_LightmapFlags: 2
+  m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -37,6 +37,10 @@ Material:
   m_SavedProperties:
     serializedVersion: 3
     m_TexEnvs:
+    - _NoiseTex:
+        m_Texture: {fileID: 2800000, guid: a159560ab356b844a884c85090387532, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -51,15 +55,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Intensity: 1.2
-    - _IntensityDeform: 0.1
+    - _Filterpower: 5.67
+    - _NoiseStrength: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Speed: 0.05
+    - _lengthscale: 0.41
     m_Colors:
-    - _ColorCold: {r: 1, g: 0.87144214, b: 0.3254717, a: 1}
-    - _ColorHot: {r: 1, g: 0, b: 0.6207218, a: 1}
-    - _ColorMedium: {r: 0.98039216, g: 0.43199825, b: 0, a: 1}
-    - _Speed: {r: 0, g: -0.3, b: 0, a: 0}
+    - _InnerColor: {r: 0.7137255, g: 0.7137255, b: 0.7137255, a: 1}
+    - _MoveSpeed: {r: -0.4, g: 0, b: 0, a: 0}
+    - _OuterColor: {r: 1.4142135, g: 1.4142135, b: 1.4142135, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
