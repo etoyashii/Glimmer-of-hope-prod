@@ -3118,6 +3118,11 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 1.1114058
   m_Center: {x: 0.0025444627, y: 0.18794045, z: -0.018306077}
+--- !u!4 &35881258 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 963592588991589263, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+  m_PrefabInstance: {fileID: 1520878048}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &37620391
 GameObject:
   m_ObjectHideFlags: 0
@@ -30920,6 +30925,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GrayZone_Zone1_Puzzle2
       objectReference: {fileID: 0}
+    - target: {fileID: 1417269713710166384, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3829275098619568140, guid: 3437bc546ba72ab47b7eac81072cce4f, type: 3}
       propertyPath: m_Size.x
       value: 2.92
@@ -32031,7 +32040,7 @@ GameObject:
   - component: {fileID: 300611529}
   - component: {fileID: 300611531}
   - component: {fileID: 300611530}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Lanterne_Casser_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40731,6 +40740,10 @@ PrefabInstance:
     - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
       propertyPath: m_Name
       value: Lanterne (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6329991724913858150, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
@@ -55147,6 +55160,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lanterne
       objectReference: {fileID: 0}
+    - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -57956,6 +57973,10 @@ PrefabInstance:
     - target: {fileID: 6411439565589557307, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
       propertyPath: m_Name
       value: OiseauCCLM
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411439565589557307, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7146744346176861003, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -85467,6 +85488,10 @@ PrefabInstance:
       value: BouleMoss
       objectReference: {fileID: 0}
     - target: {fileID: 2148919360182083703, guid: 2b129e8bd1262764aa9780972b88f6c1, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2148919360182083703, guid: 2b129e8bd1262764aa9780972b88f6c1, type: 3}
       propertyPath: m_TagString
       value: MossSphere
       objectReference: {fileID: 0}
@@ -88494,6 +88519,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Lanterne_Casser
       objectReference: {fileID: 0}
+    - target: {fileID: 8080930288482142804, guid: 4eeb3d0c2a0f4c84fb473769a76d2f76, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6329991724913858150, guid: 4eeb3d0c2a0f4c84fb473769a76d2f76, type: 3}
     - {fileID: 969036328329912440, guid: 4eeb3d0c2a0f4c84fb473769a76d2f76, type: 3}
@@ -90058,6 +90087,10 @@ PrefabInstance:
     - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
       propertyPath: m_Name
       value: Lanterne (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 8080930288482142804, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 6329991724913858150, guid: 4d0216c8f80a49140bad25a9c2e896db, type: 3}
@@ -97200,6 +97233,44 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7590064fec564f9468aea37af0779806, type: 3}
   m_PrefabInstance: {fileID: 966193350}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &967312174 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3612563682716593035, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+  m_PrefabInstance: {fileID: 1520878048}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &967312180
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 967312174}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81f1448f3e6cde4e8236c4b4dfef023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Lueur.LueurAI
+  _playerTransform: {fileID: 1520878067}
+  _lueurStartPoint: {fileID: 35881258}
+  _playerMovement: {fileID: 1520878069}
+  _attentionAudioSource: {fileID: 0}
+  _maxSpeed: 85
+  _smoothTime: 5
+  _followRadius: 2
+  _followHeightOffset: 0.2
+  _followRightOffset: 0
+  _idleMaxSpeed: 12
+  _idleSmoothTime: 0.85
+  _patrolRadius: 0.75
+  _hopChance: 0.3
+  _hopHeight: 0.1
+  _hopFrequency: 6
+  _wanderSpeed: 0.3
+  _playerHelpEnabled: 1
+  _poiDetectionRadius: 10
+  _poiLayerMask:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &968639966
 GameObject:
   m_ObjectHideFlags: 0
@@ -121693,6 +121764,10 @@ PrefabInstance:
     - target: {fileID: 6411439565589557307, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
       propertyPath: m_Name
       value: OiseauCCLM
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411439565589557307, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7146744346176861003, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -165273,6 +165348,18 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 963592588991589263, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 963592588991589263, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 963592588991589263, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1029520268486590004, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: field of view
       value: 60.000004
@@ -165472,6 +165559,22 @@ PrefabInstance:
     - target: {fileID: 3404138785539826208, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_LightCookieOffset.x
       value: -362.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 3537736660397754638, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3537736660397754638, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _playerMovement
+      value: 
+      objectReference: {fileID: 1520878069}
+    - target: {fileID: 3537736660397754638, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: _playerTransform
+      value: 
+      objectReference: {fileID: 1520878067}
+    - target: {fileID: 3612563682716593035, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3681637506677366224, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_AnchoredPosition.y
@@ -165873,14 +165976,18 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 12
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3537736660397754638, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
     m_RemovedGameObjects:
     - {fileID: 7564828469537368545, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 5334369126312943657, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       insertIndex: -1
       addedObject: {fileID: 882331025}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3612563682716593035, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 967312180}
   m_SourcePrefab: {fileID: 100100000, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
 --- !u!114 &1520878051 stripped
 MonoBehaviour:
@@ -165898,6 +166005,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2545369238458972953, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
   m_PrefabInstance: {fileID: 1520878048}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1520878069 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3741204465151649069, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
+  m_PrefabInstance: {fileID: 1520878048}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 19d939b82729e524e9eff74fa27c34ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.Movement
 --- !u!1 &1521355456
 GameObject:
   m_ObjectHideFlags: 0
@@ -180171,7 +180289,7 @@ GameObject:
   - component: {fileID: 1679626082}
   - component: {fileID: 1679626084}
   - component: {fileID: 1679626083}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Lanterne_Casser_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -213269,6 +213387,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Luciole
       objectReference: {fileID: 0}
+    - target: {fileID: 8329020763914621945, guid: 8e3c4e9be7d79024ab87ed976b11f599, type: 3}
+      propertyPath: m_Layer
+      value: 20
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 2691787213631651039, guid: 8e3c4e9be7d79024ab87ed976b11f599, type: 3}
     - {fileID: 1386223308775733060, guid: 8e3c4e9be7d79024ab87ed976b11f599, type: 3}
@@ -218615,7 +218737,7 @@ GameObject:
   - component: {fileID: 2054845385}
   - component: {fileID: 2054845387}
   - component: {fileID: 2054845386}
-  m_Layer: 0
+  m_Layer: 20
   m_Name: Lanterne_Casser_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -231849,6 +231971,10 @@ PrefabInstance:
     - target: {fileID: 6411439565589557307, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
       propertyPath: m_Name
       value: OiseauCCLM
+      objectReference: {fileID: 0}
+    - target: {fileID: 6411439565589557307, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
+      propertyPath: m_Layer
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 7146744346176861003, guid: 3b322e18a538e834099bcbd0a1d21abd, type: 3}
       propertyPath: m_LocalPosition.x
