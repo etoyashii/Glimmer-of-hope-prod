@@ -513,6 +513,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6977311715708851546}
+  - component: {fileID: 8461566884391168772}
   m_Layer: 0
   m_Name: RocksPuzzle
   m_TagString: Untagged
@@ -540,6 +541,37 @@ Transform:
   - {fileID: 6347700075154994847}
   m_Father: {fileID: 5432863587284891796}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8461566884391168772
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5672708583150908042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 835d64a6c9cc646708337b0cdfca5ead, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  _butterflies:
+  - {fileID: 2408601195274267970}
+  - {fileID: 4848515067860518818}
+  - {fileID: 5620597897102936239}
+  _onAllValidated:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 955343344403782232}
+        m_TargetAssemblyTypeName: UnityEngine.Animator, UnityEngine
+        m_MethodName: SetTrigger
+        m_Mode: 5
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: Validated
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &5974286447164398553
 GameObject:
   m_ObjectHideFlags: 0
@@ -838,6 +870,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 2451491191958493582}
   m_SourcePrefab: {fileID: 100100000, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
+--- !u!114 &2408601195274267970 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2765536005593702621, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
+  m_PrefabInstance: {fileID: 507845036123114911}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986857828908594589}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49dbe9c556507454fbc35736d500a198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
 --- !u!1 &6986857828908594589 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 7492428970832476162, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
@@ -856,22 +899,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
   Butterfly: {fileID: 0}
-  _director: {fileID: 0}
-  _onReactPreDirector:
+  _onValidated:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!4 &9101891198722591713 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8744956441083577982, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
@@ -972,22 +1002,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
   Butterfly: {fileID: 0}
-  _director: {fileID: 0}
-  _onReactPreDirector:
+  _onValidated:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: 
-        m_MethodName: 
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: 
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1001 &1506035401716816000
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1726,6 +1743,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 81fdd8b18fde19344bc5b4849554af0f, type: 3}
+--- !u!95 &955343344403782232 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5309378445580705751, guid: 81fdd8b18fde19344bc5b4849554af0f, type: 3}
+  m_PrefabInstance: {fileID: 4966551356909061519}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6300085099216421652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1405925871424521883, guid: 81fdd8b18fde19344bc5b4849554af0f, type: 3}
@@ -1989,6 +2011,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8744956441083577982, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
   m_PrefabInstance: {fileID: 7289158031731042175}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4848515067860518818 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2765536005593702621, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
+  m_PrefabInstance: {fileID: 7289158031731042175}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49dbe9c556507454fbc35736d500a198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
 --- !u!1001 &7521372404620716146
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2051,6 +2084,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 8744956441083577982, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
   m_PrefabInstance: {fileID: 7521372404620716146}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5620597897102936239 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2765536005593702621, guid: 3efbb3a3d3694bf409e6554e5bfd18c5, type: 3}
+  m_PrefabInstance: {fileID: 7521372404620716146}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49dbe9c556507454fbc35736d500a198, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewMonoBehaviourScript
 --- !u!1001 &7587901247660479782
 PrefabInstance:
   m_ObjectHideFlags: 0
