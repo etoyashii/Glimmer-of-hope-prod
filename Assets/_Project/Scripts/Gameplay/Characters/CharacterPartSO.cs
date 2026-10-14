@@ -57,6 +57,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         [BoxGroup(GROUP_ASSET)]
         [ShowIf(nameof(_partType), CharacterPartType.Color)]
         [SerializeField] private Color _color;
+        [SerializeField] private string _colorMeshTarget = "Body";
+        [SerializeField] private string _colorMaterialColorReference = "_SkinColor";
 
         [BoxGroup(GROUP_ASSET)]
         [ShowIf(nameof(_partType), CharacterPartType.SkinnedMesh)]
@@ -77,6 +79,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         public Material[] Materials  => _materials;
         public string[] Tags         => _tags;
         public Color Color           => _color;
+        public string ColorMeshTarget=> _colorMeshTarget;
+        public string ColorMaterialColorReference => _colorMaterialColorReference;
 
         public bool HasValidMaterials
         {
