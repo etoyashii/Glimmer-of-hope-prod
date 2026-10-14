@@ -28,6 +28,7 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         [BoxGroup(GROUP_IDENTITY)]
         [SerializeField] private CharacterPartType _defaultPartType = CharacterPartType.Prefab3D;
+        [SerializeField] private bool _canSetNone = false;
 
         [BoxGroup(GROUP_IDENTITY)]
         [Tooltip("Prefixes de noms de mesh FBX mappes a cette categorie. Ex: 'Haut_', 'Bas_'. Laisser vide si la categorie utilise des sous-categories.")]
@@ -56,6 +57,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         public bool ExcludesSiblings                          => _excludesSiblings;
         public bool HasSubCategories                          => _subCategories != null && _subCategories.Count > 0;
         public IReadOnlyList<CharacterPartSO> Parts           => _parts;
+        public bool CanSetNone                                => _canSetNone;
         #endregion
 
         #region Public Methods

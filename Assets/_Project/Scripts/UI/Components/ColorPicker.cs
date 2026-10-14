@@ -12,7 +12,10 @@ namespace GlimmerOfHope.UI
         [Header("References")]
         [SerializeField] private RectTransform _wheelRt;
         [SerializeField] private RectTransform _cursorRt;
+        [SerializeField] private RawImage wheelImage;
         [SerializeField] private Image preview;
+        [SerializeField] private Slider valueSlider;
+        [SerializeField] private Image sliderHandle;
         #endregion
 
         private Color _color = Color.white;
@@ -37,9 +40,32 @@ namespace GlimmerOfHope.UI
             _color = color;
         }
 
-        void OnEnable()
+        private void OnEnable()
         {
+            valueSlider.onValueChanged.AddListener(OnValueSliderChange);
         }
+
+        private void OnDisable()
+        {
+            valueSlider.onValueChanged.RemoveListener(OnValueSliderChange);
+        }
+
+        private void OnValueSliderChange(float newValue)
+        {
+            //Change ColorWheel color
+            Color wheelColor = Color.white;
+            Color.RGBToHSV(wheelColor, out float wheelColorH, out float wheelColorS, out float wheelColorV);
+            wheelColorV = newValue;
+            wheelColor = Color.HSVToRGB(wheelColorH, wheelColorS, wheelColorV);
+            wheelImage.color = wheelColor;
+            sliderHandle.color = wheelColor;
+
+            //Submit new color
+            Color.RGBToHSV(Color, out float h, out float s, out float v);
+            v = newValue;
+            Color = Color.HSVToRGB(h, s, v);
+        }
+
 
         public string GetColorHexCode()
         {
@@ -93,7 +119,7 @@ namespace GlimmerOfHope.UI
             float hue = (Mathf.Atan2(local.y, local.x) / (Mathf.PI * 2f) + 1f) % 1f;
             float sat = clamped / radius;
 
-            Color = Color.HSVToRGB(hue, sat, 1f);
+            Color = Color.HSVToRGB(hue, sat, valueSlider.value);
 
             float angle = Mathf.Atan2(local.y, local.x);
             _cursorRt.anchoredPosition = new Vector2(
@@ -104,13 +130,14 @@ namespace GlimmerOfHope.UI
         private void UpdateCursor()
         {
             if (_wheelRt == null || _cursorRt == null) return;
-            Color.RGBToHSV(_color, out float h, out float s, out _);
+            Color.RGBToHSV(_color, out float h, out float s, out float v);
             float radius = _wheelRt.rect.width * 0.5f;
             float angle = h * Mathf.PI * 2f;
             _cursorRt.anchoredPosition = new Vector2(
                 Mathf.Cos(angle) * s * radius,
                 Mathf.Sin(angle) * s * radius);
             preview.color = _color;
+            valueSlider.SetValueWithoutNotify(v);
         }
 
         #endregion

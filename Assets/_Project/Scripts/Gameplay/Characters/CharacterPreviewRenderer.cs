@@ -31,12 +31,12 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("SkinnedMesh Character")]
         [Tooltip("Prefab FBX contenant tous les SkinnedMeshRenderers du personnage.")]
         [SerializeField] private GameObject _masterCharacterPrefab;
-        
+
         [Header("Camera")]
-        [SerializeField] RuntimeAnimatorController _animator; 
+        [SerializeField] RuntimeAnimatorController _animator;
         [SerializeField] CinemachineCamera _cinemachineCamera;
         [SerializeField] float _rotationSpeed = 10;
-        
+
         [Tooltip("Decalage de position du personnage instancie par rapport au pivot CharacterPreview.")]
         [SerializeField] private Vector3 _characterOffset = Vector3.zero;
 
@@ -65,8 +65,9 @@ namespace GlimmerOfHope.Gameplay.Characters
         // et les entrees de _alwaysOnMeshNames (ex: "Body" vs "body").
         private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName
             = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, MeshRenderer> _mrByMeshName
+            = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, GameObject> _spawnedPrefabs = new();
-        private Dictionary<string, MeshRenderer> _colorizedMeshRendererByCategoryId;
         #endregion
 
         #region Unity Lifecycle
@@ -122,11 +123,12 @@ namespace GlimmerOfHope.Gameplay.Characters
                 while (true)
                 {
                     orbitalFollow.HorizontalAxis.Value += Time.deltaTime * _rotationSpeed;
-                    await Awaitable.NextFrameAsync(cancellationToken:this.destroyCancellationToken);
+                    await Awaitable.NextFrameAsync(cancellationToken: this.destroyCancellationToken);
                 }
-            } catch (OperationCanceledException){}
+            }
+            catch (OperationCanceledException) { }
         }
-        
+
         private void InstantiateCharacter()
         {
             _characterInstance = Instantiate(_masterCharacterPrefab, transform);
@@ -140,17 +142,19 @@ namespace GlimmerOfHope.Gameplay.Characters
             target.TrackingTarget = _characterInstance.transform;
             _cinemachineCamera.Target = target;
             RotateCameraAsync(_cinemachineCamera.GetComponent<CinemachineOrbitalFollow>());
-            
+
             foreach (var smr in _characterInstance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
                 if (smr.sharedMesh == null) continue;
                 _smrByMeshName[smr.sharedMesh.name] = smr;
                 smr.enabled = false;
             }
-            // Desactive aussi les MeshRenderer non skinnes (ex: parts sans bone weights dans le FBX).
-            // Patch temporaire jusqu'a ce que ces meshes soient skinnes dans l'outil 3D.
+
             foreach (var mr in _characterInstance.GetComponentsInChildren<MeshRenderer>(true))
+            {
+                _mrByMeshName[mr.name] = mr;
                 mr.enabled = false;
+            }
 
             EnableAlwaysOnMeshes();
         }
@@ -161,6 +165,8 @@ namespace GlimmerOfHope.Gameplay.Characters
             {
                 if (_smrByMeshName.TryGetValue(meshName, out var smr))
                     smr.enabled = true;
+                if (_mrByMeshName.TryGetValue(meshName, out var mr))
+                    mr.enabled = true;
             }
         }
 
@@ -208,31 +214,28 @@ namespace GlimmerOfHope.Gameplay.Characters
 
             switch (part.PartType)
             {
-                case CharacterPartType.SkinnedMesh: RefreshSkinnedMesh(categoryId, part); break;
-                case CharacterPartType.Prefab3D:    Refresh3D(categoryId, part);          break;
-                case CharacterPartType.Sprite2D:    Refresh2D(categoryId, part);          break;
-                case CharacterPartType.Color:       RefreshColor(categoryId, part);       break;
+                case CharacterPartType.SkinnedMesh: RefreshSkinnedMesh(categoryId, part);   break;
+                case CharacterPartType.Prefab3D:    Refresh3D(categoryId, part);            break;
+                case CharacterPartType.Sprite2D:    Refresh2D(categoryId, part);            break;
+                case CharacterPartType.Color:       RefreshColor(categoryId, part);         break;
+                case CharacterPartType.FlipBook:    RefreshFlipBook(categoryId, part);      break;
             }
         }
 
+        private void RefreshFlipBook(string categoryId, CharacterPartSO part)
+        {
+            if (_mrByMeshName.TryGetValue(part.FlipBookMeshRendererTarget, out MeshRenderer mr))
+            {
+                foreach (var setting in part.FlipBookSettings)
+                    mr.material.SetFloat(setting.reference, setting.value);
+            }
+        }
+
+
         private void RefreshColor(string categoryId, CharacterPartSO part)
         {
-            CharacterCategorySO category = _controller.Registry.GetCategoryById(categoryId);
-            
-            Transform targetTransform = _characterInstance.transform.Find(categoryId);
-            if (targetTransform == null)
-            {
-                Debug.LogErrorFormat("{0} gameobject not found", categoryId);
-                return;
-            }
-            Renderer meshRenderer = targetTransform.GetComponent<Renderer>();
-            if (meshRenderer == null)
-            {
-                Debug.LogErrorFormat("{0} gameobject does not have Render", categoryId);
-                return;
-            }
-
-            meshRenderer.material.SetColor("_SkinColor", part.Color);
+            if (_smrByMeshName.TryGetValue(part.ColorMeshTarget, out SkinnedMeshRenderer skinnedMeshRenderer))
+                skinnedMeshRenderer.material.SetColor("_SkinColor", part.Color);
         }
 
 
@@ -298,8 +301,8 @@ namespace GlimmerOfHope.Gameplay.Characters
                 Debug.LogWarning($"[CharacterPreviewRenderer] Aucun SpriteRenderer pour '{categoryId}'.");
                 return;
             }
-            sr.sprite   = part.Sprite;
-            sr.enabled  = part.Sprite != null;
+            sr.sprite = part.Sprite;
+            sr.enabled = part.Sprite != null;
         }
 
         private void ClearCategory(string categoryId)
@@ -328,7 +331,7 @@ namespace GlimmerOfHope.Gameplay.Characters
             var spriteRenderer = GetSpriteRenderer(categoryId);
             if (spriteRenderer != null)
             {
-                spriteRenderer.sprite  = null;
+                spriteRenderer.sprite = null;
                 spriteRenderer.enabled = false;
             }
         }

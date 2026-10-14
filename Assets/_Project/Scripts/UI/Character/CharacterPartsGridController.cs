@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Services;
+using GlimmerOfHope.Gameplay.Dialogue;
+using GlimmerOfHope.Gameplay.Characters;
 
 namespace GlimmerOfHope.UI.Widgets
 {
@@ -77,28 +79,31 @@ namespace GlimmerOfHope.UI.Widgets
 
             var selectedPartId = _controller.GetSelectedPart(categoryId)?.PartID;
 
+            if (category.CanSetNone)
+                CreatePartButtonView(categoryId, null, selectedPartId == string.Empty);
+
             foreach (var part in category.Parts)
             {
                 // "Missing (Character Part SO)" bypasse parfois le null check Unity :
                 // on filtre aussi les parts dont le PartID est vide ou null.
                 if (part == null || string.IsNullOrEmpty(part.PartID)) continue;
 
-                var btn  = Instantiate(_partButtonPrefab, transform);
-                var view = btn.GetComponent<PartButtonView>();
-
-                if (view != null)
-                {
-                    view.Setup(categoryId, part, OnPartClicked);
-                    view.SetSelected(part.PartID == selectedPartId);
-                    _spawnedViews.Add(view);
-                }
-                else
-                {
-                    Debug.LogWarning($"[CharacterPartsGridController] PartButtonView absent du prefab '{_partButtonPrefab.name}'.", btn);
-                }
+                CreatePartButtonView(categoryId, part, part.PartID == selectedPartId);
             }
 
             StartCoroutine(RebuildLayout()); //#TODO : Change Coroutine to UniTask bidule truc
+        }
+
+        private PartButtonView CreatePartButtonView(string categoryId, CharacterPartSO part, bool selected)
+        {
+            GameObject btn  = Instantiate(_partButtonPrefab, transform);
+            PartButtonView view = btn.GetComponent<PartButtonView>();
+
+            view.Setup(categoryId, part, OnPartClicked);
+            view.SetSelected(selected);
+            _spawnedViews.Add(view);
+
+            return view;
         }
 
         private void OnPartClicked(string categoryId, string partId)

@@ -12,6 +12,7 @@ namespace GlimmerOfHope.UI.Widgets
         [Header("Références UI — drag depuis ton prefab")]
         [SerializeField] private TMP_Text _label;
         [SerializeField] private Image    _thumbnail;
+        [SerializeField] private Sprite   _noneIcon;
         [SerializeField] private Button   _button;
         [SerializeField] private PartColorButton _partColorButton;
 
@@ -35,21 +36,28 @@ namespace GlimmerOfHope.UI.Widgets
         public void Setup(string categoryId, CharacterPartSO part, System.Action<string, string> onClickCallback)
         {
             _categoryId      = categoryId;
-            _partId          = part.PartID;
             _onClickCallback = onClickCallback;
 
+            if (part == null)
+                _partId = string.Empty;
+            else
+                _partId = part.PartID;
+
             if (_label     != null) _label.text         = part.DisplayName;
-            if (_thumbnail != null && part.Thumbnail != null) _thumbnail.sprite = part.Thumbnail;
+            if (part == null)
+                _thumbnail.sprite = _noneIcon;
+            else if (_thumbnail != null && part.Thumbnail != null)
+                _thumbnail.sprite = part.Thumbnail;
 
             SetSelected(false, false);
 
             if (_button != null)
                 _button.onClick.AddListener(OnClick);
-            if (part.PartType == CharacterPartType.Color)
-            {
+
+            _partColorButton.gameObject.SetActive(part != null && part.PartType == CharacterPartType.SkinnedMesh);
+
+            if (part != null && part.PartType == CharacterPartType.Color)
                 _thumbnail.color = part.Color;
-                _partColorButton.gameObject.SetActive(false);
-            }
         }
 
         public void SetSelected(bool selected, bool animate = true)
