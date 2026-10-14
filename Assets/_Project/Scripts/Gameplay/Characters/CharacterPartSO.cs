@@ -8,7 +8,8 @@ namespace GlimmerOfHope.Gameplay.Characters
     {
         Sprite2D,
         Prefab3D,
-        SkinnedMesh
+        SkinnedMesh,
+        Color
     }
 
     [CreateAssetMenu(menuName = "GlimmerOfHope/Characters/Part")]
@@ -54,6 +55,10 @@ namespace GlimmerOfHope.Gameplay.Characters
         [SerializeField] private Mesh _mesh;
 
         [BoxGroup(GROUP_ASSET)]
+        [ShowIf(nameof(_partType), CharacterPartType.Color)]
+        [SerializeField] private Color _color;
+
+        [BoxGroup(GROUP_ASSET)]
         [ShowIf(nameof(_partType), CharacterPartType.SkinnedMesh)]
         [SerializeField] private Material[] _materials;
 
@@ -71,6 +76,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         public Mesh Mesh             => _mesh;
         public Material[] Materials  => _materials;
         public string[] Tags         => _tags;
+        public Color Color           => _color;
 
         public bool HasValidMaterials
         {

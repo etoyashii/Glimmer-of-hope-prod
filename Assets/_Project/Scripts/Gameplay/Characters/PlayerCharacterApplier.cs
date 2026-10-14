@@ -113,17 +113,25 @@ namespace GlimmerOfHope.Gameplay.Characters
             foreach (var entry in selections)
             {
                 var part = _registry.GetPartById(entry.categoryId, entry.partId);
-                if (part == null || part.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null)
+                if (part == null)
                     continue;
-
-                if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
+                if (part.PartType == CharacterPartType.SkinnedMesh && part.Mesh != null)
                 {
-                    smr.enabled = true;
-                    if (part.HasValidMaterials)
-                        smr.sharedMaterials = part.Materials;
+
+                    if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
+                    {
+                        smr.enabled = true;
+                        if (part.HasValidMaterials)
+                            smr.sharedMaterials = part.Materials;
+                    }
+                    else
+                        Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.Mesh.name}'.", this);
                 }
-                else
-                    Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.Mesh.name}'.", this);
+                else if (part.PartType == CharacterPartType.Color)
+                {
+                    if (_smrByMeshName.TryGetValue(entry.categoryId, out Renderer renderer))
+                        renderer.material.SetColor("_SkinColor", part.Color);
+                }
             }
         }
 

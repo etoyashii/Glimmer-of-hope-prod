@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GlimmerOfHope.Core.Events;
 using GlimmerOfHope.Core.Services;
 using Unity.Cinemachine;
@@ -53,7 +54,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("Anchor Points 2D")]
         [Tooltip("Associe chaque categoryId a un SpriteRenderer pour les sprites 2D.")]
         [SerializeField] private List<CategorySpriteRenderer> _spriteRenderers = new();
-        
+
         #endregion
 
         #region Private Fields
@@ -65,6 +66,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         private readonly Dictionary<string, SkinnedMeshRenderer> _smrByMeshName
             = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, GameObject> _spawnedPrefabs = new();
+        private Dictionary<string, MeshRenderer> _colorizedMeshRendererByCategoryId;
         #endregion
 
         #region Unity Lifecycle
@@ -209,15 +211,37 @@ namespace GlimmerOfHope.Gameplay.Characters
                 case CharacterPartType.SkinnedMesh: RefreshSkinnedMesh(categoryId, part); break;
                 case CharacterPartType.Prefab3D:    Refresh3D(categoryId, part);          break;
                 case CharacterPartType.Sprite2D:    Refresh2D(categoryId, part);          break;
+                case CharacterPartType.Color:       RefreshColor(categoryId, part);       break;
             }
         }
+
+        private void RefreshColor(string categoryId, CharacterPartSO part)
+        {
+            CharacterCategorySO category = _controller.Registry.GetCategoryById(categoryId);
+            
+            Transform targetTransform = _characterInstance.transform.Find(categoryId);
+            if (targetTransform == null)
+            {
+                Debug.LogErrorFormat("{0} gameobject not found", categoryId);
+                return;
+            }
+            Renderer meshRenderer = targetTransform.GetComponent<Renderer>();
+            if (meshRenderer == null)
+            {
+                Debug.LogErrorFormat("{0} gameobject does not have Render", categoryId);
+                return;
+            }
+
+            meshRenderer.material.SetColor("_SkinColor", part.Color);
+        }
+
 
         private void RefreshSkinnedMesh(string categoryId, CharacterPartSO part)
         {
             if (part.Mesh == null) return;
 
             // Desactive toutes les parts SkinnedMesh de cette categorie
-            var category = _controller.Registry.GetCategoryById(categoryId);
+            CharacterCategorySO category = _controller.Registry.GetCategoryById(categoryId);
             if (category != null)
             {
                 foreach (var catPart in category.Parts)

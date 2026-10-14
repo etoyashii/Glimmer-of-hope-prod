@@ -13,6 +13,7 @@ namespace GlimmerOfHope.UI.Widgets
         [SerializeField] private TMP_Text _label;
         [SerializeField] private Image    _thumbnail;
         [SerializeField] private Button   _button;
+        [SerializeField] private PartColorButton _partColorButton;
 
         [Header("Visuel sélection (optionnel)")]
         [Tooltip("GameObject à activer quand cette part est sélectionnée (ex: outline, checkmark).")]
@@ -44,6 +45,11 @@ namespace GlimmerOfHope.UI.Widgets
 
             if (_button != null)
                 _button.onClick.AddListener(OnClick);
+            if (part.PartType == CharacterPartType.Color)
+            {
+                _thumbnail.color = part.Color;
+                _partColorButton.gameObject.SetActive(false);
+            }
         }
 
         public void SetSelected(bool selected, bool animate = true)
