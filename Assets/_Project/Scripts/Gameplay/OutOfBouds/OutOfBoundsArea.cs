@@ -5,14 +5,6 @@ namespace GlimmerOfHope.Gameplay
     [RequireComponent(typeof(BoxCollider))]
     public class OutOfBoundsArea : MonoBehaviour
     {
-        [SerializeField] private BoxCollider boxCollider;
-
-        private void Awake()
-        {
-            if (boxCollider == null)
-                boxCollider = GetComponent<BoxCollider>();
-            boxCollider.isTrigger = true;
-        }
 
         void OnTriggerEnter(Collider other)
         {
@@ -25,6 +17,7 @@ namespace GlimmerOfHope.Gameplay
         #if UNITY_EDITOR
         [Header("Gizmos")]
         [SerializeField] private Color gizmoColor = Color.red;
+        [SerializeField] private BoxCollider boxCollider;
         private void OnDrawGizmos()
         {
             if (boxCollider == null)
