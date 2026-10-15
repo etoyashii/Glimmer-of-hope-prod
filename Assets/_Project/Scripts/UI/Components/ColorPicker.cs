@@ -40,12 +40,12 @@ namespace GlimmerOfHope.UI
             _color = color;
         }
 
-        private void OnEnable()
+        void Awake()
         {
             valueSlider.onValueChanged.AddListener(OnValueSliderChange);
         }
 
-        private void OnDisable()
+        void OnDestroy()
         {
             valueSlider.onValueChanged.RemoveListener(OnValueSliderChange);
         }
