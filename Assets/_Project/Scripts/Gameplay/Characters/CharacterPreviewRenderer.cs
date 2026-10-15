@@ -34,7 +34,6 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         [Header("Camera")]
         [SerializeField] RuntimeAnimatorController _animator;
-        [SerializeField] CinemachineCamera _cinemachineCamera;
         [SerializeField] float _rotationSpeed = 10;
 
         [Tooltip("Decalage de position du personnage instancie par rapport au pivot CharacterPreview.")]
@@ -116,18 +115,7 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         #region Private Methods
 
-        async void RotateCameraAsync(CinemachineOrbitalFollow orbitalFollow)
-        {
-            try
-            {
-                while (true)
-                {
-                    orbitalFollow.HorizontalAxis.Value += Time.deltaTime * _rotationSpeed;
-                    await Awaitable.NextFrameAsync(cancellationToken: this.destroyCancellationToken);
-                }
-            }
-            catch (OperationCanceledException) { }
-        }
+
 
         private void InstantiateCharacter()
         {
@@ -138,10 +126,6 @@ namespace GlimmerOfHope.Gameplay.Characters
             // Animator
             var anim = _characterInstance.GetComponent<Animator>();
             anim.runtimeAnimatorController = _animator;
-            var target = _cinemachineCamera.Target;
-            target.TrackingTarget = _characterInstance.transform;
-            _cinemachineCamera.Target = target;
-            RotateCameraAsync(_cinemachineCamera.GetComponent<CinemachineOrbitalFollow>());
 
             foreach (var smr in _characterInstance.GetComponentsInChildren<SkinnedMeshRenderer>(true))
             {
