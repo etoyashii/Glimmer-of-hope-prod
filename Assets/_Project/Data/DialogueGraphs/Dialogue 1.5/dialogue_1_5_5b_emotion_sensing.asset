@@ -13,39 +13,43 @@ MonoBehaviour:
   m_Name: dialogue_1_5_5b_emotion_sensing
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: ac93aab0
-  startNodeId: 62df77c3
+  startNodeId: e794da8a
   _typedNodes:
-  - rid: 1190579323228913900
-  - rid: 1190579323228913901
-  - rid: 1190579323228913902
-  - rid: 1190579323228913903
+  - rid: 383362646436741510
+  - rid: 383362646436741511
+  - rid: 383362646436741512
+  - rid: 383362646436741513
+  - rid: 383362646436741514
+  - rid: 383362646436741515
+  - rid: 383362646436741516
+  - rid: 383362646436741517
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913900
+    - rid: 383362646436741510
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 62df77c3
+        nodeId: e794da8a
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_e794da8a_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_3307157e
-        editorPosition: {x: -247.1929, y: 21.292236}
+          nextNodeId: row0_763f13f4
+        editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913901
+    - rid: 383362646436741511
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_3307157e
+        nodeId: row0_763f13f4
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -53,22 +57,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_3307157e_0
+              m_Key: choice_row0_763f13f4_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_4d15cd06
-        editorPosition: {x: 57.304188, y: 8.695725}
-        speakerId: Glow (quiet, aside to the player)
-        text: "Before you go back to them, listen with your emotional sensitivity.
-          Don\u2019t stop at their words alone\u2026 look at what they seem to feel
-          behind their anger. Listening is often the first step toward calming things."
+          nextNodeId: row1_b957182a
+        editorPosition: {x: 300, y: 0}
+        speakerId: Lueur
+        text: Your emotional sensitivity could help. Take a moment to watch each
+          of them.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_3307157e
+            m_Key: line_row0_763f13f4
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -78,10 +81,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913902
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741512
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_4d15cd06
+        nodeId: row1_b957182a
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -89,21 +92,101 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_4d15cd06_0
+              m_Key: choice_row1_b957182a_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_446197e5
-        editorPosition: {x: 1275.7365, y: 8.666671}
-        speakerId: 
-        text: "(Player action: they use their emotional sensitivity to sense Tom\u2019s
-          and Harry\u2019s emotions.)"
+          nextNodeId: row2_861aaf5f
+        editorPosition: {x: 704.4334, y: -216.97815}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: emotional_sense_used_on_tom_harry
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741513
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_861aaf5f
+        choices:
+        - choiceText: "Tom seems really frustrated. He keeps coming back to the fruit
+            they\u2019re missing."
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_861aaf5f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: listen_separately
+        - choiceText: Harry keeps stressing all the work they do. Maybe he feels
+            nobody notices it.
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_861aaf5f_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: listen_separately
+        - choiceText: "I can see they\u2019re angry\u2026 but I don\u2019t know what\u2019s
+            behind it."
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_861aaf5f_2
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: unsure
+        editorPosition: {x: 966.9185, y: -9.125254}
+        speakerId: Lueur
+        text: What do you notice?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_4d15cd06
+            m_Key: line_row2_861aaf5f
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 383362646436741514
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: unsure
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_unsure_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: listen_separately
+        editorPosition: {x: 1568.0518, y: 182.5845}
+        speakerId: Lueur
+        text: You can take a bit longer. Or ask them directly.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_unsure
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -113,10 +196,66 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913903
+    - rid: 383362646436741515
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: listen_separately
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_listen_separately_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row5_fb2826bb
+        editorPosition: {x: 1555.5957, y: -224.23326}
+        speakerId: Lueur
+        text: "Let\u2019s listen to them separately. They\u2019ll be able to tell
+          you what matters most to them."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_listen_separately
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741516
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_fb2826bb
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_fb2826bb_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_87bf65d6
+        editorPosition: {x: 2332.8281, y: -148.11125}
+        actionType: 0
+        actionFlagName: unlock_talk_tom_and_harry
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741517
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_446197e5
+        nodeId: row6_87bf65d6
         choices: []
-        editorPosition: {x: 1930.8351, y: 13.903265}
+        editorPosition: {x: 2632.8284, y: -148.11125}
         outcomeId: 
