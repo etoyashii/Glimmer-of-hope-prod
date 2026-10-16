@@ -13,43 +13,52 @@ MonoBehaviour:
   m_Name: dialogue_1_5_5cii_talk_to_harry
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: ac93aab0
-  startNodeId: f5d48a43
+  startNodeId: be018ac9
   _typedNodes:
-  - rid: 1190579323228913904
-  - rid: 1190579323228913905
-  - rid: 1190579323228913906
-  - rid: 1190579323228913907
-  - rid: 1190579323228913908
-  - rid: 1190579323228913909
-  - rid: 1190579323228913910
-  - rid: 1190579323228913911
+  - rid: 383362646436741536
+  - rid: 383362646436741537
+  - rid: 383362646436741538
+  - rid: 383362646436741539
+  - rid: 383362646436741540
+  - rid: 383362646436741541
+  - rid: 383362646436741542
+  - rid: 383362646436741543
+  - rid: 383362646436741544
+  - rid: 383362646436741545
+  - rid: 383362646436741546
+  - rid: 383362646436741547
+  - rid: 383362646436741548
+  - rid: 383362646436741549
+  - rid: 383362646436741550
+  - rid: 383362646436741551
+  - rid: 383362646436741552
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913904
+    - rid: 383362646436741536
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: f5d48a43
+        nodeId: be018ac9
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_be018ac9_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_e4db4298
-        editorPosition: {x: -1262.9315, y: 70.9339}
+          nextNodeId: row0_d2399bb1
+        editorPosition: {x: -354.46524, y: -10.494021}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913905
+    - rid: 383362646436741537
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_e4db4298
+        nodeId: row0_d2399bb1
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -57,58 +66,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_e4db4298_0
+              m_Key: choice_row0_d2399bb1_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_34289717
-        editorPosition: {x: -1024.1484, y: 63.01833}
-        speakerId: Glow
-        text: "Two accounts, two needs. Go see the systems for yourself before you
-          go back to them. Harry feels misunderstood. To grasp the whole story, go
-          see the incinerator with your own eyes: you\u2019ll understand how important
-          it is for everyone."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row0_e4db4298
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913906
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row1_34289717
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row1_34289717_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: hub
-        editorPosition: {x: 394.90826, y: 47.80315}
+          nextNodeId: row1_1d93c1b7
+        editorPosition: {x: -98.14387, y: -10.664076}
         speakerId: Player
-        text: "Harry, you look like you\u2019re really at the end of your rope\u2026
-          Is that it?"
+        text: "Harry, I\u2019d like to understand what\u2019s going on on your side.
+          Do you want to tell me about it?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_34289717
+            m_Key: line_row0_d2399bb1
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -118,57 +90,68 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913907
+    - rid: 383362646436741538
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: hub
+        nodeId: row1_1d93c1b7
         choices:
-        - choiceText: What would you want them to understand? And what would you
-            need for things to go better?
+        - choiceText: What would you like the Phytos to understand?
           localizedChoiceText:
             m_TableReference:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_hub_0
+              m_Key: choice_row1_1d93c1b7_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: q1
-        - choiceText: "And you \u2014 what do you actually know about what they\u2019re
-            going through with the fruit?"
+          nextNodeId: harry_need
+        - choiceText: "And the Phytos\u2019 harvests, have you seen what\u2019s happening
+            to them?"
           localizedChoiceText:
             m_TableReference:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_hub_1
+              m_Key: choice_row1_1d93c1b7_1
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: q2
+          nextNodeId: harry_harvests
         - choiceText: Can you show me how the incinerator powers the portal?
           localizedChoiceText:
             m_TableReference:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_hub_2
+              m_Key: choice_row1_1d93c1b7_2
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: q3
-        editorPosition: {x: 987.8963, y: 21.588478}
-        speakerId: Harry (tired, arms crossed)
-        text: "We keep the incinerator running for everyone, but it feels like no
-          one sees the effort it takes. Without us, the Portal of Renewal wouldn\u2019t
-          even work."
+          nextNodeId: harry_incinerator
+        - choiceText: Would you be okay with picking up the conversation with Tom
+            again?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row1_1d93c1b7_3
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_wrap
+        editorPosition: {x: 203.55873, y: 471.06573}
+        speakerId: Harry
+        text: "We keep the incinerator running for everyone. Without it, the Portal
+          of Renewal wouldn\u2019t work. But I feel like nobody sees that work, and
+          all anyone sees is what we do wrong."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_hub
+            m_Key: line_row1_1d93c1b7
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -178,10 +161,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 1
-    - rid: 1190579323228913908
+    - rid: 383362646436741539
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: q1
+        nodeId: harry_need
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -189,22 +172,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_q1_0
+              m_Key: choice_harry_need_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: hub
-        editorPosition: {x: 866.9194, y: -560.9771}
+          nextNodeId: row3_ae4a550a
+        editorPosition: {x: 588.8289, y: -624.20404}
         speakerId: Harry
-        text: "I\u2019d like them to see that what we do here serves everyone, not
-          just us. And to acknowledge our efforts a little, instead of only seeing
-          what\u2019s wrong."
+        text: "All the work it takes. The wood to bring in, the water to keep an
+          eye on\u2026 It doesn\u2019t run by itself."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_q1
+            m_Key: line_harry_need
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -214,10 +196,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913909
+    - rid: 383362646436741540
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: q2
+        nodeId: row3_ae4a550a
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -225,21 +207,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_q2_0
+              m_Key: choice_row3_ae4a550a_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: hub
-        editorPosition: {x: 1087.088, y: 436.7052}
-        speakerId: Harry (hesitates)
-        text: "Not enough, probably. We mostly only end up talking when we\u2019re
-          already angry."
+          nextNodeId: row4_3fa7e322
+        editorPosition: {x: 1349.2485, y: -507.33105}
+        speakerId: Player
+        text: And what would you need for things to go better?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_q2
+            m_Key: line_row3_ae4a550a
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -249,32 +230,102 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913910
+    - rid: 383362646436741541
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: q3
+        nodeId: row4_3fa7e322
         choices:
-        - choiceText: 
+        - choiceText: What would you like the Phytos to understand?
           localizedChoiceText:
             m_TableReference:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_q3_0
+              m_Key: choice_row4_3fa7e322_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row6_2f37f594
-        editorPosition: {x: 1960.2262, y: 221.72818}
+          nextNodeId: harry_need
+        - choiceText: "And the Phytos\u2019 harvests, have you seen what\u2019s happening
+            to them?"
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_3fa7e322_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_harvests
+        - choiceText: Can you show me how the incinerator powers the portal?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_3fa7e322_2
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_incinerator
+        - choiceText: Would you be okay with picking up the conversation with Tom
+            again?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_3fa7e322_3
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_wrap
+        editorPosition: {x: 1559.3513, y: -889.108}
         speakerId: Harry
-        text: "Yes. Come see. You\u2019ll understand why it matters so much to us.
-          It powers the Portal of Renewal."
+        text: "For us to look together at how to share the work. And for people to
+          ask what we can do before saying we\u2019re making no effort."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_q3
+            m_Key: line_row4_3fa7e322
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 383362646436741542
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: harry_harvests
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_harvests_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_779a087f
+        editorPosition: {x: 634.15094, y: -257.72662}
+        speakerId: Harry
+        text: "No. Tom says they\u2019re starting to run short of fruit. I haven\u2019t
+          been to look."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_harry_harvests
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -284,10 +335,396 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913911
+    - rid: 383362646436741543
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_779a087f
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_779a087f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_7c191fa8
+        editorPosition: {x: 1269.4941, y: -225.79726}
+        speakerId: Player
+        text: You could ask him to show you.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row6_779a087f
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 0}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741544
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row7_7c191fa8
+        choices:
+        - choiceText: What would you like the Phytos to understand?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_7c191fa8_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_need
+        - choiceText: "And the Phytos\u2019 harvests, have you seen what\u2019s happening
+            to them?"
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_7c191fa8_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_harvests
+        - choiceText: Can you show me how the incinerator powers the portal?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_7c191fa8_2
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_incinerator
+        - choiceText: Would you be okay with picking up the conversation with Tom
+            again?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_7c191fa8_3
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_wrap
+        editorPosition: {x: 1588.7494, y: 143.98212}
+        speakerId: Harry
+        text: "Yes\u2026 Earlier, I was mostly busy defending our work. I didn\u2019t
+          ask him many questions."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row7_7c191fa8
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 383362646436741545
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: harry_incinerator
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_incinerator_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row9_4da1f881
+        editorPosition: {x: 597.5693, y: 194.20876}
+        speakerId: Harry
+        text: "Yes, come on. I\u2019ll show you."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_harry_incinerator
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741546
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row9_4da1f881
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row9_4da1f881_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row10_f92f022b
+        editorPosition: {x: 970.23584, y: 71.542114}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: incinerator_portal_link_shown
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741547
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row10_f92f022b
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row10_f92f022b_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_helped
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row10_f92f022b_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_shown
+        editorPosition: {x: 1321.8425, y: 36.145676}
+        conditionType: 0
+        conditionFlagName: helped_incinerators
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741548
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: harry_helped
+        choices:
+        - choiceText: What would you like the Phytos to understand?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_helped_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_need
+        - choiceText: "And the Phytos\u2019 harvests, have you seen what\u2019s happening
+            to them?"
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_helped_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_harvests
+        - choiceText: Can you show me how the incinerator powers the portal?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_helped_2
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_incinerator
+        - choiceText: Would you be okay with picking up the conversation with Tom
+            again?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_helped_3
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_wrap
+        editorPosition: {x: 1733.3821, y: -314.57962}
+        speakerId: Harry
+        text: You helped us earlier. You saw what it takes to keep them running.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_harry_helped
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 383362646436741549
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: harry_shown
+        choices:
+        - choiceText: What would you like the Phytos to understand?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_shown_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_need
+        - choiceText: "And the Phytos\u2019 harvests, have you seen what\u2019s happening
+            to them?"
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_shown_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_harvests
+        - choiceText: Can you show me how the incinerator powers the portal?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_shown_2
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_incinerator
+        - choiceText: Would you be okay with picking up the conversation with Tom
+            again?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_shown_3
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: harry_wrap
+        editorPosition: {x: 1717.0334, y: 532.18005}
+        speakerId: Harry
+        text: "That\u2019s what keeps the Portal of Renewal running."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_harry_shown
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 1
+    - rid: 383362646436741550
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: harry_wrap
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_harry_wrap_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row14_064d28e2
+        editorPosition: {x: 2254.9111, y: 136.75143}
+        speakerId: Harry
+        text: "Yes. I\u2019d like to understand what\u2019s going on with their fruit\u2026
+          and be able to explain our work to him without us interrupting each other."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_harry_wrap
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741551
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row14_064d28e2
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row14_064d28e2_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row15_c71bc794
+        editorPosition: {x: 3111.9797, y: 138.25899}
+        actionType: 0
+        actionFlagName: talked_to_harry
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741552
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row6_2f37f594
+        nodeId: row15_c71bc794
         choices: []
-        editorPosition: {x: 2712.0442, y: 226.3543}
+        editorPosition: {x: 3375.5137, y: 137.16331}
         outcomeId: 

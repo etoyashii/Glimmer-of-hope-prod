@@ -13,22 +13,25 @@ MonoBehaviour:
   m_Name: dialogue_1_5_1e_emmanuel_heights
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: d7207dd6
+  startNodeId: d0f06daa
   _typedNodes:
-  - rid: 1190579323228913691
-  - rid: 1190579323228913692
-  - rid: 1190579323228913693
-  - rid: 1190579323228913694
-  - rid: 1190579323228913695
-  - rid: 1190579323228913696
-  - rid: 1190579323228913697
+  - rid: 383362646436741440
+  - rid: 383362646436741441
+  - rid: 383362646436741442
+  - rid: 383362646436741443
+  - rid: 383362646436741444
+  - rid: 383362646436741445
+  - rid: 383362646436741446
+  - rid: 383362646436741447
+  - rid: 383362646436741448
+  - rid: 383362646436741449
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913691
+    - rid: 383362646436741440
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: d7207dd6
+        nodeId: d0f06daa
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -36,19 +39,19 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_d7207dd6_0
+              m_Key: choice_d0f06daa_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_063eaf89
+          nextNodeId: row0_7c62235b
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913692
+    - rid: 383362646436741441
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_063eaf89
+        nodeId: row0_7c62235b
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -56,125 +59,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_063eaf89_0
+              m_Key: choice_row0_7c62235b_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_1e6741cd
+          nextNodeId: row1_032b34a2
         editorPosition: {x: 300, y: 0}
-        speakerId: Emmanuel (embarrassed)
-        text: "Ugh, this lake\u2026 what a pain."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row0_063eaf89
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913693
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row1_1e6741cd
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row1_1e6741cd_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row2_70047ee7
-        editorPosition: {x: 741.5035, y: -16.675337}
-        speakerId: Player (calm)
+        speakerId: Player
         text: "What\u2019s bothering you?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_1e6741cd
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913694
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row2_70047ee7
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row2_70047ee7_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row3_a58a0a33
-        editorPosition: {x: 1088.1703, y: -2.0086336}
-        speakerId: Emmanuel (embarrassed)
-        text: "So, we\u2019re supposed to reach the incinerator islet by bouncing
-          off this big plant. But the truth is\u2026 I\u2019m afraid of heights."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row2_70047ee7
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913695
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row3_a58a0a33
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row3_a58a0a33_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row4_4602d458
-        editorPosition: {x: 1868.837, y: 0.6579372}
-        speakerId: Player (reassuring)
-        text: "That\u2019s okay. We all have our strengths and weaknesses. That plant
-          surely isn\u2019t the only option \u2014 here, I can lend you one of my
-          powers."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row3_a58a0a33
+            m_Key: line_row0_7c62235b
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -184,10 +82,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913696
+    - rid: 383362646436741442
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_4602d458
+        nodeId: row1_032b34a2
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -195,20 +93,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_4602d458_0
+              m_Key: choice_row1_032b34a2_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_e9c1aa33
-        editorPosition: {x: 2735.5034, y: -1.341991}
-        speakerId: 
-        text: (The player shares the Swim power with Emmanuel.)
+          nextNodeId: row2_e65a735e
+        editorPosition: {x: 442.7119, y: -255.97876}
+        speakerId: Emmanuel
+        text: "I need to get to the incinerator island. You can get there by bouncing
+          on that big plant\u2026 but I\u2019m scared of heights."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_4602d458
+            m_Key: line_row1_032b34a2
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -218,10 +117,203 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913697
+    - rid: 383362646436741443
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_e65a735e
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_e65a735e_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row3_6f5c6023
+        editorPosition: {x: 901.542, y: 297.61377}
+        speakerId: Player
+        text: We can look for another way. Would you feel better in the water?
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row2_e65a735e
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741444
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row3_6f5c6023
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row3_6f5c6023_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row4_07d9b396
+        editorPosition: {x: 1200, y: 0}
+        speakerId: Emmanuel
+        text: "Yes\u2026 if I could swim."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row3_6f5c6023
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741445
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row4_07d9b396
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_07d9b396_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row5_3027e3cc
+        editorPosition: {x: 1500, y: 0}
+        speakerId: Player
+        text: I can share my swimming power with you. Want to try?
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row4_07d9b396
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741446
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_3027e3cc
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_3027e3cc_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_80bb80dd
+        editorPosition: {x: 1887.8965, y: 226.68001}
+        speakerId: Emmanuel
+        text: "Yes. I\u2019ll start slowly."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row5_3027e3cc
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741447
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_80bb80dd
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_80bb80dd_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_1947c54f
+        editorPosition: {x: 2100, y: 0}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: emmanuel_reached_island
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741448
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row7_1947c54f
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_1947c54f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row8_0dd58955
+        editorPosition: {x: 2403.0845, y: 0.0000302111}
+        speakerId: Emmanuel
+        text: "I did it! I felt stuck with that plant\u2026 I hadn\u2019t thought
+          of going another way. Thanks!"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row7_1947c54f
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741449
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_e9c1aa33
+        nodeId: row8_0dd58955
         choices: []
-        editorPosition: {x: 3166.1707, y: 3.991292}
+        editorPosition: {x: 3048.5017, y: 1.542118}
         outcomeId: 

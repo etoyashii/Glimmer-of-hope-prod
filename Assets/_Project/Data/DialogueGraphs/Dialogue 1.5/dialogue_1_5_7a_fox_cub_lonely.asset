@@ -13,40 +13,42 @@ MonoBehaviour:
   m_Name: dialogue_1_5_7a_fox_cub_lonely
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: ac93aab0
-  startNodeId: 5c3a24e1
+  startNodeId: f6b2b7ae
   _typedNodes:
-  - rid: 1190579323228913923
-  - rid: 1190579323228913924
-  - rid: 1190579323228913925
-  - rid: 1190579323228913926
-  - rid: 1190579323228913927
+  - rid: 383362646436741569
+  - rid: 383362646436741570
+  - rid: 383362646436741571
+  - rid: 383362646436741572
+  - rid: 383362646436741573
+  - rid: 383362646436741574
+  - rid: 383362646436741575
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913923
+    - rid: 383362646436741569
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 5c3a24e1
+        nodeId: f6b2b7ae
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_f6b2b7ae_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_90c9470d
+          nextNodeId: row0_674ca61c
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913924
+    - rid: 383362646436741570
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_90c9470d
+        nodeId: row0_674ca61c
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -54,21 +56,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_90c9470d_0
+              m_Key: choice_row0_674ca61c_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_0af19195
-        editorPosition: {x: 300, y: 0}
-        speakerId: 
-        text: (A lone fox cub tries to make itself understood. The player uses emotional
-          sensitivity.)
+          nextNodeId: row1_6c072b82
+        editorPosition: {x: 220.65004, y: -0.8816859}
+        speakerId: Player
+        text: "You look all alone\u2026 Are you looking for someone?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_90c9470d
+            m_Key: line_row0_674ca61c
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -78,10 +79,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913925
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741571
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_0af19195
+        nodeId: row1_6c072b82
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -89,20 +90,42 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_0af19195_0
+              m_Key: choice_row1_6c072b82_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_b1befe55
-        editorPosition: {x: 1054.8921, y: -33.251194}
-        speakerId: Player (gently)
-        text: "You can\u2019t tell me in words\u2026 but you look really lonely."
+          nextNodeId: row2_30c0460a
+        editorPosition: {x: 644.79834, y: -0.5483165}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: fox_cub_reacted
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741572
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_30c0460a
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_30c0460a_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row3_26287b47
+        editorPosition: {x: 900, y: 0}
+        speakerId: Player
+        text: I can stay with you for a bit, if you want.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_0af19195
+            m_Key: line_row2_30c0460a
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -112,10 +135,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913926
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741573
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_b1befe55
+        nodeId: row3_26287b47
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -123,20 +146,54 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_b1befe55_0
+              m_Key: choice_row3_26287b47_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_d9089ba3
-        editorPosition: {x: 1526.9635, y: -9.333339}
-        speakerId: 
-        text: (The fox cub flattens itself to the ground, ears down.)
+          nextNodeId: hint_fox_cub
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row3_26287b47_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: end_fox_cub
+        editorPosition: {x: 1264.6666, y: -1.999939}
+        conditionType: 0
+        conditionFlagName: player_hesitates
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741574
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: hint_fox_cub
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_hint_fox_cub_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: end_fox_cub
+        editorPosition: {x: 1530, y: -152}
+        speakerId: Lueur
+        text: "Watch it. It can\u2019t talk, but its reactions already give clues
+          about what it\u2019s feeling. See what catches its attention\u2026 That
+          could help us understand."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_b1befe55
+            m_Key: line_hint_fox_cub
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -146,10 +203,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913927
+    - rid: 383362646436741575
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_d9089ba3
+        nodeId: end_fox_cub
         choices: []
-        editorPosition: {x: 2027.8145, y: 3.7084148}
+        editorPosition: {x: 2473.6333, y: 21.806713}
         outcomeId: 

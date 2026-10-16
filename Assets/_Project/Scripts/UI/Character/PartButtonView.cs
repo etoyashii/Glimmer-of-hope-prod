@@ -12,7 +12,9 @@ namespace GlimmerOfHope.UI.Widgets
         [Header("Références UI — drag depuis ton prefab")]
         [SerializeField] private TMP_Text _label;
         [SerializeField] private Image    _thumbnail;
+        [SerializeField] private Sprite   _noneIcon;
         [SerializeField] private Button   _button;
+        [SerializeField] private PartColorButton _partColorButton;
 
         [Header("Visuel sélection (optionnel)")]
         [Tooltip("GameObject à activer quand cette part est sélectionnée (ex: outline, checkmark).")]
@@ -31,19 +33,31 @@ namespace GlimmerOfHope.UI.Widgets
         #endregion
 
         #region Public API
-        public void Setup(string categoryId, CharacterPartSO part, System.Action<string, string> onClickCallback)
+        public void Setup(CharacterCategorySO category, CharacterPartSO part, System.Action<string, string> onClickCallback)
         {
-            _categoryId      = categoryId;
-            _partId          = part.PartID;
+            _categoryId      = category.CategoryID;
             _onClickCallback = onClickCallback;
 
+            if (part == null)
+                _partId = string.Empty;
+            else
+                _partId = part.PartID;
+
             if (_label     != null) _label.text         = part.DisplayName;
-            if (_thumbnail != null && part.Thumbnail != null) _thumbnail.sprite = part.Thumbnail;
+            if (part == null)
+                _thumbnail.sprite = _noneIcon;
+            else if (_thumbnail != null && part.Thumbnail != null)
+                _thumbnail.sprite = part.Thumbnail;
 
             SetSelected(false, false);
 
             if (_button != null)
                 _button.onClick.AddListener(OnClick);
+
+            _partColorButton.gameObject.SetActive(category.Colorizable);
+
+            if (part != null && part.PartType == CharacterPartType.Color)
+                _thumbnail.color = part.Color;
         }
 
         public void SetSelected(bool selected, bool animate = true)

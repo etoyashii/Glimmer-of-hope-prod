@@ -1,0 +1,294 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 854570b06e704594590a2991490370e7, type: 3}
+  m_Name: dialogue_1_3_7_a_jose_missing_tools
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
+  graphId: 92b6bd8b
+  startNodeId: f5417c54
+  _typedNodes:
+  - rid: 383362646436741321
+  - rid: 383362646436741322
+  - rid: 383362646436741323
+  - rid: 383362646436741324
+  - rid: 383362646436741325
+  - rid: 383362646436741326
+  - rid: 383362646436741327
+  - rid: 383362646436741328
+  - rid: 383362646436741329
+  references:
+    version: 2
+    RefIds:
+    - rid: 383362646436741321
+      type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: f5417c54
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_f5417c54_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row0_072f4f4b
+        editorPosition: {x: 0, y: 0}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 383362646436741322
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row0_072f4f4b
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row0_072f4f4b_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row1_e75b0aef
+        editorPosition: {x: 232.95479, y: 308.4083}
+        speakerId: "Jos\xE9"
+        text: "Not again! Another tool\u2019s gone. I bet it\u2019s that fox that\u2019s
+          always hanging around here!"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row0_072f4f4b
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741323
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row1_e75b0aef
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row1_e75b0aef_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row2_3f4918e1
+        editorPosition: {x: 600, y: 0}
+        speakerId: Player
+        text: Did you see it take anything?
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row1_e75b0aef
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741324
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_3f4918e1
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_3f4918e1_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row3_646ea97d
+        editorPosition: {x: 849.0456, y: -241.36273}
+        speakerId: "Jos\xE9"
+        text: "No\u2026 but I spotted it near the shed."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row2_3f4918e1
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741325
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row3_646ea97d
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row3_646ea97d_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row4_4744928a
+        editorPosition: {x: 1200, y: 0}
+        speakerId: Player
+        text: That gives us a lead. We could see where it goes and look for the tools.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row3_646ea97d
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741326
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row4_4744928a
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_4744928a_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row5_2f639858
+        editorPosition: {x: 1526.818, y: 257.45383}
+        speakerId: "Jos\xE9"
+        text: "Yes\u2026 And if it really is the fox, I\u2019d like to understand
+          what it does with them."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row4_4744928a
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741327
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_2f639858
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_2f639858_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: hint_shed
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_2f639858_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: end_jose
+        editorPosition: {x: 1850.9543, y: -207.84007}
+        conditionType: 0
+        conditionFlagName: player_hesitates
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741328
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: hint_shed
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_hint_shed_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: end_jose
+        editorPosition: {x: 2100, y: -140}
+        speakerId: Lueur
+        text: "Jos\xE9 saw it near the shed. Shall we start there?"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_hint_shed
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741329
+      type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: end_jose
+        choices: []
+        editorPosition: {x: 2100, y: 140}
+        outcomeId: 

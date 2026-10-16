@@ -13,20 +13,24 @@ MonoBehaviour:
   m_Name: dialogue_1_5_3b_builder_hole
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: 837063a2
+  startNodeId: 362047e5
   _typedNodes:
-  - rid: 1190579323228913713
-  - rid: 1190579323228913714
-  - rid: 1190579323228913715
-  - rid: 1190579323228913716
-  - rid: 1190579323228913717
+  - rid: 383362646436741463
+  - rid: 383362646436741464
+  - rid: 383362646436741465
+  - rid: 383362646436741466
+  - rid: 383362646436741467
+  - rid: 383362646436741468
+  - rid: 383362646436741469
+  - rid: 383362646436741470
+  - rid: 383362646436741471
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913713
+    - rid: 383362646436741463
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 837063a2
+        nodeId: 362047e5
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -34,19 +38,19 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_837063a2_0
+              m_Key: choice_362047e5_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_71b0f3c4
-        editorPosition: {x: -448.6667, y: 32}
+          nextNodeId: row0_3bba9e75
+        editorPosition: {x: -222.2147, y: 9.38629}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913714
+    - rid: 383362646436741464
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_71b0f3c4
+        nodeId: row0_3bba9e75
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -54,21 +58,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_71b0f3c4_0
+              m_Key: choice_row0_3bba9e75_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_7ff59d7a
-        editorPosition: {x: -220.66663, y: 28.00003}
-        speakerId: Ytorale Builder (stuck in a hole, sheepish)
-        text: "Hey there! I fell in here looking for wood\u2026 I fix other people\u2019s
-          bridges, and now here I am, stuck. If that isn\u2019t the last straw!"
+          nextNodeId: row1_cea34618
+        editorPosition: {x: 157.31816, y: -18.66658}
+        speakerId: Ytorale builder
+        text: "Hey there! I fell in here looking for wood\u2026 I spend my days fixing
+          paths, and now I\u2019m the one who\u2019s stuck!"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_71b0f3c4
+            m_Key: line_row0_3bba9e75
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -78,10 +82,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913715
+    - rid: 383362646436741465
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_7ff59d7a
+        nodeId: row1_cea34618
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -89,20 +93,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_7ff59d7a_0
+              m_Key: choice_row1_cea34618_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_80959545
-        editorPosition: {x: 586.66675, y: 25.333344}
-        speakerId: Player (smiling)
-        text: "It happens to the best of us. Hang on, I\u2019ll make you a platform."
+          nextNodeId: row2_d5c20ff7
+        editorPosition: {x: 569.15906, y: 233.31746}
+        speakerId: Player
+        text: I can make platforms. Tell me if you can reach the next one.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_7ff59d7a
+            m_Key: line_row1_cea34618
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -112,10 +116,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913716
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741466
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_80959545
+        nodeId: row2_d5c20ff7
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -123,20 +127,42 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_80959545_0
+              m_Key: choice_row2_d5c20ff7_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_d6bca405
-        editorPosition: {x: 1078, y: 20.666687}
-        speakerId: 
-        text: (The player creates platforms to get the builder out of the hole.)
+          nextNodeId: row3_dd687027
+        editorPosition: {x: 900, y: 0}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: builder_out_of_hole
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741467
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row3_dd687027
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row3_dd687027_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row4_8659699f
+        editorPosition: {x: 1204.0073, y: 5.333376}
+        speakerId: Ytorale builder
+        text: Ah, it feels good to be back on the path! Thanks for the hand.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_80959545
+            m_Key: line_row3_dd687027
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -146,10 +172,100 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913717
+    - rid: 383362646436741468
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row4_8659699f
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_8659699f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row5_0504cf9e
+        editorPosition: {x: 1428.9319, y: 256.1128}
+        speakerId: Player
+        text: "You said you fix paths? There\u2019s a broken bridge a bit further
+          on. Could you come and take a look?"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row4_8659699f
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741469
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_0504cf9e
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_0504cf9e_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_99f4bb23
+        editorPosition: {x: 1800, y: 0}
+        speakerId: Ytorale builder
+        text: Of course! Show me. My turn to give you a hand.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row5_0504cf9e
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741470
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_99f4bb23
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_99f4bb23_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_91d29674
+        editorPosition: {x: 2268.9539, y: 12.068181}
+        actionType: 0
+        actionFlagName: builder_follows_player_to_bridge
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741471
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_d6bca405
+        nodeId: row7_91d29674
         choices: []
-        editorPosition: {x: 1576.6666, y: 40}
+        editorPosition: {x: 2641.3625, y: 4.022753}
         outcomeId: 

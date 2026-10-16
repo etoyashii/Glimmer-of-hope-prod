@@ -34062,23 +34062,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.96
+      value: 0.96000004
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.96
+      value: 0.96000004
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 77.66
+      value: 2455.967
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -12.24
+      value: 375.331
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 49.35
+      value: 5115.116
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -34122,7 +34122,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       propertyPath: m_Layer
-      value: 17
+      value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: -5754084199372789682, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
@@ -34147,9 +34147,6 @@ PrefabInstance:
       addedObject: {fileID: 9014427278596022913}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 3333861645070373815}
-    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 2325139573776852045}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       insertIndex: -1
@@ -34157,6 +34154,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1288486123545782323}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8328557955504871794}
   m_SourcePrefab: {fileID: 100100000, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
 --- !u!1 &8207883214403440049 stripped
 GameObject:
@@ -34177,12 +34177,26 @@ MonoBehaviour:
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Interaction.Interactable
   _promptLabel: Interact
   _promptWorldOffset: {x: 0, y: 0, z: 0}
-  _disableAfterUse: 1
+  _disableAfterUse: 0
   _outline: {fileID: 9014427278596022913}
   OnInteracted:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3333861645070373815}
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.NewDialogue.DialogueManager,
+          GlimmerOfHope.Gameplay
+        m_MethodName: StartDialogue
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 11400000, guid: 6f2315b110228b542be068e17d19ff1e, type: 2}
+          m_ObjectArgumentAssemblyTypeName: GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph,
+            GlimmerOfHope.Gameplay
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 8328557955504871794}
         m_TargetAssemblyTypeName: GlimmerOfHope.Gameplay.Character.SpecialActions.SkillUnlockTrigger,
           GlimmerOfHope.Gameplay
         m_MethodName: Unlock
@@ -34216,21 +34230,6 @@ MonoBehaviour:
   _rippleSpeed: 1.5
   _rippleFrequency: 3
   _rippleIntensity: 0.6
---- !u!114 &3333861645070373815
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8207883214403440049}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e1bb3980a382e04e9a64c20e8c7780c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.SkillUnlockTrigger
-  _skillManager: {fileID: 0}
-  _skillNoteManager: {fileID: 0}
-  _skillToUnlock: 4
 --- !u!136 &2325139573776852045
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -39057,6 +39056,21 @@ ParticleSystemRenderer:
   m_MeshWeighting1: 1
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
+--- !u!114 &8328557955504871794
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8207883214403440049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e1bb3980a382e04e9a64c20e8c7780c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.SkillUnlockTrigger
+  _skillManager: {fileID: 0}
+  _skillNoteManager: {fileID: 0}
+  _skillToUnlock: 4
 --- !u!4 &8837068415787652875 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9c94182c89d4225469c48ff50e50e65f, type: 3}
