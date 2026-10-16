@@ -427,7 +427,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_15
+      name: UI_EYEBROW_BUTTON
       rect:
         serializedVersion: 2
         x: 1000
@@ -449,7 +449,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_16
+      name: UI_MOUTH_BUTTON
       rect:
         serializedVersion: 2
         x: 1200
@@ -515,7 +515,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_19
+      name: UI_NONE_ICON
       rect:
         serializedVersion: 2
         x: 1800
@@ -559,7 +559,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_21
+      name: UI_FACE_BUTTON
       rect:
         serializedVersion: 2
         x: 200
@@ -581,7 +581,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_22
+      name: UI_EYES_BUTTON
       rect:
         serializedVersion: 2
         x: 400
@@ -603,7 +603,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_23
+      name: UI_HAIRS_BUTTON
       rect:
         serializedVersion: 2
         x: 600
@@ -625,7 +625,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_24
+      name: UI_CLOTH_BUTTON
       rect:
         serializedVersion: 2
         x: 800
@@ -647,7 +647,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_25
+      name: UI_SHOES_BUTTON
       rect:
         serializedVersion: 2
         x: 1000
@@ -669,7 +669,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_26
+      name: UI_HATS_BUTTON
       rect:
         serializedVersion: 2
         x: 1200
@@ -999,7 +999,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ATLAS_UI_38
+      name: UI_BLUSH_ICON
       rect:
         serializedVersion: 2
         x: 400
@@ -1262,6 +1262,50 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: UI_ACCESORY_BUTTON
+      rect:
+        serializedVersion: 2
+        x: 1200
+        y: 1200
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 70ace041eebeb31479596e510b8804e1
+      internalID: 322728414
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: UI_PANTS_BUTTON
+      rect:
+        serializedVersion: 2
+        x: 800
+        y: 1200
+        width: 200
+        height: 200
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: aa61dff899a62ef46b326b4a8c6649b2
+      internalID: -707529091
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -1278,18 +1322,9 @@ TextureImporter:
       - key: SpriteEditor.SliceSettings
         value: '{"sliceOnImport":false,"gridCellCount":{"x":10.0,"y":10.0},"gridSpriteSize":{"x":200.0,"y":200.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      ATLAS_UI_15: 908460658
-      ATLAS_UI_16: -429083164
       ATLAS_UI_17: 50441687
       ATLAS_UI_18: 2031045755
-      ATLAS_UI_19: 572140167
       ATLAS_UI_20: 712849489
-      ATLAS_UI_21: 2139904026
-      ATLAS_UI_22: 26758527
-      ATLAS_UI_23: -1229434990
-      ATLAS_UI_24: -1941473825
-      ATLAS_UI_25: -1512705356
-      ATLAS_UI_26: 1472532143
       ATLAS_UI_27: 1234097897
       ATLAS_UI_28: 1682282679
       ATLAS_UI_29: 86618102
@@ -1301,7 +1336,6 @@ TextureImporter:
       ATLAS_UI_35: -15889466
       ATLAS_UI_36: 1693683138
       ATLAS_UI_37: -455122827
-      ATLAS_UI_38: -1655788018
       ATLAS_UI_39: -567074837
       ATLAS_UI_41: -1449471807
       ATLAS_UI_42: 1511032452
@@ -1341,9 +1375,12 @@ TextureImporter:
       ATLAS_UI_79: -973625171
       ATLAS_UI_80: 1008144014
       ATLAS_UI_81: -282587037
+      UI_ACCESORY_BUTTON: 322728414
       UI_BACKGROUND_FOLDED: 159423687
       UI_BLUE_SUBMENU: -1955970285
+      UI_BLUSH_ICON: -1655788018
       UI_CHECK_ICON: 1184966736
+      UI_CLOTH_BUTTON: -1941473825
       UI_COLOR_PALETTE: -1776883486
       UI_COLOR_PRESET_BLUE: 1011950535
       UI_COLOR_PRESET_GREEN: -922298836
@@ -1354,11 +1391,20 @@ TextureImporter:
       UI_EMPTY_FAV: -1351952671
       UI_EXCLAMATION: -777811475
       UI_EXIT: -248121163
+      UI_EYEBROW_BUTTON: 908460658
+      UI_EYES_BUTTON: 26758527
+      UI_FACE_BUTTON: 2139904026
       UI_FAV: 287069763
       UI_GAMEPAD: 48114393
       UI_GREEN_SUBMENU: 1198659056
+      UI_HAIRS_BUTTON: -1229434990
+      UI_HATS_BUTTON: 1472532143
+      UI_MOUTH_BUTTON: -429083164
+      UI_NONE_ICON: 572140167
+      UI_PANTS_BUTTON: -707529091
       UI_PHONE: 1875358346
       UI_SETTINGS_BACKGROUD: -1906127380
+      UI_SHOES_BUTTON: -1512705356
       UI_Settings: -376040458
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0

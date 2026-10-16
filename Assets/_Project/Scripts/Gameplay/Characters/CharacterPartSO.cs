@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.Serialization;
 using NaughtyAttributes;
+using System.Collections.Generic;
 
 namespace GlimmerOfHope.Gameplay.Characters
 {
@@ -8,7 +9,16 @@ namespace GlimmerOfHope.Gameplay.Characters
     {
         Sprite2D,
         Prefab3D,
-        SkinnedMesh
+        SkinnedMesh,
+        Color,
+        FlipBook
+    }
+
+    [System.Serializable]
+    public class FlipBookSetting
+    {
+        public string reference;
+        public int value;
     }
 
     [CreateAssetMenu(menuName = "GlimmerOfHope/Characters/Part")]
@@ -54,6 +64,17 @@ namespace GlimmerOfHope.Gameplay.Characters
         [SerializeField] private Mesh _mesh;
 
         [BoxGroup(GROUP_ASSET)]
+        [ShowIf(nameof(_partType), CharacterPartType.Color)]
+        [SerializeField] private Color _color;
+        [SerializeField] private string _colorMeshTarget = "Body";
+        [SerializeField] private string _colorMaterialColorReference = "_SkinColor";
+
+        [BoxGroup(GROUP_ASSET)]
+        [ShowIf(nameof(_partType), CharacterPartType.FlipBook)]
+        [SerializeField] private List<FlipBookSetting> _flipBookSettings;
+        [SerializeField] private string _flipBookMeshRendererTarget = "Face";
+
+        [BoxGroup(GROUP_ASSET)]
         [ShowIf(nameof(_partType), CharacterPartType.SkinnedMesh)]
         [SerializeField] private Material[] _materials;
 
@@ -71,6 +92,11 @@ namespace GlimmerOfHope.Gameplay.Characters
         public Mesh Mesh             => _mesh;
         public Material[] Materials  => _materials;
         public string[] Tags         => _tags;
+        public Color Color           => _color;
+        public string ColorMeshTarget=> _colorMeshTarget;
+        public string ColorMaterialColorReference => _colorMaterialColorReference;
+        public List<FlipBookSetting> FlipBookSettings => _flipBookSettings;
+        public string FlipBookMeshRendererTarget => _flipBookMeshRendererTarget;
 
         public bool HasValidMaterials
         {

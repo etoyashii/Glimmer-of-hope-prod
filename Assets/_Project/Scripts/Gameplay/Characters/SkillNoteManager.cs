@@ -1,3 +1,4 @@
+using DG.Tweening;
 using GlimmerOfHope.Gameplay.Character.SpecialActions;
 using System;
 using System.Collections;
@@ -16,7 +17,7 @@ namespace GlimmerOfHope.Gameplay
         public int Index;
         public string ParamName;
     }
-    
+
     [Serializable]
     /// <summary>
     /// The combo list that can be set up by Designers. It allows specifying the combo input
@@ -73,17 +74,28 @@ namespace GlimmerOfHope.Gameplay
         [Tooltip("Note 2 - R [Keyboard] / Button West [Gamepad]")]
         [SerializeField] private InputActionReference _note2Action;
 
-        [Header("Animator")] 
+        [Header("Animator")]
         [SerializeField] Animator _animator;
-        
-        [SerializeField] InputAnimatorAssociation[] _inputAnimatorAssociation = new []
+
+        [Header("RevealCombo")]
+        [SerializeField] private float revealComboTargetScale = 1.1f;
+        [SerializeField] private float revealComboScaleUpTime = 0.2f;
+        [SerializeField] private float revealComboScaleDownTime = 1f;
+        [SerializeField] private float revealComboWaitTime = 1f;
+        [SerializeField] private Ease revealComboScaleUpEase = Ease.OutExpo;
+        [SerializeField] private Ease revealComboScaleDownEase = Ease.Linear;
+        [SerializeField] private int revealComboLoops = 3;
+        [SerializeField] private float revealComboLoopsWaitTime = 1f;
+
+        [SerializeField]
+        InputAnimatorAssociation[] _inputAnimatorAssociation = new[]
         {
             new InputAnimatorAssociation() {Index = 0, ParamName = "Skill1" },
             new InputAnimatorAssociation() {Index = 1, ParamName = "Skill2" },
             new InputAnimatorAssociation() {Index = 2, ParamName = "Skill3" },
         };
-        
-        
+
+
         #endregion
 
         #region Private Fields
@@ -92,10 +104,10 @@ namespace GlimmerOfHope.Gameplay
         private int _currentInputNumber = 0;
         private int _validCheck = 0;
         private Coroutine _currentChrono;
-        private Coroutine _currentRevealRoutine;
+        private Tween _currentRevealTween;
         private float _lastNoteTime = float.NegativeInfinity;
-        
-        
+
+
 
         // Default idle color of each note button, captured once so a reveal
         // interrupted mid flash never leaves a button stuck red.
@@ -165,7 +177,7 @@ namespace GlimmerOfHope.Gameplay
 
             // Animation Trigger
             _animator?.SetTrigger(_inputAnimatorAssociation.FirstOrDefault(i => i.Index == noteIndex)?.ParamName);
-            
+
             SaveNote(noteIndex);
         }
 
@@ -183,11 +195,11 @@ namespace GlimmerOfHope.Gameplay
             int comboIndex = _comboList.FindIndex(c => (int)c._skillType == skillTypeIndex);
             if (comboIndex == -1) return;
 
-            if (_currentRevealRoutine != null)
-                StopCoroutine(_currentRevealRoutine);
+            if (_currentRevealTween != null && _currentRevealTween.IsActive())
+                _currentRevealTween.Kill();
 
             ResetButtonColors();
-            _currentRevealRoutine = StartCoroutine(RevealCombo(0.4f, 0.2f, comboIndex));
+            _currentRevealTween = RevealCombo(comboIndex);
         }
 
         #endregion
@@ -351,26 +363,31 @@ namespace GlimmerOfHope.Gameplay
             ResetNotes();
         }
 
-        private IEnumerator RevealCombo(float t1, float t2, int comboIndex)
+        private Tween RevealCombo(int comboIndex)
         {
-            yield return new WaitForSeconds(t1);
-
             List<int> combo = _comboList[comboIndex]._combo;
+            Sequence sequence = DOTween.Sequence();
 
-            for (int i = 0; i < combo.Count; i++)
+            for (int loops = 0; loops < revealComboLoops; loops++)
             {
-                int buttonIndex = combo[i];
-                Image image = _playerSkillInputList[buttonIndex].GetComponent<Image>();
-                if (image == null) continue;
+                sequence.AppendInterval(revealComboWaitTime);
+                for (int i = 0; i < combo.Count; i++)
+                {
+                    int buttonIndex = combo[i];
+                    Image image = _playerSkillInputList[buttonIndex].GetComponent<Image>();
+                    Image outline = image.transform.Find("Outline").GetComponent<Image>();
 
-                yield return new WaitForSeconds(t1);
-                image.color = Color.red;
+                    if (image == null) continue;
 
-                yield return new WaitForSeconds(t2);
-                image.color = _defaultButtonColors[buttonIndex];
+                    sequence.AppendCallback(() => outline.color = Color.white);
+                    sequence.Append(image.transform.DOScale(revealComboTargetScale, revealComboScaleUpTime).SetEase(revealComboScaleUpEase));
+                    sequence.AppendCallback(() => outline.color = Color.clear);
+                    sequence.AppendInterval(revealComboWaitTime);
+                    sequence.Join(image.transform.DOScale(1f, revealComboScaleDownTime).SetEase(revealComboScaleDownEase));
+                }
             }
 
-            _currentRevealRoutine = null;
+            return sequence;
         }
 
         #endregion

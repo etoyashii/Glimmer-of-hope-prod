@@ -111,7 +111,7 @@ namespace GlimmerOfHope.UI.Character
         {
             if (cat == null) return false;
             foreach (var part in cat.Parts)
-                if (part != null && part.PartType == CharacterPartType.SkinnedMesh)
+                if (part != null && (part.PartType == CharacterPartType.SkinnedMesh || part.PartType == CharacterPartType.FlipBook))
                     return true;
             return false;
         }

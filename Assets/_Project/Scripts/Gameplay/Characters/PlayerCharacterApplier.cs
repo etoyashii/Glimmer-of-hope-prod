@@ -30,14 +30,18 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("Meshes permanents")]
         [Tooltip("Ces meshes restent toujours actives, independamment des selections (body, etc.).")]
         [SerializeField] private string[] _alwaysOnMeshNames = { "body" };
+        private CharacterCreatorController _controller;
 
         // StringComparer.OrdinalIgnoreCase : evite les bugs de casse entre noms de meshes FBX
         // et les entrees de _alwaysOnMeshNames (ex: "Body" vs "body").
         private readonly Dictionary<string, Renderer> _smrByMeshName
             = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, MeshRenderer> _mrByMeshName
+            = new(StringComparer.OrdinalIgnoreCase);
 
         private void Start()
         {
+            _controller = ServiceLocator.Get<CharacterCreatorController>();
             if (_characterRoot != null)
             {
                 BuildSmrMap(_characterRoot);
@@ -97,11 +101,9 @@ namespace GlimmerOfHope.Gameplay.Characters
                 _smrByMeshName[smr.sharedMesh.name] = smr;
                 smr.enabled = false;
             }
-            // Desactive aussi les MeshRenderer non skinnes (ex: parts sans bone weights dans le FBX).
-            // Patch temporaire jusqu'a ce que ces meshes soient skinnes dans l'outil 3D.
             foreach (var mr in root.GetComponentsInChildren<MeshRenderer>(true))
             {
-                _smrByMeshName[mr.name] = mr;
+                _mrByMeshName[mr.name] = mr;
                 mr.enabled = false;
             }
         }
@@ -112,18 +114,47 @@ namespace GlimmerOfHope.Gameplay.Characters
 
             foreach (var entry in selections)
             {
-                var part = _registry.GetPartById(entry.categoryId, entry.partId);
-                if (part == null || part.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null)
+                CharacterPartSO part = _registry.GetPartById(entry.categoryId, entry.partId);
+                CharacterCategorySO category = _registry.GetCategoryById(entry.categoryId);
+                if (part == null)
                     continue;
 
-                if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
+                switch (part.PartType)
                 {
-                    smr.enabled = true;
-                    if (part.HasValidMaterials)
-                        smr.sharedMaterials = part.Materials;
+                    case CharacterPartType.SkinnedMesh: ApplySkinnedMeshSelection(part); break;
+                    case CharacterPartType.Color: ApplyColorSelection(part); break;
+                    case CharacterPartType.FlipBook: ApplyFlipbookSelection(part, category); break;
                 }
-                else
-                    Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.Mesh.name}'.", this);
+            }
+        }
+
+        private void ApplySkinnedMeshSelection(CharacterPartSO part)
+        {
+            if (_smrByMeshName.TryGetValue(part.Mesh.name, out var smr))
+            {
+                smr.enabled = true;
+                if (part.HasValidMaterials)
+                    smr.sharedMaterials = part.Materials;
+            }
+            else
+                Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.Mesh.name}'.", this);
+        }
+
+        private void ApplyColorSelection(CharacterPartSO part)
+        {
+            if (_smrByMeshName.TryGetValue(part.ColorMeshTarget, out Renderer renderer))
+                renderer.material.SetColor(part.ColorMaterialColorReference, part.Color);
+            else
+                Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.ColorMeshTarget}'.", this);
+        }
+
+        private void ApplyFlipbookSelection(CharacterPartSO part, CharacterCategorySO category)
+        {
+            if (_mrByMeshName.TryGetValue(part.FlipBookMeshRendererTarget, out MeshRenderer mr))
+            {
+                foreach (var setting in part.FlipBookSettings)
+                    mr.material.SetFloat(setting.reference, setting.value);
+                mr.material.SetColor(category.ColorMatReference, _controller.GetCategoryColor(category.CategoryID));
             }
         }
 
@@ -133,6 +164,8 @@ namespace GlimmerOfHope.Gameplay.Characters
             {
                 if (_smrByMeshName.TryGetValue(meshName, out var smr))
                     smr.enabled = true;
+                if (_mrByMeshName.TryGetValue(meshName, out var mr))
+                    mr.enabled = true;
             }
         }
 
