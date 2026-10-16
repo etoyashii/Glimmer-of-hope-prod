@@ -30,6 +30,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         [Header("Meshes permanents")]
         [Tooltip("Ces meshes restent toujours actives, independamment des selections (body, etc.).")]
         [SerializeField] private string[] _alwaysOnMeshNames = { "body" };
+        private CharacterCreatorController _controller;
 
         // StringComparer.OrdinalIgnoreCase : evite les bugs de casse entre noms de meshes FBX
         // et les entrees de _alwaysOnMeshNames (ex: "Body" vs "body").
@@ -40,6 +41,7 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         private void Start()
         {
+            _controller = ServiceLocator.Get<CharacterCreatorController>();
             if (_characterRoot != null)
             {
                 BuildSmrMap(_characterRoot);
@@ -113,6 +115,7 @@ namespace GlimmerOfHope.Gameplay.Characters
             foreach (var entry in selections)
             {
                 CharacterPartSO part = _registry.GetPartById(entry.categoryId, entry.partId);
+                CharacterCategorySO category = _registry.GetCategoryById(entry.categoryId);
                 if (part == null)
                     continue;
 
@@ -120,7 +123,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 {
                     case CharacterPartType.SkinnedMesh: ApplySkinnedMeshSelection(part); break;
                     case CharacterPartType.Color: ApplyColorSelection(part); break;
-                    case CharacterPartType.FlipBook: ApplyFlipbookSelection(part); break;
+                    case CharacterPartType.FlipBook: ApplyFlipbookSelection(part, category); break;
                 }
             }
         }
@@ -145,12 +148,13 @@ namespace GlimmerOfHope.Gameplay.Characters
                 Debug.LogWarning($"[PlayerCharacterApplier] SMR introuvable pour mesh '{part.ColorMeshTarget}'.", this);
         }
 
-        private void ApplyFlipbookSelection(CharacterPartSO part)
+        private void ApplyFlipbookSelection(CharacterPartSO part, CharacterCategorySO category)
         {
             if (_mrByMeshName.TryGetValue(part.FlipBookMeshRendererTarget, out MeshRenderer mr))
             {
                 foreach (var setting in part.FlipBookSettings)
                     mr.material.SetFloat(setting.reference, setting.value);
+                mr.material.SetColor(category.ColorMatReference, _controller.GetCategoryColor(category.CategoryID));
             }
         }
 
