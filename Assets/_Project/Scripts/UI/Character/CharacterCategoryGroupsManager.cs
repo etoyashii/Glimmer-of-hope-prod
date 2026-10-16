@@ -9,7 +9,6 @@ namespace GlimmerOfHope.UI
     public class CharacterCategoryGroupsManager : MonoBehaviour
     {
         [SerializeField] private CharacterCategoryGroups _defaultCategoryGroup;
-        [SerializeField] private string _defaultCategoryId;
         [SerializeField] private StringEventChannel _onCategorySelected;
 
         private CharacterCategoryGroupButton[] _characterCategoryGroupButtons;
@@ -20,7 +19,6 @@ namespace GlimmerOfHope.UI
 
             foreach (CharacterCategoryGroupButton characterCategoryButton in _characterCategoryGroupButtons)
                 characterCategoryButton.OnSelect += SelectCategoryGroup;
-            _onCategorySelected.Raise(_defaultCategoryId);
         }
 
         void Start()
