@@ -13,38 +13,18 @@ MonoBehaviour:
   m_Name: dialogue_1_2_3_climbing_the_ledge
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 9c0e9a11
-  startNodeId: 75d6180e
+  startNodeId: 9c35d794
   _typedNodes:
-  - rid: 8558608729178636382
-  - rid: 8558608729178636383
-  - rid: 8558608729178636384
+  - rid: 383362646436741179
+  - rid: 383362646436741180
+  - rid: 383362646436741181
   references:
     version: 2
     RefIds:
-    - rid: 8558608729178636382
+    - rid: 383362646436741179
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 75d6180e
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: 
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: 
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row0_6eccfcf0
-        editorPosition: {x: 0, y: 0}
-        triggerType: 2
-        buttonOffset: {x: 0, y: 2, z: 0}
-        triggerZoneRadius: 2
-    - rid: 8558608729178636383
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row0_6eccfcf0
+        nodeId: 9c35d794
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -52,34 +32,54 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_6eccfcf0_0
+              m_Key: choice_9c35d794_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_5f9a8a30
-        editorPosition: {x: 284.80002, y: -4.799988}
-        speakerId: Glow (looking up)
-        text: "Whoa, it\u2019s steep! Look around you\u2026 there must be a way to
-          climb to the top."
+          nextNodeId: row0_5b0d3233
+        editorPosition: {x: 0, y: 0}
+        triggerType: 2
+        buttonOffset: {x: 0, y: 2, z: 0}
+        triggerZoneRadius: 2
+    - rid: 383362646436741180
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row0_5b0d3233
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row0_5b0d3233_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row1_d4b40429
+        editorPosition: {x: 300, y: 0}
+        speakerId: Lueur
+        text: "Whoa, that\u2019s steep! Look around you\u2026 Can you see somewhere
+          to get a foothold and climb to the top?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_6eccfcf0
+            m_Key: line_row0_5b0d3233
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636384
+    - rid: 383362646436741181
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_5f9a8a30
+        nodeId: row1_d4b40429
         choices: []
-        editorPosition: {x: 1132, y: -12}
+        editorPosition: {x: 1162.7238, y: -11.153035}
         outcomeId: 

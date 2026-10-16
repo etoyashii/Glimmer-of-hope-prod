@@ -13,46 +13,51 @@ MonoBehaviour:
   m_Name: dialogue_1_5_5d_reconciliation
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: ac93aab0
-  startNodeId: 0162f2b2
+  startNodeId: 76a08fac
   _typedNodes:
-  - rid: 1190579323228913912
-  - rid: 1190579323228913913
-  - rid: 1190579323228913914
-  - rid: 1190579323228913915
-  - rid: 1190579323228913916
-  - rid: 1190579323228913917
-  - rid: 1190579323228913918
-  - rid: 1190579323228913919
-  - rid: 1190579323228913920
-  - rid: 1190579323228913921
-  - rid: 1190579323228913922
+  - rid: 383362646436741553
+  - rid: 383362646436741554
+  - rid: 383362646436741555
+  - rid: 383362646436741556
+  - rid: 383362646436741557
+  - rid: 383362646436741558
+  - rid: 383362646436741559
+  - rid: 383362646436741560
+  - rid: 383362646436741561
+  - rid: 383362646436741562
+  - rid: 383362646436741563
+  - rid: 383362646436741564
+  - rid: 383362646436741565
+  - rid: 383362646436741566
+  - rid: 383362646436741567
+  - rid: 383362646436741568
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913912
+    - rid: 383362646436741553
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 0162f2b2
+        nodeId: 76a08fac
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_76a08fac_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_be842b1b
-        editorPosition: {x: -1301.0275, y: -16.324}
+          nextNodeId: row0_d690af6e
+        editorPosition: {x: -476.08585, y: 2.3453274}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913913
+    - rid: 383362646436741554
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_be842b1b
+        nodeId: row0_d690af6e
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -60,21 +65,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_be842b1b_0
+              m_Key: choice_row0_d690af6e_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_b1e8ca9c
-        editorPosition: {x: -959.32556, y: -9.152725}
-        speakerId: 
-        text: (Tom and Harry meet again. The tension has eased, but they stay on
-          their guard.)
+          nextNodeId: row1_0cc8f5cc
+        editorPosition: {x: -176.08597, y: 2.3453274}
+        speakerId: Player
+        text: Do you want to pick up the conversation again? What would you like
+          to ask each other so things go better?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_be842b1b
+            m_Key: line_row0_d690af6e
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -84,10 +89,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913914
+    - rid: 383362646436741555
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_b1e8ca9c
+        nodeId: row1_0cc8f5cc
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -95,94 +100,22 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_b1e8ca9c_0
+              m_Key: choice_row1_0cc8f5cc_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_a8ab67f5
-        editorPosition: {x: -289.66125, y: 5.830007}
-        speakerId: Player (calm)
-        text: "I\u2019ve talked with both of you. Shall we try a different way? This
-          time, say what you need, without starting from what the other does wrong.
-          And think about what you could actually ask of each other."
+          nextNodeId: row2_4b8579eb
+        editorPosition: {x: -139.33464, y: 459.9907}
+        speakerId: Tom
+        text: "I understand better why the incinerator matters to everyone. On our
+          side, we\u2019re really starting to run out of fruit. Can we work out together
+          how to feed the J\xE9mytos while keeping enough fruit for ourselves?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_b1e8ca9c
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913915
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row2_a8ab67f5
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row2_a8ab67f5_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row3_fdfd2cea
-        editorPosition: {x: 900, y: 0}
-        speakerId: Player (to Tom)
-        text: Tom, instead of saying what the Ytorale do wrong, what would you actually
-          want to ask them?
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row2_a8ab67f5
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913916
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row3_fdfd2cea
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row3_fdfd2cea_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row4_acb0f585
-        editorPosition: {x: 893.34094, y: -356.7972}
-        speakerId: Tom (thinking)
-        text: "All right\u2026 Harry, I understand better now that the incinerator
-          serves everyone. But on our side, the fruit is really starting to run short.
-          Can we figure out together how to keep too many J\xE9mytos from coming
-          to feed at our place?"
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row3_fdfd2cea
+            m_Key: line_row1_0cc8f5cc
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -192,10 +125,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913917
+    - rid: 383362646436741556
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_acb0f585
+        nodeId: row2_4b8579eb
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -203,20 +136,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_acb0f585_0
+              m_Key: choice_row2_4b8579eb_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_756d52a3
-        editorPosition: {x: 1761.1847, y: 12.826085}
-        speakerId: Harry (listening, less tense)
-        text: "Yes\u2026 I understand better now why that worries you."
+          nextNodeId: row3_d5443755
+        editorPosition: {x: 435.0598, y: -412.44278}
+        speakerId: Harry
+        text: "Yes. We could start by looking at what\u2019s left on your trees and
+          where the J\xE9mytos come in."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_acb0f585
+            m_Key: line_row2_4b8579eb
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -226,10 +160,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913918
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741557
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_756d52a3
+        nodeId: row3_d5443755
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -237,34 +171,31 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row5_756d52a3_0
+              m_Key: choice_row3_d5443755_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row6_ec59ca77
-        editorPosition: {x: 2180.1174, y: 1.1660533}
-        speakerId: Player (to Harry)
-        text: And you, Harry? Taking into account what Tom just said, what would
-          you want to ask?
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row5_756d52a3
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913919
+          nextNodeId: already_redirected
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row3_d5443755_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: not_redirected
+        editorPosition: {x: 1129.0619, y: -203.7154}
+        conditionType: 0
+        conditionFlagName: jemytos_redirected
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741558
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row6_ec59ca77
+        nodeId: already_redirected
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -272,90 +203,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row6_ec59ca77_0
+              m_Key: choice_already_redirected_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row7_da044f33
-        editorPosition: {x: 1788.6769, y: 535.196}
-        speakerId: Harry (thinking)
-        text: "I\u2019d like us to find a solution that lets the incinerator keep
-          running, without the Phytos feeling like they carry everything. Can we
-          look together at how to share the fruit and the effort better?"
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row6_ec59ca77
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913920
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row7_da044f33
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row7_da044f33_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row8_7a8d9b45
-        editorPosition: {x: 2867.5676, y: -16.324062}
-        speakerId: Tom
-        text: Yes. That, we can try.
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row7_da044f33
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913921
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row8_7a8d9b45
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row8_7a8d9b45_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row9_d9adf303
-        editorPosition: {x: 3158.2393, y: -5.8300247}
+          nextNodeId: share_tasks
+        editorPosition: {x: 1500, y: -140}
         speakerId: Player
-        text: "Then that\u2019s where we start."
+        text: One of the lines now goes to the Ytorale forest. We can check whether
+          that leaves you enough fruit.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row8_7a8d9b45
+            m_Key: line_already_redirected
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -365,10 +227,306 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913922
+    - rid: 383362646436741559
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: not_redirected
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_not_redirected_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: share_tasks
+        editorPosition: {x: 1500, y: 140}
+        speakerId: Player
+        text: We could follow their route. It might give us a lead.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_not_redirected
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741560
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: share_tasks
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_share_tasks_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_f6c3ad94
+        editorPosition: {x: 1699.154, y: -470.68045}
+        speakerId: Harry
+        text: "On our side, the incinerator takes a lot of work. Would you come and
+          see? I\u2019d like us to look at whether some tasks could be shared."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_share_tasks
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741561
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row7_f6c3ad94
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_f6c3ad94_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row8_a810b213
+        editorPosition: {x: 2243.06, y: 202.40694}
+        speakerId: Tom
+        text: "Yes. We\u2019ll need to keep enough time for the harvests too."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row7_f6c3ad94
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741562
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row8_a810b213
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row8_a810b213_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row9_84b61bc9
+        editorPosition: {x: 2400, y: -140}
+        speakerId: Harry
+        text: Okay. We can talk about it with the others and see what everyone can
+          do.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row8_a810b213
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741563
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row9_84b61bc9
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row9_84b61bc9_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row10_35c1273f
+        editorPosition: {x: 2793.8098, y: -423.77527}
+        speakerId: Player
+        text: Where do you want to start?
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row9_84b61bc9
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741564
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row10_35c1273f
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row10_35c1273f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row11_ad098240
+        editorPosition: {x: 3000, y: -140}
+        speakerId: Tom
+        text: With the harvests? I can show you the trees that are worst hit.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row10_35c1273f
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741565
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row11_ad098240
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row11_ad098240_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row12_fc87e61b
+        editorPosition: {x: 3292.9639, y: 68.72763}
+        speakerId: Harry
+        text: "Let\u2019s go. Then I\u2019ll show you the incinerator."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row11_ad098240
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741566
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row12_fc87e61b
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row12_fc87e61b_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row13_ad5ca91f
+        editorPosition: {x: 3600, y: -140}
+        actionType: 0
+        actionFlagName: tom_harry_inspect_harvests
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741567
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row13_ad5ca91f
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row13_ad5ca91f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row14_cdbea743
+        editorPosition: {x: 4021.953, y: -147.0357}
+        speakerId: Lueur
+        text: "They still have things to sort out\u2026 but now they\u2019ve agreed
+          on a first step together."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row13_ad5ca91f
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741568
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row9_d9adf303
+        nodeId: row14_cdbea743
         choices: []
-        editorPosition: {x: 3471.5315, y: 0.000013589859}
+        editorPosition: {x: 4680.494, y: -130.6191}
         outcomeId: 

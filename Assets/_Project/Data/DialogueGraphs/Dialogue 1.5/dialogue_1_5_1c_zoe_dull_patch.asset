@@ -13,22 +13,23 @@ MonoBehaviour:
   m_Name: dialogue_1_5_1c_zoe_dull_patch
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: 5631b2fd
+  startNodeId: f11c0e6a
   _typedNodes:
-  - rid: 1190579323228913698
-  - rid: 1190579323228913699
-  - rid: 1190579323228913700
-  - rid: 1190579323228913701
-  - rid: 1190579323228913702
-  - rid: 1190579323228913703
-  - rid: 1190579323228913704
+  - rid: 383362646436741422
+  - rid: 383362646436741423
+  - rid: 383362646436741424
+  - rid: 383362646436741425
+  - rid: 383362646436741426
+  - rid: 383362646436741427
+  - rid: 383362646436741428
+  - rid: 383362646436741429
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913698
+    - rid: 383362646436741422
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 5631b2fd
+        nodeId: f11c0e6a
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -36,19 +37,19 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_5631b2fd_0
+              m_Key: choice_f11c0e6a_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_61897b18
+          nextNodeId: row0_6b8fbb22
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913699
+    - rid: 383362646436741423
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_61897b18
+        nodeId: row0_6b8fbb22
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -56,56 +57,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_61897b18_0
+              m_Key: choice_row0_6b8fbb22_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_a037a48c
-        editorPosition: {x: 229.44829, y: 1.2816367}
-        speakerId: "Zo\xE9 (disheartened)"
-        text: "Ugh, this dull patch appeared right on top of the incinerator. It\u2019s
-          unusable like this. What do we do? We\u2019re not going to rebuild it just
-          for that, surely?"
+          nextNodeId: row1_775a7520
+        editorPosition: {x: 195.56662, y: 181.49117}
+        speakerId: "Zo\xE9"
+        text: "The dull zone has reached the incinerator\u2026 We can\u2019t use
+          it any more. And look: one of the lanterns is broken."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_61897b18
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913700
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row1_a037a48c
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row1_a037a48c_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row2_7fd81695
-        editorPosition: {x: 1250.115, y: 29.2816}
-        speakerId: Player (calm)
-        text: No need. I think we can clear it by relighting the lanterns.
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row1_a037a48c
+            m_Key: line_row0_6b8fbb22
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -115,10 +81,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913701
+    - rid: 383362646436741424
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_7fd81695
+        nodeId: row1_775a7520
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -126,20 +92,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_7fd81695_0
+              m_Key: choice_row1_775a7520_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_44427b3b
-        editorPosition: {x: 1700.7817, y: 27.281693}
-        speakerId: "Zo\xE9 (worried)"
-        text: "Except one of them is broken\u2026"
+          nextNodeId: row2_de2ac124
+        editorPosition: {x: 604.05585, y: -261.59048}
+        speakerId: Player
+        text: "I\u2019ve come across a lantern like that before. I\u2019m going to
+          try something."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_7fd81695
+            m_Key: line_row1_775a7520
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -149,10 +116,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913702
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741425
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_44427b3b
+        nodeId: row2_de2ac124
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -160,21 +127,52 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row3_44427b3b_0
+              m_Key: choice_row2_de2ac124_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row4_b92a1814
-        editorPosition: {x: 2046.7817, y: 33.2816}
-        speakerId: Glow (offering the idea)
-        text: "I\u2019ve seen Yto craftspeople fix a broken lantern by tucking a
-          firefly inside. It\u2019s worth a try."
+          nextNodeId: hint_firefly
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_de2ac124_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wait_lanterns
+        editorPosition: {x: 900, y: 0}
+        conditionType: 0
+        conditionFlagName: player_hesitates
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741426
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: hint_firefly
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_hint_firefly_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wait_lanterns
+        editorPosition: {x: 1200, y: -140}
+        speakerId: Lueur
+        text: By the river, what helped us with the broken lantern?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row3_44427b3b
+            m_Key: line_hint_firefly
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -184,10 +182,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913703
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741427
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_b92a1814
+        nodeId: wait_lanterns
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -195,21 +193,43 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_b92a1814_0
+              m_Key: choice_wait_lanterns_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_16e3ab7d
-        editorPosition: {x: 2672.115, y: 19.948233}
-        speakerId: 
-        text: (The player lights the lanterns and repairs the broken one using a
-          firefly.)
+          nextNodeId: row5_2e391a09
+        editorPosition: {x: 1200, y: 140}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: incinerator_c_lanterns_lit
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741428
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_2e391a09
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_2e391a09_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_79a88686
+        editorPosition: {x: 1500, y: 140}
+        speakerId: "Zo\xE9"
+        text: "The colours are coming back! A firefly\u2026 I\u2019d never have thought
+          of that. Thank you both."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_b92a1814
+            m_Key: line_row5_2e391a09
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -219,10 +239,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913704
+    - rid: 383362646436741429
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_16e3ab7d
+        nodeId: row6_79a88686
         choices: []
-        editorPosition: {x: 3240.2944, y: 28.628115}
+        editorPosition: {x: 2152.4873, y: 138.78195}
         outcomeId: 

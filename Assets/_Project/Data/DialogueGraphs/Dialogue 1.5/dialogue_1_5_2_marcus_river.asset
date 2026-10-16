@@ -13,23 +13,28 @@ MonoBehaviour:
   m_Name: dialogue_1_5_2_marcus_river
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: b20d5a3c
+  startNodeId: 40ced0a3
   _typedNodes:
-  - rid: 1190579323228913705
-  - rid: 1190579323228913706
-  - rid: 1190579323228913707
-  - rid: 1190579323228913708
-  - rid: 1190579323228913709
-  - rid: 1190579323228913710
-  - rid: 1190579323228913711
-  - rid: 1190579323228913712
+  - rid: 383362646436741450
+  - rid: 383362646436741451
+  - rid: 383362646436741452
+  - rid: 383362646436741453
+  - rid: 383362646436741454
+  - rid: 383362646436741455
+  - rid: 383362646436741456
+  - rid: 383362646436741457
+  - rid: 383362646436741458
+  - rid: 383362646436741459
+  - rid: 383362646436741460
+  - rid: 383362646436741461
+  - rid: 383362646436741462
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913705
+    - rid: 383362646436741450
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: b20d5a3c
+        nodeId: 40ced0a3
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -37,19 +42,19 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_b20d5a3c_0
+              m_Key: choice_40ced0a3_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_849a96dd
+          nextNodeId: row0_03bc22e5
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913706
+    - rid: 383362646436741451
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_849a96dd
+        nodeId: row0_03bc22e5
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -57,20 +62,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_849a96dd_0
+              m_Key: choice_row0_03bc22e5_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_d0eb1746
+          nextNodeId: row1_3d8acfac
         editorPosition: {x: 300, y: 0}
-        speakerId: Player (intrigued)
-        text: "You look deep in thought\u2026"
+        speakerId: Player
+        text: Are you looking for something?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_849a96dd
+            m_Key: line_row0_03bc22e5
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -80,10 +85,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913707
+    - rid: 383362646436741452
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_d0eb1746
+        nodeId: row1_3d8acfac
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -91,20 +96,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_d0eb1746_0
+              m_Key: choice_row1_3d8acfac_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_45edc470
-        editorPosition: {x: 707.56335, y: 0.0000052452087}
-        speakerId: Marcus (bothered)
-        text: "I\u2019m trying to figure out how to drain the river."
+          nextNodeId: row2_34930ed0
+        editorPosition: {x: 599.99994, y: 301.46884}
+        speakerId: Marcus
+        text: A way to dry up the river.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_d0eb1746
+            m_Key: line_row1_3d8acfac
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -114,10 +119,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913708
+    - rid: 383362646436741453
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_45edc470
+        nodeId: row2_34930ed0
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -125,56 +130,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_45edc470_0
+              m_Key: choice_row2_34930ed0_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_b8acf5d7
-        editorPosition: {x: 1187.4235, y: 5.290005}
-        speakerId: Player (shocked)
+          nextNodeId: row3_10f5a797
+        editorPosition: {x: 900, y: 0}
+        speakerId: Player
         text: Sorry?! But why?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_45edc470
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913709
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row3_b8acf5d7
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row3_b8acf5d7_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row4_824f062f
-        editorPosition: {x: 1522.9437, y: -0.564241}
-        speakerId: Marcus (bothered)
-        text: "Because ever since it filled back up, the lumberjack robots have been
-          stuck on the other side. We can\u2019t do anything without them. So I\u2019m
-          looking for a fix."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row3_b8acf5d7
+            m_Key: line_row2_34930ed0
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -184,10 +153,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913710
+    - rid: 383362646436741454
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_824f062f
+        nodeId: row3_10f5a797
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -195,21 +164,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_824f062f_0
+              m_Key: choice_row3_10f5a797_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_67ffc768
-        editorPosition: {x: 2463.61, y: -35.897667}
-        speakerId: Player (unimpressed)
-        text: "Hmm\u2026 there\u2019s probably a simpler way to get them across a
-          river. Like a bridge, for example."
+          nextNodeId: row4_ecccf195
+        editorPosition: {x: 937.54456, y: 283.73547}
+        speakerId: Marcus
+        text: Since the water came back, our lumberjack robots have been stuck on
+          the other side. No way to bring the wood back.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_824f062f
+            m_Key: line_row3_10f5a797
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -219,10 +188,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913711
+    - rid: 383362646436741455
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_67ffc768
+        nodeId: row4_ecccf195
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -230,21 +199,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row5_67ffc768_0
+              m_Key: choice_row4_ecccf195_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row6_3b187f64
-        editorPosition: {x: 3122.2769, y: -27.231089}
-        speakerId: 
-        text: (The player creates a bridge and helps the lumberjack robots cross
-          the river.)
+          nextNodeId: row5_51c99c57
+        editorPosition: {x: 1500, y: 0}
+        speakerId: Player
+        text: "Do we need to get rid of all the water\u2026 or find them a way across?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row5_67ffc768
+            m_Key: line_row4_ecccf195
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -254,10 +222,190 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913712
+    - rid: 383362646436741456
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_51c99c57
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_51c99c57_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_562f9e6f
+        editorPosition: {x: 1746.7994, y: 281.96207}
+        speakerId: Marcus
+        text: A way across would do. They just need to cross without going into the
+          water.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row5_51c99c57
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741457
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_562f9e6f
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_562f9e6f_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: hint_bridge
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_562f9e6f_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wait_bridge
+        editorPosition: {x: 2100, y: 0}
+        conditionType: 0
+        conditionFlagName: player_hesitates
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741458
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: hint_bridge
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_hint_bridge_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wait_bridge
+        editorPosition: {x: 2400, y: -140}
+        speakerId: Marcus
+        text: "They\u2019re heavy. They\u2019d need something solid under their feet."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_hint_bridge
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741459
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: wait_bridge
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_wait_bridge_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row9_34c50509
+        editorPosition: {x: 2400, y: 140}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: robots_crossed_bridge
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741460
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row9_34c50509
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row9_34c50509_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row10_7926ca0c
+        editorPosition: {x: 2700, y: 140}
+        speakerId: Marcus
+        text: "They\u2019re getting across! I was so focused on the water that I
+          didn\u2019t think of going over it. Thanks! I can get back to moving the
+          wood."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row9_34c50509
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741461
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row10_7926ca0c
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row10_7926ca0c_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row11_f8bd31a5
+        editorPosition: {x: 3395.457, y: -118.908714}
+        actionType: 0
+        actionFlagName: robots_resume_wood_transport
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741462
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row6_3b187f64
+        nodeId: row11_f8bd31a5
         choices: []
-        editorPosition: {x: 3695.6106, y: -21.231108}
+        editorPosition: {x: 3647.5764, y: 150.64009}
         outcomeId: 

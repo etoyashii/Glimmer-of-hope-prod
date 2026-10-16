@@ -13,40 +13,45 @@ MonoBehaviour:
   m_Name: dialogue_1_5_8_ball_of_leaves
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: 17b39d95
+  startNodeId: d060a017
   _typedNodes:
-  - rid: 1190579323228913928
-  - rid: 1190579323228913929
-  - rid: 1190579323228913930
-  - rid: 1190579323228913931
-  - rid: 1190579323228913932
+  - rid: 383362646436741584
+  - rid: 383362646436741585
+  - rid: 383362646436741586
+  - rid: 383362646436741587
+  - rid: 383362646436741588
+  - rid: 383362646436741589
+  - rid: 383362646436741590
+  - rid: 383362646436741591
+  - rid: 383362646436741592
+  - rid: 383362646436741593
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913928
+    - rid: 383362646436741584
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 17b39d95
+        nodeId: d060a017
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_d060a017_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_0f887e24
+          nextNodeId: row0_ad737c30
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913929
+    - rid: 383362646436741585
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_0f887e24
+        nodeId: row0_ad737c30
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -54,21 +59,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_0f887e24_0
+              m_Key: choice_row0_ad737c30_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_087dd095
+          nextNodeId: row1_14bd6fc4
         editorPosition: {x: 300, y: 0}
-        speakerId: Ball of leaves / Glow (muffled, a little sulky)
-        text: "Hey! I\u2019m under here! Everyone walks right past without daring
-          to come closer."
+        speakerId: Hidden Lueur
+        text: "Hey! I\u2019m under here! Everyone backs away when I try to move\u2026"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_0f887e24
+            m_Key: line_row0_ad737c30
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -78,10 +82,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913930
+    - rid: 383362646436741586
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_087dd095
+        nodeId: row1_14bd6fc4
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -89,20 +93,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_087dd095_0
+              m_Key: choice_row1_14bd6fc4_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_da0e34b0
-        editorPosition: {x: 871.1768, y: -12.106748}
-        speakerId: Player (calm)
-        text: "Okay. Hang on, I\u2019ll clear away the leaves\u2026 gently."
+          nextNodeId: row2_d871409d
+        editorPosition: {x: 689.4384, y: -322.28665}
+        speakerId: Player
+        text: Is it you making the leaves move?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_087dd095
+            m_Key: line_row1_14bd6fc4
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -112,10 +116,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913931
+    - rid: 383362646436741587
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_da0e34b0
+        nodeId: row2_d871409d
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -123,20 +127,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_da0e34b0_0
+              m_Key: choice_row2_d871409d_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_5691fb98
-        editorPosition: {x: 1311.7383, y: -29.09507}
-        speakerId: 
-        text: (The player uses Push to clear away the foliage.)
+          nextNodeId: row3_2662bd15
+        editorPosition: {x: 900, y: 0}
+        speakerId: Hidden Lueur
+        text: "Yes! I can\u2019t get out. Can you help me?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_da0e34b0
+            m_Key: line_row2_d871409d
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -146,10 +150,169 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913932
+    - rid: 383362646436741588
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row3_2662bd15
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row3_2662bd15_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row4_6bdee9b2
+        editorPosition: {x: 1204.6261, y: 198.92319}
+        speakerId: Player
+        text: "I\u2019ll try to move them aside. Gently\u2026"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row3_2662bd15
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741589
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row4_6bdee9b2
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_6bdee9b2_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row5_e8e0f796
+        editorPosition: {x: 1500, y: 0}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: hidden_lueur_foliage_cleared
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741590
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_e8e0f796
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_e8e0f796_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_c4f371da
+        editorPosition: {x: 1758.365, y: -288.3617}
+        speakerId: Hidden Lueur
+        text: "Ah\u2026 thank you! I can finally breathe. From a distance, I must
+          have looked a bit strange\u2026 but all it took was coming closer."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row5_e8e0f796
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741591
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_c4f371da
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_c4f371da_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_5f299233
+        editorPosition: {x: 2110.7944, y: 262.14682}
+        speakerId: Player
+        text: From a distance, all we could see was a ball of leaves moving.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row6_c4f371da
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741592
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row7_5f299233
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_5f299233_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row8_9e5ee333
+        editorPosition: {x: 2571.1667, y: 3.083977}
+        speakerId: Hidden Lueur
+        text: And from inside, all I could see was leaves!
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row7_5f299233
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741593
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_5691fb98
+        nodeId: row8_9e5ee333
         choices: []
-        editorPosition: {x: 1749.2783, y: 10.57993}
+        editorPosition: {x: 2955.9795, y: -0.00005722046}
         outcomeId: 

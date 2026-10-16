@@ -13,39 +13,43 @@ MonoBehaviour:
   m_Name: dialogue_1_2_7_broken_lantern
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 03e71bba
-  startNodeId: e4f449b4
+  startNodeId: 14b22fe6
   _typedNodes:
-  - rid: 8558608729178636414
-  - rid: 8558608729178636415
-  - rid: 8558608729178636416
-  - rid: 8558608729178636417
+  - rid: 383362646436741224
+  - rid: 383362646436741225
+  - rid: 383362646436741226
+  - rid: 383362646436741227
+  - rid: 383362646436741228
+  - rid: 383362646436741229
+  - rid: 383362646436741230
+  - rid: 383362646436741231
   references:
     version: 2
     RefIds:
-    - rid: 8558608729178636414
+    - rid: 383362646436741224
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: e4f449b4
+        nodeId: 14b22fe6
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_14b22fe6_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_7b8cd11a
-        editorPosition: {x: 0, y: 0}
+          nextNodeId: row0_dbb99235
+        editorPosition: {x: -237.2565, y: -11.153028}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 8558608729178636415
+    - rid: 383362646436741225
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_7b8cd11a
+        nodeId: row0_dbb99235
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -53,34 +57,33 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_7b8cd11a_0
+              m_Key: choice_row0_dbb99235_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_b95d49e1
-        editorPosition: {x: 300, y: 0}
-        speakerId: Glow (bothered)
-        text: "To heal this area, we\u2019d need to relight all the lanterns\u2026
-          but this one is broken\u2026."
+          nextNodeId: row1_3f8833ca
+        editorPosition: {x: 147.8171, y: -11.306748}
+        speakerId: Lueur
+        text: "To help this area, we\u2019d need to relight all the lanterns\u2026"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_7b8cd11a
+            m_Key: line_row0_dbb99235
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636416
+    - rid: 383362646436741226
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_b95d49e1
+        nodeId: row1_3f8833ca
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -88,33 +91,155 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_b95d49e1_0
+              m_Key: choice_row1_3f8833ca_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_c50ed839
-        editorPosition: {x: 921.60004, y: 1.6000061}
-        speakerId: You (thoughtful)
-        text: "There\u2019s got to be another way to make light."
+          nextNodeId: row2_6c68f126
+        editorPosition: {x: 613.62366, y: -10.45859}
+        speakerId: Player
+        text: "This one\u2019s broken\u2026 How else could we light it?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_b95d49e1
+            m_Key: line_row1_3f8833ca
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636417
+    - rid: 383362646436741227
+      type: {class: ConditionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row2_6c68f126
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_6c68f126_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: hint_firefly
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row2_6c68f126_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wait_lantern
+        editorPosition: {x: 1022.6839, y: -9.125225}
+        conditionType: 0
+        conditionFlagName: player_hesitates
+        conditionExpectedValue: 1
+        conditionScriptId: 
+    - rid: 383362646436741228
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: hint_firefly
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_hint_firefly_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: wait_lantern
+        editorPosition: {x: 1304.6665, y: -198}
+        speakerId: Lueur
+        text: Remember our new companion ?
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_hint_firefly
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741229
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: wait_lantern
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_wait_lantern_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row5_df001eb0
+        editorPosition: {x: 1279.0854, y: 134.93028}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: broken_lantern_lit_by_firefly
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741230
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_df001eb0
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_df001eb0_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_02628298
+        editorPosition: {x: 1617.6144, y: 152.16696}
+        speakerId: Player
+        text: It works! Thank you, little firefly.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row5_df001eb0
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741231
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_c50ed839
+        nodeId: row6_02628298
         choices: []
-        editorPosition: {x: 1346.4, y: 2.399994}
+        editorPosition: {x: 2024.0753, y: 122.76332}
         outcomeId: 

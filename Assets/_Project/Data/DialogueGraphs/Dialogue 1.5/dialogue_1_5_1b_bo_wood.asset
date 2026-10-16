@@ -13,22 +13,24 @@ MonoBehaviour:
   m_Name: dialogue_1_5_1b_bo_wood
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: a6a9a60d
+  startNodeId: e105e1d3
   _typedNodes:
-  - rid: 1190579323228913677
-  - rid: 1190579323228913678
-  - rid: 1190579323228913679
-  - rid: 1190579323228913680
-  - rid: 1190579323228913681
-  - rid: 1190579323228913682
-  - rid: 1190579323228913683
+  - rid: 383362646436741413
+  - rid: 383362646436741414
+  - rid: 383362646436741415
+  - rid: 383362646436741416
+  - rid: 383362646436741417
+  - rid: 383362646436741418
+  - rid: 383362646436741419
+  - rid: 383362646436741420
+  - rid: 383362646436741421
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913677
+    - rid: 383362646436741413
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: a6a9a60d
+        nodeId: e105e1d3
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -36,19 +38,19 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_a6a9a60d_0
+              m_Key: choice_e105e1d3_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_b2a28d4c
+          nextNodeId: row0_19a8d520
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913678
+    - rid: 383362646436741414
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_b2a28d4c
+        nodeId: row0_19a8d520
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -56,21 +58,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_b2a28d4c_0
+              m_Key: choice_row0_19a8d520_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_879c02d2
-        editorPosition: {x: 232.15018, y: -7.710245}
-        speakerId: Bo (panicked)
-        text: "The incinerator is out of wood! It\u2019s going to stop, and the Portal
-          of Renewal will go out!"
+          nextNodeId: row1_5fcd3598
+        editorPosition: {x: 300, y: 0}
+        speakerId: Bo
+        text: "The incinerator\u2019s almost out of wood! If it stops, the Portal
+          of Renewal could go out!"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_b2a28d4c
+            m_Key: line_row0_19a8d520
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -80,10 +82,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913679
+    - rid: 383362646436741415
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_879c02d2
+        nodeId: row1_5fcd3598
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -91,21 +93,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_879c02d2_0
+              m_Key: choice_row1_5fcd3598_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_5695eb86
-        editorPosition: {x: 850.8581, y: -10.987136}
-        speakerId: Player (reassuring)
-        text: "Whoa! That is serious, true. But there\u2019s no need to panic like
-          this. Let\u2019s focus on the solution. What can we do?"
+          nextNodeId: row2_23237bb1
+        editorPosition: {x: 676.43146, y: -294.99905}
+        speakerId: Player
+        text: Can you see any wood we could use?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_879c02d2
+            m_Key: line_row1_5fcd3598
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -115,10 +116,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913680
+    - rid: 383362646436741416
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_5695eb86
+        nodeId: row2_23237bb1
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -126,21 +127,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_5695eb86_0
+              m_Key: choice_row2_23237bb1_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_518d51aa
-        editorPosition: {x: 1600.8583, y: -4.9870687}
-        speakerId: Bo (stressed)
-        text: "Over there, there\u2019s a log\u2026 but I\u2019ll never have time
-          to drag it all the way here!"
+          nextNodeId: row3_73ea0b3e
+        editorPosition: {x: 1177.5671, y: 2.681736}
+        speakerId: Bo
+        text: "Over there! But it\u2019s too heavy\u2026 I\u2019ll never drag it
+          here in time."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_5695eb86
+            m_Key: line_row2_23237bb1
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -150,10 +151,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913681
+    - rid: 383362646436741417
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_518d51aa
+        nodeId: row3_73ea0b3e
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -161,20 +162,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row3_518d51aa_0
+              m_Key: choice_row3_73ea0b3e_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row4_c4cb2dfd
-        editorPosition: {x: 2176.8582, y: -0.32056984}
-        speakerId: Player (calm)
-        text: "Breathe. That log \u2014 I can bring it over, no problem."
+          nextNodeId: row4_510bbb65
+        editorPosition: {x: 992.15967, y: 301.70367}
+        speakerId: Player
+        text: I can try to bring it closer with my power. Can you get the incinerator
+          ready meanwhile?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row3_518d51aa
+            m_Key: line_row3_73ea0b3e
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -184,10 +186,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913682
+    - rid: 383362646436741418
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_c4cb2dfd
+        nodeId: row4_510bbb65
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -195,20 +197,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_c4cb2dfd_0
+              m_Key: choice_row4_510bbb65_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_88838429
-        editorPosition: {x: 2617.5247, y: -0.9870714}
-        speakerId: 
-        text: (The player uses Push/Pull to bring the log back.)
+          nextNodeId: row5_fd212dc7
+        editorPosition: {x: 1672.9766, y: 290.97635}
+        speakerId: Bo
+        text: "Yes, I\u2019m on it!"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_c4cb2dfd
+            m_Key: line_row4_510bbb65
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -218,10 +220,67 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913683
+    - rid: 383362646436741419
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row5_fd212dc7
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row5_fd212dc7_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row6_2712119a
+        editorPosition: {x: 1800, y: 0}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: incinerator_b_log_delivered
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741420
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_2712119a
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_2712119a_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_2dbdef5f
+        editorPosition: {x: 2100, y: 0}
+        speakerId: Bo
+        text: "It\u2019s starting up again! All I could see was that log I couldn\u2019t
+          move\u2026 With two of us, we managed in time."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row6_2712119a
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741421
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_88838429
+        nodeId: row7_2dbdef5f
         choices: []
-        editorPosition: {x: 3068.8584, y: 7.0129232}
+        editorPosition: {x: 2799.5894, y: 2.681879}
         outcomeId: 
