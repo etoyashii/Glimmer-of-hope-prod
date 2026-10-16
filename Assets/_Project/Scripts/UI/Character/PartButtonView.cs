@@ -33,9 +33,9 @@ namespace GlimmerOfHope.UI.Widgets
         #endregion
 
         #region Public API
-        public void Setup(string categoryId, CharacterPartSO part, System.Action<string, string> onClickCallback)
+        public void Setup(CharacterCategorySO category, CharacterPartSO part, System.Action<string, string> onClickCallback)
         {
-            _categoryId      = categoryId;
+            _categoryId      = category.CategoryID;
             _onClickCallback = onClickCallback;
 
             if (part == null)
@@ -54,7 +54,7 @@ namespace GlimmerOfHope.UI.Widgets
             if (_button != null)
                 _button.onClick.AddListener(OnClick);
 
-            _partColorButton.gameObject.SetActive(part != null && part.PartType == CharacterPartType.SkinnedMesh);
+            _partColorButton.gameObject.SetActive(category.Colorizable);
 
             if (part != null && part.PartType == CharacterPartType.Color)
                 _thumbnail.color = part.Color;

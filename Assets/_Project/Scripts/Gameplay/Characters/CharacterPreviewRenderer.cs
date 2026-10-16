@@ -162,18 +162,26 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void OnColorChanged(string categoryId, Color color)
         {
             var category = _controller?.Registry?.GetCategoryById(categoryId);
-            if (category == null) return;
+            if (category == null || !category.Colorizable) return;
 
             foreach (var part in category.Parts)
             {
-                if (part?.PartType != CharacterPartType.SkinnedMesh || part.Mesh == null) continue;
-                if (!_smrByMeshName.TryGetValue(part.Mesh.name, out var smr) || !smr.enabled) continue;
+                if (part == null)
+                    continue;
+                if (part.PartType == CharacterPartType.SkinnedMesh && part.Mesh != null)
+                {
+                    if (!_smrByMeshName.TryGetValue(part.Mesh.name, out var smr) || !smr.enabled) continue;
 
-                var block = new MaterialPropertyBlock();
-                smr.GetPropertyBlock(block);
-                block.SetColor("_BaseColor", color);
-                smr.SetPropertyBlock(block);
-                break;
+                    var block = new MaterialPropertyBlock();
+                    smr.GetPropertyBlock(block);
+                    block.SetColor("_BaseColor", color);
+                    smr.SetPropertyBlock(block);
+                }
+                else if (part.PartType == CharacterPartType.FlipBook)
+                {
+                    if (_mrByMeshName.TryGetValue(part.FlipBookMeshRendererTarget, out MeshRenderer mr))
+                        mr.material.SetColor(category.ColorMatReference, _controller.GetCategoryColor(categoryId));
+                }
             }
         }
 
@@ -198,20 +206,23 @@ namespace GlimmerOfHope.Gameplay.Characters
 
             switch (part.PartType)
             {
-                case CharacterPartType.SkinnedMesh: RefreshSkinnedMesh(categoryId, part);   break;
-                case CharacterPartType.Prefab3D:    Refresh3D(categoryId, part);            break;
-                case CharacterPartType.Sprite2D:    Refresh2D(categoryId, part);            break;
-                case CharacterPartType.Color:       RefreshColor(categoryId, part);         break;
-                case CharacterPartType.FlipBook:    RefreshFlipBook(categoryId, part);      break;
+                case CharacterPartType.SkinnedMesh: RefreshSkinnedMesh(categoryId, part); break;
+                case CharacterPartType.Prefab3D: Refresh3D(categoryId, part); break;
+                case CharacterPartType.Sprite2D: Refresh2D(categoryId, part); break;
+                case CharacterPartType.Color: RefreshColor(categoryId, part); break;
+                case CharacterPartType.FlipBook: RefreshFlipBook(categoryId, part); break;
             }
         }
 
         private void RefreshFlipBook(string categoryId, CharacterPartSO part)
         {
+            CharacterCategorySO category = _controller.Registry.GetCategoryById(categoryId);
+
             if (_mrByMeshName.TryGetValue(part.FlipBookMeshRendererTarget, out MeshRenderer mr))
             {
                 foreach (var setting in part.FlipBookSettings)
                     mr.material.SetFloat(setting.reference, setting.value);
+                mr.material.SetColor(category.ColorMatReference, _controller.GetCategoryColor(categoryId));
             }
         }
 
@@ -231,12 +242,13 @@ namespace GlimmerOfHope.Gameplay.Characters
             CharacterCategorySO category = _controller.Registry.GetCategoryById(categoryId);
             if (category != null)
             {
-                foreach (var catPart in category.Parts)
+                if (category.Colorizable)
                 {
-                    if (catPart?.PartType != CharacterPartType.SkinnedMesh || catPart.Mesh == null)
-                        continue;
-                    if (_smrByMeshName.TryGetValue(catPart.Mesh.name, out var smr))
-                        smr.enabled = false;
+                    foreach (var catPart in category.Parts)
+                    {
+                        if (_smrByMeshName.TryGetValue(catPart.Mesh.name, out var smr))
+                            smr.enabled = false;
+                    }
                 }
             }
 
@@ -247,7 +259,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 if (part.HasValidMaterials)
                     selectedSmr.sharedMaterials = part.Materials;
                 var block = new MaterialPropertyBlock();
-                block.SetColor("_BaseColor", _controller.GetCategoryColor(categoryId));
+                block.SetColor(category.ColorMatReference, _controller.GetCategoryColor(categoryId));
                 selectedSmr.SetPropertyBlock(block);
             }
             else

@@ -98,8 +98,9 @@ namespace GlimmerOfHope.UI.Widgets
         {
             GameObject btn  = Instantiate(_partButtonPrefab, transform);
             PartButtonView view = btn.GetComponent<PartButtonView>();
+            CharacterCategorySO category = _controller.Registry.GetCategoryById(categoryId);
 
-            view.Setup(categoryId, part, OnPartClicked);
+            view.Setup(category, part, OnPartClicked);
             view.SetSelected(selected);
             _spawnedViews.Add(view);
 
