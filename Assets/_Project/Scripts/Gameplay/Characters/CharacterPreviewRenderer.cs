@@ -219,7 +219,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         private void RefreshColor(string categoryId, CharacterPartSO part)
         {
             if (_smrByMeshName.TryGetValue(part.ColorMeshTarget, out SkinnedMeshRenderer skinnedMeshRenderer))
-                skinnedMeshRenderer.material.SetColor("_SkinColor", part.Color);
+                skinnedMeshRenderer.material.SetColor(part.ColorMaterialColorReference, part.Color);
         }
 
 
