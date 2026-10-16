@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using GlimmerOfHope.Gameplay.NewDialogue;
 
 namespace GlimmerOfHope.Gameplay
 {
@@ -234,6 +235,9 @@ namespace GlimmerOfHope.Gameplay
 
             SpawnPlatform(_confirmedPrefab, _confirmedTargetPosition,
                           _confirmedExitDirection, _confirmedIsWall);
+
+            DialogueFlags.Set("first_platform_created", true);
+            DialogueFlags.Set("second_platform_created", true);
         }
 
         private void ClearPreview()

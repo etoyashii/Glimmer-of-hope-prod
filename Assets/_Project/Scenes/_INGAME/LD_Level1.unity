@@ -38079,77 +38079,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 361710197}
   m_Mesh: {fileID: -9006710396539983858, guid: cc4f8af2ba5694943bae8ae0664626b2, type: 3}
---- !u!1 &361995408
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 361995409}
-  - component: {fileID: 361995411}
-  - component: {fileID: 361995410}
-  m_Layer: 0
-  m_Name: dialoguetrigger (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &361995409
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361995408}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 16.601074, y: 1.027008, z: -20.370605}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 785654258}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &361995410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361995408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19547a83ab8db074c9f37e1e48d73156, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueTriggerZone
-  _dialogueGraph: {fileID: 11400000, guid: 569a905670ad5234b924bd5086bc9721, type: 2}
-  _playerTag: Player
-  _triggerOnce: 1
-  _ignoreIfAlreadyPlaying: 1
-  _disableOnOutcomes: []
---- !u!65 &361995411
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 361995408}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 8.4453125, y: 1, z: 3.4951172}
-  m_Center: {x: -1.5119629, y: 0, z: 0.036621094}
 --- !u!1 &364667091
 GameObject:
   m_ObjectHideFlags: 0
@@ -44239,53 +44168,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: dc40c50ac26841b41abb7f6199483fa6, type: 3}
   m_PrefabInstance: {fileID: 426000966}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &426001168
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 426001170}
-  - component: {fileID: 426001169}
-  m_Layer: 0
-  m_Name: DialogueManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &426001169
+--- !u!114 &426001169 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2006152079564049253, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+  m_PrefabInstance: {fileID: 3189119286093855313}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426001168}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7d9b4f54de01075408737d51f136d636, type: 3}
   m_Name: 
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueManager
-  _interactionUIPrefab: {fileID: 9057694529147399281, guid: 2b7663811ba9c5748936f72dd565c62e, type: 3}
-  _maxDistanceFromStart: 3
-  _playerTag: Player
---- !u!4 &426001170
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426001168}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.33764648, y: 0.39334106, z: 5.6557617}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 785654258}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &426105247
 GameObject:
   m_ObjectHideFlags: 0
@@ -74996,41 +74889,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 934868cf64f1fde49b4e45deb263c866, type: 3}
   m_PrefabInstance: {fileID: 785303362}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &785654257
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 785654258}
-  m_Layer: 0
-  m_Name: '### Dialogues ###'
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &785654258
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 785654257}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2442.479, y: 373.802, z: 5131.111}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 426001170}
-  - {fileID: 361995409}
-  - {fileID: 1042782498}
-  - {fileID: 1561846524}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &786832095
 GameObject:
   m_ObjectHideFlags: 0
@@ -103628,77 +103486,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1642602140}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1042782497
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1042782498}
-  - component: {fileID: 1042782500}
-  - component: {fileID: 1042782499}
-  m_Layer: 0
-  m_Name: dialoguetrigger
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1042782498
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042782497}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -6.11499, y: 0, z: 8.171387}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 785654258}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1042782499
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042782497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19547a83ab8db074c9f37e1e48d73156, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueTriggerZone
-  _dialogueGraph: {fileID: 11400000, guid: bb97cf4f61e32c34797f6f8307192a08, type: 2}
-  _playerTag: Player
-  _triggerOnce: 1
-  _ignoreIfAlreadyPlaying: 1
-  _disableOnOutcomes: []
---- !u!65 &1042782500
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1042782497}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &1042932767
 GameObject:
   m_ObjectHideFlags: 0
@@ -158796,160 +158583,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 71c0dcc6e35105c4a8ee07dc509041af, type: 3}
   m_PrefabInstance: {fileID: 1489641062}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &1489828571
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: _disableAfterUse
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 426001169}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 1489828573}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialogue
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: Unlock
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.NewDialogue.DialogueManager, GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.Character.SpecialActions.SkillUnlockTrigger,
-        GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 11400000, guid: 578148fb4a2bcb74ea322332a6b7f12c, type: 2}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph, GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
-    - target: {fileID: 3333861645070373815, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: _skillManager
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3333861645070373815, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: _skillToUnlock
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 8207883214403440049, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_Name
-      value: P_StelleInteractable (1)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8207883214403440049, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_Layer
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2444.647
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 373.738
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5135.355
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.39189157
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.39189157
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.5885754
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.5885754
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3333861645070373815, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8207883214403440049, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1489828573}
-  m_SourcePrefab: {fileID: 100100000, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
---- !u!1 &1489828572 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8207883214403440049, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-  m_PrefabInstance: {fileID: 1489828571}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1489828573
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1489828572}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e1bb3980a382e04e9a64c20e8c7780c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Character.SpecialActions.SkillUnlockTrigger
-  _skillManager: {fileID: 287764375}
-  _skillNoteManager: {fileID: 287764374}
-  _skillToUnlock: 5
 --- !u!1 &1490510569
 GameObject:
   m_ObjectHideFlags: 0
@@ -165195,7 +164828,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 341510234625339637, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.38253784
+      value: -0.38253975
       objectReference: {fileID: 0}
     - target: {fileID: 347425967694363704, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_Layer
@@ -169531,77 +169164,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 5e9b12f82e59b484489acccbc68aec41, type: 3}
   m_PrefabInstance: {fileID: 1560643433}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1561846523
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1561846524}
-  - component: {fileID: 1561846526}
-  - component: {fileID: 1561846525}
-  m_Layer: 0
-  m_Name: dialoguetrigger (2)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1561846524
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561846523}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: 0.05858073, z: -0, w: 0.99828273}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 785654258}
-  m_LocalEulerAnglesHint: {x: 0, y: 6.717, z: 0}
---- !u!114 &1561846525
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561846523}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 19547a83ab8db074c9f37e1e48d73156, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueTriggerZone
-  _dialogueGraph: {fileID: 11400000, guid: 8bb31077db3f1e84eb9954441ed1a302, type: 2}
-  _playerTag: Player
-  _triggerOnce: 1
-  _ignoreIfAlreadyPlaying: 1
-  _disableOnOutcomes: []
---- !u!65 &1561846526
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1561846523}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 11.183999, y: 1, z: 1.0000001}
-  m_Center: {x: 0.56463933, y: 0, z: -0.0000000669109}
 --- !u!1 &1563156021
 GameObject:
   m_ObjectHideFlags: 0
@@ -206316,136 +205878,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1916220707}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1916690611
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 426001169}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Target
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartDialogue
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
-      value: StartDialogue
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.NewDialogue.DialogueManager, GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.NewDialogue.DialogueManager, GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 11400000, guid: 3c2a1e4840e978f40b83f8e6cb36d88b, type: 2}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgument
-      value: 
-      objectReference: {fileID: 11400000, guid: 3c2a1e4840e978f40b83f8e6cb36d88b, type: 2}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph, GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 275149752004491734, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: OnInteracted.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph, GlimmerOfHope.Gameplay
-      objectReference: {fileID: 0}
-    - target: {fileID: 3333861645070373815, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: _skillManager
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 3333861645070373815, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: _skillToUnlock
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7703616327235611748, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8207883214403440049, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_Name
-      value: P_StelleInteractable (4)
-      objectReference: {fileID: 0}
-    - target: {fileID: 8207883214403440049, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_Layer
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 2439.294
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 373.418
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 5139.387
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: -0.70543385
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.70543385
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.04861195
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.04861195
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8837068415787652875, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: -7.884
-      objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 3333861645070373815, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8cbd517baa9640e4e89f3b4a3b756c36, type: 3}
 --- !u!1001 &1917242762
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -231707,6 +231139,71 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4350459904733080987, guid: 396a9858c2531ac4e92d691e14ded762, type: 3}
   m_PrefabInstance: {fileID: 2147697933928429372}
   m_PrefabAsset: {fileID: 0}
+--- !u!1001 &3189119286093855313
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 2444.647
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 373.738
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 5135.355
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6379493254147510306, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7538251645812286096, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: _skillManager
+      value: 
+      objectReference: {fileID: 287764375}
+    - target: {fileID: 7538251645812286096, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: _skillNoteManager
+      value: 
+      objectReference: {fileID: 287764374}
+    - target: {fileID: 8314206994031321606, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
+      propertyPath: m_Name
+      value: ToReplace
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 797d75bedfa8a1744b3b25a1053b3fc7, type: 3}
 --- !u!1001 &4011458437026912099
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -232490,16 +231987,14 @@ SceneRoots:
   m_Roots:
   - {fileID: 1700003431}
   - {fileID: 1704794351}
-  - {fileID: 785654258}
   - {fileID: 1520878048}
   - {fileID: 1339765160}
   - {fileID: 2105994406}
   - {fileID: 1836697808}
-  - {fileID: 1916690611}
   - {fileID: 1644208981}
   - {fileID: 106635848}
   - {fileID: 311007045}
-  - {fileID: 1489828571}
+  - {fileID: 3189119286093855313}
   - {fileID: 1629897507}
   - {fileID: 1361050582}
   - {fileID: 1119111787}
