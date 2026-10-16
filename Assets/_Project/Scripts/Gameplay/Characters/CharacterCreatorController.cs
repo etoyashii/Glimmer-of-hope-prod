@@ -95,6 +95,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         {
             _categoryColors[categoryId] = color;
             OnColorChanged?.Invoke(categoryId, color);
+            _registry.GetCategoryById(categoryId).ColorMultiplier = color;
         }
 
         public Color GetCategoryColor(string categoryId)
@@ -185,10 +186,15 @@ namespace GlimmerOfHope.Gameplay.Characters
             var savedColors = saveManager.CurrentSave?.progression?.characterColors;
             if (savedColors != null)
             {
+                CharacterCategorySO category = null;
                 foreach (var entry in savedColors)
                 {
                     if (!string.IsNullOrEmpty(entry.categoryId))
+                    {
+                        category = _registry.GetCategoryById(entry.categoryId);
                         _categoryColors[entry.categoryId] = new Color(entry.r, entry.g, entry.b);
+                        category.ColorMultiplier = new Color(entry.r, entry.g, entry.b);
+                    }
                 }
             }
         }

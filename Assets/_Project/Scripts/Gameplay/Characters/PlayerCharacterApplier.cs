@@ -155,7 +155,7 @@ namespace GlimmerOfHope.Gameplay.Characters
                 foreach (var setting in part.FlipBookSettings)
                     mr.material.SetFloat(setting.reference, setting.value);
                 if (_controller != null)
-                    mr.material.SetColor(category.ColorMatReference, _controller.GetCategoryColor(category.CategoryID));
+                    mr.material.SetColor(category.ColorMatReference, category.ColorMultiplier);
             }
         }
 

@@ -1,4 +1,5 @@
 using NaughtyAttributes;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Serialization;
@@ -29,10 +30,12 @@ namespace GlimmerOfHope.Gameplay.Characters
 
         [SerializeField] private CharacterPartType _defaultPartType = CharacterPartType.Prefab3D;
         [SerializeField] private bool _canSetNone = false;
-        [BoxGroup(GROUP_COLOR)]
-        [SerializeField] private string _colorMatReference = "_BaseColor";
+
         [BoxGroup(GROUP_COLOR)]
         [SerializeField] private bool _colorizable = true;
+        [BoxGroup(GROUP_COLOR)]
+        [ShowIf(nameof(_colorizable))]
+        [SerializeField] private string _colorMatReference = "_BaseColor";
 
         [BoxGroup(GROUP_IDENTITY)]
         [Tooltip("Prefixes de noms de mesh FBX mappes a cette categorie. Ex: 'Haut_', 'Bas_'. Laisser vide si la categorie utilise des sous-categories.")]
@@ -51,6 +54,7 @@ namespace GlimmerOfHope.Gameplay.Characters
         [SerializeField] private List<CharacterPartSO> _parts = new();
         #endregion
 
+
         #region Public Properties
         public string CategoryID                              => _categoryId;
         public string DisplayName                             => _displayName;
@@ -64,6 +68,8 @@ namespace GlimmerOfHope.Gameplay.Characters
         public bool HasSubCategories                          => _subCategories != null && _subCategories.Count > 0;
         public IReadOnlyList<CharacterPartSO> Parts           => _parts;
         public bool CanSetNone                                => _canSetNone;
+
+        public Color ColorMultiplier {get; set;} = Color.white;
         #endregion
 
         #region Public Methods
