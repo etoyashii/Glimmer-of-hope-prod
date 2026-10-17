@@ -230397,7 +230397,7 @@ PrefabInstance:
       objectReference: {fileID: 9100000, guid: cb8bcb975a69b544aa4c3cc006f25435, type: 2}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.size
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPostDirector.m_PersistentCalls.m_Calls.Array.size
@@ -230408,9 +230408,17 @@ PrefabInstance:
       value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 4008045143332884429}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 4008045143332884427}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPostDirector.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
@@ -230420,12 +230428,28 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: SetTrigger
       objectReference: {fileID: 0}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: set_enabled
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
       value: UnityEngine.Animator, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: UnityEngine.MeshRenderer, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_BoolArgument
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
@@ -230433,6 +230457,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
       propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 3666900658823258484, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
+      propertyPath: _onReactPreDirector.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 3854359008385766342, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
@@ -230532,7 +230560,8 @@ PrefabInstance:
       value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 307009749051556750, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
@@ -235201,7 +235230,8 @@ PrefabInstance:
       value: 19
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 307009749051556750, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77a87a6c7cdde46569e9bf5789710546, type: 3}
