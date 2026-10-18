@@ -18,7 +18,7 @@ namespace GlimmerOfHope.Gameplay
         [Header("Gizmos")]
         [SerializeField] private Color gizmoColor = Color.red;
         [SerializeField] private BoxCollider boxCollider;
-        private void OnDrawGizmos()
+        private void OnDrawGizmosSelected()
         {
             if (boxCollider == null)
                 return;
