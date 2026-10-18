@@ -13,23 +13,27 @@ MonoBehaviour:
   m_Name: dialogue_1_5_9_greg_wood
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: 46a7fcb0
+  startNodeId: 10252bd0
   _typedNodes:
-  - rid: 1190579323228913760
-  - rid: 1190579323228913761
-  - rid: 1190579323228913762
-  - rid: 1190579323228913763
-  - rid: 1190579323228913764
-  - rid: 1190579323228913765
-  - rid: 1190579323228913766
-  - rid: 1190579323228913767
+  - rid: 383362646436741594
+  - rid: 383362646436741595
+  - rid: 383362646436741596
+  - rid: 383362646436741597
+  - rid: 383362646436741598
+  - rid: 383362646436741599
+  - rid: 383362646436741600
+  - rid: 383362646436741601
+  - rid: 383362646436741602
+  - rid: 383362646436741603
+  - rid: 383362646436741604
+  - rid: 383362646436741605
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913760
+    - rid: 383362646436741594
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: 46a7fcb0
+        nodeId: 10252bd0
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -37,19 +41,19 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_46a7fcb0_0
+              m_Key: choice_10252bd0_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_faf221e5
-        editorPosition: {x: -1866.2839, y: 70.962425}
+          nextNodeId: row0_dd67b737
+        editorPosition: {x: -976.11176, y: -7.7101154}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913761
+    - rid: 383362646436741595
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_faf221e5
+        nodeId: row0_dd67b737
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -57,21 +61,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_faf221e5_0
+              m_Key: choice_row0_dd67b737_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_6a834837
-        editorPosition: {x: -1578.2343, y: 83.484955}
+          nextNodeId: row1_a6c8df9b
+        editorPosition: {x: -676.1119, y: -7.7101154}
         speakerId: Player
-        text: Some people from the volcano biome need wood to build. Could I have
-          some?
+        text: Some people in the volcano region need wood to build. Could you give
+          them some?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_faf221e5
+            m_Key: line_row0_dd67b737
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -81,10 +85,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913762
+    - rid: 383362646436741596
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_6a834837
+        nodeId: row1_a6c8df9b
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -92,23 +96,22 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_6a834837_0
+              m_Key: choice_row1_a6c8df9b_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_429902b1
-        editorPosition: {x: -989.0439, y: 72.165726}
-        speakerId: Greg (worried)
-        text: "Yes, of course \u2014 the trouble is the forest is starting to dull,
-          and so are our wood reserves. We\u2019ve tried everything, but nothing
-          works\u2026 As long as our wood reserves stay dull, we won\u2019t have
-          any wood to give you."
+          nextNodeId: row2_2049f3dc
+        editorPosition: {x: -6.190806, y: -7.9101644}
+        speakerId: Greg
+        text: "We\u2019d like to\u2026 but the forest is starting to go dull, and
+          so are our wood stores. We\u2019ve tried everything, but nothing works\u2026
+          As long as our stores are dull, we won\u2019t have any wood to give you."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_6a834837
+            m_Key: line_row1_a6c8df9b
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -118,10 +121,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913763
+    - rid: 383362646436741597
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_429902b1
+        nodeId: row2_2049f3dc
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -129,21 +132,21 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_429902b1_0
+              m_Key: choice_row2_2049f3dc_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_83e8dfaf
-        editorPosition: {x: 307.1028, y: 67.936874}
-        speakerId: Player (confident)
-        text: "We\u2019ve rarely truly tried everything. Let\u2019s try to find another
-          solution together. Maybe a single power isn\u2019t enough."
+          nextNodeId: row3_5d715bfa
+        editorPosition: {x: 728.83344, y: 231.30606}
+        speakerId: Player
+        text: "With In\xE8s, we managed to revive an area by lighting it up together.
+          Want to try?"
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_429902b1
+            m_Key: line_row2_2049f3dc
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -153,10 +156,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913764
+    - rid: 383362646436741598
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_83e8dfaf
+        nodeId: row3_5d715bfa
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -164,22 +167,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row3_83e8dfaf_0
+              m_Key: choice_row3_5d715bfa_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row4_98392471
-        editorPosition: {x: 1070.9332, y: 68.71044}
-        speakerId: Glow (aside, to the player)
-        text: "I\u2019d have told you to light the lanterns, like in many other dull
-          areas \u2014 except there aren\u2019t any here. We need to find another
-          way."
+          nextNodeId: row4_8f0d54ec
+        editorPosition: {x: 1187.664, y: -257.52094}
+        speakerId: Greg
+        text: Yes. How can I help?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row3_83e8dfaf
+            m_Key: line_row3_5d715bfa
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -189,10 +190,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913765
+    - rid: 383362646436741599
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_98392471
+        nodeId: row4_8f0d54ec
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -200,21 +201,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_98392471_0
+              m_Key: choice_row4_8f0d54ec_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_afb4c5e4
-        editorPosition: {x: 1895.5999, y: 51.377163}
-        speakerId: 
-        text: (The player shares the Light power with the NPC, and together they
-          use Light at the same time to gradually revive the dull area.)
+          nextNodeId: row5_493afeeb
+        editorPosition: {x: 1365.8425, y: 269.85712}
+        speakerId: Player
+        text: "I can share my power with you. Then we\u2019ll light up the same area."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_98392471
+            m_Key: line_row4_8f0d54ec
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -224,10 +224,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913766
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741600
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_afb4c5e4
+        nodeId: row5_493afeeb
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -235,20 +235,42 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row5_afb4c5e4_0
+              m_Key: choice_row5_493afeeb_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row6_b97c5a56
-        editorPosition: {x: 2764.2666, y: 50.71052}
-        speakerId: Glow (aside, to the player)
-        text: It worked! Sometimes there really is strength in joining forces.
+          nextNodeId: row6_297c7767
+        editorPosition: {x: 1800, y: 0}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: greg_shared_light_started
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741601
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_297c7767
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_297c7767_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row7_083f7db9
+        editorPosition: {x: 2032.1503, y: 209.7174}
+        speakerId: Greg
+        text: Look! The colours are coming back on the logs!
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row5_afb4c5e4
+            m_Key: line_row6_297c7767
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -258,10 +280,88 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913767
+    - rid: 383362646436741602
+      type: {class: GateNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row7_083f7db9
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_083f7db9_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row8_cd4b299d
+        editorPosition: {x: 2400, y: 0}
+        gateTriggerType: 2
+        gateEventId: 
+        gateTimerSeconds: 1
+        gateFlagName: greg_zone_revived
+        gateFlagExpectedValue: 1
+    - rid: 383362646436741603
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row8_cd4b299d
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row8_cd4b299d_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row9_af7ead55
+        editorPosition: {x: 2700, y: 0}
+        speakerId: Greg
+        text: "We can use this wood again. Thank you! I\u2019ll get some ready for
+          the people of the volcano."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row8_cd4b299d
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741604
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row9_af7ead55
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row9_af7ead55_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row10_0d2f52d8
+        editorPosition: {x: 3377.6821, y: 12.434082}
+        actionType: 0
+        actionFlagName: give_wood
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741605
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row6_b97c5a56
+        nodeId: row10_0d2f52d8
         choices: []
-        editorPosition: {x: 3268.4985, y: 52.731133}
+        editorPosition: {x: 3599.773, y: 23.130577}
         outcomeId: 

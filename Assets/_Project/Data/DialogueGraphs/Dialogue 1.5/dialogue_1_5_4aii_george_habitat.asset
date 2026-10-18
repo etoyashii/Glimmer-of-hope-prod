@@ -13,50 +13,87 @@ MonoBehaviour:
   m_Name: dialogue_1_5_4aii_george_habitat
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 83f793d6
-  startNodeId: f45f7c4f
+  startNodeId: f4f655e0
   _typedNodes:
-  - rid: 1190579323228913885
-  - rid: 1190579323228913886
-  - rid: 1190579323228913887
-  - rid: 1190579323228913888
-  - rid: 1190579323228913889
-  - rid: 1190579323228913890
-  - rid: 1190579323228913891
-  - rid: 1190579323228913892
-  - rid: 1190579323228913893
-  - rid: 1190579323228913894
-  - rid: 1190579323228913895
-  - rid: 1190579323228913896
-  - rid: 1190579323228913897
-  - rid: 1190579323228913898
-  - rid: 1190579323228913899
+  - rid: 383362646436741484
+  - rid: 383362646436741485
+  - rid: 383362646436741486
+  - rid: 383362646436741487
+  - rid: 383362646436741488
+  - rid: 383362646436741489
+  - rid: 383362646436741490
+  - rid: 383362646436741491
+  - rid: 383362646436741492
+  - rid: 383362646436741493
+  - rid: 383362646436741494
+  - rid: 383362646436741495
+  - rid: 383362646436741496
+  - rid: 383362646436741497
+  - rid: 383362646436741498
+  - rid: 383362646436741499
+  - rid: 383362646436741500
   references:
     version: 2
     RefIds:
-    - rid: 1190579323228913885
+    - rid: 383362646436741484
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: f45f7c4f
+        nodeId: f4f655e0
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_f4f655e0_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: hub
+          nextNodeId: row0_2957e500
         editorPosition: {x: 0, y: 0}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 1190579323228913886
+    - rid: 383362646436741485
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: hub
+        nodeId: row0_2957e500
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row0_2957e500_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row1_ea936e4d
+        editorPosition: {x: 164.56859, y: -380.81696}
+        speakerId: Lily
+        text: "He probably needs a place that suits him better\u2026 We could look
+          for somewhere with water. But which one would suit him?"
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row0_2957e500
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741486
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row1_ea936e4d
         choices:
         - choiceText: Maybe a well?
           localizedChoiceText:
@@ -64,18 +101,18 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_hub_0
+              m_Key: choice_row1_ea936e4d_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: well
-        - choiceText: Maybe a lake?
+        - choiceText: What about a lake, with calm water?
           localizedChoiceText:
             m_TableReference:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_hub_1
+              m_Key: choice_row1_ea936e4d_1
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
@@ -86,21 +123,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_hub_2
+              m_Key: choice_row1_ea936e4d_2
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
           nextNodeId: river
-        editorPosition: {x: 463.94397, y: 8.453247}
-        speakerId: Lily (thinking, looking at George)
-        text: "He surely needs a place that suits him better\u2026 with water. But
-          what exactly? We can offer him some ideas and see what he prefers."
+        editorPosition: {x: 456.52307, y: -28.159006}
+        speakerId: Player
+        text: "Let\u2019s try suggesting a few ideas to him."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_hub
+            m_Key: line_row1_ea936e4d
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -110,7 +146,7 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 1
-    - rid: 1190579323228913887
+    - rid: 383362646436741487
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
         nodeId: well
@@ -125,9 +161,9 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_0ad6c4dc
-        editorPosition: {x: 235.0853, y: -403.1811}
-        speakerId: Lily (turning to George)
+          nextNodeId: row3_59396230
+        editorPosition: {x: 1012.63586, y: -374.6584}
+        speakerId: Lily
         text: What do you think, George?
         localizedText:
           m_TableReference:
@@ -144,10 +180,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913888
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741488
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_0ad6c4dc
+        nodeId: row3_59396230
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -155,55 +191,52 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_0ad6c4dc_0
+              m_Key: choice_row3_59396230_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_852593a4
-        editorPosition: {x: 639.752, y: -400.51443}
-        speakerId: 
-        text: (George turns his head away and stays nestled against Lily.)
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row2_0ad6c4dc
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913889
+          nextNodeId: row4_833bf053
+        editorPosition: {x: 1312.636, y: -374.6584}
+        actionType: 0
+        actionFlagName: george_turns_away
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741489
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_852593a4
+        nodeId: row4_833bf053
         choices:
-        - choiceText: 
+        - choiceText: What about a lake, with calm water?
           localizedChoiceText:
             m_TableReference:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row3_852593a4_0
+              m_Key: choice_row4_833bf053_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: hub
-        editorPosition: {x: 1115.0853, y: -384.5144}
+          nextNodeId: lake
+        - choiceText: Maybe a river?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row4_833bf053_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: river
+        editorPosition: {x: 1612.636, y: -374.6584}
         speakerId: Lily
-        text: "Hmm\u2026 that doesn\u2019t seem right for him. And besides, we don\u2019t
-          have a well here."
+        text: "He doesn\u2019t seem interested\u2026 Let\u2019s try another idea."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row3_852593a4
+            m_Key: line_row4_833bf053
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -212,8 +245,8 @@ MonoBehaviour:
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913890
+        hasChoices: 1
+    - rid: 383362646436741490
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
         nodeId: river
@@ -228,10 +261,10 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_e7b8b533
-        editorPosition: {x: 368.39633, y: 574.66675}
-        speakerId: Lily (turning to George)
-        text: How about a river, George?
+          nextNodeId: row6_3048db96
+        editorPosition: {x: 875.8636, y: 370.63547}
+        speakerId: Lily
+        text: And a river, George?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
@@ -247,10 +280,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913891
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+    - rid: 383362646436741491
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_e7b8b533
+        nodeId: row6_3048db96
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -258,20 +291,53 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row5_e7b8b533_0
+              m_Key: choice_row6_3048db96_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row6_bc83999f
-        editorPosition: {x: 702.1949, y: 573.52423}
-        speakerId: 
-        text: (George curls up and presses against Lily.)
+          nextNodeId: row7_f78d80a7
+        editorPosition: {x: 1175.8636, y: 370.63547}
+        actionType: 0
+        actionFlagName: george_curls_up
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741492
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row7_f78d80a7
+        choices:
+        - choiceText: Maybe a well?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_f78d80a7_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: well
+        - choiceText: What about a lake, with calm water?
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row7_f78d80a7_1
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: lake
+        editorPosition: {x: 1475.8636, y: 370.63547}
+        speakerId: Lily
+        text: "He\u2019s pulling back\u2026 Maybe the current wouldn\u2019t suit
+          him. Let\u2019s find something else."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row5_e7b8b533
+            m_Key: line_row7_f78d80a7
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -280,44 +346,9 @@ MonoBehaviour:
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913892
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row6_bc83999f
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row6_bc83999f_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: hub
-        editorPosition: {x: 1099.5282, y: 572.8577}
-        speakerId: Lily (thinking)
-        text: "That doesn\u2019t seem right for him. With the current, it would surely
-          be too rough for him."
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row6_bc83999f
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913893
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+        hasChoices: 1
+    - rid: 383362646436741493
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
         nodeId: lake
         choices:
@@ -331,17 +362,37 @@ MonoBehaviour:
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row8_89a7807e
-        editorPosition: {x: 1440, y: 29.333374}
-        speakerId: Lily (sitting up, interested)
-        text: "Yes\u2026 a calm lake could be a lead. But let\u2019s see what George
-          thinks."
+          nextNodeId: row9_ccc7d87e
+        editorPosition: {x: 900, y: 0}
+        actionType: 0
+        actionFlagName: george_perks_up_and_croaks
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741494
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row9_ccc7d87e
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row9_ccc7d87e_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row10_e2503fd9
+        editorPosition: {x: 1322.0221, y: -45.590683}
+        speakerId: Lily
+        text: "Oh, he\u2019s reacting! He might like that."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_lake
+            m_Key: line_row9_ccc7d87e
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -351,10 +402,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913894
+    - rid: 383362646436741495
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row8_89a7807e
+        nodeId: row10_e2503fd9
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -362,124 +413,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row8_89a7807e_0
+              m_Key: choice_row10_e2503fd9_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row9_ab440cee
-        editorPosition: {x: 1951.3333, y: 34.000122}
-        speakerId: Lily (turning to George)
-        text: What do you think, George?
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row8_89a7807e
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 1
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913895
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row9_ab440cee
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row9_ab440cee_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row10_4aa3118a
-        editorPosition: {x: 2268.6667, y: 14.666626}
-        speakerId: 
-        text: (George perks up slightly, croaks, and reacts positively to the mention
-          of the lake.)
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row9_ab440cee
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913896
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row10_4aa3118a
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row10_4aa3118a_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row11_7937cdf7
-        editorPosition: {x: 2875.3333, y: 13.333374}
-        speakerId: Lily (watching George)
-        text: Looks like he likes the idea.
-        localizedText:
-          m_TableReference:
-            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-          m_TableEntryReference:
-            m_KeyId: 0
-            m_Key: line_row10_4aa3118a
-          m_FallbackState: 0
-          m_WaitForCompletion: 0
-          m_LocalVariables: []
-        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
-        followSpeaker: 0
-        bubbleOffset: {x: 0, y: 2, z: 0}
-        useTypewriter: 0
-        typewriterCharsPerSecond: 30
-        hasChoices: 0
-    - rid: 1190579323228913897
-      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
-      data:
-        nodeId: row11_7937cdf7
-        choices:
-        - choiceText: 
-          localizedChoiceText:
-            m_TableReference:
-              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
-            m_TableEntryReference:
-              m_KeyId: 0
-              m_Key: choice_row11_7937cdf7_0
-            m_FallbackState: 0
-            m_WaitForCompletion: 0
-            m_LocalVariables: []
-          nextNodeId: row12_426f3ee7
-        editorPosition: {x: 3197.3333, y: 15.333374}
+          nextNodeId: row11_540a6456
+        editorPosition: {x: 2258.9521, y: 341.93088}
         speakerId: Player
-        text: I can help you find a spot. Then you can set it up with him, watching
-          what suits him.
+        text: We could look for a spot by the lake and see how he feels there.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row11_7937cdf7
+            m_Key: line_row10_e2503fd9
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -489,10 +436,10 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913898
+    - rid: 383362646436741496
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row12_426f3ee7
+        nodeId: row11_540a6456
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -500,21 +447,20 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row12_426f3ee7_0
+              m_Key: choice_row11_540a6456_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row13_73db1ae0
-        editorPosition: {x: 3791.9998, y: -12.666626}
-        speakerId: Lily (more enthusiastic)
-        text: "Yes! I\u2019ll offer him reeds, water lilies\u2026 and I\u2019ll see
-          what he likes best."
+          nextNodeId: row12_ea5817b2
+        editorPosition: {x: 1800, y: 0}
+        speakerId: Lily
+        text: "Yes, let\u2019s go and look with him."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row12_426f3ee7
+            m_Key: line_row11_540a6456
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
@@ -524,10 +470,100 @@ MonoBehaviour:
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 1190579323228913899
+    - rid: 383362646436741497
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row12_ea5817b2
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row12_ea5817b2_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row13_87d73564
+        editorPosition: {x: 2256.8853, y: 9.386425}
+        speakerId: Player
+        text: I can help you find a spot and gather what you need to set it up.
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row12_ea5817b2
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741498
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row13_87d73564
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row13_87d73564_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row14_bd0e27c3
+        editorPosition: {x: 2772.771, y: -238.68103}
+        speakerId: Lily
+        text: "Reeds, water lilies\u2026 We could start with those, then see how
+          George settles in."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row13_87d73564
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741499
+      type: {class: ActionNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row14_bd0e27c3
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row14_bd0e27c3_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row15_1a8d8c1c
+        editorPosition: {x: 3385.202, y: -52.295235}
+        actionType: 0
+        actionFlagName: start_george_habitat_quest
+        actionFlagValue: 1
+        actionScriptId: 
+    - rid: 383362646436741500
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row13_73db1ae0
+        nodeId: row15_1a8d8c1c
         choices: []
-        editorPosition: {x: 4316, y: 4.666626}
+        editorPosition: {x: 3702.6338, y: -46.931694}
         outcomeId: 

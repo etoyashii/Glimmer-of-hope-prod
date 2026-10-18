@@ -13,42 +13,43 @@ MonoBehaviour:
   m_Name: dialogue_1_1_1_awakening
   m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.NewDialogue.DialogueGraph
   graphId: 27b37b5c
-  startNodeId: c3e2b62f
+  startNodeId: ce56ccb5
   _typedNodes:
-  - rid: 8558608729178636418
-  - rid: 8558608729178636419
-  - rid: 8558608729178636420
-  - rid: 8558608729178636421
-  - rid: 8558608729178636422
-  - rid: 8558608729178636423
-  - rid: 8558608729178636424
+  - rid: 383362646436741121
+  - rid: 383362646436741122
+  - rid: 383362646436741123
+  - rid: 383362646436741124
+  - rid: 383362646436741125
+  - rid: 383362646436741126
+  - rid: 383362646436741128
+  - rid: 383362646436741134
   references:
     version: 2
     RefIds:
-    - rid: 8558608729178636418
+    - rid: 383362646436741121
       type: {class: StartNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: c3e2b62f
+        nodeId: ce56ccb5
         choices:
         - choiceText: 
           localizedChoiceText:
             m_TableReference:
-              m_TableCollectionName: 
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: 
+              m_Key: choice_ce56ccb5_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row0_7a388d41
-        editorPosition: {x: 0, y: 0}
+          nextNodeId: row0_fdc77161
+        editorPosition: {x: -44.2499, y: 119.34046}
         triggerType: 2
         buttonOffset: {x: 0, y: 2, z: 0}
         triggerZoneRadius: 2
-    - rid: 8558608729178636419
+    - rid: 383362646436741122
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row0_7a388d41
+        nodeId: row0_fdc77161
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -56,34 +57,34 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row0_7a388d41_0
+              m_Key: choice_row0_fdc77161_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row1_ba99c1f0
-        editorPosition: {x: 298.11206, y: -4.2879148}
-        speakerId: Glow (floating toward the player)
-        text: "Hey, hi there! I\u2019m Glow! I helped your Cirjos bud bloom. Luckily,
-          your Drum is right next to that stele."
+          nextNodeId: row1_b87add14
+        editorPosition: {x: 186.81766, y: 118.37935}
+        speakerId: Lueur
+        text: "Hey, hi! I\u2019m Lueur. I know a few paths around here. If you like,
+          we can explore together."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row0_7a388d41
+            m_Key: line_row0_fdc77161
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636420
+    - rid: 383362646436741123
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row1_ba99c1f0
+        nodeId: row1_b87add14
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -91,33 +92,33 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row1_ba99c1f0_0
+              m_Key: choice_row1_b87add14_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row2_8e9a0b0a
-        editorPosition: {x: 1070.4941, y: -2.1280286}
-        speakerId: You (dazed)
-        text: "Wait, what? I don\u2019t understand."
+          nextNodeId: row2_c1b74517
+        editorPosition: {x: 787.72656, y: 117.99963}
+        speakerId: Player
+        text: Where are we, exactly?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row1_ba99c1f0
+            m_Key: line_row1_b87add14
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636421
+    - rid: 383362646436741124
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row2_8e9a0b0a
+        nodeId: row2_c1b74517
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -125,34 +126,34 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row2_8e9a0b0a_0
+              m_Key: choice_row2_c1b74517_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row3_b3bc6737
-        editorPosition: {x: 1564.7999, y: -5.600006}
-        speakerId: Glow (explains)
-        text: I made your bud bloom. You should know that people of your kind loved
-          playing music, and their music even helped them in their daily lives.
+          nextNodeId: row3_f0eb63f4
+        editorPosition: {x: 1084.5443, y: 119.14446}
+        speakerId: Lueur
+        text: "On the World Tree. It\u2019s so big that whole forests and villages
+          fit on it."
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row2_8e9a0b0a
+            m_Key: line_row2_c1b74517
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636422
+    - rid: 383362646436741125
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row3_b3bc6737
+        nodeId: row3_f0eb63f4
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -160,33 +161,33 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row3_b3bc6737_0
+              m_Key: choice_row3_f0eb63f4_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row4_f846789f
-        editorPosition: {x: 2549.5178, y: -4.5440297}
-        speakerId: Player (questions)
-        text: So, do I need to pick up the drum at the base of the stele?
+          nextNodeId: row4_7b9e11e5
+        editorPosition: {x: 1587.5214, y: 122.022285}
+        speakerId: Player
+        text: Villages? Here?
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row3_b3bc6737
+            m_Key: line_row3_f0eb63f4
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636423
+    - rid: 383362646436741126
       type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row4_f846789f
+        nodeId: row4_7b9e11e5
         choices:
         - choiceText: 
           localizedChoiceText:
@@ -194,33 +195,67 @@ MonoBehaviour:
               m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
             m_TableEntryReference:
               m_KeyId: 0
-              m_Key: choice_row4_f846789f_0
+              m_Key: choice_row4_7b9e11e5_0
             m_FallbackState: 0
             m_WaitForCompletion: 0
             m_LocalVariables: []
-          nextNodeId: row5_c6479e66
-        editorPosition: {x: 3134.7021, y: -4.543948}
-        speakerId: Glow (explains)
-        text: "Yes, that way you\u2019ll learn how to move around."
+          nextNodeId: row6_4c5d46bf
+        editorPosition: {x: 1892.3772, y: 122.42483}
+        speakerId: Lueur
+        text: Yes! This path leads to one of them.
         localizedText:
           m_TableReference:
             m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
           m_TableEntryReference:
             m_KeyId: 0
-            m_Key: line_row4_f846789f
+            m_Key: line_row4_7b9e11e5
           m_FallbackState: 0
           m_WaitForCompletion: 0
           m_LocalVariables: []
-        bubblePrefab: {fileID: 0}
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
         followSpeaker: 0
         bubbleOffset: {x: 0, y: 2, z: 0}
         useTypewriter: 1
         typewriterCharsPerSecond: 30
         hasChoices: 0
-    - rid: 8558608729178636424
+    - rid: 383362646436741128
+      type: {class: DialogueLineNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
+      data:
+        nodeId: row6_4c5d46bf
+        choices:
+        - choiceText: 
+          localizedChoiceText:
+            m_TableReference:
+              m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+            m_TableEntryReference:
+              m_KeyId: 0
+              m_Key: choice_row6_4c5d46bf_0
+            m_FallbackState: 0
+            m_WaitForCompletion: 0
+            m_LocalVariables: []
+          nextNodeId: row12_601bab56
+        editorPosition: {x: 2239.3625, y: 126.43244}
+        speakerId: Lueur
+        text: "See that stele, next to the path? Let\u2019s take a look."
+        localizedText:
+          m_TableReference:
+            m_TableCollectionName: GUID:f8fabd72a30bffb479f5f15b97ffd357
+          m_TableEntryReference:
+            m_KeyId: 0
+            m_Key: line_row6_4c5d46bf
+          m_FallbackState: 0
+          m_WaitForCompletion: 0
+          m_LocalVariables: []
+        bubblePrefab: {fileID: 8710288237247528408, guid: a05b9022f093e5146844401599d6884a, type: 3}
+        followSpeaker: 0
+        bubbleOffset: {x: 0, y: 2, z: 0}
+        useTypewriter: 1
+        typewriterCharsPerSecond: 30
+        hasChoices: 0
+    - rid: 383362646436741134
       type: {class: EndNode, ns: GlimmerOfHope.Gameplay.NewDialogue, asm: GlimmerOfHope.Gameplay}
       data:
-        nodeId: row5_c6479e66
+        nodeId: row12_601bab56
         choices: []
-        editorPosition: {x: 3676.8452, y: -4.2719817}
+        editorPosition: {x: 2665.3672, y: 126.704025}
         outcomeId: 
