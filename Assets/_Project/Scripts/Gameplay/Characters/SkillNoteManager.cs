@@ -77,6 +77,10 @@ namespace GlimmerOfHope.Gameplay
         [Header("Animator")]
         [SerializeField] Animator _animator;
 
+        [Header("Drum")]
+        [SerializeField] private string _drumName = "SM_ZA_Tools_Drums";
+        [SerializeField] private float _drumDisplayTime = 1f;
+
         [Header("RevealCombo")]
         [SerializeField] private float revealComboTargetScale = 1.1f;
         [SerializeField] private float revealComboScaleUpTime = 0.2f;
@@ -106,6 +110,8 @@ namespace GlimmerOfHope.Gameplay
         private Coroutine _currentChrono;
         private Tween _currentRevealTween;
         private float _lastNoteTime = float.NegativeInfinity;
+        private MeshRenderer _drumMeshRenderer;
+        private Coroutine _drumCoroutine;
 
 
 
@@ -124,6 +130,7 @@ namespace GlimmerOfHope.Gameplay
 
         private void Start()
         {
+            _drumMeshRenderer = GetDrumRenderer();
             _inputNoteList = new();
             for (int i = 0; i < _maxNoteNumber; i++)
                 _inputNoteList.Add(-1); // default value
@@ -157,6 +164,24 @@ namespace GlimmerOfHope.Gameplay
                 InputManager.Instance.OnSchemeChanged.RemoveListener(OnSchemeChanged);
         }
 
+        private MeshRenderer GetDrumRenderer()
+        {
+            Transform drumGO = _animator.transform.Find(_drumName);
+            if (drumGO == null)
+            {
+                Debug.LogError("Drum not found.");
+                return null;
+            }
+            MeshRenderer drumMeshRenderer = drumGO.GetComponent<MeshRenderer>();
+            if (drumMeshRenderer == null)
+            {
+                Debug.LogError("Drum not have mesh renderer");
+                return null;
+            }
+
+            return drumMeshRenderer;
+        }
+
         #endregion
 
         #region Public Methods
@@ -178,7 +203,21 @@ namespace GlimmerOfHope.Gameplay
             // Animation Trigger
             _animator?.SetTrigger(_inputAnimatorAssociation.FirstOrDefault(i => i.Index == noteIndex)?.ParamName);
 
+            if (_drumCoroutine != null)
+                StopCoroutine(_drumCoroutine);
+            _drumCoroutine = StartCoroutine(ShowDrum());
             SaveNote(noteIndex);
+        }
+
+        private IEnumerator ShowDrum()
+        {
+            if (_drumMeshRenderer == null)
+                yield break;
+            Debug.Log("Show");
+            _drumMeshRenderer.enabled = true;
+            yield return new WaitForSeconds(_drumDisplayTime);
+            Debug.Log("Hide");
+            _drumMeshRenderer.enabled = false;
         }
 
         /// <summary>
