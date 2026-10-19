@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Events;
@@ -32,6 +33,9 @@ namespace Kebab.SceneFlow.Samples.FadeLoadingScreen
         [SerializeField] private float backgroundXDelta = 50f;
         [SerializeField] private Ease backgroundAnimEase = Ease.Linear;
         [SerializeField] private float backgroundAnimTime = 10f;
+        [Header("Background")]
+        [SerializeField] private Image backgroundImage;
+        [SerializeField] private List<Sprite> backgroundSprites;
 
 
         [Header("References")]
@@ -45,9 +49,17 @@ namespace Kebab.SceneFlow.Samples.FadeLoadingScreen
 
         public override void Show()
         {
+            backgroundImage.sprite = GetRandomBackground();
             gameObject.SetActive(true);
             StartCoroutine(FadeInCoroutine());
             StartBackgroundAnim();
+        }
+
+        private Sprite GetRandomBackground()
+        {
+            if (backgroundSprites == null || backgroundSprites.Count == 0)
+                return null;
+            return backgroundSprites[Random.Range(0, backgroundSprites.Count-1)];
         }
 
 
