@@ -125,14 +125,20 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         private void FixedUpdate()
         {
-            if (!_movementEnabled) return;
+            if (!_movementEnabled)
+            {
+                _animator?.SetFloat("Speed", 0f);
+                return;
+            }
 
             ApplyMovement();
             ApplyAirCurrent();
             ApplyRotation();
 
             if (_animator != null)
+            {
                 _animator.SetBool("IsGrounded", IsGrounded());
+            }
         }
 
         #endregion
@@ -150,6 +156,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         public void SetMovementEnabled(bool enabled)
         {
             _movementEnabled = enabled;
+            Debug.Log("Movements: " + _movementEnabled);
             if (!enabled)
             {
                 _targetMoveDirection = Vector3.zero;
@@ -309,6 +316,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
         private void OnMovementCanceled(InputAction.CallbackContext context)
         {
             _input = Vector2.zero;
+            _animator?.SetFloat("Speed", 0f);
             OnPlayerStopMoving?.Invoke();
         }
 
