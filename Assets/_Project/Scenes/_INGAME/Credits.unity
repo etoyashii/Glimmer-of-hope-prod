@@ -155,9 +155,9 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -2870}
+  m_AnchoredPosition: {x: 0, y: -5258}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &108146012
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -176,7 +176,7 @@ MonoBehaviour:
     m_Top: 0
     m_Bottom: 0
   m_ChildAlignment: 4
-  m_Spacing: 60
+  m_Spacing: 500
   m_ChildForceExpandWidth: 1
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 1
@@ -481,7 +481,7 @@ RectTransform:
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
+  m_Pivot: {x: 0.5, y: 1}
 --- !u!114 &822280544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -502,14 +502,41 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "# CREDITS\r\n\r\n**GAME DIRECTOR**  \r\nLorem Ipsum\r\n\r\n**GAME DESIGN** 
-    \r\nDolor Sit Amet\r\n\r\n**PROGRAMMING**  \r\nConsectetur Adipiscing  \r\nElit
-    Sed Do\r\n\r\n**ART & VISUALS**  \r\nEiusmod Tempor  \r\nIncididunt Labore\r\n\r\n**MUSIC
-    & SOUND DESIGN**  \r\nMagna Aliqua  \r\nUt Enim Ad Minim\r\n\r\n**LEVEL DESIGN** 
-    \r\nVeniam Quis Nostrud\r\n\r\n**SPECIAL THANKS**  \r\nExercitation Ullamco 
-    \r\nLaboris Nisi Ut Aliquip\r\n\r\n**PUBLISHED BY**  \r\nDuis Aute Irure\r\n\r\n*Made
-    with passion, powered by imagination.*\r\n\r\n\xA9 2026 Lorem Ipsum Studios.
-    All rights reserved."
+  m_text: "<b><size=70>DIRECTION</size></b>\r\n\r\nAdrien CONSTANS \u2014 Project
+    Tutor, Producer, Lead Game Designer, UI/UX\r\nCoraline LAURENT \u2014 Assistant
+    Producer\r\nValentin BARBIER \u2014 Assistant Producer\r\n\r\n\r\n<b><size=60>PROGRAMMATION</size></b>\r\n\r\n<b><size=45>Gameplay</size></b>\r\nEmeric
+    DEPREZ \u2014 Directeur Technique, Gameplay Programmer, Game Designer\r\nBastien
+    MOTTE \u2014 Lead Tech, Gameplay Programmer\r\nRomain BOONE \u2014 Gameplay Programmer\r\nErwan
+    HAMIDA \u2014 Gameplay Programmer\r\nMa\xEBlle KOMADINA \u2014 Gameplay Programmer\r\n\r\n<b><size=45>Outils</size></b>\r\nKillian
+    ABBOUD \u2014 Tool Programmer\r\nLukas BEDEN \u2014 Tool Programmer\r\nWillem
+    GIRON \u2014 Tool Programmer\r\nThibault HODY \u2014 Tool Programmer\r\n\r\n\r\n<b><size=60>DESIGN</size></b>\r\n\r\nTh\xE9o
+    MELLADO \u2014 Lead Design, UI/UX Designer\r\nNeel BESSON \u2014 UI/UX Designer,
+    Level Designer\r\nErwan HAMIDA \u2014 Game Designer\r\nMa\xEBlle KOMADINA \u2014
+    Level Designer\r\nNicolas PONTHIEU \u2014 Level Designer\r\nAdrien POUILLON \u2014
+    Narrative Designer, Game Designer\r\nElouan THEPAULT \u2014 Level Designer\r\n\r\n\r\n<b><size=60>MARKETING</size></b>\r\n\r\nMatthieu
+    PIRODON \u2014 Directeur Marketing\r\nNo\xE9 ANTONIO \u2014 Community Manager,
+    Marketeur\r\nBenjamin CHAGNON \u2014 Community Manager\r\nElie HUGON \u2014 Marketeur,
+    Community Manager\r\nTh\xE9o MELLADO \u2014 Marketeur\r\n\r\n\r\n<b><size=60>CONTENU
+    VID\xC9O</size></b>\r\n\r\nCheikh DELJOOR \u2014 Cr\xE9ateur de contenu, Vid\xE9aste\r\nNicolas
+    CONGR\xC9 \u2014 Cr\xE9ateur de contenu, Vid\xE9aste\r\nFlorian MERCHER \u2014
+    Cr\xE9ateur de contenu, Vid\xE9aste\r\n\r\n\r\n<b><size=60>ART</size></b>\r\n\r\nC\xE9lia
+    BIOUSSE \u2014 Directrice Artistique, Infographiste 2D (Main Concept Artist,
+    Illustratrice, Texture Artist & UI Artist), Level Art\r\nMarius MILLANT \u2014
+    Lead Art (production), Tech Artist (Shaders, Int\xE9gration, Cin\xE9matique,
+    Lighting), Infographiste 3D, Animateur 3D, Level Design\r\nKay BONNET \u2014
+    Animateur 3D\r\nMercure CHETKOVA \u2014 Infographiste 2D (Concept Art & Texturing)\r\nMorgan
+    COLLIN \u2014 Infographiste 3D, Tech Artist (shaders)\r\nLogan DAN \u2014 Tech
+    Artist\r\nGabriel FRAN\xC7OIS \u2014 Concept Artist\r\nPauline GENTIL \u2014
+    Infographiste 3D\r\nUgo JULIE \u2014 Infographiste 3D, Animateur 3D (rig & skin)\r\nNicolas
+    QUATANENS \u2014 Infographiste 3D (environnements)\r\nEmili UINNINGTON \u2014
+    Infographiste 3D, Tech Artist\r\nClo\xE9 VALLAT \u2014 Infographiste 3D\r\nMarie
+    DEMONTIS \u2014 Lead art (pr\xE9production)\r\n\r\n\r\n<b><size=60>SOUND DESIGN</size></b>\r\n\r\nXelina
+    BIBENS \u2014 Musicienne, Compositrice\r\nMathilde JORIOT \u2014 Musicienne,
+    Compositrice\r\n\r\n\r\n<b><size=60>Remerciements :</size></b>\r\n\r\nKevin ROUSSEL
+    \u2014 Direction Technique\r\nK\xE9vin \"Kebab\" Reilhac \u2014 Direction Technique\r\nPeter
+    VYSTAVEL \u2014 Direction Technique\r\nEric SCHEIBER \u2014 Narrative Design\r\nRodolphe
+    BESSEY \u2014 Direction Artistique\r\n\r\n\r\n<b><size=60>Avec la participation
+    de :</size></b>\r\n\r\n<b><size=45>Be Peace - Be Hope</size></b>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 812f5de71aa86df478f371b8652017f1, type: 2}
   m_sharedMaterial: {fileID: 7748633619584493235, guid: 812f5de71aa86df478f371b8652017f1, type: 2}
