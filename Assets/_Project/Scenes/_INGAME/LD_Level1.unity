@@ -231126,7 +231126,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 6121172486071613571}
         m_TargetAssemblyTypeName: UnityEngine.BoxCollider, UnityEngine
-        m_MethodName: set_enabled
+        m_MethodName: set_isTrigger
         m_Mode: 6
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -231134,7 +231134,19 @@ MonoBehaviour:
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
-          m_BoolArgument: 0
+          m_BoolArgument: 1
+        m_CallState: 2
+      - m_Target: {fileID: 6604375921648215784}
+        m_TargetAssemblyTypeName: Kebab.SceneFlow.Components.LoadSceneOnEvent, SceneFlow
+        m_MethodName: LoadScene
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 1
         m_CallState: 2
   _playableDirector: {fileID: 1602071321235523739}
   _onPuzzleCompletedPostTimeline:
@@ -238585,6 +238597,7 @@ GameObject:
   - component: {fileID: 694980823692875841}
   - component: {fileID: 1602071321235523739}
   - component: {fileID: 2752528655481413002}
+  - component: {fileID: 6604375921648215784}
   m_Layer: 0
   m_Name: FairyCirclePuzzle
   m_TagString: Untagged
@@ -238592,6 +238605,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &6604375921648215784
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6604375921648215783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 06f7e9ad02f7a05409f75cc077572eea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SceneFlow::Kebab.SceneFlow.Components.LoadSceneOnEvent
+  sceneToLoad: Credits
+  showLoadingScreen: 1
 --- !u!1001 &6633860871630671347
 PrefabInstance:
   m_ObjectHideFlags: 0
