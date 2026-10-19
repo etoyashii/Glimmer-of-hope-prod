@@ -211,6 +211,7 @@ namespace GlimmerOfHope.Gameplay
 
             if (noteIndex < _drumAudioClips.Count)
                 _drumAudioSources.PlayOneShot(_drumAudioClips[noteIndex]);
+            BumpButton(noteIndex);
 
             SaveNote(noteIndex);
         }
@@ -431,6 +432,18 @@ namespace GlimmerOfHope.Gameplay
             }
 
             return sequence;
+        }
+
+        private void BumpButton(int buttonIndex)
+        {
+            if (buttonIndex >= _playerSkillInputList.Count)
+                return;
+            _playerSkillInputList[buttonIndex].DOKill();
+            _playerSkillInputList[buttonIndex].transform
+                .DOScale(revealComboTargetScale, revealComboScaleUpTime)
+                .SetEase(revealComboScaleUpEase)
+                .SetLoops(2, LoopType.Yoyo)
+                .ChangeStartValue(Vector3.one);
         }
 
         #endregion
