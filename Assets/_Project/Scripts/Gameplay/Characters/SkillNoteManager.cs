@@ -80,6 +80,8 @@ namespace GlimmerOfHope.Gameplay
         [Header("Drum")]
         [SerializeField] private string _drumName = "SM_ZA_Tools_Drums";
         [SerializeField] private float _drumDisplayTime = 1f;
+        [SerializeField] private List<AudioClip> _drumAudioClips = null;
+        [SerializeField] private AudioSource _drumAudioSources = null;
 
         [Header("RevealCombo")]
         [SerializeField] private float revealComboTargetScale = 1.1f;
@@ -206,6 +208,10 @@ namespace GlimmerOfHope.Gameplay
             if (_drumCoroutine != null)
                 StopCoroutine(_drumCoroutine);
             _drumCoroutine = StartCoroutine(ShowDrum());
+
+            if (noteIndex < _drumAudioClips.Count)
+                _drumAudioSources.PlayOneShot(_drumAudioClips[noteIndex]);
+
             SaveNote(noteIndex);
         }
 
@@ -213,10 +219,8 @@ namespace GlimmerOfHope.Gameplay
         {
             if (_drumMeshRenderer == null)
                 yield break;
-            Debug.Log("Show");
             _drumMeshRenderer.enabled = true;
             yield return new WaitForSeconds(_drumDisplayTime);
-            Debug.Log("Hide");
             _drumMeshRenderer.enabled = false;
         }
 
