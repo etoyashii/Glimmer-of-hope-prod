@@ -3,6 +3,7 @@ using GlimmerOfHope.Gameplay.Dialogue;
 using GlimmerOfHope.Gameplay.NewDialogue;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using GlimmerOfHope.UI;
 
 namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 {
@@ -38,11 +39,12 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
 
         [Header("References")]
         [SerializeField] private InputActionReference _moveAction;
+        [SerializeField] private InputActionReference _pauseAction;
         [SerializeField] private Rigidbody _rb;
         [SerializeField] private Camera _playerCamera;
         [SerializeField] private Climbing _climbing;
         [SerializeField] private Slide _slide;
-
+        [SerializeField] private TMP_PauseMenu tmpPauseMenu;
         [Header("Ground Check")]
         [SerializeField] private float _groundCheckDistance = 0.2f;
         [SerializeField] private LayerMask _groundLayer;
@@ -105,6 +107,7 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             _moveAction.action.Enable();
             _moveAction.action.performed += OnMovementStarted;
             _moveAction.action.canceled += OnMovementCanceled;
+            _pauseAction.action.performed += OnPaused;
 
             if (InputManager.Instance != null)
             {
@@ -113,11 +116,18 @@ namespace GlimmerOfHope.Gameplay.Character.SpecialActions
             }
         }
 
+        private void OnPaused(InputAction.CallbackContext context)
+        {
+            tmpPauseMenu.Toggle();
+        }
+
+
         private void OnDisable()
         {
             _moveAction.action.Disable();
             _moveAction.action.performed -= OnMovementStarted;
             _moveAction.action.canceled -= OnMovementCanceled;
+            _pauseAction.action.performed -= OnPaused;
 
             if (InputManager.Instance != null)
                 InputManager.Instance.OnSchemeChanged.RemoveListener(OnSchemeChanged);
