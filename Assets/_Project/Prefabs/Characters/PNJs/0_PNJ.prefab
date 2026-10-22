@@ -58,8 +58,8 @@ Transform:
   m_GameObject: {fileID: 2689048200463834806}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.038, y: 0.9728, z: 0.0627}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_LocalPosition: {x: -0.0279, y: 0.9728, z: 0.0627}
+  m_LocalScale: {x: 15, y: 15, z: 15}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1038712522004060082}
@@ -71,7 +71,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2689048200463834806}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: -1823943867437545201, guid: 16d1ac3a1fe5b764f8859711a6556865, type: 3}
 --- !u!23 &8884968001065448646
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -236,8 +236,8 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.48, y: 0.48, z: 0.48}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1038712522004060082}
   - {fileID: 8984980525147652925}
@@ -365,6 +365,14 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 893713253567110962, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 893713253567110962, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
+      propertyPath: 'm_Materials.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2100000, guid: e30e0de072cd6624db9929fd8a309297, type: 2}
     - target: {fileID: 950115123324927198, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -680,10 +688,32 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1303597622884345352, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3291344579555357248}
   m_SourcePrefab: {fileID: 100100000, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
 --- !u!4 &7034454076572839874 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2111094650355230091, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
   m_PrefabInstance: {fileID: 8994669014731622985}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &7981562652475927617 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1303597622884345352, guid: 2f1f5a9f2d0b27746ba7f05988ddd812, type: 3}
+  m_PrefabInstance: {fileID: 8994669014731622985}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3291344579555357248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7981562652475927617}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 481234db0c972e84e8b95e502e0d6077, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::ManageStencil
+  player: {fileID: 0}
+  globalShader: {fileID: 0}
