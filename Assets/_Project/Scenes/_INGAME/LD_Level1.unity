@@ -140160,6 +140160,32 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1285520028}
   m_Mesh: {fileID: 5396810855825040510, guid: 4578e1ca7ce573046bcd7b8834962ce1, type: 3}
+--- !u!1 &1285948829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 681150402011000672, guid: a4e2d1c4da391604bb3005959c3afd5b, type: 3}
+  m_PrefabInstance: {fileID: 4352562417719473273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1285948830 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 8264501706236056085, guid: a4e2d1c4da391604bb3005959c3afd5b, type: 3}
+  m_PrefabInstance: {fileID: 4352562417719473273}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1285948834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1285948829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7456bdd7f6aa84db9f2ac6a2f823ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.RandomAnimationEvent
+  _animator: {fileID: 1285948830}
+  _triggerName: scratch
+  _minEventWaitTime: 10
+  _maxEventWaitTime: 20
 --- !u!1001 &1286795505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -173301,7 +173327,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3910079442124340456, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.1355133
+      value: 0.13551712
       objectReference: {fileID: 0}
     - target: {fileID: 3956603426464697019, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: _pushLength
@@ -173733,7 +173759,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7884765212165515823, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0.11849213
+      value: 0.11848831
       objectReference: {fileID: 0}
     - target: {fileID: 7969681171338426672, guid: 43761579e73cc48499bd1fe4d0993ab0, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
@@ -184584,6 +184610,32 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fd6e5454b26a82a4bb0ac6a1f787d63c, type: 3}
   m_PrefabInstance: {fileID: 1643404878}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1643792968 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3568737682827711225, guid: d958e0c7ab77a8944b5f83897874be8c, type: 3}
+  m_PrefabInstance: {fileID: 4315579267885282449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1643792969 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5351457432567197580, guid: d958e0c7ab77a8944b5f83897874be8c, type: 3}
+  m_PrefabInstance: {fileID: 4315579267885282449}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1643792973
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1643792968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f7456bdd7f6aa84db9f2ac6a2f823ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.RandomAnimationEvent
+  _animator: {fileID: 1643792969}
+  _triggerName: scratch
+  _minEventWaitTime: 10
+  _maxEventWaitTime: 20
 --- !u!1001 &1644027387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -240134,6 +240186,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: b0c1ff1e966136d44b1c8889df30d60b, type: 2}
+    - target: {fileID: 6462357802653494336, guid: d958e0c7ab77a8944b5f83897874be8c, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6756818050044073160, guid: d958e0c7ab77a8944b5f83897874be8c, type: 3}
       propertyPath: m_LocalScale.x
       value: 28.3065
@@ -240193,7 +240249,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3568737682827711225, guid: d958e0c7ab77a8944b5f83897874be8c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1643792973}
   m_SourcePrefab: {fileID: 100100000, guid: d958e0c7ab77a8944b5f83897874be8c, type: 3}
 --- !u!95 &4322056033089854744
 Animator:
@@ -240237,6 +240296,10 @@ PrefabInstance:
       propertyPath: _dialogueGraph
       value: 
       objectReference: {fileID: 11400000, guid: f126df09ed9e8b04fa8f0cca4fab02af, type: 2}
+    - target: {fileID: 7015397122579583449, guid: a4e2d1c4da391604bb3005959c3afd5b, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8264501706236056085, guid: a4e2d1c4da391604bb3005959c3afd5b, type: 3}
       propertyPath: m_Controller
       value: 
@@ -240308,7 +240371,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 681150402011000672, guid: a4e2d1c4da391604bb3005959c3afd5b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1285948834}
   m_SourcePrefab: {fileID: 100100000, guid: a4e2d1c4da391604bb3005959c3afd5b, type: 3}
 --- !u!1 &4412911295846828837
 GameObject:
