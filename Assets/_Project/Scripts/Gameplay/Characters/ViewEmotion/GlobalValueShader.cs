@@ -28,8 +28,6 @@ public class GlobalValueShader : MonoBehaviour
         Shader.SetGlobalColor("_BigCircleColor", bigCircleColor);
         Shader.SetGlobalColor("_SmallCircleColor", smallCircleColor);
 
-        print(radiusBigCircle);
-        print(radiusSmallCircle);
         SwitchViewEmotionMode();
     }
 

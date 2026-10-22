@@ -39,6 +39,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
         [Header("Player Help")]
         [SerializeField] private bool _playerHelpEnabled = true;
         [SerializeField] private float _poiDetectionRadius = 10.0f;
+        [SerializeField] private float _poiYOffset = 0.5f;
         [SerializeField] private LayerMask _poiLayerMask;
 
         private StateMachine _stateMachine;
@@ -72,7 +73,8 @@ namespace GlimmerOfHope.Gameplay.Lueur
                 HopChance = _hopChance,
                 HopHeight = _hopHeight,
                 HopFrequency = _hopFrequency,
-                WanderSpeed = _wanderSpeed
+                WanderSpeed = _wanderSpeed,
+                POIYOffset = _poiYOffset
             };
 
             _context.Mover = new SmoothMover(transform, () => _context.CurrentSmoothTime, () => _context.CurrentMaxSpeed);
@@ -154,13 +156,23 @@ namespace GlimmerOfHope.Gameplay.Lueur
         public bool TryGetPointOfInterest(out Vector3 position)
         {
             Collider[] hits = Physics.OverlapSphere(_playerTransform.position, _poiDetectionRadius, _poiLayerMask);
+            float distance = Mathf.Infinity;
 
             if (hits.Length > 0)
             {
                 position = hits[0].transform.position;
+                for (int i = 0; i < hits.Length; i++)
+                {
+                    float newDistance = Vector3.Distance(hits[i].transform.position, _playerTransform.position);
+
+                    if (newDistance < distance)
+                    {
+                        distance = newDistance;
+                        position = hits[i].transform.position;
+                    }
+                }
                 return true;
             }
-
             position = Vector3.zero;
             return false;
         }

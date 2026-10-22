@@ -9,11 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 381768130743933473}
-  - component: {fileID: 3038231645127841545}
   - component: {fileID: 7356950844856197792}
   - component: {fileID: 7807334513465553282}
   - component: {fileID: 5938640738518572614}
-  m_Layer: 0
+  - component: {fileID: 8754930230159906415}
+  - component: {fileID: 1442276816331807384}
+  m_Layer: 12
   m_Name: Lueur
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -28,36 +29,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2959710124385252748}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 18.100006, y: 89.954, z: -160.9}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.3, y: 0.3, z: 0.3}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 6573802066136535337}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3038231645127841545
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2959710124385252748}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a0dfa98627a402c4e9009cf655fcb27d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.LueurAI
-  _playerTransform: {fileID: 0}
-  _lueurStartPoint: {fileID: 0}
-  _maxSpeed: 50
-  _smoothTime: 0.3
-  _radius: 3
-  _followRadius: 21.9
-  _playerMovement: {fileID: 0}
-  _maxLaps: 2
-  _lapSpeed: 6
-  _idleBehaviorState: 0
 --- !u!33 &7356950844856197792
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -65,7 +44,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2959710124385252748}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 9024100254208768950, guid: 77a00fabb9de0d9488bee621bf6b50bf, type: 3}
 --- !u!23 &7807334513465553282
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -91,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 53ad2e2c724d5934e89071e90b2652c2, type: 2}
+  - {fileID: 2100000, guid: 8b900d1778fe9114598ec8cabab6e697, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -132,10 +111,141 @@ SphereCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8754930230159906415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2959710124385252748}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a81f1448f3e6cde4e8236c4b4dfef023, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: GlimmerOfHope.Gameplay::GlimmerOfHope.Gameplay.Lueur.LueurAI
+  _playerTransform: {fileID: 0}
+  _lueurStartPoint: {fileID: 0}
+  _playerMovement: {fileID: 0}
+  _attentionAudioSource: {fileID: 1442276816331807384}
+  _maxSpeed: 2
+  _smoothTime: 0.3
+  _followRadius: 15.9
+  _followHeightOffset: 1.5
+  _followRightOffset: 1.5
+  _idleMaxSpeed: 1
+  _idleSmoothTime: 0.5
+  _patrolRadius: 1.53
+  _hopChance: 0.3
+  _hopHeight: 0.2
+  _hopFrequency: 2
+  _wanderSpeed: 0.1
+  _playerHelpEnabled: 1
+  _poiDetectionRadius: 2
+  _poiYOffset: 0.25
+  _poiLayerMask:
+    serializedVersion: 2
+    m_Bits: 524288
+--- !u!82 &1442276816331807384
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2959710124385252748}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_Resource: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &3577650696159422221
 GameObject:
   m_ObjectHideFlags: 0
@@ -147,7 +257,7 @@ GameObject:
   - component: {fileID: 6573802066136535337}
   - component: {fileID: 5484190295844023813}
   - component: {fileID: 966888295285984789}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Point Light
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -180,7 +290,7 @@ Light:
   serializedVersion: 12
   m_Type: 2
   m_Color: {r: 1, g: 0.9933697, b: 0.66037726, a: 1}
-  m_Intensity: 12
+  m_Intensity: 0
   m_Range: 11
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

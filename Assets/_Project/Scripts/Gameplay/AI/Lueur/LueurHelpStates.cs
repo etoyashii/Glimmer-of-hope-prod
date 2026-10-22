@@ -28,6 +28,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
         public override void Tick()
         {
             _subMachine.Tick();
+            _context.PoiDetector.TryGetPointOfInterest(out _poiPosition);
         }
 
         public override void Exit()
@@ -95,7 +96,7 @@ namespace GlimmerOfHope.Gameplay.Lueur
 
             Vector3 basePosition = _getTarget();
             float hopOffset = Mathf.Abs(Mathf.Sin(_timer * _context.HopFrequency)) * _context.HopHeight;
-            _context.Mover.MoveTo(new Vector3(basePosition.x, basePosition.y + hopOffset, basePosition.z));
+            _context.Mover.MoveTo(new Vector3(basePosition.x, basePosition.y + hopOffset + _context.POIYOffset, basePosition.z));
         }
 
         public override void Exit()

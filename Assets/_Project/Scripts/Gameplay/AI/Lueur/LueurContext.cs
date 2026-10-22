@@ -23,5 +23,6 @@ namespace GlimmerOfHope.Gameplay.Lueur
         public float WanderSpeed;
         public float CurrentMaxSpeed;
         public float CurrentSmoothTime;
+        public float POIYOffset;
     }
 }
