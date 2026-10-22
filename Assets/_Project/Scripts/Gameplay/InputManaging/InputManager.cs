@@ -67,6 +67,10 @@ namespace GlimmerOfHope.Gameplay
         public bool IsKeyboardMouse => CurrentScheme == ControlScheme.KeyboardMouse;
         public bool IsGamepad => CurrentScheme == ControlScheme.Gamepad;
 
+        #if UNITY_EDITOR
+        [SerializeField] private bool _forceMobileInputs = false;
+        #endif
+
         #endregion
 
         #region Unity Lifecycle
@@ -89,8 +93,22 @@ namespace GlimmerOfHope.Gameplay
             if (MenuInput != null)
                 MenuInput.action.performed += OnMenuInputPressed;
 
-            if (_autoSwitchScheme)
+            #if UNITY_EDITOR
+            if (_forceMobileInputs)
+            {
+                ApplyScheme(ControlScheme.Mobile, false);
+                return;
+            }
+            #endif
+
+            if (Application.isMobilePlatform)
+            {
+                ApplyScheme(ControlScheme.Mobile, false);
+            }
+            else if (_autoSwitchScheme)
+            {
                 _anyButtonPressListener = InputSystem.onAnyButtonPress.Call(OnAnyButtonPressed);
+            }
         }
 
         private void Update()

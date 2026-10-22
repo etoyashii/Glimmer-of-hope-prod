@@ -18,12 +18,19 @@ public class UIHint : MonoBehaviour
 
     void OnEnable()
     {
+        if (Application.isMobilePlatform)
+        {
+            _uiHint.enabled = false;
+            return;
+        }
         InputSystem.onEvent += OnInputSystemEvent;
         RefreshHint();
     }
 
     void OnDisable()
     {
+        if (Application.isMobilePlatform)
+            return;
         InputSystem.onEvent -= OnInputSystemEvent;
     }
 
@@ -55,6 +62,7 @@ public class UIHint : MonoBehaviour
         var s = _uiHintSo.GetSpriteForInput(bindingName);
         if(s==null) Debug.LogError($"No binding image for {bindingName}", this);
         _uiHint.sprite = s;
+        _uiHint.enabled = s != null;
     }
 
     string GetBindingNameForCurrentDevice()
